@@ -14,7 +14,7 @@ db.init_app(app)
 password_pattern = re.compile(r'(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[$%@!*.!?])[A-Za-z\d$%@!*.!?]{8,}$')
 
 signup_parser = reqparse.RequestParser()
-# signup_parser.add_argument('first_name', type = str, required=True, help='First name is required')
+signup_parser.add_argument('first_name', type = str, required=True, help='First name is required')
 # signup_parser.add_argument('last_name',type=str,required=True,help='Last name is required')
 # signup_parser.add_argument('email',type=str,required=True,help='Email is required')
 # signup_parser.add_argument('password',type=str,required=True,help='Password is required')
