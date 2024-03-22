@@ -1,7 +1,7 @@
-# from flask import Flask, jsonify,make_response
-# from flask_restful import Api, Resource, reqparse
-# from models import db,User
-# from flask_bcrypt import Bcrypt
+from flask import Flask, jsonify,make_response
+from flask_restful import Api, Resource, reqparse
+from models import db,User
+from flask_bcrypt import Bcrypt
 # import re
 
 # app = Flask(__name__)
@@ -26,7 +26,7 @@
 #         password = args['password']
 #         existing_user = User.query.filter_by(email=email).first()
 #         if not password_pattern.match (password):
-#             response = make_response({'error':'Password must be six characters long, one uppercase letter, one lowercase letter, and one special character'}, 400)
+#             response = make_response({'error':'Password must meet the desired criteria'}, 400)
 #             return response
          
 #         hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
@@ -47,15 +47,15 @@
 # login_parse.add_argument('email',type=str,required=True,help='email is required'),
 # login_parse.add_argument('password',type=str,required=True,help='Password is required')
 # class Login(Resource):
-#     def get(self):
+#     def post(self):
 #         args = login_parse.parse_args()
 #         email = args['email']
 #         password = args['password']
 #         existing_user = User.query.filter_by(email=email).first()
 #         if not existing_user:
-#             return jsonify({'error':'Invalid email or password'})
-#         hashed_passsword = existing_user.password
-#         if bcrypt.check_password_hash(hashed_passsword,password):
+#             return jsonify({'error':'Invalid email or password'}),401
+#         hashed_password = existing_user.password
+#         if bcrypt.check_password_hash(hashed_password,password):
 #             return jsonify({'message':'Login successful'}),200
 #         else:
 #             return jsonify({'error':'Invalid email or password'}),401
@@ -67,16 +67,3 @@
 
 
 
-
-from flask import Flask
-from flask_restful import Api
-from models import db,User
-
-app = Flask(__name__)
-api = Api(app)
-
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///bett.db'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-db.init_app(app)
-
-class Signup(Resource):
