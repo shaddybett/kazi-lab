@@ -16,7 +16,7 @@ class Signup(Resource):
         email = data.get('email')
         existing = User.query.filter_by(email=email).first()
         if existing:
-            return jsonify ({'error':'Email already exists'})  
+            return jsonify ({'error':'Email already exists'},404)  
         else:
             newUser = User (
                 first_name = data.get('first_name'),
@@ -26,6 +26,6 @@ class Signup(Resource):
             )   
             db.session.add(newUser)
             db.session.commit()
-            
+            return jsonify({'message':'Successfully added'},200)
         
 
