@@ -2,7 +2,7 @@ from flask import Flask, jsonify,make_response
 from flask_restful import Api, Resource, reqparse
 from models import db,User
 from flask_bcrypt import Bcrypt
-# import re
+import re
 
 # app = Flask(__name__)
 # api = Api(app)
