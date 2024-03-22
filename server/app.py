@@ -4,9 +4,9 @@ from models import db,User
 from flask_bcrypt import Bcrypt
 import re
 
-# app = Flask(__name__)
-# api = Api(app)
-# bcrypt = Bcrypt(app)
+app = Flask(__name__)
+api = Api(app)
+bcrypt = Bcrypt(app)
 
 # app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///jovial.db'
 # app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
