@@ -14,13 +14,18 @@ class Signup(Resource):
     def get(self):
         data = request.get_json()
         email = data.get('email')
-        existing        
+        existing = User.query.filter_by(email=email).first()
+        if existing:
+            return jsonify ({'error':'Email already exists'})  
+        else:
+            newUser = User (
+                first_name = data.get('first_name'),
+                last_name = data.get('last_name'),
+                email = email,
+                password = data.get('password')
+            )   
+            db.session.add(newUser)
+            db.session.commit()
+            
         
 
-
-class Login(Resource):
-    def post(self):
-        data = request.get_json()
-        email = data.get('email')
-        password = data.get('password')
-        existing = User.query.filter_by(email=email).first()
