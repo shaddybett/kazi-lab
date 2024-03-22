@@ -15,9 +15,9 @@ password_pattern = re.compile(r'(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[$%@!*.!?])[A
 
 signup_parser = reqparse.RequestParser()
 signup_parser.add_argument('first_name', type = str, required=True, help='First name is required')
-# signup_parser.add_argument('last_name',type=str,required=True,help='Last name is required')
-# signup_parser.add_argument('email',type=str,required=True,help='Email is required')
-# signup_parser.add_argument('password',type=str,required=True,help='Password is required')
+signup_parser.add_argument('last_name',type=str,required=True,help='Last name is required')
+signup_parser.add_argument('email',type=str,required=True,help='Email is required')
+signup_parser.add_argument('password',type=str,required=True,help='Password is required')
 
 # class Signup(Resource):
 #     def post(self):
