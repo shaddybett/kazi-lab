@@ -21,13 +21,13 @@ signup_parser.add_argument('password',type=str,required=True,help='Password is r
 
 class Signup(Resource)
 #     def post(self):
-#         args = signup_parser.parse_args()
-#         email = args['email']
-#         password = args['password']
-#         existing_user = User.query.filter_by(email=email).first()
-#         if not password_pattern.match (password):
-#             response = make_response({'error':'Password must meet the desired criteria'}, 400)
-#             return response
+        args = signup_parser.parse_args()
+        email = args['email']
+        password = args['password']
+        existing_user = User.query.filter_by(email=email).first()
+        if not password_pattern.match (password):
+            response = make_response({'error':'Password must meet the desired criteria'}, 400)
+            return response
          
 #         hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
 #         if existing_user:
