@@ -43,22 +43,22 @@ class Signup(Resource)
             db.session.commit()
             return jsonify({'message':'User created successfully'}),201
         
-# login_parse = reqparse.RequestParser()
-# login_parse.add_argument('email',type=str,required=True,help='email is required'),
-# login_parse.add_argument('password',type=str,required=True,help='Password is required')
-# class Login(Resource):
-#     def post(self):
-#         args = login_parse.parse_args()
-#         email = args['email']
-#         password = args['password']
-#         existing_user = User.query.filter_by(email=email).first()
-#         if not existing_user:
-#             return jsonify({'error':'Invalid email or password'}),401
-#         hashed_password = existing_user.password
-#         if bcrypt.check_password_hash(hashed_password,password):
-#             return jsonify({'message':'Login successful'}),200
-#         else:
-#             return jsonify({'error':'Invalid email or password'}),401
+login_parse = reqparse.RequestParser()
+login_parse.add_argument('email',type=str,required=True,help='email is required'),
+login_parse.add_argument('password',type=str,required=True,help='Password is required')
+class Login(Resource):
+    def post(self):
+        args = login_parse.parse_args()
+        email = args['email']
+        password = args['password']
+        existing_user = User.query.filter_by(email=email).first()
+        if not existing_user:
+            return jsonify({'error':'Invalid email or password'}),401
+        hashed_password = existing_user.password
+        if bcrypt.check_password_hash(hashed_password,password):
+            return jsonify({'message':'Login successful'}),200
+        else:
+            return jsonify({'error':'Invalid email or password'}),401
 # api.add_resource(Signup,'/signup')
 # api.add_resource(Login,'/login')
 
