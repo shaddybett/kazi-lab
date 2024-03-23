@@ -19,8 +19,8 @@ signup_parser.add_argument('last_name',type=str,required=True,help='Last name is
 signup_parser.add_argument('email',type=str,required=True,help='Email is required')
 signup_parser.add_argument('password',type=str,required=True,help='Password is required')
 
-class Signup(Resource)
-#     def post(self):
+class Signup(Resource):
+    def post(self):
         args = signup_parser.parse_args()
         email = args['email']
         password = args['password']
