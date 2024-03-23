@@ -30,18 +30,18 @@ class Signup(Resource)
             return response
          
         hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
-#         if existing_user:
-#             return jsonify({'error':'Email already exists'}),409
-#         else:
-#             newUser = User (
-#                 first_name = args['first_name'],
-#                 last_name = args['last_name'],
-#                 email = email,
-#                 password = hashed_password
-#             )   
-#             db.session.add(newUser)
-#             db.session.commit()
-#             return jsonify({'message':'User created successfully'}),201
+        if existing_user:
+            return jsonify({'error':'Email already exists'}),409
+        else:
+            newUser = User (
+                first_name = args['first_name'],
+                last_name = args['last_name'],
+                email = email,
+                password = hashed_password
+            )   
+            db.session.add(newUser)
+            db.session.commit()
+            return jsonify({'message':'User created successfully'}),201
         
 # login_parse = reqparse.RequestParser()
 # login_parse.add_argument('email',type=str,required=True,help='email is required'),
