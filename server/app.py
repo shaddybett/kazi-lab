@@ -1,10 +1,13 @@
-from flask import Flask, jsonify,make_response
+from flask import Flask,make_response
 from flask_restful import Api, Resource, reqparse
 from models import db,User
 from flask_bcrypt import Bcrypt
 import re
 from flask_cors import CORS
 from flask_migrate import Migrate
+from flask_jwt_extended import JWTManager,create_access_token
+from datetime import timedelta,datetime
+import os
 
 
 app = Flask(__name__)
@@ -15,9 +18,13 @@ CORS(app)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///jovial.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['JWT_SECRET_KEY'] =os.environ.get('secret_key')
+app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(hours=1)
 db.init_app(app)
 password_pattern = re.compile(r'(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[$%@!*.!?])[A-Za-z\d$%@!*.!?]{8,}')
 migrate = Migrate(app,db)
+jwt = JWTManager(app)
+jwt.init_app(app)
 
 signup_parser = reqparse.RequestParser()
 signup_parser.add_argument('first_name', type = str, required=True, help='First name is required')
@@ -41,6 +48,7 @@ class Signup(Resource):
             return response
          
         hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
+        
         if existing_user:
             response = make_response({'error':'User already exists'},401)
             return response
@@ -73,7 +81,8 @@ class Login(Resource):
             return response
         hashed_password = existing_user.password
         if bcrypt.check_password_hash(hashed_password,password):
-            response = make_response({'message':'Login Successful'},200)
+            access_token = create_access_token(identity=email)
+            response = make_response({'message':'Login Successful', 'access_token':access_token},200)
             return response
         else:
             response = make_response({'error':'Invalid email or password'},401)
