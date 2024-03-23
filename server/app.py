@@ -59,7 +59,7 @@ class Login(Resource):
             return jsonify({'message':'Login successful'}),200
         else:
             return jsonify({'error':'Invalid email or password'}),401
-# api.add_resource(Signup,'/signup')
+api.add_resource(Signup,'/signup')
 # api.add_resource(Login,'/login')
 
 # if __name__=='__main__':
