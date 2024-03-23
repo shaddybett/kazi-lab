@@ -8,5 +8,5 @@ with app.app_context():
         email='khan@gmail.com',
         password='12345'
     )
-    db.session.add(new_user)
-    db.session.commit()
+    # db.session.add(new_user)
+    # db.session.commit()
