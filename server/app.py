@@ -150,7 +150,12 @@ class Login(Resource):
         existing_user = User.query.filter_by(email=email).first()
         if existing_user:
             hashed_password = existing_user.password
-            response = make_response({'message':'Login successful'})
+            if bcrypt.check_password_hash(hashed_password,password):
+                response = make_response({'message':'Login successful'})
+                return response
+            
+
+            
 
 
 
