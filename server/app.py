@@ -62,8 +62,8 @@ class Login(Resource):
 api.add_resource(Signup,'/signup')
 api.add_resource(Login,'/login')
 
-# if __name__=='__main__':
-#     app.run(debug=True,port=5000)
+if __name__=='__main__':
+    app.run(debug=True,port=5000)
 
 
 
