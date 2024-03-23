@@ -153,6 +153,9 @@ class Login(Resource):
             if bcrypt.check_password_hash(hashed_password,password):
                 response = make_response({'message':'Login successful'})
                 return response
+            else:
+                response = make_response({'error':'Invalid email or password'},401)
+                return response
             
 
             
