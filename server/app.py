@@ -4,12 +4,14 @@ from models import db,User
 from flask_bcrypt import Bcrypt
 import re
 from flask_cors import CORS
+from flask_migrate import Migrate
 
 
 app = Flask(__name__)
 api = Api(app)
 bcrypt = Bcrypt(app)
 CORS(app)
+Migrate(app)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///jovial.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
