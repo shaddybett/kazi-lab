@@ -156,7 +156,14 @@ class Login(Resource):
             else:
                 response = make_response({'error':'Invalid email or password'},401)
                 return response
-            
+        response = make_response({'error':'Invalid email or password'},401)
+        return response
+
+api.add_resource(Signup,'/signup')
+api.add_resource(Login,'/login')
+
+if __name__=='__main__':
+    app.run(debug=True,port=4000)
 
             
 
