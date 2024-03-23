@@ -89,10 +89,64 @@
 
 
 
-from flask import Flask
-from flask_restful import Api
+from flask import Flask,make_response
+from flask_restful import Api,Resource,reqparse
+from models import db,User
+from flask_migrate import Migrate
+from flask_cors import CORS
+import re
+from flask_bcrypt import Bcrypt
 
 app =Flask(__name__)
 api = Api(app)
 app.config['SQLALCHEMY_DATABASE_URI']='sqlite:///kazi.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS']=False
+db.init_app(app)
+migrate = Migrate(app,db)
+CORS(app)
+bcrypt = Bcrypt()
+password_pattern = re.compile(r'(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$#%&*>!.,])[A-Za-z\d@$#%&*>!.,]{8,}')
+
+signup_parser = reqparse.RequestParser()
+signup_parser.add_argument('first_name',type=str,required=True,help='First name is required')
+signup_parser.add_argument('last_name',type=str,required=True,help='Last name is required')
+signup_parser.add_argument('email',type=str,required=True,help='Email is required')
+signup_parser.add_argument('password',type=str,required=True,help='Password is required')
+
+class Signup(Resource):
+    def post(self):
+        args = signup_parser.parse_args()
+        email = args['email']
+        password = args['password']
+        if password=='' or email=='':
+            response = make_response({'error':'Fill in all forms'},401)
+            return response
+        hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
+        existing = User.query.filter_by(email=email).first()
+        if existing:
+            response = make_response({'error':'email already exists'},401)
+            return response
+        else:
+            new_user = User(
+                first_name=args['first_name'],
+                last_name=args['last_name'],
+                email = email,
+                password = hashed_password
+            ) 
+            db.session.add(new_user)
+            db.session.commit()
+            response = make_response({'message':'User successfully created'},201)
+            return response
+
+
+login_parser = reqparse.RequestParser()
+login_parser.add_argument('email',type=str,required=True,help='Email is required')
+login_parser.add_argument('password',type=str,required=True,help='Password is required')
+class Login(Resource):
+    def post(self):
+        args = login_parser.parse_args()
+        email=args['email']
+        
+
+
+
