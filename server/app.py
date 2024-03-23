@@ -104,7 +104,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS']=False
 db.init_app(app)
 migrate = Migrate(app,db)
 CORS(app)
-bcrypt = Bcrypt()
+bcrypt = Bcrypt(app)
 password_pattern = re.compile(r'(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$#%&*>!.,])[A-Za-z\d@$#%&*>!.,]{8,}')
 
 signup_parser = reqparse.RequestParser()
@@ -120,6 +120,9 @@ class Signup(Resource):
         password = args['password']
         if password=='' or email=='':
             response = make_response({'error':'Fill in all forms'},401)
+            return response
+        if not password_pattern.match (password):
+            response = make_response({'error':'Password must meet the required criteria'},401)
             return response
         hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
         existing = User.query.filter_by(email=email).first()
@@ -147,17 +150,21 @@ class Login(Resource):
         args = login_parser.parse_args()
         email=args['email']
         password = args['password']
+        if not email or not password:
+            response = make_response({'error':'Fill in all forms'},401)
         existing_user = User.query.filter_by(email=email).first()
         if existing_user:
             hashed_password = existing_user.password
             if bcrypt.check_password_hash(hashed_password,password):
-                response = make_response({'message':'Login successful'})
-                return response
+                response = make_response({'message':'Login successful'},200)
+                return response    
             else:
-                response = make_response({'error':'Invalid email or password'},401)
+                response=make_response({'error':'Invalid email or password'},401)
                 return response
-        response = make_response({'error':'Invalid email or password'},401)
-        return response
+        else:
+            response=make_response({'error':'Invalid email or password'},401)
+            return response
+
 
 api.add_resource(Signup,'/signup')
 api.add_resource(Login,'/login')
