@@ -5,10 +5,18 @@ function Login() {
   const[password,setPassword] = useState('')
   const[error,setError] = useState('')
 
-  const handleSubmit = () =>{
-    
-
+  const handleLogin= (e)=>{
+    e.preventDefault()
   }
+  if (!email || !password) {
+    setError('All fields are required')
+    return;
+  }
+
+  
+
+
+  
 
   return (
     <div></div>
