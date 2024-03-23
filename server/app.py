@@ -6,7 +6,7 @@ import re
 from flask_cors import CORS
 from flask_migrate import Migrate
 from flask_jwt_extended import JWTManager,create_access_token
-from datetime import timedelta,datetime
+from datetime import timedelta
 import os
 
 
@@ -31,7 +31,6 @@ signup_parser.add_argument('first_name', type = str, required=True, help='First 
 signup_parser.add_argument('last_name',type=str,required=True,help='Last name is required')
 signup_parser.add_argument('email',type=str,required=True,help='Email is required')
 signup_parser.add_argument('password',type=str,required=True,help='Password is required')
-
 
 
 class Signup(Resource):
@@ -92,7 +91,3 @@ api.add_resource(Login,'/login')
 
 if __name__=='__main__':
     app.run(debug=True,port=4000)
-
-
-
-
