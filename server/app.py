@@ -60,7 +60,7 @@ class Login(Resource):
         else:
             return jsonify({'error':'Invalid email or password'}),401
 api.add_resource(Signup,'/signup')
-# api.add_resource(Login,'/login')
+api.add_resource(Login,'/login')
 
 # if __name__=='__main__':
 #     app.run(debug=True,port=5000)
