@@ -146,7 +146,11 @@ class Login(Resource):
     def post(self):
         args = login_parser.parse_args()
         email=args['email']
-        
+        password = args['password']
+        existing_user = User.query.filter_by(email=email).first()
+        if existing_user:
+            hashed_password = existing_user.password
+            response = make_response({'message':'Login successful'})
 
 
 
