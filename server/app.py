@@ -16,7 +16,7 @@ CORS(app)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///jovial.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db.init_app(app)
-password_pattern = re.compile(r'(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[$%@!*.!?])[A-Za-z\d$%@!*.!?]{8,}$')
+password_pattern = re.compile(r'(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[$%@!*.!?])[A-Za-z\d$%@!*.!?]{8,}')
 migrate = Migrate(app,db)
 
 signup_parser = reqparse.RequestParser()
@@ -25,16 +25,20 @@ signup_parser.add_argument('last_name',type=str,required=True,help='Last name is
 signup_parser.add_argument('email',type=str,required=True,help='Email is required')
 signup_parser.add_argument('password',type=str,required=True,help='Password is required')
 
+
+
 class Signup(Resource):
     def post(self):
         args = signup_parser.parse_args()
         email = args['email']
         password = args['password']
         if email == '' or password =='':
-            return jsonify({'error':'Fill in all forms'}),401
+            response = make_response({'error':'Fill in all forms'},401)
+            return response
         existing_user = User.query.filter_by(email=email).first()
         if not password_pattern.match (password):
-            return jsonify({'error':'invalid email or password'}),401
+            response = make_response({'error':'Password must meet the required criteria'},401)
+            return response
          
         hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
         if existing_user:
@@ -66,6 +70,7 @@ class Login(Resource):
         existing_user = User.query.filter_by(email=email).first()
         if not existing_user:
             response = make_response({'error':'Invalid email or password'},401)
+            return response
         hashed_password = existing_user.password
         if bcrypt.check_password_hash(hashed_password,password):
             response = make_response({'message':'Login Successful'},200)
