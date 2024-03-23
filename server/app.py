@@ -29,7 +29,7 @@ class Signup(Resource)
             response = make_response({'error':'Password must meet the desired criteria'}, 400)
             return response
          
-#         hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
+        hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
 #         if existing_user:
 #             return jsonify({'error':'Email already exists'}),409
 #         else:
