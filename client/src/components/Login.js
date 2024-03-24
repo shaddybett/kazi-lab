@@ -1,11 +1,11 @@
 import React, {useState} from 'react';
-import { Link } from 'react-router-dom';
+import { Link,useNavigate } from 'react-router-dom';
 
 function Login() {
     const [email,setEmail] = useState('');
     const [password,setPassword] = useState('');
     const [error,setError] = useState('');
-    // const history = useHistory();
+    const navigate = useNavigate();
 
     const handleLogin = async(e) => {
         e.preventDefault();
@@ -20,10 +20,10 @@ function Login() {
             if (response.ok) {
                 const data = await response.json();
                 localStorage.setItem('token', data.access_token);
-                // history.push('/dashboard');
-                <Link to='/signup'/>
+                navigate('/dashboard');
             }else{
-                setError('Invalid credentials. Please try again later.');
+                const errorMessage = await response.json();
+                setError(errorMessage);
             }
         } catch (error){
             setError('An error occurred. Please try again later.');
@@ -43,3 +43,4 @@ function Login() {
 }
 
 export default Login
+
