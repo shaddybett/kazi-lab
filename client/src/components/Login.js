@@ -1,10 +1,11 @@
-import React, {useState,useEffect} from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import React, {useState} from 'react';
+import { Link } from 'react-router-dom';
 
 function Login() {
-    const [email,setEmail] = useState('')
-    const [password,setPassword] = useState('')
-    const [error,setError] = useState('')
+    const [email,setEmail] = useState('');
+    const [password,setPassword] = useState('');
+    const [error,setError] = useState('');
+    // const history = useHistory();
 
     const handleLogin = async(e) => {
         e.preventDefault();
@@ -19,7 +20,8 @@ function Login() {
             if (response.ok) {
                 const data = await response.json();
                 localStorage.setItem('token', data.access_token);
-                history.push('/dashboard');
+                // history.push('/dashboard');
+                <Link to='/signup'/>
             }else{
                 setError('Invalid credentials. Please try again later.');
             }
@@ -29,10 +31,13 @@ function Login() {
     }
   return (
     <div>
-        <form>
-            <input type='email' placeholder='local-part@domain.tld' value={email} onChange={(e)=>setEmail(e.target.value)} pattern = "/>
-            <input/>
+        <form onSubmit={handleLogin}>
+            <input type='email' placeholder='local-part@domain.tld' value={email} onChange={(e)=>setEmail(e.target.value)} title='Enter a avalid email address' required/>
+            <input type='password' placeholder='*********' value={password} onChange={(e)=>setPassword(e.target.value)} title='Enter a valid Password' required/>
+            <button type='submit'>Submit</button>
         </form>
+        {error && <p>{error}</p>}
+        <p>Don't have an account? <Link to='/signup'>Signup</Link></p>
     </div>
   )
 }
