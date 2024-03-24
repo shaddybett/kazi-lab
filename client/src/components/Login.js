@@ -1,43 +1,40 @@
-import React,{useState} from "react";
-import {Link} from 'react-router-dom'
+import React, {useState,useEffect} from 'react';
+import { Link, useHistory } from 'react-router-dom';
 
-const[email,setEmail] = useState('')
-const[password,setPassword] = useState('')
-const[error,setError] = useState('')
+function Login() {
+    const [email,setEmail] = useState('')
+    const [password,setPassword] = useState('')
+    const [error,setError] = useState('')
 
-const handleLogin = async(e)=>{
-    e.preventDefault()
-}
-
-try {
-    const handleLogin = await fetch('/login',{
-        method:'POST',
-        'Content-Type':'application/json',
-        headers: {
-            body:JSON.stringify({email,password})
+    const handleLogin = async(e) => {
+        e.preventDefault();
+        try{
+            const response = await fetch('/login',{
+                method:'POST',
+                headers:{
+                    'Content-Type':'application/json',
+                },
+                body: JSON.stringify({email,password})
+            });
+            if (response.ok) {
+                const data = await response.json();
+                localStorage.setItem('token', data.access_token);
+                history.push('/dashboard');
+            }else{
+                setError('Invalid credentials. Please try again later.');
+            }
+        } catch (error){
+            setError('An error occurred. Please try again later.');
         }
-
-    })
-    const data = await response()
-    if (response.ok){
-        localStorage.setItem({'token':data.access_token}),
-        <Link to='/'/>
     }
-    else{
-        setError('An error occurred')
-    }
-}
-catch{
-    setError('An error occurred please try again later')
-}
-
-return (
+  return (
     <div>
-        <form onSubmit={handleLogin}>
-
-        <input type="email" placeholder="example@gmail.com" value={email} onChange={setEmail}/>
-        <input type="password" placeholder="*********" value={password} onChange={setPassword}/>
-        <button type="submit">submit</button>
+        <form>
+            <input type='email' placeholder='local-part@domain.tld' value={email} onChange={(e)=>setEmail(e.target.value)} pattern = "/>
+            <input/>
         </form>
     </div>
-)
+  )
+}
+
+export default Login

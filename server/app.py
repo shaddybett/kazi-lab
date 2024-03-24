@@ -22,6 +22,7 @@ app.config['JWT_SECRET_KEY'] =os.environ.get('secret_key')
 app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(hours=1)
 db.init_app(app)
 password_pattern = re.compile(r'(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[$%@!*.!?])[A-Za-z\d$%@!*.!?]{8,}')
+email_pattern = re.compile(r'[\w-]+(\.[w-]+)*@([\w-]+\.)+[a-zA-Z]{2,}')
 migrate = Migrate(app,db)
 jwt = JWTManager(app)
 jwt.init_app(app)
@@ -45,6 +46,10 @@ class Signup(Resource):
         if not password_pattern.match (password):
             response = make_response({'error':'Password must meet the required criteria'},401)
             return response
+        if not email_pattern.match(email):
+            response = make_response({'error':'Invalid email format'},401)
+            return response
+
          
         hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
         
