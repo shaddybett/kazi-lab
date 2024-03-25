@@ -18,7 +18,9 @@ function Dashboard() {
   
   return (
     <div>
-        <p></p>
+      <form onSubmit={handleEntry}>
+
+      </form>
     </div>
   )
 }
