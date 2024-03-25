@@ -11,10 +11,15 @@ function Dashboard() {
           }
         })
         if (response.ok){
-          
+          const responseData = await response.json()
+
         }
       }
+      catch(error){
+      
+      }
     }
+
   },[])
   return (
     <div>Dashboard</div>
