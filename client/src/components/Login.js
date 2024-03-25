@@ -24,7 +24,7 @@ function Login() {
                 navigate('/dashboard')
             }else{
                 const errorMessage = await response.json()
-                setError(errorMessage)
+                setError(errorMessage.error)
             }
         } 
         catch (error){
