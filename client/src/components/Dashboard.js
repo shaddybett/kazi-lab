@@ -10,6 +10,10 @@ function Dashboard() {
           'Content-Type':'application/json'
         }
       })
+      if (response.ok){
+        const data = await response.json()
+
+      }
     }catch (error){
       setError('An error occurred.Please try again later')
     }
@@ -17,9 +21,7 @@ function Dashboard() {
   
   return (
     <div>
-      <form onSubmit={handleEntry}>
-
-      </form>
+      <p>Hello {data.first_name} welcome</p>
     </div>
   )
 }
