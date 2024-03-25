@@ -1,7 +1,7 @@
 import React,{useState,useEffect} from 'react'
 
 function Dashboard() {
-  const [data,setData] = useState('')
+  const [data,setData] = useState([])
   const [error,setError] = useState('')
 
 
@@ -20,7 +20,7 @@ function Dashboard() {
         }
         else{
           const errorMessage = await response.json()
-          setError(errorMessage)
+          setError(errorMessage.error || 'An error occurred')
         }
       }
       catch(error){
