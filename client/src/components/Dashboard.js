@@ -11,6 +11,8 @@ function Dashboard() {
         },
         body:JSON.stringify
       })
+    }catch (error){
+      setError('An error occurred.Please try again later')
     }
   }
   
