@@ -1,28 +1,20 @@
-import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import React,{useState,useEffect} from 'react'
 
 function Dashboard() {
-  const handleEntry= async (e)=>{
-    try{
-      const response = await fetch('/dashboard',{
-        method:'GET',
-        headers:{
-          'Content-Type':'application/json'
-        }
-      })
-      if (response.ok){
-        const data = await response.json()
-
+  useEffect(()=>{
+    const fetchData = async ()=>{
+      try {
+        const response = await fetch('/dashboard',{
+          method:'GET',
+          headers:{
+            
+          }
+        })
       }
-    }catch (error){
-      setError('An error occurred.Please try again later')
     }
-  }
-  
+  },[])
   return (
-    <div>
-      <p>Hello {data.first_name} welcome</p>
-    </div>
+    <div>Dashboard</div>
   )
 }
 
