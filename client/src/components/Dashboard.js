@@ -24,13 +24,18 @@ function Dashboard() {
         }
       }
       catch(error){
-      
+      setError('Invalid email or password')
       }
     }
 
   },[])
   return (
-    <div>Dashboard</div>
+    <div>
+      {data && (
+        <p>Hello {data.first_name}</p>
+      )}
+      {error && <p>{error}</p>}
+    </div>
   )
 }
 
