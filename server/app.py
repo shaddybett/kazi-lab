@@ -96,13 +96,7 @@ class Login(Resource):
 class Dashboard(Resource):
     @jwt_required()
     def get(self):
-        user = get_jwt_identity
-        if user:
-            response = make_response({'first_name':'user.first_name','last_name':'user.last_name'})
-            return response
-        else:
-            response = make_response({'error':'Denied entry'},401)
-            return response
+        current_user = get_jwt_identity
 api.add_resource(Signup,'/signup')
 api.add_resource(Login,'/login')
 api.add_resource(Dashboard,'/dashboard')
