@@ -74,23 +74,23 @@ login_parse.add_argument('password',type=str,required=True,help='Password is req
 
 class Login(Resource):
     def post(self):
-        args = login_parse.parse_args()
-        email = args['email']
+        args= login_parse.parse_args()
+        email =  args['email']
         password = args['password']
         if email =='' or password=='':
             response = make_response({'error':'Fill in all forms'},401)
             return response
-        existing = User.query.filter_by(email=email).first()
-        hashed_password = existing.password
-        if not existing:
-            response = make_response({'error':'Invalid Email or password'},401)
+        existing_user = User.query.filter_by(email=email).first()
+        if not existing_user:
+            response = make_response({'error':'Invalid email or password'},401)
             return response
-        if bcrypt.check_password_hash(hashed_password,password):
-            response = make_response({'message':'Login successful'},200)
+        hashed_password = existing_user.password
+        if existing_user and bcrypt.check_password_hash(hashed_password,password):
+            access_token=create_access_token(identity=email)
+            response = make_response({'message':'Login successful','access_token':access_token},200)
             return response
         response = make_response({'error':'Invalid email or password'},401)
         return response
-        
         
 api.add_resource(Signup,'/signup')
 api.add_resource(Login,'/login')
