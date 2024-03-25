@@ -96,13 +96,13 @@ class Login(Resource):
 class Dashboard(Resource):
     @jwt_required()
     def get(self):
-        current_user = get_jwt_identity
+        current_user = get_jwt_identity()
         user = User.query.filter_by(email=current_user).first()
         if user:
             response = make_response({'first_name':user.first_name,'last_name':user.last_name,'email':user.email})
             return response
         else:
-            response = make_response({'error':'Error fetching user details'},401)
+            response = make_response({'error':'Error fetching user details'},404)
             return response
 api.add_resource(Signup,'/signup')
 api.add_resource(Login,'/login')
