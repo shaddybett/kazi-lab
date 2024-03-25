@@ -44,9 +44,6 @@ function Dashboard() {
         <p>Hello {data.first_name} {data.last_name}, welcome!</p>
       )}
       {error && <p>{error}</p>}
-      <Link to='/home'>
-      Home
-      </Link>
       
     </div>
   )
