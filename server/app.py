@@ -97,6 +97,9 @@ class Dashboard(Resource):
     @jwt_required()
     def get(self):
         current_user = get_jwt_identity
+        user = User.query.filter_by(email=current_user).first()
+        if user:
+            
 api.add_resource(Signup,'/signup')
 api.add_resource(Login,'/login')
 api.add_resource(Dashboard,'/dashboard')
