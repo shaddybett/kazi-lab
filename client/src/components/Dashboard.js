@@ -16,11 +16,11 @@ function Dashboard() {
         })
         if (response.ok){
           const responseData = await response.json()
-
+          setData(responseData)
         }
         else{
           const errorMessage = await response.json()
-          
+          setError(errorMessage)
         }
       }
       catch(error){
