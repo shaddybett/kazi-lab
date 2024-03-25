@@ -7,7 +7,7 @@ function Dashboard() {
         const response = await fetch('/dashboard',{
           method:'GET',
           headers:{
-            
+            'Content-Type':'application/json'
           }
         })
       }
