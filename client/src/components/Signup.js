@@ -36,8 +36,8 @@ function Signup() {
       <form onSubmit={handleSignup}>
         <input type='text' placeholder='Enter your first name' value={firstName} onChange={(e)=>setFirstName(e.target.value)}/>
         <input type='text' placeholder='Enter your last name' value={lastName} onChange={(e)=>setLastName(e.target.value)}/>
-        <input type='email' placeholder='Enter your email'/>
-        <input type='password' placeholder='Enter your password'/>
+        <input type='email' placeholder='Enter your email' value={email} onChange={(e)=>setEmail(e.target.value)}/>
+        <input type='password' placeholder='Enter your password' value={password} onChange={(e)=>setPassword(e.target.value)}/>
         <button type='submit'>Submit</button>
         {error && <p>{error}</p>}
       </form>
