@@ -4,7 +4,7 @@ function Dashboard() {
   const [data,setData] = useState('')
   const [error,setError] = useState('')
 
-  
+
   useEffect(()=>{
     const fetchData = async ()=>{
       try {
@@ -17,6 +17,10 @@ function Dashboard() {
         if (response.ok){
           const responseData = await response.json()
 
+        }
+        else{
+          const errorMessage = await response.json()
+          
         }
       }
       catch(error){
