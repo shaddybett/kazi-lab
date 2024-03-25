@@ -30,9 +30,12 @@ function Login() {
   return (
     <div>
         <form onSubmit={handleLogin}>
-            
-
+            <input type='email' value={email} placeholder='Enter your email' onChange={(e)=>setEmail(e.target.value)}/>
+            <input type='password' value={password} placeholder='*********' onChange={(e)=>setPassword(e.target.value)}/>
+            <button type='submit'>Submit</button>
+            {error && <p>{error}</p>}
         </form>
+        <p>Don't have an account? <Link to='/signup'>Signup</Link> </p>
     </div>
   )
 }
