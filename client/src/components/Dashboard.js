@@ -27,6 +27,7 @@ function Dashboard() {
       setError('Invalid email or password')
       }
     }
+    fetchData();
 
   },[])
   return (
