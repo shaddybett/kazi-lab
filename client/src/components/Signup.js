@@ -4,8 +4,8 @@ import {Link,useNavigate} from 'react-router-dom'
 function Signup() {
   const [email,setEmail] = useState('')
   const [password,setPassword] = useState('')
-  const [firstName,setFirstName] = useState('')
-  const [lastName,setLastName] = useState('')
+  const [first_name,setFirstName] = useState('')
+  const [last_name,setLastName] = useState('')
   const [error,setError] = useState('')
   const navigate = useNavigate()
   const handleSignup = async(e)=>{
@@ -16,7 +16,7 @@ function Signup() {
         headers:{
           'Content-Type':'application/json'
         },
-        body:JSON.stringify({firstName,lastName,email,password})
+        body:JSON.stringify({first_name,last_name,email,password})
       })
       if (response.ok){
         navigate('/login')
@@ -34,8 +34,8 @@ function Signup() {
   return (
     <div>
       <form onSubmit={handleSignup}>
-        <input type='text' placeholder='Enter your first name' value={firstName} onChange={(e)=>setFirstName(e.target.value)}/>
-        <input type='text' placeholder='Enter your last name' value={lastName} onChange={(e)=>setLastName(e.target.value)}/>
+        <input type='text' placeholder='Enter your first name' value={first_name} onChange={(e)=>setFirstName(e.target.value)}/>
+        <input type='text' placeholder='Enter your last name' value={last_name} onChange={(e)=>setLastName(e.target.value)}/>
         <input type='email' placeholder='Enter your email' value={email} onChange={(e)=>setEmail(e.target.value)}/>
         <input type='password' placeholder='Enter your password' value={password} onChange={(e)=>setPassword(e.target.value)}/>
         <button type='submit'>Submit</button>

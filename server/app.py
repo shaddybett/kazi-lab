@@ -5,7 +5,7 @@ from flask_bcrypt import Bcrypt
 import re
 from flask_cors import CORS
 from flask_migrate import Migrate
-from flask_jwt_extended import JWTManager,create_access_token
+from flask_jwt_extended import JWTManager,create_access_token,jwt_required,get_jwt_identity
 from datetime import timedelta
 import os
 
@@ -39,7 +39,9 @@ class Signup(Resource):
         args = signup_parser.parse_args()
         email = args['email']
         password = args['password']
-        if email == '' or password =='':
+        first_name = args['first_name']
+        last_name = args['last_name']
+        if email == '' or password =='' or first_name=='' or last_name=='':
             response = make_response({'error':'Fill in all forms'},401)
             return response
         existing_user = User.query.filter_by(email=email).first()
@@ -91,9 +93,19 @@ class Login(Resource):
             return response
         response = make_response({'error':'Invalid email or password'},401)
         return response
-        
+class Dashboard(Resource):
+    @jwt_required()
+    def get(self):
+        user = get_jwt_identity
+        if user:
+            response = make_response({'first_name':'user.first_name','last_name':'user.last_name'})
+            return response
+        else:
+            response = make_response({'error':'Denied entry'},401)
+            return response
 api.add_resource(Signup,'/signup')
 api.add_resource(Login,'/login')
+api.add_resource(Dashboard,'/dashboard')
 
 if __name__=='__main__':
     app.run(debug=True,port=4000)
