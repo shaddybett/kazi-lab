@@ -52,9 +52,9 @@ function Signup() {
     <div>
       <form onSubmit={handleSignup}>
         <div className="flex items-center gap-2">
-          <Checkbox id="clientCheckbox" value="Client" onChange={handleRoleChange} disabled={selectedRole === 'Service Provider'} />
+          <Checkbox id="clientCheckbox" value="Client" onChange={handleRoleChange} checked={selectedRole === 'Client'} />
           <Label htmlFor="client">Client</Label>
-          <Checkbox id="providerCheckbox" value="Service Provider" onChange={handleRoleChange} disabled={selectedRole==='Client'} />
+          <Checkbox id="providerCheckbox" value="Service Provider" onChange={handleRoleChange} checked={selectedRole==='Service Provider'} />
           <Label htmlFor="provider" >Service Provider</Label>
         </div>
         <input type='text' placeholder='Enter your first name' value={first_name} onChange={(e)=>setFirstName(e.target.value)}/>
