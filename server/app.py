@@ -103,7 +103,7 @@ class Dashboard(Resource):
         current_user = get_jwt_identity()
         user = User.query.filter_by(email=current_user).first()
         if user:
-            response = make_response({'first_name':user.first_name,'last_name':user.last_name,'email':user.email})
+            response = make_response({'first_name':user.first_name,'last_name':user.last_name,'email':user.email,'role_id':user.role_id})
             return response
         else:
             response = make_response({'error':'Error fetching user details'},404)
