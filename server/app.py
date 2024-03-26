@@ -42,7 +42,7 @@ class Signup(Resource):
         first_name = args['first_name']
         last_name = args['last_name']
         role_id = args['role']
-        if email == '' or password =='' or first_name=='' or last_name=='':
+        if not all([email,password,first_name,last_name,role_id]):
             response = make_response({'error':'Fill in all forms'},401)
             return response
         existing_user = User.query.filter_by(email=email).first()
