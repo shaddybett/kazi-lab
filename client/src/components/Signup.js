@@ -9,6 +9,7 @@ function Signup() {
   const [first_name,setFirstName] = useState('')
   const [last_name,setLastName] = useState('')
   const [error,setError] = useState('')
+  const [role,setRole] = useState('')
   const navigate = useNavigate()
   const handleSignup = async(e)=>{
     e.preventDefault()
@@ -42,7 +43,6 @@ function Signup() {
           <Checkbox id="promotion" />
           <Label htmlFor="promotion">Service Provider</Label>
         </div>
-
         <input type='text' placeholder='Enter your first name' value={first_name} onChange={(e)=>setFirstName(e.target.value)}/>
         <input type='text' placeholder='Enter your last name' value={last_name} onChange={(e)=>setLastName(e.target.value)}/>
         <input type='email' placeholder='Enter your email' value={email} onChange={(e)=>setEmail(e.target.value)}/>
