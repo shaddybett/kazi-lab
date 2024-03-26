@@ -66,7 +66,8 @@ class Signup(Resource):
                 first_name = args['first_name'],
                 last_name = args['last_name'],
                 email = email,
-                password = hashed_password
+                password = hashed_password,
+                role_id=role_id
             )   
             db.session.add(newUser)
             db.session.commit()
