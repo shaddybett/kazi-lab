@@ -8,7 +8,7 @@ class User(db.Model):
     first_name = db.Column(db.String(100),nullable=False)
     middle_name = db.Column(db.String(100),nullable=True)
     last_name = db.Column(db.String(100),nullable=False)
-    national_id = db.Column(db.Integer,nullable=False,unique=True)
+    national_id = db.Column(db.Integer,nullable=True,unique=True)
     phone_number = db.Column(db.Integer,nullable=True,unique=True)
     email = db.Column(db.String(100),nullable=False,unique=True)
     password = db.Column(db.String(255),nullable=False)
