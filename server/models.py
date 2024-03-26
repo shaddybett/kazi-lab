@@ -21,7 +21,7 @@ class Service(db.Model):
     service_name = db.Column(db.String,nullable=False)
     provider_id = db.Column(db.Integer,db.ForeignKey('users.id'))
     
-     = db.relationship('')
+    provider = db.relationship('User', backref=db.backref('services', lazy=True))
 
 class Role(db.Model):
     __tablename__='roles'    
