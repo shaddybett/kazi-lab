@@ -41,6 +41,7 @@ class Signup(Resource):
         password = args['password']
         first_name = args['first_name']
         last_name = args['last_name']
+        role_id = args['role']
         if email == '' or password =='' or first_name=='' or last_name=='':
             response = make_response({'error':'Fill in all forms'},401)
             return response
