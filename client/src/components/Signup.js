@@ -39,7 +39,10 @@ function Signup() {
         <div className="flex items-center gap-2">
           <Checkbox id="promotion" />
           <Label htmlFor="promotion">Client</Label>
+          <Checkbox id="promotion" />
+          <Label htmlFor="promotion">Service Provider</Label>
         </div>
+
         <input type='text' placeholder='Enter your first name' value={first_name} onChange={(e)=>setFirstName(e.target.value)}/>
         <input type='text' placeholder='Enter your last name' value={last_name} onChange={(e)=>setLastName(e.target.value)}/>
         <input type='email' placeholder='Enter your email' value={email} onChange={(e)=>setEmail(e.target.value)}/>
