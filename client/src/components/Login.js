@@ -1,10 +1,11 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {Link,useNavigate} from 'react-router-dom'
 
 function Login() {
     const [email,setEmail] = useState('')
     const [password,setPassword] = useState('')
     const [error,setError] = useState('')
+    const [data,setData] = useState([])
 
     const navigate = useNavigate()
 
@@ -31,6 +32,7 @@ function Login() {
             setError('An error occurred.Please try again later')
         }
     }
+    useEffect
   return (
     <div>
         <form onSubmit={handleLogin}>
