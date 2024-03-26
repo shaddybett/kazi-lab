@@ -64,7 +64,10 @@ function Login() {
         fetchData();
     },[])
     if (data.role_id === 2){
-        navigate()
+        navigate('/clientPage')
+    }
+    else{
+        navigate('/providerPage')
     }
   return (
     <div>
