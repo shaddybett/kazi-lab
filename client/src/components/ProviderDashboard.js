@@ -1,11 +1,13 @@
-import React from 'react'
+import React from "react";
+
 
 function ProviderDashboard() {
   return (
     <div>
-        <p> Hello Provider</p>
+      <p> Hello Provider</p>
+
     </div>
-  )
+  );
 }
 
-export default ProviderDashboard
+export default ProviderDashboard;
