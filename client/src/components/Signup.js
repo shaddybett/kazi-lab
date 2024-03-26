@@ -1,5 +1,7 @@
 import React,{useState} from 'react'
 import {Link,useNavigate} from 'react-router-dom'
+import { Label, Checkbox } from "flowbite-react";
+
 
 function Signup() {
   const [email,setEmail] = useState('')
@@ -34,12 +36,17 @@ function Signup() {
   return (
     <div>
       <form onSubmit={handleSignup}>
+        <div className="flex items-center gap-2">
+          <Checkbox id="promotion" />
+          <Label htmlFor="promotion">Client</Label>
+        </div>
         <input type='text' placeholder='Enter your first name' value={first_name} onChange={(e)=>setFirstName(e.target.value)}/>
         <input type='text' placeholder='Enter your last name' value={last_name} onChange={(e)=>setLastName(e.target.value)}/>
         <input type='email' placeholder='Enter your email' value={email} onChange={(e)=>setEmail(e.target.value)}/>
         <input type='password' placeholder='Enter your password' value={password} onChange={(e)=>setPassword(e.target.value)}/>
         <button type='submit'>Submit</button>
         {error && <p>{error}</p>}
+
       </form>
       <p>Have an account? <Link to='/login'>Login</Link></p>
     </div>
