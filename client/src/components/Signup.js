@@ -9,7 +9,7 @@ function Signup() {
   const [first_name,setFirstName] = useState('')
   const [last_name,setLastName] = useState('')
   const [error,setError] = useState('')
-  const [role,setRole] = useState('')
+  const [selectedRole,setSelectedRole] = useState('')
   const navigate = useNavigate()
   const handleSignup = async(e)=>{
     e.preventDefault()
@@ -19,7 +19,7 @@ function Signup() {
         headers:{
           'Content-Type':'application/json'
         },
-        body:JSON.stringify({first_name,last_name,email,password})
+        body:JSON.stringify({first_name,last_name,email,password,selectedRole})
       })
       if (response.ok){
         navigate('/login')
@@ -39,9 +39,9 @@ function Signup() {
       <form onSubmit={handleSignup}>
         <div className="flex items-center gap-2">
           <Checkbox id="promotion" />
-          <Label htmlFor="promotion">Client</Label>
+          <Label htmlFor="promotion" onChange={(e)=>setSelectedRole(e.target.value)}>Client</Label>
           <Checkbox id="promotion" />
-          <Label htmlFor="promotion">Service Provider</Label>
+          <Label htmlFor="promotion" onChange={(e)=>setSelectedRole(e.target.value)}>Service Provider</Label>
         </div>
         <input type='text' placeholder='Enter your first name' value={first_name} onChange={(e)=>setFirstName(e.target.value)}/>
         <input type='text' placeholder='Enter your last name' value={last_name} onChange={(e)=>setLastName(e.target.value)}/>
