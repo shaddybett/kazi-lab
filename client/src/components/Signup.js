@@ -14,6 +14,18 @@ function Signup() {
   const handleRoleChange = (e)=> {
     setSelectedRole(e.target.value);
   }
+  const mapRoleToId = (role) => {
+    switch (role) {
+      case 'Client':
+        return 3;
+      case 'Service Provider':
+        return 2;
+      default:
+        return null;  
+
+    }
+  }
+
   const handleSignup = async(e)=>{
     e.preventDefault()
     try {
@@ -23,7 +35,7 @@ function Signup() {
           'Content-Type':'application/json'
         },
         body:JSON.stringify({first_name,last_name,email,password,selectedRole: mapRoleToId(selectedRole)})
-      })
+      });
       if (response.ok){
         navigate('/login')
       }
@@ -34,17 +46,6 @@ function Signup() {
     }
     catch{
       setError('An error occurred please try again later!')
-    }
-    const mapRoleToId = (role) => {
-      switch (role) {
-        case 'Client':
-          return 3;
-        case 'Service Provider':
-          return 2;
-        default:
-          return null;  
-
-      }
     }
 
   }

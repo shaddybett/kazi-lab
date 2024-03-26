@@ -32,6 +32,8 @@ signup_parser.add_argument('first_name', type = str, required=True, help='First 
 signup_parser.add_argument('last_name',type=str,required=True,help='Last name is required')
 signup_parser.add_argument('email',type=str,required=True,help='Email is required')
 signup_parser.add_argument('password',type=str,required=True,help='Password is required')
+signup_parser.add_argument('selectedRole',type=int,required=True,help='Role is required')
+
 
 
 class Signup(Resource):
@@ -41,7 +43,7 @@ class Signup(Resource):
         password = args['password']
         first_name = args['first_name']
         last_name = args['last_name']
-        role_id = args['role']
+        role_id = args['selectedRole']
         if not all([email,password,first_name,last_name,role_id]):
             response = make_response({'error':'Fill in all forms'},401)
             return response
