@@ -11,6 +11,9 @@ function Signup() {
   const [error,setError] = useState('')
   const [selectedRole,setSelectedRole] = useState('')
   const navigate = useNavigate()
+  const handleRoleChange = (e)=> {
+    setSelectedRole(e.target.value);
+  }
   const handleSignup = async(e)=>{
     e.preventDefault()
     try {
@@ -19,7 +22,7 @@ function Signup() {
         headers:{
           'Content-Type':'application/json'
         },
-        body:JSON.stringify({first_name,last_name,email,password,selectedRole})
+        body:JSON.stringify({first_name,last_name,email,password,selectedRole: mapRoleToId(selectedRole)})
       })
       if (response.ok){
         navigate('/login')
@@ -32,16 +35,27 @@ function Signup() {
     catch{
       setError('An error occurred please try again later!')
     }
+    const mapRoleToId = (role) => {
+      switch (role) {
+        case 'Client':
+          return 3;
+        case 'Service Provider':
+          return 2;
+        default:
+          return null;  
+
+      }
+    }
 
   }
   return (
     <div>
       <form onSubmit={handleSignup}>
         <div className="flex items-center gap-2">
-          <Checkbox id="promotion" />
-          <Label htmlFor="promotion" onChange={(e)=>setSelectedRole(e.target.value)}>Client</Label>
-          <Checkbox id="promotion" />
-          <Label htmlFor="promotion" onChange={(e)=>setSelectedRole(e.target.value)}>Service Provider</Label>
+          <Checkbox id="clientCheckbox" value="Client" onChange={handleRoleChange} disabled={selectedRole === 'Service Provider'} />
+          <Label htmlFor="client">Client</Label>
+          <Checkbox id="providerCheckbox" value="Service Provider" onChange={handleRoleChange} disabled={selectedRole==='Client'} />
+          <Label htmlFor="provider" >Service Provider</Label>
         </div>
         <input type='text' placeholder='Enter your first name' value={first_name} onChange={(e)=>setFirstName(e.target.value)}/>
         <input type='text' placeholder='Enter your last name' value={last_name} onChange={(e)=>setLastName(e.target.value)}/>
