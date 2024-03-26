@@ -9,6 +9,7 @@ function Landing() {
       <Button>
         login
       </Button>
+      
       </Link>
       <p>Don't have an account? <Link to='/signup'>Signup</Link></p>
     </div>
