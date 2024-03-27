@@ -109,6 +109,8 @@ class Dashboard(Resource):
         else:
             response = make_response({'error':'Error fetching user details'},404)
             return response
+
+        
 api.add_resource(Signup,'/signup')
 api.add_resource(Login,'/login')
 api.add_resource(Dashboard,'/dashboard')

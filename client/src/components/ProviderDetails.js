@@ -61,17 +61,15 @@ const handleForm = async()=>{
     } 
 }
     
-    
-
   return (
     <div>
         <h3>Hello {data.first_name} Complete your signup by filling the form below</h3>
         <form onSubmit={handleForm}>
             <input type='text' value={phoneNumber} placeholder='0712345678' onChange={(e)=>setPhoneNumber(e.target.value)}/>
             <input type='text' value={nationalId} placeholder='Enter your I.d number' onChange={(e)=>setPhoneNumber(e.target.value)}/>
-            <input type='text' value={service} placeholder='' onChange={(e)=>setService(e.target.value)}/>
-            <input type='text' value={location} placeholder='0712345678' onChange={(e)=>setLocation(e.target.value)}/>
-            <Dropdown label="Dropdown" inline>
+            <input type='text' value={service} placeholder='Additional services' onChange={(e)=>setService(e.target.value)}/>
+            <input type='text' value={location} placeholder='Enter your location' onChange={(e)=>setLocation(e.target.value)}/>
+            <Dropdown label="Services" inline>
                 <Dropdown.Item>Laundry</Dropdown.Item>
                 <Dropdown.Item>BodaBoda</Dropdown.Item>
                 <Dropdown.Item>Transport</Dropdown.Item>
