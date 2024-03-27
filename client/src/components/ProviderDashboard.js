@@ -38,7 +38,7 @@ function ProviderDashboard() {
       {data && (
         <p>Hello {data.first_name} {data.last_name} welcome, you are a service provider right?</p>
       )}
-      {error && }
+      {error && <p>{error}</p> }
 
     </div>
   );
