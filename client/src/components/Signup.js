@@ -11,7 +11,7 @@ function Signup() {
   const [error,setError] = useState('')
   const [selectedRole,setSelectedRole] = useState('')
   const navigate = useNavigate()
-  const [showPassword,setShowPassword] = usestate(False)
+  const [showPassword,setShowPassword] = useState(False)
 
 
   const handleRoleChange = (e)=> {
