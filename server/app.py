@@ -126,6 +126,8 @@ class Service(Resource):
             provider_id = provider_id
 
         )
+        db.session.add(newService)
+        db.session.commit()
 
 
 api.add_resource(Signup,'/signup')
