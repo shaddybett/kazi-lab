@@ -23,7 +23,7 @@ function Login() {
         localStorage.setItem("token", data.access_token);
 
         if (data.role_id === 2) {
-          console.log("Redirecting to clientPage");
+          console.log(data.role_id);
           navigate("/providerPage");
         } else {
           console.log("Redirecting to providerPage");
