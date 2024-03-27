@@ -129,7 +129,6 @@ class Service(Resource):
         db.session.add(newService)
         db.session.commit()
 
-
 api.add_resource(Signup,'/signup')
 api.add_resource(Login,'/login')
 api.add_resource(Dashboard,'/dashboard')
