@@ -6,6 +6,7 @@ import { Routes,Route } from 'react-router-dom'
 import Dashboard from './components/Dashboard'
 import ClientDashboard from './components/ClientDashboard'
 import ProviderDashboard from './components/ProviderDashboard'
+import Profile from './components/Profile'
 
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
       <Route path='/dashboard' element={<Dashboard/>}/>
       <Route path='/clientPage' element={<ClientDashboard/>}/>
       <Route path='/providerPage' element={<ProviderDashboard/>}/>
+      <Route path='/profile' element={<Profile/>}/>
      
     </Routes>
   )

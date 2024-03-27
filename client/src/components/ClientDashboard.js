@@ -1,9 +1,18 @@
 import React from "react";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { Avatar, Dropdown, Navbar } from "flowbite-react";
 
 function ClientDashboard() {
   const [data, setData] = useState("");
   const [error, setError] = useState("");
+
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    navigate("/login");
+  };
   useEffect(() => {
     const handleEntry = async () => {
       const token = localStorage.getItem("token");
@@ -33,12 +42,41 @@ function ClientDashboard() {
   }, []);
   return (
     <div>
-      {data && (
-        <p>
-          Hello {data.first_name} {data.last_name}, welcome
-          You are a client right?
-        </p>
-      )}
+      <Navbar fluid rounded className="bg-black ">
+        <div className="flex md:order-2">
+          <Dropdown
+            arrowIcon={false}
+            inline
+            label={
+              <Avatar
+                alt="User settings"
+                img="https://flowbite.com/docs/images/people/profile-picture-5.jpg"
+                rounded
+              />
+            }
+          >
+            <Dropdown.Header>
+              <span className="block text-sm">
+                {data.first_name} {data.last_name}
+              </span>
+              <span className="block truncate text-sm font-medium">
+                {data.email}
+              </span>
+            </Dropdown.Header>
+            <Dropdown.Item>Profile</Dropdown.Item>
+            <Dropdown.Divider />
+            <Dropdown.Item onClick={handleLogout}>Logout</Dropdown.Item>
+          </Dropdown>
+          <Navbar.Toggle />
+        </div>
+        <Navbar.Collapse>
+          <Navbar.Link href="#" active></Navbar.Link>
+          <Navbar.Link href="#"></Navbar.Link>
+          <Navbar.Link href="#"></Navbar.Link>
+          <Navbar.Link href="#"></Navbar.Link>
+          <Navbar.Link href="#"></Navbar.Link>
+        </Navbar.Collapse>
+      </Navbar>
       {error && <p>{error}</p>}
     </div>
   );
