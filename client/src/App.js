@@ -7,6 +7,7 @@ import Dashboard from './components/Dashboard'
 import ClientDashboard from './components/ClientDashboard'
 import ProviderDashboard from './components/ProviderDashboard'
 import Profile from './components/Profile'
+import ProviderDetails from './components/ProviderDetails'
 
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
       <Route path='/clientPage' element={<ClientDashboard/>}/>
       <Route path='/providerPage' element={<ProviderDashboard/>}/>
       <Route path='/profile' element={<Profile/>}/>
+      <Route path='/provider-details' element={<ProviderDetails/>}/>
      
     </Routes>
   )
