@@ -93,7 +93,8 @@ class Login(Resource):
         hashed_password = existing_user.password
         if existing_user and bcrypt.check_password_hash(hashed_password,password):
             access_token=create_access_token(identity=email)
-            response = make_response({'message':'Login successful','access_token':access_token},200)
+            role_id = existing_user.role_id
+            response = make_response({'message':'Login successful','access_token':access_token,'role_id':role_id},200)
             return response
         response = make_response({'error':'Invalid email or password'},401)
         return response
