@@ -38,6 +38,11 @@ function Login() {
     } catch (error) {
       setError("An error occurred.Please try again later");
     }
+    if (rememberMe){
+      localStorage.setItem('token')
+      localStorage.setItem('email')
+      localStorage.setItem('password')
+    }
   };
 
   return (
