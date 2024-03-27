@@ -1,7 +1,7 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { Avatar, Dropdown, Navbar } from "flowbite-react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function ProviderDashboard() {
   const [data, setData] = useState("");
