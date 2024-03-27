@@ -7,6 +7,7 @@ function Login() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [showPassword,setShowPassword] = useState(false)
+  const [rememberMe,setRememberMe] = useState(false)
 
   const navigate = useNavigate();
 
