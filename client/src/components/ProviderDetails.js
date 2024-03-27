@@ -4,7 +4,11 @@ import React,{useEffect, useState} from 'react'
 function ProviderDetails() {
     const [data,setData] = useState([])
     const [error,setError] = useState('')
-    const []
+    const [phoneNumber,setPhoneNumber] = useState('')
+    const [nationalId,setNationalId] = useState('')
+    const [image,setImage] = useState('')
+    const [service,setService] = useState('')
+    
 
 useEffect(()=>{
     const handleEntry = async()=>{
