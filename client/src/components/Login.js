@@ -30,13 +30,7 @@ function Login() {
     }
 
   };
-  if (data.role_id === 2) {
-    console.log(data.role_id);
-    navigate("/clientPage");
-  } else {
-    console.log("Redirecting to providerPage");
-    navigate("/providerPage");
-  }
+
 
   return (
     <div>
