@@ -20,7 +20,7 @@ function ClientDashboard() {
         });
         if (response.ok) {
           const responseData = await response.json();
-          setError(responseData);
+          setData(responseData);
         } else {
           const errorMessage = await response.json();
           setError(errorMessage.error || "An error occurred");
