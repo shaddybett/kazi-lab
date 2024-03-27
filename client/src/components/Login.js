@@ -22,12 +22,12 @@ function Login() {
         const data = await response.json();
         localStorage.setItem("token", data.access_token);
         if (data.role_id === 2) {
-            console.log(data.role_id);
-            navigate("/clientPage");
-          } else {
-            console.log("Redirecting to providerPage");
-            navigate("/providerPage");
-          }
+          console.log(data.role_id);
+          navigate("/providerPage");
+        } else {
+          console.log("Redirecting to providerPage");
+          navigate("/clientPage");
+        }
       } else {
         const errorMessage = await response.json();
         setError(errorMessage.error);
@@ -35,9 +35,7 @@ function Login() {
     } catch (error) {
       setError("An error occurred.Please try again later");
     }
-
   };
-
 
   return (
     <div>
