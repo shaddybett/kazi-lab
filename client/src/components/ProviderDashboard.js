@@ -35,7 +35,10 @@ function ProviderDashboard() {
   return (
 
     <div>
-      <p> Hello Provider</p>
+      {data && (
+        <p>Hello {data.first_name} {data.last_name} welcome, you are a service provider right?</p>
+      )}
+      {error && }
 
     </div>
   );
