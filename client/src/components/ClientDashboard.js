@@ -18,7 +18,10 @@ function ClientDashboard() {
         });if (response.ok){
           setData(response)
         }
-        else{}
+        else{
+          const errorMessage = await response.json()
+          
+        }
       }
       catch (error){
 
