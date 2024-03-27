@@ -39,9 +39,14 @@ function Login() {
       setError("An error occurred.Please try again later");
     }
     if (rememberMe){
-      localStorage.setItem('token')
-      localStorage.setItem('email')
-      localStorage.setItem('password')
+      localStorage.setItem('rememberMe', 'true');
+      localStorage.setItem('email','email');
+      localStorage.setItem('password','password');
+    }
+    else{
+      localStorage.removeItem('rememberMe')
+      localStorage.removeItem('email')
+      localStorage.removeItem('password')
     }
   };
 
@@ -65,7 +70,10 @@ function Login() {
         </label>
         <Button type="submit">Submit</Button>
         {error && <p>{error}</p>}
-
+        <label>
+          <input type="checkbox" checked={rememberMe} onChange={()=>setRememberMe(!rememberMe)}/>
+          Remember me
+        </label>
       </form>
       <p>
         Don't have an account? <Link to="/signup">Signup</Link>{" "}
