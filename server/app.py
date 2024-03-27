@@ -32,6 +32,8 @@ signup_parser.add_argument('first_name', type = str, required=True, help='First 
 signup_parser.add_argument('last_name',type=str,required=True,help='Last name is required')
 signup_parser.add_argument('email',type=str,required=True,help='Email is required')
 signup_parser.add_argument('password',type=str,required=True,help='Password is required')
+signup_parser.add_argument('selectedRole',type=int,required=True,help='Role is required')
+
 
 
 class Signup(Resource):
@@ -41,7 +43,8 @@ class Signup(Resource):
         password = args['password']
         first_name = args['first_name']
         last_name = args['last_name']
-        if email == '' or password =='' or first_name=='' or last_name=='':
+        role_id = args['selectedRole']
+        if not all([email,password,first_name,last_name,role_id]):
             response = make_response({'error':'Fill in all forms'},401)
             return response
         existing_user = User.query.filter_by(email=email).first()
@@ -56,14 +59,15 @@ class Signup(Resource):
         hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
         
         if existing_user:
-            response = make_response({'error':'User already exists'},401)
+            response = make_response({'error':'Email already exists'},401)
             return response
         else:
             newUser = User (
                 first_name = args['first_name'],
                 last_name = args['last_name'],
                 email = email,
-                password = hashed_password
+                password = hashed_password,
+                role_id=role_id
             )   
             db.session.add(newUser)
             db.session.commit()
@@ -89,7 +93,8 @@ class Login(Resource):
         hashed_password = existing_user.password
         if existing_user and bcrypt.check_password_hash(hashed_password,password):
             access_token=create_access_token(identity=email)
-            response = make_response({'message':'Login successful','access_token':access_token},200)
+            role_id = existing_user.role_id
+            response = make_response({'message':'Login successful','access_token':access_token,'role_id':role_id},200)
             return response
         response = make_response({'error':'Invalid email or password'},401)
         return response
@@ -99,7 +104,7 @@ class Dashboard(Resource):
         current_user = get_jwt_identity()
         user = User.query.filter_by(email=current_user).first()
         if user:
-            response = make_response({'first_name':user.first_name,'last_name':user.last_name,'email':user.email})
+            response = make_response({'first_name':user.first_name,'last_name':user.last_name,'email':user.email,'role_id':user.role_id})
             return response
         else:
             response = make_response({'error':'Error fetching user details'},404)
