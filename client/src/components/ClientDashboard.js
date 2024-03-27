@@ -20,7 +20,7 @@ function ClientDashboard() {
         }
         else{
           const errorMessage = await response.json()
-          
+          setError(errorMessage)
         }
       }
       catch (error){
