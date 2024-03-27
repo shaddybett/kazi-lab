@@ -32,7 +32,7 @@ function ClientDashboard() {
     handleEntry();
   }, []);
   return (
-    <div >
+    <div>
       {data && (
         <p>
           Hello {data.first_name} {data.last_name}, welcome
