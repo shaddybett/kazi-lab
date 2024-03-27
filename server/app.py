@@ -59,7 +59,7 @@ class Signup(Resource):
         hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
         
         if existing_user:
-            response = make_response({'error':'User already exists'},401)
+            response = make_response({'error':'Email already exists'},401)
             return response
         else:
             newUser = User (
