@@ -4,6 +4,7 @@ import React,{useEffect, useState} from 'react'
 function ProviderDetails() {
     const [data,setData] = useState([])
     const [error,setError] = useState('')
+    const []
 
 useEffect(()=>{
     const handleEntry = async()=>{
@@ -36,6 +37,7 @@ useEffect(()=>{
   return (
     <div>
         <h3>Hello {data.first_name} Complete your signup by filling in the form below</h3>
+        {error && <p>{error}</p>}
     </div>
   )
 }
