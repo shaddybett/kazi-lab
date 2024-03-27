@@ -1,36 +1,46 @@
-import React from 'react'
-import { useEffect } from 'react'
-import { useState } from 'react'
+import React from "react";
+import { useEffect, useState } from "react";
 
 function ClientDashboard() {
-  const [data,setData] = useState('')
-  const [error,setError] = useState('')
-  useEffect(()=>{
-    const handleEntry = async(e)=>{
-      token = localStorage.getItem('token')
-      try{
-        const response = await fetch('/dashboard',{
-          method:'GET',
-          headers:{
-            "Content-Type":"application/json",
-            "Authorization": `Bearer ${token}`
-          }
-        });if (response.ok){
-          setData(response)
+  const [data, setData] = useState("");
+  const [error, setError] = useState("");
+  useEffect(() => {
+    const handleEntry = async () => {
+      const token = localStorage.getItem("token");
+      try {
+        if (!token) {
+          throw new Error("Token not found");
         }
-        else{
-          const errorMessage = await response.json()
-          setError(errorMessage)
+        const response = await fetch("/dashboard", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        if (response.ok) {
+          const responseData = await response.json();
+          setError(responseData);
+        } else {
+          const errorMessage = await response.json();
+          setError(errorMessage.error || "An error occurred");
         }
+      } catch (error) {
+        setError("An error occurred.Please try again later!");
       }
-      catch (error){
-
-      }
-    }
-  },[])
+    };
+    handleEntry();
+  }, []);
   return (
-    <div>Hi client</div>
-  )
+    <div >
+      {data && (
+        <p>
+          Hello {data.first_name} {data.last_name}, welcome
+        </p>
+      )}
+      {error && <p>{error}</p>}
+    </div>
+  );
 }
 
-export default ClientDashboard
+export default ClientDashboard;
