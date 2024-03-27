@@ -110,7 +110,15 @@ class Dashboard(Resource):
             response = make_response({'error':'Error fetching user details'},404)
             return response
 
+service_parser = reqparse.RequestParser()
+service_parser.add_argument('service_name',type=str,required=True,help='Service name is required')
+service_parser.add_argument('provider_id',type=str,required=True,help='Provider id is required')
+class Service(Resource):
+    def post(self):
+        args = service_parser.parse_args()
         
+
+
 api.add_resource(Signup,'/signup')
 api.add_resource(Login,'/login')
 api.add_resource(Dashboard,'/dashboard')
