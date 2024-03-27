@@ -1,6 +1,6 @@
 import React from "react";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate,Link } from "react-router-dom";
 import { Avatar, Dropdown, Navbar } from "flowbite-react";
 
 function ClientDashboard() {
@@ -13,6 +13,9 @@ function ClientDashboard() {
     localStorage.removeItem("token");
     navigate("/login");
   };
+  const handleProfile = ()=>{
+    navigate('/profile')
+  }
   useEffect(() => {
     const handleEntry = async () => {
       const token = localStorage.getItem("token");
@@ -63,7 +66,7 @@ function ClientDashboard() {
                 {data.email}
               </span>
             </Dropdown.Header>
-            <Dropdown.Item>Profile</Dropdown.Item>
+            <Dropdown.Item onClick={handleProfile}>Profile</Dropdown.Item>
             <Dropdown.Divider />
             <Dropdown.Item onClick={handleLogout}>Logout</Dropdown.Item>
           </Dropdown>

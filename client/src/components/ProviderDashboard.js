@@ -1,19 +1,21 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { Avatar, Dropdown, Navbar } from "flowbite-react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 function ProviderDashboard() {
   const [data, setData] = useState("");
   const [error, setError] = useState("");
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
-  const handleLogout = ()=>{
-    localStorage.removeItem('token')
-    navigate('/login')
-  }
+  const handleProfile = () => {
+    navigate("/profile");
+  };
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    navigate("/login");
+  };
   useEffect(() => {
-
     const handleEntry = async () => {
       const token = localStorage.getItem("token");
       try {
@@ -60,7 +62,7 @@ function ProviderDashboard() {
                 {data.email}
               </span>
             </Dropdown.Header>
-            <Dropdown.Item>Profile</Dropdown.Item>
+            <Dropdown.Item onClick={handleProfile}>Profile</Dropdown.Item>
             <Dropdown.Divider />
             <Dropdown.Item onClick={handleLogout}>Logout</Dropdown.Item>
           </Dropdown>
