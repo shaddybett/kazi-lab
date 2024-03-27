@@ -21,6 +21,13 @@ function Login() {
       if (response.ok) {
         const data = await response.json();
         localStorage.setItem("token", data.access_token);
+        if (data.role_id === 2) {
+            console.log(data.role_id);
+            navigate("/clientPage");
+          } else {
+            console.log("Redirecting to providerPage");
+            navigate("/providerPage");
+          }
       } else {
         const errorMessage = await response.json();
         setError(errorMessage.error);
