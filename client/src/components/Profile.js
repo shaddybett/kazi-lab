@@ -20,14 +20,19 @@ function Profile() {
             }
             else{
                 const errorMessage = await response.json()
-                
+                setError(errorMessage)
             }
+        }
+        catch(error){
+            setError('An error occurred.Please try again later')
         }
 
     }
   return (
     <div>
-
+        {data && data(
+            <p>{data.first_name} {data.last_name}</p>
+        )}
     </div>
   )
 }
