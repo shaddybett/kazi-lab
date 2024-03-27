@@ -36,6 +36,7 @@ function ClientDashboard() {
       {data && (
         <p>
           Hello {data.first_name} {data.last_name}, welcome
+          You are aclient right?
         </p>
       )}
       {error && <p>{error}</p>}
