@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { Button } from "flowbite-react";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -48,13 +49,17 @@ function Login() {
           onChange={(e) => setEmail(e.target.value)}
         />
         <input
-          type="password"
+          type={showPassword ? 'text':'password'} 
           value={password}
           placeholder="*********"
           onChange={(e) => setPassword(e.target.value)}
         />
-        <button type="submit">Submit</button>
+        <label>
+          <input type="checkbox" onChange={()=>setShowPassword(!showPassword)}/>Show password
+        </label>
+        <Button type="submit">Submit</Button>
         {error && <p>{error}</p>}
+
       </form>
       <p>
         Don't have an account? <Link to="/signup">Signup</Link>{" "}
