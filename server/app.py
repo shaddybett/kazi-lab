@@ -132,6 +132,7 @@ class Service(Resource):
 api.add_resource(Signup,'/signup')
 api.add_resource(Login,'/login')
 api.add_resource(Dashboard,'/dashboard')
+api.add_resource(Service,'/service')
 
 if __name__=='__main__':
     app.run(debug=True,port=4000)
