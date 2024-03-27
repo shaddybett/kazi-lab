@@ -9,14 +9,23 @@ function ProviderDashboard() {
     const handleEntry = async()=>{
       const token = localStorage.getItem('token')
       try{
-        const responseData = await fetch('/dashboard',{
+        const response = await fetch('/dashboard',{
           method:'GET',
           headers:{
             'Content-Type':'application/json',
             'Authorization': `Bearer ${token}`
           }
         })
+        if (response.ok){
+          const responseData = await response.json()
+          setData(responseData)
+        }
+        else{
+          const errorMessage = await response.json()
+          setError(errorMessage.error || 'An error occurred')
+        }
       }catch(error){
+        setError('An error occurred. Please try again later')
 
       }
 
