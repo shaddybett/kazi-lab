@@ -6,8 +6,8 @@ function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const [showPassword,setShowPassword] = useState(false)
-  const [rememberMe,setRememberMe] = useState(false)
+  const [showPassword, setShowPassword] = useState(false);
+  const [rememberMe, setRememberMe] = useState(false);
 
   const navigate = useNavigate();
 
@@ -26,7 +26,7 @@ function Login() {
         localStorage.setItem("token", data.access_token);
         if (data.role_id === 2) {
           console.log(data.role_id);
-          navigate("/providerPage");
+          navigate("/provider-details");
         } else {
           console.log("Redirecting to providerPage");
           navigate("/clientPage");
@@ -38,10 +38,14 @@ function Login() {
     } catch (error) {
       setError("An error occurred.Please try again later");
     }
-    if (rememberMe){
-      localStorage.setItem('token')
-      localStorage.setItem('email')
-      localStorage.setItem('password')
+    if (rememberMe) {
+      localStorage.setItem("rememberMe", "true");
+      localStorage.setItem("email", "email");
+      localStorage.setItem("password", "password");
+    } else {
+      localStorage.removeItem("rememberMe");
+      localStorage.removeItem("email");
+      localStorage.removeItem("password");
     }
   };
 
@@ -55,20 +59,31 @@ function Login() {
           onChange={(e) => setEmail(e.target.value)}
         />
         <input
-          type={showPassword ? 'text':'password'} 
+          type={showPassword ? "text" : "password"}
           value={password}
           placeholder="*********"
           onChange={(e) => setPassword(e.target.value)}
         />
         <label>
-          <input type="checkbox" onChange={()=>setShowPassword(!showPassword)}/>Show password
+          <input
+            type="checkbox"
+            onChange={() => setShowPassword(!showPassword)}
+          />
+          Show password
         </label>
         <Button type="submit">Submit</Button>
         {error && <p>{error}</p>}
-
+        <label>
+          <input
+            type="checkbox"
+            checked={rememberMe}
+            onChange={() => setRememberMe(!rememberMe)}
+          />
+          Remember me
+        </label>
       </form>
       <p>
-        Don't have an account? <Link to="/signup">Signup</Link>{" "}
+        Don't have an account? <Link to="/signup">Signup</Link>
       </p>
     </div>
   );
