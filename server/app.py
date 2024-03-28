@@ -1,6 +1,6 @@
 from flask import Flask,make_response
 from flask_restful import Api, Resource, reqparse
-from models import db,User
+from models import db,User,Service
 from flask_bcrypt import Bcrypt
 import re
 from flask_cors import CORS
@@ -115,7 +115,11 @@ service_parser.add_argument('service_name',type=str,required=True,help='Service 
 class Service(Resource):
     args = service_parser.parse_args()
     service_name = args['service_name']
-    
+    new_service = Service(
+        service_name=service_name
+    )
+    db.session.add(new_service)
+    db.session.commit()
 
 api.add_resource(Signup,'/signup')
 api.add_resource(Login,'/login')
