@@ -128,6 +128,8 @@ class Service(Resource):
         )
         db.session.add(newService)
         db.session.commit()
+        response = make_response({'message':'Added successfully'},201)
+        return response
 
 api.add_resource(Signup,'/signup')
 api.add_resource(Login,'/login')
