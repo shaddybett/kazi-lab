@@ -15,13 +15,18 @@ class User(db.Model):
     image = db.Column(db.String,nullable=True)
     role_id = db.Column(db.Integer,db.ForeignKey('roles.id'),nullable=False,)
     role = db.relationship('Role', backref = db.backref('users',lazy=True))
+    services = db.relationship('Service', secondary='provider_services', backref=db.backref('providers', lazy=True))
 
 class Service(db.Model):
     __tablename__='services'
     id = db.Column(db.Integer,primary_key=True,autoincrement=True)
     service_name = db.Column(db.String,nullable=False)
-    provider_id = db.Column(db.Integer,db.ForeignKey('users.id'))
-    provider = db.relationship('User', backref=db.backref('services', lazy=True))
+    providers = db.relationship('User', secondary='provider_services', backref=db.backref('services', lazy=True))
+
+class ProviderService(db.Model):
+    __tablename__='provider_services'
+    service_id = db.Column(db.Integer,db.ForeignKey('services.id'),primary_key=True)
+    provider_id = db.Column(db.Integer,db.ForeignKey('users.id',primary_key=True))    
 
 class Role(db.Model):
     __tablename__='roles'    

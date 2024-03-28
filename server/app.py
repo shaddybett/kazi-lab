@@ -112,24 +112,10 @@ class Dashboard(Resource):
 
 service_parser = reqparse.RequestParser()
 service_parser.add_argument('service_name',type=str,required=True,help='Service name is required')
-service_parser.add_argument('provider_id',type=str,required=True,help='Provider id is required')
 class Service(Resource):
-    @jwt_required()
-    def post(self):
-        args = service_parser.parse_args()
-        current_user = get_jwt_identity()
-        service_name=args['service_name']
-        user = User.query.filter_by(email=current_user).first()
-        provider_id = user.id
-        newService = Service(
-            service_name= service_name,
-            provider_id = provider_id
-
-        )
-        db.session.add(newService)
-        db.session.commit()
-        response = make_response({'message':'Added successfully'},201)
-        return response
+    args = service_parser.parse_args()
+    service_name = args['service_name']
+    
 
 api.add_resource(Signup,'/signup')
 api.add_resource(Login,'/login')
