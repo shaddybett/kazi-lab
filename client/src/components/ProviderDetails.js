@@ -116,9 +116,6 @@
 
 // export default ProviderDetails;
 
-
-
-
 import React, { useEffect, useState } from "react";
 import { Dropdown } from "flowbite-react";
 
@@ -154,12 +151,12 @@ function ProviderDetails() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        token = localStorage.getItem('token')
+        const token = localStorage.getItem("token");
         const response = await fetch("/service", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
-            "Authorization":`Bearer ${token}`
+            Authorization: `Bearer ${token}`,
           },
         });
         if (response.ok) {
