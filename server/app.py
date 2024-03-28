@@ -1,6 +1,6 @@
 from flask import Flask,make_response
 from flask_restful import Api, Resource, reqparse
-from models import db,User,Service
+from models import db,User,Service,ProviderService
 from flask_bcrypt import Bcrypt
 import re
 from flask_cors import CORS
@@ -33,6 +33,7 @@ signup_parser.add_argument('last_name',type=str,required=True,help='Last name is
 signup_parser.add_argument('email',type=str,required=True,help='Email is required')
 signup_parser.add_argument('password',type=str,required=True,help='Password is required')
 signup_parser.add_argument('selectedRole',type=int,required=True,help='Role is required')
+signup_parser.add_argument('service_name',type=str,required=False,help='service name is required')
 
 
 
@@ -44,6 +45,8 @@ class Signup(Resource):
         first_name = args['first_name']
         last_name = args['last_name']
         role_id = args['selectedRole']
+        service_name = args['service_name']
+
         if not all([email,password,first_name,last_name,role_id]):
             response = make_response({'error':'Fill in all forms'},401)
             return response
@@ -68,8 +71,15 @@ class Signup(Resource):
                 email = email,
                 password = hashed_password,
                 role_id=role_id
-            )   
+            )
             db.session.add(newUser)
+            service = Service.query.filter_by(service_name=service_name).first()
+            if service:
+                provider_service = ProviderService(
+                    provider_id=newUser.id,
+                    service_id=service.id
+                )
+                db.session.add(provider_service)
             db.session.commit()
             response = make_response({'message':'User Created Successfully'},201)
             return response
@@ -113,14 +123,35 @@ class Dashboard(Resource):
 service_parser = reqparse.RequestParser()
 service_parser.add_argument('service_name',type=str,required=True,help='Service name is required')
 class Service(Resource):
-    args = service_parser.parse_args()
-    service_name = args['service_name']
-    new_service = Service(
-        service_name=service_name
-    )
-    db.session.add(new_service)
-    db.session.commit()
+    @jwt_required
+    def post(self):
+        args = service_parser.parse_args()
+        service_name = args['service_name']
+        current_user = get_jwt_identity()
+        user = User.query.filter_by(email=current_user).first()
+        if not user:
+            response = make_response({'error':'User not found'})
+            return response
+    
+        new_service = Service(
+            service_name=service_name
+        )
+        db.session.add(new_service)
+        db.session.commit()
 
+        provider_service = ProviderService(
+            provider_id = user.id,
+            service_id = new_service.id
+        )
+        db.session.add(provider_service)
+        db.session.commit()
+        response = make_response({'message':'Service created and associated with current user'},201)
+        return response
+    def get(self):
+        services = Service.query.all()
+        service_list = [service.service_name for service in services]
+        response = make_response({'services':service_list})
+        return response
 api.add_resource(Signup,'/signup')
 api.add_resource(Login,'/login')
 api.add_resource(Dashboard,'/dashboard')
