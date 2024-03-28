@@ -15,7 +15,7 @@ class User(db.Model):
     image = db.Column(db.String,nullable=True)
     role_id = db.Column(db.Integer,db.ForeignKey('roles.id'),nullable=False,)
     role = db.relationship('Role', backref = db.backref('users',lazy=True))
-    services = db.relationship('Service', secondary='provider_services', backref=db.backref('providers', lazy=True))
+    services = db.relationship('Service', backref=db.backref('provider_services', lazy=True))
 
 class Service(db.Model):
     __tablename__='services'

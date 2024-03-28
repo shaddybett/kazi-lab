@@ -73,7 +73,7 @@ class Signup(Resource):
                 role_id=role_id
             )
             db.session.add(newUser)
-            if newUser.role_id ==2:
+            if role_id ==2 and service_name:
                 service = Service.query.filter_by(service_name=service_name).first()
                 if service:
                     provider_service = ProviderService(
