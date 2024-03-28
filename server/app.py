@@ -73,13 +73,14 @@ class Signup(Resource):
                 role_id=role_id
             )
             db.session.add(newUser)
-            service = Service.query.filter_by(service_name=service_name).first()
-            if service:
-                provider_service = ProviderService(
-                    provider_id=newUser.id,
-                    service_id=service.id
-                )
-                db.session.add(provider_service)
+            if newUser.role_id ==2:
+                service = Service.query.filter_by(service_name=service_name).first()
+                if service:
+                    provider_service = ProviderService(
+                        provider_id=newUser.id,
+                        service_id=service.id
+                    )
+                    db.session.add(provider_service)
             db.session.commit()
             response = make_response({'message':'User Created Successfully'},201)
             return response
