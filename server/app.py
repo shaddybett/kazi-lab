@@ -383,7 +383,7 @@ class ServiceResource(Resource):
         all_services = Service.query.all()
         all_service_names = [service.service_name for service in all_services]
         
-        response = make_response({'user_services': user_services, 'all_services': all_service_names})
+        response = make_response({'services': all_service_names})
         return response
 
 
