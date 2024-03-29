@@ -55,6 +55,7 @@ class User(db.Model):
     role_id = db.Column(db.Integer, db.ForeignKey('roles.id'), nullable=False)
     role = db.relationship('Role', backref=db.backref('users', lazy=True))
     services = db.relationship('Service', secondary='provider_services', backref=db.backref('providers', lazy=True))
+    
 
 class Service(db.Model):
     __tablename__ = 'services'
