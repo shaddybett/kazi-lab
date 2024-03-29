@@ -8,7 +8,7 @@ import ClientDashboard from "./components/ClientDashboard";
 import ProviderDashboard from "./components/ProviderDashboard";
 import Profile from "./components/Profile";
 import ProviderDetails from "./components/ProviderDetails";
-import { DropdownProvider } from "flowbite-react";
+
 
 function App() {
   return (
@@ -21,9 +21,6 @@ function App() {
       <Route path="/providerPage" element={<ProviderDashboard />} />
       <Route path="/profile" element={<Profile />} />
       <Route path="/provider-details" element={<ProviderDetails />} />
-      <DropdownProvider>
-        <ProviderDetails />
-      </DropdownProvider>
     </Routes>
   );
 }

@@ -17,7 +17,7 @@
 //           Authorization: `Bearer ${token}`,
 //         },
 //         body: JSON.stringify({
-//           service_name,provider_id
+//           service_name
 //         }),
 //       });
 //       if (response.ok) {
@@ -86,6 +86,9 @@
 
 // export default ProviderDetails;
 
+
+
+
 import React, { useEffect, useState } from "react";
 import { Dropdown } from "flowbite-react";
 
@@ -131,12 +134,13 @@ function ProviderDetails() {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
+            "Authorization": `Bearer ${token}`
           },
         });
         if (response.ok) {
           const responseData = await response.json();
           setData(responseData.services);
+          console.log(responseData.services)
         } else {
           const errorMessage = await response.json();
           setError(errorMessage.error);
@@ -159,6 +163,7 @@ function ProviderDetails() {
   return (
     <div>
       <form onSubmit={handleForm}>
+        <Dropdown label="Services">
         {data &&
           data.map((service, index) => (
             <Dropdown.Item key={index} className="text-black">
@@ -173,6 +178,7 @@ function ProviderDetails() {
               </label>
             </Dropdown.Item>
           ))}
+        </Dropdown>
 
         <input
           type="text"

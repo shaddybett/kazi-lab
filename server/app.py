@@ -330,35 +330,25 @@ class ServiceResource(Resource):
         for service_name in existing_services:
             existing_service = Service.query.filter(func.lower(Service.service_name) == func.lower(service_name)).first()
             if existing_service:
-                response = make_response({'error': f'Service "{service_name}" already exists, kindly check the list provided'}, 401)
+                # If service exists, associate it with the provider
+                provider_service = ProviderService(
+                    provider_id=user.id,
+                    service_id=existing_service.id
+                )
+                db.session.add(provider_service)
+        
+        if new_service_name:
+            # Check if the new service name already exists
+            existing_service = Service.query.filter(func.lower(Service.service_name) == func.lower(new_service_name)).first()
+            if existing_service:
+                response = make_response({'error': f'Service "{new_service_name}" already exists, kindly check the list provided'}, 401)
                 return response
-        
-        for service_name in existing_services:
+            
+            # If the service doesn't exist, add it to the database and associate it with the provider
             new_service = Service(
-                service_name=service_name,
-                provider_id=user.id
+                service_name=new_service_name
             )
             db.session.add(new_service)
-        
-        if new_service_name:
-            new_service = Service(
-                service_name=new_service_name,
-                provider_id=user.id
-            )
-            db.session.add(new_service)
-        
-        db.session.commit()
-        
-        for service_name in existing_services:
-            new_service = Service.query.filter(func.lower(Service.service_name) == func.lower(service_name)).first()
-            provider_service = ProviderService(
-                provider_id=user.id,
-                service_id=new_service.id
-            )
-            db.session.add(provider_service)
-        
-        if new_service_name:
-            new_service = Service.query.filter(func.lower(Service.service_name) == func.lower(new_service_name)).first()
             provider_service = ProviderService(
                 provider_id=user.id,
                 service_id=new_service.id
@@ -367,9 +357,8 @@ class ServiceResource(Resource):
         
         db.session.commit()
         
-        response = make_response({'message': 'Services created and associated with current user'}, 201)
+        response = make_response({'message': 'Services created and associated with the current user'}, 201)
         return response
-
 
     @jwt_required()
     def get(self):
@@ -385,8 +374,6 @@ class ServiceResource(Resource):
         
         response = make_response({'services': all_service_names})
         return response
-
-
 
 
 api.add_resource(Signup,'/signup')
