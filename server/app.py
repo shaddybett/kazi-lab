@@ -356,7 +356,7 @@ class ServiceResource(Resource):
         
         db.session.commit()
         
-        response = make_response({'message': f'Services created and associated with {user.first_name}'}, 201)
+        response = make_response({'message': f'Services created and associated with {user.first_name} {user.last_name}'}, 201)
         return response
 
     @jwt_required()
