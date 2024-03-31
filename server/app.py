@@ -323,8 +323,8 @@ class ServiceResource(Resource):
             response = make_response({'error':'User not found'})
             return response
         
-        existing_services = request.json.get('existing_services', [])
-        new_service_name = request.json.get('new_service_name', "").strip()
+        existing_services = request.form.getlist('existing_services',[])
+        new_service_name = request.form.get('new_service_name', "").strip()
 
         for service_name in existing_services:
             existing_service = Service.query.filter(func.lower(Service.service_name) == func.lower(service_name)).first()
