@@ -1,4 +1,4 @@
-from models import User,db
+from models import User,db,Role
 from app import app
 
 with app.app_context():
@@ -10,3 +10,13 @@ with app.app_context():
     )
     # db.session.add(new_user)
     # db.session.commit()
+
+    roles = []
+    for role_name in ['admin','provider','client']:
+        role = Role(role_name=role_name)
+        roles.append(role)
+
+        db.session.add_all(roles)
+        db.session.commit()
+
+        
