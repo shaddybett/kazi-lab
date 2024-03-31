@@ -200,7 +200,7 @@ bcrypt = Bcrypt(app)
 CORS(app)
 
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///jovial.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://myuser:shady42635509@localhost:5432/kazi_konnect'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['JWT_SECRET_KEY'] =os.environ.get('secret_key')
 app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(hours=1)
@@ -218,7 +218,6 @@ signup_parser.add_argument('email',type=str,required=True,help='Email is require
 signup_parser.add_argument('password',type=str,required=True,help='Password is required')
 signup_parser.add_argument('selectedRole',type=int,required=True,help='Role is required')
 signup_parser.add_argument('service_name',type=str,required=False,help='service name is required')
-
 
 
 class Signup(Resource):
