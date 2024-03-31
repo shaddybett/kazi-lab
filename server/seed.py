@@ -1,15 +1,13 @@
-from models import User,db,Role
+from models import User,db,Role,Service
 from app import app
 
 with app.app_context():
-    new_user = User(
-        first_name='salman',
-        last_name='khan',
-        email='khan@gmail.com',
-        password='12345'
+    new_user = Service(
+        service_name='salman',
+        provider_id=1,
     )
-    # db.session.add(new_user)
-    # db.session.commit()
+    db.session.add(new_user)
+    db.session.commit()
 
     roles = []
     for role_name in ['admin','provider','client']:
