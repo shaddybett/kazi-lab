@@ -190,15 +190,13 @@ class ServiceResource(Resource):
         current_user = get_jwt_identity()
         user = User.query.filter_by(email=current_user).first()
         if not user:
-            response = make_response({'error': 'User not found'}, 404)
-            return response
-        
-        user_services = [service.service_name for service in user.services]
+            return {'error': 'User not found'}, 404
+
+        user_services = [{'id': service.id, 'name': service.service_name} for service in user.services]
         all_services = Service.query.all()
-        all_service_names = [service.service_name for service in all_services]
-       
-        
-        response = make_response({'services': all_service_names})
+        all_services_data = [{'id': service.id, 'name': service.service_name} for service in all_services]
+
+        response = make_response({'user_services': user_services, 'all_services': all_services_data})
         return response
 
 
