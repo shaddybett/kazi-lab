@@ -19,10 +19,11 @@ function ProviderDetails() {
           Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
-          existing_services: selectedServices,
+          existing_services: selectedServices.map((service) => service.id),
           service_name: newServiceName,
         }),
       });
+      console.log(selectedServices);
       if (response.ok) {
         const responseData = await response.json();
         setMessage(responseData.message);
@@ -43,13 +44,13 @@ function ProviderDetails() {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
-            "Authorization": `Bearer ${token}`
+            Authorization: `Bearer ${token}`,
           },
         });
         if (response.ok) {
           const responseData = await response.json();
           setData(responseData.services);
-          console.log(responseData.services)
+          console.log(responseData.services);
         } else {
           const errorMessage = await response.json();
           setError(errorMessage.error);
@@ -62,8 +63,8 @@ function ProviderDetails() {
   }, []);
 
   const handleCheckboxChange = (service) => {
-    if (selectedServices.includes(service)) {
-      setSelectedServices(selectedServices.filter((s) => s !== service));
+    if (selectedServices.some((s) => s.id === service.id)) {
+      setSelectedServices(selectedServices.filter((s) => s.id !== service.id));
     } else {
       setSelectedServices([...selectedServices, service]);
     }
@@ -73,20 +74,20 @@ function ProviderDetails() {
     <div>
       <form onSubmit={handleForm}>
         <Dropdown label="Services">
-        {data &&
-          data.map((service, index) => (
-            <Dropdown.Item key={index} className="text-black">
-              <label>
-                <input
-                  type="checkbox"
-                  value={service}
-                  onChange={() => handleCheckboxChange(service)}
-                  checked={selectedServices.includes(service)}
-                />
-                {service}
-              </label>
-            </Dropdown.Item>
-          ))}
+          {data &&
+            data.map((service, index) => (
+              <Dropdown.Item key={index} className="text-black">
+                <label>
+                  <input
+                    type="checkbox"
+                    value={service}
+                    onChange={() => handleCheckboxChange(service)}
+                    checked={selectedServices.includes(service)}
+                  />
+                  {service}
+                </label>
+              </Dropdown.Item>
+            ))}
         </Dropdown>
 
         <input
