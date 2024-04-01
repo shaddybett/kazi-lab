@@ -8,22 +8,25 @@ function ProviderDetails() {
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
 
+
   const handleForm = async (e) => {
     e.preventDefault();
     try {
       const token = localStorage.getItem("token");
+      const requestBody = {
+        existing_services: selectedServices.map((service) => service.id),
+      };
+      if (newServiceName.trim() !== "") {
+        requestBody.service_name = newServiceName;
+      }
       const response = await fetch("/service", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({
-          existing_services: selectedServices.map((service) => service.id),
-          service_name: newServiceName,
-        }),
+        body: JSON.stringify(requestBody),
       });
-      console.log(selectedServices);
       if (response.ok) {
         const responseData = await response.json();
         setMessage(responseData.message);
