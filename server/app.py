@@ -1,5 +1,5 @@
 from flask import Flask,make_response
-from flask_restful import Api, Resource, reqparse,request
+from flask_restful import Api, Resource, reqparse
 from models import db,User,Service,ProviderService
 from flask_bcrypt import Bcrypt
 import re
@@ -192,11 +192,14 @@ class ServiceResource(Resource):
         if not user:
             return {'error': 'User not found'}, 404
 
-        user_services = [{'id': service.id, 'name': service.service_name} for service in user.services]
+        # user_services = [(service.id,service.service_name) for service in user.services]
         all_services = Service.query.all()
-        all_services_data = [{'id': service.id, 'name': service.service_name} for service in all_services]
+        # all_services_data = [{'id': service.id, 'name': service.service_name} for service in all_services]
+        all_services_data = [(service.id, service.service_name) for service in all_services]
 
-        response = make_response({'user_services': user_services, 'all_services': all_services_data})
+
+        # response = make_response({'user_services': user_services, 'all_services': all_services_data})
+        response = make_response({'all_services': all_services_data})
         return response
 
 

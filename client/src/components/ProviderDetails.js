@@ -36,6 +36,7 @@ function ProviderDetails() {
     }
   };
 
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -49,8 +50,8 @@ function ProviderDetails() {
         });
         if (response.ok) {
           const responseData = await response.json();
-          setData(responseData.services);
-          console.log(responseData.services);
+          setData(responseData.all_services);
+          // setUserServices(responseData.user_services);
         } else {
           const errorMessage = await response.json();
           setError(errorMessage.error);
