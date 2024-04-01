@@ -142,6 +142,7 @@ class ServiceResource(Resource):
             abort(404, {'error': 'User not found'})
         
         args = service_parser.parse_args()
+        print("Request data:", args) 
         new_service_name = args['service_name']
         existing_services = args['existing_services'] or []  # Defaults to an empty list if no existing services provided
         
