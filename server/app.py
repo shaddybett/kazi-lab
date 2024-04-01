@@ -318,6 +318,7 @@ class ServiceResource(Resource):
     @jwt_required()
     def post(self):
         current_user = get_jwt_identity()
+        
         user = User.query.filter_by(email=current_user).first()
         if not user:
             response = make_response({'error':'User not found'})
@@ -370,6 +371,7 @@ class ServiceResource(Resource):
         user_services = [service.service_name for service in user.services]
         all_services = Service.query.all()
         all_service_names = [service.service_name for service in all_services]
+       
         
         response = make_response({'services': all_service_names})
         return response
