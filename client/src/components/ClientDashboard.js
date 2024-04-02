@@ -43,12 +43,15 @@ function ClientDashboard() {
       }
     };
     const handleServices = async(e)=>{
+      
       e.preventDefault()
       try{
+        const token = localStorage.getItem("token")
         const response = await fetch('/service',{
           method:'GET',
           headers:{
-            'Content-Type':'application/json'
+            'Content-Type':'application/json',
+            'Authorization':`Bearer ${token}`
           }
         })
         if (response.ok) {
