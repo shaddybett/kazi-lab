@@ -57,8 +57,11 @@ function ClientDashboard() {
         }
         else{
           const errors = await response.json()
-          
+          setError(errors)
         }
+      }
+      catch(error){
+        setError('An error occurred. Try again later')
       }
     }
     handleEntry();
