@@ -6,7 +6,7 @@ import { Avatar, Dropdown, Navbar, Button, Card } from "flowbite-react";
 function ClientDashboard() {
   const [data, setData] = useState("");
   const [error, setError] = useState("");
-  const [services,setServices] = useState("")
+  const [services, setServices] = useState("");
 
   const navigate = useNavigate();
 
@@ -42,30 +42,27 @@ function ClientDashboard() {
         setError("An error occurred.Please try again later!");
       }
     };
-    const handleServices = async()=>{
-      
-      try{
-        const token = localStorage.getItem("token")
-        const response = await fetch('/service',{
-          method:'GET',
-          headers:{
-            "Content-Type":"application/json",
-            "Authorization":`Bearer ${token}`
-          }
-        })
+    const handleServices = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const response = await fetch("/service", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
         if (response.ok) {
-          const responseData = await response.json()
+          const responseData = await response.json();
           setServices(responseData.all_services);
-        }
-        else{
-          const errorMessage = await response.json()
+        } else {
+          const errorMessage = await response.json();
           setError(errorMessage.error || "An error occurred");
         }
+      } catch (error) {
+        setError("An error occurred. Try again later");
       }
-      catch(error){
-        setError('An error occurred. Try again later')
-      }
-    }
+    };
     handleServices();
     handleEntry();
   }, []);
@@ -107,28 +104,33 @@ function ClientDashboard() {
         </Navbar.Collapse>
       </Navbar>
       <Card className="max-w-sm">
-        <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-          {services && services.map(service =>(
-            <p key={service.id}> {service.name} </p>
-          )) }
-
-        </h5>
-        <Button>
-          Service Providers
-          <svg
-            className="-mr-1 ml-2 h-4 w-4"
-            fill="currentColor"
-            viewBox="0 0 20 20"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              fillRule="evenodd"
-              d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
-              clipRule="evenodd"
-            />
-          </svg>
-        </Button>
+        {services &&
+          services.map((service) => (
+            <div key={service.id} className="mb-4">
+              <Card className="max-w-sm">
+                <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+                  {service.name}
+                </h5>
+                <Button>
+                  Service Providers
+                  <svg
+                    className="-mr-1 ml-2 h-4 w-4"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                </Button>
+              </Card>
+            </div>
+          ))}
       </Card>
+
       {error && <p>{error}</p>}
     </div>
   );
