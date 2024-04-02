@@ -112,7 +112,8 @@ class Login(Resource):
         if existing_user and bcrypt.check_password_hash(hashed_password,password):
             access_token=create_access_token(identity=email)
             role_id = existing_user.role_id
-            response = make_response({'message':'Login successful','access_token':access_token,'role_id':role_id},200)
+            id = existing_user.id
+            response = make_response({'message':'Login successful','access_token':access_token,'role_id':role_id,'id':id},200)
             return response
         response = make_response({'error':'Invalid email or password'},401)
         return response
@@ -142,10 +143,10 @@ class ServiceResource(Resource):
             abort(404, {'error': 'User not found'})
         
         args = service_parser.parse_args()
-        print("Request data:", args) 
+        
         new_service_name = args['service_name']
         existing_services = args['existing_services'] or []  # Defaults to an empty list if no existing services provided
-        
+        print("Request data:", args) 
         if not existing_services and not new_service_name:
             abort(400, {'error': 'At least one service must be provided'})
         
@@ -178,63 +179,6 @@ class ServiceResource(Resource):
         db.session.commit()
         
         return {'message': f'Services created and associated with {user.first_name} {user.last_name}'}, 201
-
-# service_parser = reqparse.RequestParser()
-# service_parser.add_argument('service_name',type=str,required=True,help='Service name is required')
-# service_parser.add_argument('existing_services',type=str,required=True,help='Existing_services required')
-
-# class ServiceResource(Resource):
-#     @jwt_required()
-#     def post(self):
-#         current_user = get_jwt_identity()
-        
-#         user = User.query.filter_by(email=current_user).first()
-#         if not user:
-#             response = make_response({'error':'User not found'})
-#             return response
-        
-        
-#         args = service_parser.parse_args()
-#         new_service_name = args['service_name']
-#         existing_services = args['existing_services']
-#         if not existing_services and not new_service_name:
-#             response = make_response({'error': 'At least one service must be provided'}, 400)
-#             return response
-#         if existing_services:
-#             for service_id in existing_services:
-#                 service = Service.query.get(service_id)
-#                 if service:
-#                     provider_service = ProviderService(
-#                         provider_id=user.id,
-#                         service_id=service.id
-#                     )
-#                     db.session.add(provider_service)
-
-        
-#         if new_service_name:
-#             # Check if the new service name already exists
-#             existing_service = Service.query.filter(func.lower(Service.service_name) == func.lower(new_service_name)).first()
-#             if existing_service:
-#                 response = make_response({'error': f'Service "{new_service_name}" already exists, kindly check the list provided'}, 401)
-#                 return response
-            
-#             # If the service doesn't exist, add it to the database and associate it with the provider
-#             new_service = Service(
-#                 service_name=new_service_name,
-#                 provider_id = user.id
-#             )
-#             db.session.add(new_service)
-#             db.session.flush()
-#             provider_service = ProviderService(
-#                 provider_id=user.id,
-#                 service_id=new_service.id
-#             )
-#             db.session.add(provider_service)
-        
-#         db.session.commit()
-        
-#         response = make_response({'message': f'Services created and associated with {user.first_name} {user.last_name}'}, 201)
-#         return response
 
     @jwt_required()
     def get(self):
