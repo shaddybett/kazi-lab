@@ -49,8 +49,8 @@ function ClientDashboard() {
         const response = await fetch('/service',{
           method:'GET',
           headers:{
-            'Content-Type':'application/json',
-            'Authorization':`Bearer ${token}`
+            "Content-Type":"application/json",
+            "Authorization":`Bearer ${token}`
           }
         })
         if (response.ok) {
@@ -111,6 +111,7 @@ function ClientDashboard() {
           {services && services.map(service =>(
             <p key={service.id}> {service.service_name} </p>
           )) }
+
         </h5>
         <Button>
           Service Providers
