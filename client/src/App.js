@@ -21,6 +21,7 @@ function App() {
       <Route path="/providerPage" element={<ProviderDashboard />} />
       <Route path="/profile" element={<Profile />} />
       <Route path="/provider-details" element={<ProviderDetails />} />
+      <Route path="/providers" element={<ServiceProviders/>} />
     </Routes>
   );
 }

@@ -208,6 +208,13 @@ def handle_service_request():
 
         response = make_response({'all_services': all_services_data})
         return response
+    
+
+class ServiceProvider(Resource):
+    @jwt_required()
+    def get(self):
+        id = get_jwt_identity()
+        
 
 api.add_resource(Signup, '/signup')
 api.add_resource(Login, '/login')
