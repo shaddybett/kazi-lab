@@ -216,6 +216,7 @@ class ServiceProvider(Resource):
         id = get_jwt_identity()
         
 
+
 api.add_resource(Signup, '/signup')
 api.add_resource(Login, '/login')
 api.add_resource(Dashboard, '/dashboard')
