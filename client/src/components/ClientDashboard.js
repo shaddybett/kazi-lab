@@ -44,7 +44,22 @@ function ClientDashboard() {
     };
     const handleServices = async(e)=>{
       e.preventDefault()
-      
+      try{
+        const response = await fetch('/service',{
+          method:'GET',
+          headers:{
+            'Content-Type':'application/json'
+          }
+        })
+        if (response.ok) {
+          const responseData = await response.json()
+          setServices(responseData)
+        }
+        else{
+          const errors = await response.json()
+          
+        }
+      }
     }
     handleEntry();
   }, []);
