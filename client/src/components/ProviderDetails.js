@@ -100,7 +100,7 @@ function ProviderDetails() {
                     value={service}
                     onChange={() => handleCheckboxChange(service)}
                     // checked={selectedServices.some((s) => s.id === service.id)}
-                    checked={selectedServices.includes(service.id)}
+                    checked={selectedServices.includes(service)}
                   />
                   {service}
                 </label>
