@@ -8,17 +8,26 @@ function ProviderDetails() {
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
 
-
   const handleForm = async (e) => {
     e.preventDefault();
     try {
       const token = localStorage.getItem("token");
+      const id = localStorage.getItem("id");
       const requestBody = {
-        existing_services: selectedServices.map((service) => service.id),
+        user_id: id,
       };
+
       if (newServiceName.trim() !== "") {
         requestBody.service_name = newServiceName;
+      } else if (selectedServices.length > 0) {
+        requestBody.existing_services = selectedServices.map(
+          (service) => service.id
+        );
+      } else {
+        setError("Please select at least one service.");
+        return;
       }
+
       const response = await fetch("/service", {
         method: "POST",
         headers: {
@@ -27,6 +36,7 @@ function ProviderDetails() {
         },
         body: JSON.stringify(requestBody),
       });
+
       if (response.ok) {
         const responseData = await response.json();
         setMessage(responseData.message);
@@ -38,7 +48,6 @@ function ProviderDetails() {
       setError("An error occurred. Please try again later.");
     }
   };
-
 
   useEffect(() => {
     const fetchData = async () => {
@@ -54,7 +63,6 @@ function ProviderDetails() {
         if (response.ok) {
           const responseData = await response.json();
           setData(responseData.all_services);
-          // setUserServices(responseData.user_services);
         } else {
           const errorMessage = await response.json();
           setError(errorMessage.error);
@@ -67,10 +75,13 @@ function ProviderDetails() {
   }, []);
 
   const handleCheckboxChange = (service) => {
-    if (selectedServices.some((s) => s.id === service.id)) {
-      setSelectedServices(selectedServices.filter((s) => s.id !== service.id));
-    } else {
+    const selectedIndex = selectedServices.findIndex(
+      (s) => s.id === service.id
+    );
+    if (selectedIndex === -1) {
       setSelectedServices([...selectedServices, service]);
+    } else {
+      setSelectedServices(selectedServices.filter((s) => s.id !== service.id));
     }
   };
 
@@ -79,16 +90,16 @@ function ProviderDetails() {
       <form onSubmit={handleForm}>
         <Dropdown label="Services">
           {data &&
-            data.map((service, index) => (
-              <Dropdown.Item key={index} className="text-black">
+            data.map((service) => (
+              <Dropdown.Item key={service.id} className="text-black">
                 <label>
                   <input
                     type="checkbox"
-                    value={service}
+                    value={service.id}
                     onChange={() => handleCheckboxChange(service)}
-                    checked={selectedServices.includes(service)}
+                    checked={selectedServices.some((s) => s.id === service.id)}
                   />
-                  {service}
+                  {service.name}
                 </label>
               </Dropdown.Item>
             ))}

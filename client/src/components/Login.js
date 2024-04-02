@@ -24,6 +24,7 @@ function Login() {
       if (response.ok) {
         const data = await response.json();
         localStorage.setItem("token", data.access_token);
+        localStorage.setItem("id", data.id);
         if (data.role_id === 2) {
           console.log(data.role_id);
           navigate("/provider-details");
