@@ -42,6 +42,10 @@ function ClientDashboard() {
         setError("An error occurred.Please try again later!");
       }
     };
+    const handleServices = async(e)=>{
+      e.preventDefault()
+      
+    }
     handleEntry();
   }, []);
   return (
