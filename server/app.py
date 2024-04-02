@@ -1,4 +1,4 @@
-from flask import Flask,make_response,abort
+from flask import Flask,make_response,abort,request
 from flask_restful import Api, Resource, reqparse
 from models import db,User,Service,ProviderService
 from flask_bcrypt import Bcrypt
@@ -129,27 +129,24 @@ class Dashboard(Resource):
             response = make_response({'error':'Error fetching user details'},404)
             return response
 
-service_parser = reqparse.RequestParser()
-service_parser.add_argument('service_name', type=str, required=True, help='Service name is required')
-service_parser.add_argument('existing_services', type=int, action='append', required=False, help='Existing services must be a list of integers representing service IDs')
-
-class ServiceResource(Resource):
-    @jwt_required()
-    def post(self):
+@app.route('/service', methods=['POST'])
+@jwt_required()
+def handle_service_request():
+    try:
         current_user = get_jwt_identity()
         user = User.query.filter_by(email=current_user).first()
-        
+
         if not user:
             abort(404, {'error': 'User not found'})
-        
-        args = service_parser.parse_args()
-        
-        new_service_name = args['service_name']
-        existing_services = args['existing_services'] or []  # Defaults to an empty list if no existing services provided
-        print("Request data:", args) 
-        if not existing_services and not new_service_name:
+
+        args = request.json  # Use request.json to access JSON data sent in the request
+
+        new_service_name = args.get('service_name')
+        existing_services = args.get('existing_services', [])
+
+        if not new_service_name and not existing_services:
             abort(400, {'error': 'At least one service must be provided'})
-        
+
         for service_id in existing_services:
             service = Service.query.get(service_id)
             if service:
@@ -158,12 +155,12 @@ class ServiceResource(Resource):
                     service_id=service.id
                 )
                 db.session.add(provider_service)
-        
+
         if new_service_name:
             existing_service = Service.query.filter(func.lower(Service.service_name) == func.lower(new_service_name)).first()
             if existing_service:
                 abort(401, {'error': f'Service "{new_service_name}" already exists, kindly check the list provided'})
-            
+
             new_service = Service(
                 service_name=new_service_name,
                 provider_id=user.id
@@ -175,13 +172,16 @@ class ServiceResource(Resource):
                 service_id=new_service.id
             )
             db.session.add(provider_service)
-        
+
         db.session.commit()
-        
+
         return {'message': f'Services created and associated with {user.first_name} {user.last_name}'}, 201
 
-    @jwt_required()
-    def get(self):
+    except Exception as e:
+        return {'error': 'An error occurred while processing the request'}, 500
+@app.route('/service', methods=['GET'])
+@jwt_required()
+def get_services():
         current_user = get_jwt_identity()
         user = User.query.filter_by(email=current_user).first()
         if not user:
@@ -189,7 +189,7 @@ class ServiceResource(Resource):
 
         # user_services = [(service.id,service.service_name) for service in user.services]
         all_services = Service.query.all()
-        # all_services_data = [{'id': service.id, 'name': service.service_name} for service in all_services]
+        all_services_data = [{'id': service.id, 'name': service.service_name} for service in all_services]
         all_services_data = [(service.id, service.service_name) for service in all_services]
 
 
@@ -201,7 +201,6 @@ class ServiceResource(Resource):
 api.add_resource(Signup,'/signup')
 api.add_resource(Login,'/login')
 api.add_resource(Dashboard,'/dashboard')
-api.add_resource(ServiceResource,'/service')
 
 if __name__=='__main__':
     app.run(debug=True,port=4000)
