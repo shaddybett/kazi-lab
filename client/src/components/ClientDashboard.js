@@ -109,7 +109,7 @@ function ClientDashboard() {
       <Card className="max-w-sm">
         <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
           {services && services.map(service =>(
-            <p key={service.id}> {service.service_name} </p>
+            <p key={service.id}> {service.name} </p>
           )) }
 
         </h5>
