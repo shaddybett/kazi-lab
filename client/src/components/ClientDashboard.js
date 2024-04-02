@@ -55,11 +55,11 @@ function ClientDashboard() {
         })
         if (response.ok) {
           const responseData = await response.json()
-          setServices(responseData)
+          setServices(responseData.all_services);
         }
         else{
-          const errors = await response.json()
-          setError(errors)
+          const errorMessage = await response.json()
+          setError(errorMessage.error || "An error occurred");
         }
       }
       catch(error){
@@ -108,7 +108,9 @@ function ClientDashboard() {
       </Navbar>
       <Card className="max-w-sm">
         <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-          {services && <p>{services.service_name}</p>}
+          {services && services.map(service =>(
+            <p key={service.id}> {service.service_name} </p>
+          )) }
         </h5>
         <Button>
           Service Providers
