@@ -14,14 +14,12 @@ function ProviderDetails() {
       const token = localStorage.getItem("token");
       const id = localStorage.getItem("id");
       const requestBody = {
-        user_id: id, // You need to implement a function to get the user ID
+        user_id: id,
       };
 
       if (newServiceName.trim() !== "") {
-        // If new service name is provided, send service name and user id
         requestBody.service_name = newServiceName;
       } else if (selectedServices.length > 0) {
-        // If existing services are selected, send service ids and user id
         requestBody.existing_services = selectedServices.map(
           (service) => service.id
         );
@@ -92,17 +90,16 @@ function ProviderDetails() {
       <form onSubmit={handleForm}>
         <Dropdown label="Services">
           {data &&
-            data.map((service, index) => (
-              <Dropdown.Item key={index} className="text-black">
+            data.map((service) => (
+              <Dropdown.Item key={service.id} className="text-black">
                 <label>
                   <input
                     type="checkbox"
-                    value={service}
+                    value={service.id}
                     onChange={() => handleCheckboxChange(service)}
-                    // checked={selectedServices.some((s) => s.id === service.id)}
-                    checked={selectedServices.includes(service)}
+                    checked={selectedServices.some((s) => s.id === service.id)}
                   />
-                  {service}
+                  {service.name}
                 </label>
               </Dropdown.Item>
             ))}
