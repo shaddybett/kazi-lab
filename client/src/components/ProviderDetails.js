@@ -108,6 +108,10 @@
 
 // export default ProviderDetails;
 
+
+
+
+
 import React, { useEffect, useState } from "react";
 import { Dropdown } from "flowbite-react";
 
@@ -122,18 +126,20 @@ function ProviderDetails() {
     e.preventDefault();
     try {
       const token = localStorage.getItem("token");
-      const id = localStorage.getItem("id")
+      const id = localStorage.getItem("id");
       const requestBody = {
         user_id: id, // You need to implement a function to get the user ID
       };
-      console.log(id)
 
       if (newServiceName.trim() !== "") {
         // If new service name is provided, send service name and user id
         requestBody.service_name = newServiceName;
-      } else {
+      } else if (selectedServices.length > 0) {
         // If existing services are selected, send service ids and user id
-        requestBody.services = selectedServices.map((service) => service.id);
+        requestBody.existing_services = selectedServices.map((service) => service.id);
+      } else {
+        setError("Please select at least one service.");
+        return;
       }
 
       const response = await fetch("/service", {
@@ -171,7 +177,6 @@ function ProviderDetails() {
         if (response.ok) {
           const responseData = await response.json();
           setData(responseData.all_services);
-          // setUserServices(responseData.user_services);
         } else {
           const errorMessage = await response.json();
           setError(errorMessage.error);
@@ -184,10 +189,11 @@ function ProviderDetails() {
   }, []);
 
   const handleCheckboxChange = (service) => {
-    if (selectedServices.some((s) => s.id === service.id)) {
-      setSelectedServices(selectedServices.filter((s) => s.id !== service.id));
-    } else {
+    const selectedIndex = selectedServices.findIndex((s) => s.id === service.id);
+    if (selectedIndex === -1) {
       setSelectedServices([...selectedServices, service]);
+    } else {
+      setSelectedServices(selectedServices.filter((s) => s.id !== service.id));
     }
   };
 
@@ -203,9 +209,9 @@ function ProviderDetails() {
                     type="checkbox"
                     value={service}
                     onChange={() => handleCheckboxChange(service)}
-                    checked={selectedServices.includes(service)}
+                    checked={selectedServices.some((s) => s.id === service.id)}
                   />
-                  {service}
+                  {service.service_name}
                 </label>
               </Dropdown.Item>
             ))}
