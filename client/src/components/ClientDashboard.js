@@ -42,9 +42,8 @@ function ClientDashboard() {
         setError("An error occurred.Please try again later!");
       }
     };
-    const handleServices = async(e)=>{
+    const handleServices = async()=>{
       
-      e.preventDefault()
       try{
         const token = localStorage.getItem("token")
         const response = await fetch('/service',{
