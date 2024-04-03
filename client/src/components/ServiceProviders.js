@@ -21,7 +21,7 @@ function ServiceProviders() {
         }
         else{
           const errorMessage = await response.json()
-          setError(errorMessage)
+          setError(errorMessage.error)
         }
       }
       catch (error){
@@ -31,8 +31,10 @@ function ServiceProviders() {
   },[])
   return (
     <div>{data && data.map((service,index)=>{
-      
-    })}</div>
+
+    })}
+    {error && <p>{error}</p>}
+    </div>
   )
 }
 
