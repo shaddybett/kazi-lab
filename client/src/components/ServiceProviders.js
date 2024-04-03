@@ -32,9 +32,9 @@ function ServiceProviders() {
   },[]);
   return (
     <div>
-      {data.data.map((provider)=>(
-        <div>
-          
+      {data && data.map((provider)=>(
+        <div key={provider.id}>
+          {provider.first_name}
         </div>
       ))}
     </div>
