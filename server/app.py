@@ -204,10 +204,12 @@ def handle_service_request():
         response = make_response({'all_services': all_services_data})
         return response
     
-
+provider_parser = reqparse.RequestParser()
+provider_parser.add_argument('serviceId',type=int,required=True,help='Service Id required')
 class ServiceProvider(Resource):
     @jwt_required()
     def get(self):
+        args = provider_parser.parse_args()
         current_user = get_jwt_identity()
         user = User.query.filter_by(email=current_user).first()
         if not user:
@@ -229,11 +231,11 @@ class ServiceProvider(Resource):
         return {'people_associated_with_services': people_associated}, 200
 
 
-
+api.add_resource(ServiceProvider,'/service-provider')
 api.add_resource(Signup, '/signup')
 api.add_resource(Login, '/login')
 api.add_resource(Dashboard, '/dashboard')
-api.add_resource(ServiceProvider,'/service-provider')
+
 
 if __name__ == '__main__':
     app.run(debug=True, port=4000)
