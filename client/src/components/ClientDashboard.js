@@ -111,7 +111,8 @@ function ClientDashboard() {
                 <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
                   {service.name}
                 </h5>
-                <Button>
+                <Button >
+                  navigate('/providers')
                   Service Providers
                   <svg
                     className="-mr-1 ml-2 h-4 w-4"
