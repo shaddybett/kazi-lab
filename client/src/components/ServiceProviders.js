@@ -5,9 +5,16 @@ function ServiceProviders() {
   const [data,setData] = useState('')
   const [error,setError] = useState('')
   useEffect(()=>{
-    const response = async()=>{
+    const handleData = async()=>{
       try {
-        
+        const token = localStorage.getItem('token')
+        const response = await fetch('/service-provider',{
+          method:'GET',
+          headers:{
+            'Content-Type':'application/json',
+            'Authorization':`Beare ${token}`
+          }
+        })
       }
     }
   },[])
