@@ -37,11 +37,12 @@ function ServiceProviders() {
     <div>
       {loading && <p>Loading...</p>}
       {!loading && error && <p>{error}</p>}
-      {!loading && data.map(provider => (
+      {/* {!loading && data.map(provider => (
         <div key={provider.id}>
           {provider.first_name}
         </div>
-      ))}
+      ))} */}
+      {!loading && <p>{data.first_name}</p>}
     </div>
   );
 }
