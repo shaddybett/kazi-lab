@@ -211,25 +211,11 @@ class ServiceProvider(Resource):
     def get(self):
         args = provider_parser.parse_args()
         serviceId = args['serviceId']
-        current_user = get_jwt_identity()
-        user = User.query.filter_by(email=current_user).first()
-        if not user:
-            return {'error': 'User not found'}, 404
-
-        # Assuming you want to retrieve the names of people associated with services provided by the current user
-        services_provided = user.services
-        people_associated = []
-
-        for service in services_provided:
-            # Assuming you want to retrieve the names of people associated with each service
-            providers = service.providers
-            for provider in providers:
-                people_associated.append({
-                    'service_name': service.service_name,
-                    'provider_name': f'{provider.first_name} {provider.last_name}'
-                })
-
-        return {'people_associated_with_services': people_associated}, 200
+        provider = User.query.filter_by(id = serviceId).first()
+        if provider:
+            response = make_response({'first_name':provider.first_name})
+            return response
+        
 
 
 api.add_resource(ServiceProvider,'/service-provider')
