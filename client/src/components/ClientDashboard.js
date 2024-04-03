@@ -19,8 +19,7 @@ function ClientDashboard() {
       })
     }
     if (response.ok){
-      const responseData = await response.json()
-      set
+      navigate('/providers')
     }
   }
 

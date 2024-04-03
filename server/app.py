@@ -211,10 +211,16 @@ class ServiceProvider(Resource):
     def get(self):
         args = provider_parser.parse_args()
         serviceId = args['serviceId']
-        provider = User.query.filter_by(id = serviceId).first()
-        if provider:
-            response = make_response({'first_name':provider.first_name})
+        providerId =  ProviderService.query.filter_by(id = serviceId).first()
+        if providerId:
+            response = make_response({'provider_id':providerId.provider_id})
             return response
+
+class ProviderList(Resource):
+    @jwt_required()
+    def get(self):
+        
+
         
 
 
