@@ -220,7 +220,6 @@ class ServiceProvider(Resource):
             return response
 
 
-
 api.add_resource(Signup, '/signup')
 api.add_resource(Login, '/login')
 api.add_resource(Dashboard, '/dashboard')
