@@ -213,11 +213,26 @@ def handle_service_request():
 class ServiceProvider(Resource):
     @jwt_required()
     def get(self):
-        email = get_jwt_identity()
-        user =User.query.filter_by(email=email).first()
-        if user:
-            response = make_response({'first_name':user.first_name})
-            return response
+        current_user = get_jwt_identity()
+        user = User.query.filter_by(email=current_user).first()
+        if not user:
+            return {'error': 'User not found'}, 404
+
+        # Assuming you want to retrieve the names of people associated with services provided by the current user
+        services_provided = user.services
+        people_associated = []
+
+        for service in services_provided:
+            # Assuming you want to retrieve the names of people associated with each service
+            providers = service.providers
+            for provider in providers:
+                people_associated.append({
+                    'service_name': service.service_name,
+                    'provider_name': f'{provider.first_name} {provider.last_name}'
+                })
+
+        return {'people_associated_with_services': people_associated}, 200
+
 
 
 api.add_resource(Signup, '/signup')
