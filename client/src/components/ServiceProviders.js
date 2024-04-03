@@ -12,7 +12,7 @@ function ServiceProviders() {
           method:'GET',
           headers:{
             'Content-Type':'application/json',
-            'Authorization':`Beare ${token}`
+            'Authorization':`Bearer ${token}`
           }
         })
       }
