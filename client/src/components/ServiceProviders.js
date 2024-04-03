@@ -1,5 +1,5 @@
+
 import React from 'react'
-import { useEffect,useState } from 'react'
 
 function ServiceProviders() {
   const [data,setData] = useState('')
@@ -29,12 +29,14 @@ function ServiceProviders() {
       }
     }
     handleData();
-  },[])
+  },[]);
   return (
-    <div>{data && data.map((service,index)=>{
-
-    })}
-    {error && <p>{error}</p>}
+    <div>
+      {data.data.map((provider)=>(
+        <div>
+          
+        </div>
+      ))}
     </div>
   )
 }
