@@ -1,46 +1,49 @@
-
-import React from 'react'
-import { useEffect,useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 function ServiceProviders() {
-  const [data,setData] = useState('')
-  const [error,setError] = useState('')
-  useEffect(()=>{
-    const handleData = async()=>{
+  const [data, setData] = useState([]);
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
       try {
-        const token = localStorage.getItem('token')
-        const response = await fetch('/service-provider',{
-          method:'GET',
-          headers:{
-            'Content-Type':'application/json',
-            'Authorization':`Bearer ${token}`
+        const token = localStorage.getItem('token');
+        const response = await fetch('/service-provider', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
           }
-        })
-        if (response.ok){
-          const responseData = await response.json()
-          setData(responseData)
+        });
+        if (response.ok) {
+          const responseData = await response.json();
+          setData(responseData);
+        } else {
+          const errorMessage = await response.json();
+          setError(errorMessage.error);
         }
-        else{
-          const errorMessage = await response.json()
-          setError(errorMessage.error)
-        }
+      } catch (error) {
+        setError('An error occurred. Please try again later.');
+      } finally {
+        setLoading(false);
       }
-      catch (error){
-        setError('An error occurred. PLease try again later')
-      }
-    }
-    handleData();
-  },[]);
+    };
+
+    fetchData();
+  }, []);
+
   return (
     <div>
-      {data && data.map((provider)=>(
+      {loading && <p>Loading...</p>}
+      {!loading && error && <p>{error}</p>}
+      {!loading && data.map(provider => (
         <div key={provider.id}>
           {provider.first_name}
         </div>
       ))}
-      {error && <p>{error}</p>}
     </div>
-  )
+  );
 }
 
-export default ServiceProviders
+export default ServiceProviders;
