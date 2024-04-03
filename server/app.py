@@ -33,7 +33,6 @@ signup_parser = reqparse.RequestParser()
 signup_parser.add_argument('first_name', type=str, required=True, help='First name is required')
 signup_parser.add_argument('last_name', type=str, required=True, help='Last name is required')
 signup_parser.add_argument('email', type=str, required=True, help='Email is required')
-# signup_parser.add_argument('confirm_password', type=str, required=True, help='Confirm password is required')
 signup_parser.add_argument('password', type=str, required=True, help='Password is required')
 signup_parser.add_argument('selectedRole', type=int, required=True, help='Role is required')
 signup_parser.add_argument('service_name', type=str, required=False, help='service name is required')
@@ -46,16 +45,12 @@ class Signup(Resource):
         password = args['password']
         first_name = args['first_name']
         last_name = args['last_name']
-        # confirm_password = args['confirm_password'] 
         role_id = args['selectedRole']
         service_name = args['service_name']
 
         if not all([email, password, first_name, last_name, role_id]):
             response = make_response({'error': 'Fill in all forms'}, 401)
             return response
-        # if password != confirm_password:  # Check if password matches confirm password
-        #     response = make_response({'error': 'Passwords do not match ooo'}, 401)
-        #     return response
 
         if not password_pattern.match(password):
             response = make_response({'error': 'Password must meet the required criteria'}, 401)

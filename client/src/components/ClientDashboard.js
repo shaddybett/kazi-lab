@@ -10,8 +10,18 @@ function ClientDashboard() {
 
   const navigate = useNavigate();
 
-  const handleProviders = async(serviceId)=>{
-    
+  const handleProviders = async(service)=>{
+    try {
+      const token = localStorage.getItem('token')
+      const response = await fetch(`/service-provider?serviceId=${service.id}`,{
+        method:'GET',
+        Authorization:`Bearer ${token}`
+      })
+    }
+    if (response.ok){
+      const responseData = await response.json()
+      set
+    }
   }
 
   const handleLogout = () => {
