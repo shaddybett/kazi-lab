@@ -216,10 +216,12 @@ class ServiceProvider(Resource):
             response = make_response({'provider_id':providerId.provider_id})
             return response
 
+
 class ProviderList(Resource):
     @jwt_required()
     def get(self):
-        
+        id = get_jwt_identity()
+        user = User.query.filter_by(id=id).first
 
         
 
