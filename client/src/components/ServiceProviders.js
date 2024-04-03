@@ -15,6 +15,10 @@ function ServiceProviders() {
             'Authorization':`Bearer ${token}`
           }
         })
+        if (response.ok){
+          const responseData = await response.json()
+          setData(responseData)
+        }
       }
     }
   },[])
