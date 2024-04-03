@@ -1,48 +1,45 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 function ServiceProviders() {
-  const [data, setData] = useState([]);
-  const [error, setError] = useState('');
-  const [loading, setLoading] = useState(true);
+  const [providers, setProviders] = useState([]);
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchProviderDetails = async () => {
       try {
-        const token = localStorage.getItem('token');
-        const response = await fetch('/service-provider', {
-          method: 'GET',
+        // Fetch provider details using provider IDs
+        // Use fetch or any other method to send a request to the backend
+        // and retrieve the details of each provider
+        const response = await fetch('/provider-details', {
+          method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
-          }
+          },
+          body: JSON.stringify({ providerIds: [/* Array of provider IDs */] }),
         });
         if (response.ok) {
-          const responseData = await response.json();
-          setData(responseData);
+          const providerDetails = await response.json();
+          setProviders(providerDetails);
         } else {
-          const errorMessage = await response.json();
-          setError(errorMessage.error);
+          throw new Error('Failed to fetch provider details');
         }
       } catch (error) {
-        setError('An error occurred. Please try again later.');
-      } finally {
-        setLoading(false);
+        console.error('Error fetching provider details:', error);
       }
     };
 
-    fetchData();
+    fetchProviderDetails();
   }, []);
 
   return (
     <div>
-      {loading && <p>Loading...</p>}
-      {!loading && error && <p>{error}</p>}
-      {/* {!loading && data.map(provider => (
-        <div key={provider.id}>
-          {provider.first_name}
-        </div>
-      ))} */}
-      {!loading && <p>{data.first_name}</p>}
+      <h1>Providers</h1>
+      <ul>
+        {providers.map(provider => (
+          <li key={provider.id}>
+            {provider.first_name} {provider.last_name}
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }
