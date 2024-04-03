@@ -210,6 +210,7 @@ class ServiceProvider(Resource):
     @jwt_required()
     def get(self):
         args = provider_parser.parse_args()
+        serviceId = args['serviceId']
         current_user = get_jwt_identity()
         user = User.query.filter_by(email=current_user).first()
         if not user:
