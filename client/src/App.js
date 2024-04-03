@@ -8,7 +8,7 @@ import ClientDashboard from "./components/ClientDashboard";
 import ProviderDashboard from "./components/ProviderDashboard";
 import Profile from "./components/Profile";
 import ProviderDetails from "./components/ProviderDetails";
-
+import ServiceProviders from "./components/ServiceProviders";
 
 function App() {
   return (
