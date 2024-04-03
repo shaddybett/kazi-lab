@@ -1,12 +1,13 @@
 import React from "react";
 import { useEffect, useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Avatar, Dropdown, Navbar, Button, Card } from "flowbite-react";
 
 function ClientDashboard() {
   const [data, setData] = useState("");
   const [error, setError] = useState("");
   const [services, setServices] = useState("");
+  const navigate = useNavigate()
 
 
   const handleProviders = async (service) => {
