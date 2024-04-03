@@ -50,7 +50,7 @@ class Signup(Resource):
         role_id = args['selectedRole']
         service_name = args['service_name']
 
-        if not all([email, password, first_name, last_name, role_id]):
+        if not all([email, password, first_name, last_name, role_id,confirm_password]):
             response = make_response({'error': 'Fill in all forms'}, 401)
             return response
         if password != confirm_password:  # Check if password matches confirm password
