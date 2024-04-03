@@ -17,7 +17,10 @@ function ClientDashboard() {
         `/service-provider?serviceId=${service.id}`,
         {
           method: "GET",
-          Authorization: `Bearer ${token}`,
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
         }
       );
       if (response.ok) {
