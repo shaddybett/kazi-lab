@@ -37,6 +37,7 @@ function ServiceProviders() {
           {provider.first_name}
         </div>
       ))}
+      {error && <P>{error}</P>}
     </div>
   )
 }
