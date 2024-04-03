@@ -33,7 +33,6 @@ signup_parser = reqparse.RequestParser()
 signup_parser.add_argument('first_name', type=str, required=True, help='First name is required')
 signup_parser.add_argument('last_name', type=str, required=True, help='Last name is required')
 signup_parser.add_argument('email', type=str, required=True, help='Email is required')
-signup_parser.add_argument('confirm_password', type=str, required=True, help='Confirm password is required')
 signup_parser.add_argument('password', type=str, required=True, help='Password is required')
 signup_parser.add_argument('selectedRole', type=int, required=True, help='Role is required')
 signup_parser.add_argument('service_name', type=str, required=False, help='service name is required')
@@ -46,15 +45,11 @@ class Signup(Resource):
         password = args['password']
         first_name = args['first_name']
         last_name = args['last_name']
-        confirm_password = args['confirm_password'] 
         role_id = args['selectedRole']
         service_name = args['service_name']
 
         if not all([email, password, first_name, last_name, role_id]):
             response = make_response({'error': 'Fill in all forms'}, 401)
-            return response
-        if password != confirm_password:  # Check if password matches confirm password
-            response = make_response({'error': 'Passwords do not match'}, 401)
             return response
 
         if not password_pattern.match(password):
@@ -208,10 +203,53 @@ def handle_service_request():
 
         response = make_response({'all_services': all_services_data})
         return response
+    
+provider_parser = reqparse.RequestParser()
+provider_parser.add_argument('serviceId',type=int,required=True,help='Service Id required')
+class ServiceProvider(Resource):
+    @jwt_required()
+    def get(self):
+        args = provider_parser.parse_args()
+        serviceId = args['serviceId']
+        providerId =  ProviderService.query.filter_by(service_id = serviceId).all()
+        if providerId:
+            provider_ids = [provider.provider_id for provider in provider_ids]
+            response = make_response({'provider_ids':provider_ids})
+            return response
+        else:
+            response = make_response({'error':'No Service providers found for this service'},404)
+            return response
 
+
+provider_list = reqparse.RequestParser()
+provider_list.add_argument('provider_ids', type=int, required=True, help='Provider ID is required')
+
+class ProviderList(Resource):
+    @jwt_required()
+    def get(self):
+        args = provider_list.parse_args()
+        provider_ids = args['provider_ids']
+
+        # Query User table to get user details based on provider IDs
+        users = User.query.filter(User.id.in_(provider_ids)).all()
+
+        if users:
+            # Extract first names of users
+            first_names = [user.first_name for user in users]
+            response = make_response({'first_names': first_names})
+            return response
+        else:
+            # No users found for the given provider IDs
+            return {'error': 'No users found for the given provider IDs'}, 404
+
+        
+
+api.add_resource(ProviderList, '/provider-details')
+api.add_resource(ServiceProvider,'/service-provider')
 api.add_resource(Signup, '/signup')
 api.add_resource(Login, '/login')
 api.add_resource(Dashboard, '/dashboard')
+
 
 if __name__ == '__main__':
     app.run(debug=True, port=4000)

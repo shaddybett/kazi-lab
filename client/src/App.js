@@ -8,7 +8,7 @@ import ClientDashboard from "./components/ClientDashboard";
 import ProviderDashboard from "./components/ProviderDashboard";
 import Profile from "./components/Profile";
 import ProviderDetails from "./components/ProviderDetails";
-
+import ServiceProviders from "./components/ServiceProviders";
 
 function App() {
   return (
@@ -21,6 +21,7 @@ function App() {
       <Route path="/providerPage" element={<ProviderDashboard />} />
       <Route path="/profile" element={<Profile />} />
       <Route path="/provider-details" element={<ProviderDetails />} />
+      <Route path="/providers" element={<ServiceProviders/>} />
     </Routes>
   );
 }
