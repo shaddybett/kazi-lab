@@ -244,7 +244,7 @@ class ProviderList(Resource):
 
         
 
-
+api.add_resource(ProviderList, '/provider-details')
 api.add_resource(ServiceProvider,'/service-provider')
 api.add_resource(Signup, '/signup')
 api.add_resource(Login, '/login')

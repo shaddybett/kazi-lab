@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 
 function ServiceProviders() {
   const [providers, setProviders] = useState([]);
@@ -9,21 +9,25 @@ function ServiceProviders() {
         // Fetch provider details using provider IDs
         // Use fetch or any other method to send a request to the backend
         // and retrieve the details of each provider
-        const response = await fetch('/provider-details', {
-          method: 'POST',
+        const response = await fetch("/provider-details", {
+          method: "POST",
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
           },
-          body: JSON.stringify({ providerIds: [/* Array of provider IDs */] }),
+          body: JSON.stringify({
+            providerIds: [
+              /* Array of provider IDs */
+            ],
+          }),
         });
         if (response.ok) {
           const providerDetails = await response.json();
           setProviders(providerDetails);
         } else {
-          throw new Error('Failed to fetch provider details');
+          throw new Error("Failed to fetch provider details");
         }
       } catch (error) {
-        console.error('Error fetching provider details:', error);
+        console.error("Error fetching provider details:", error);
       }
     };
 
@@ -34,10 +38,8 @@ function ServiceProviders() {
     <div>
       <h1>Providers</h1>
       <ul>
-        {providers.map(provider => (
-          <li key={provider.id}>
-            {provider.first_name} {provider.last_name}
-          </li>
+        {providers.map((provider) => (
+          <li key={provider.id}>{provider.first_name}</li>
         ))}
       </ul>
     </div>
