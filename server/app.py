@@ -211,9 +211,13 @@ class ServiceProvider(Resource):
     def get(self):
         args = provider_parser.parse_args()
         serviceId = args['serviceId']
-        providerId =  ProviderService.query.filter_by(id = serviceId).first()
+        providerId =  ProviderService.query.filter_by(id = serviceId).all()
         if providerId:
-            response = make_response({'provider_id':providerId.provider_id})
+            provider_ids = [provider.provider_id for provider in provider_ids]
+            response = make_response({'provider_ids':provider_ids})
+            return response
+        else:
+            response = make_response({'error':'No Service providers found for this service'},404)
             return response
 
 
