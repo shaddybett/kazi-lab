@@ -227,10 +227,10 @@ class ServiceProvider(Resource):
     def get(self):
         args = provider_parser.parse_args()
         serviceId = args['serviceId']
-        providerIds = ProviderService.query.filter_by(service_id=serviceId).all()
+        provider_ids = ProviderService.query.filter_by(service_id=serviceId).all()
         
-        if providerIds:
-            provider_ids = [provider.provider_id for provider in providerIds]
+        if provider_ids:
+            provider_ids = [provider.provider_id for provider in provider_ids]
             response = make_response({'provider_ids': provider_ids})
             return response
         else:
