@@ -28,6 +28,7 @@ function ServiceProviders() {
         setError('An error occurred. PLease try again later')
       }
     }
+    handleData();
   },[])
   return (
     <div>{data && data.map((service,index)=>{
