@@ -214,8 +214,8 @@ class ServiceProvider(Resource):
     @jwt_required()
     def get(self):
         id = get_jwt_identity()
-        user = User.query.filter_by(id=id).first()
-        
+        user = ProviderService.query.filter_by(id=id).first()
+
 
 
 api.add_resource(Signup, '/signup')
