@@ -10,6 +10,10 @@ function ClientDashboard() {
 
   const navigate = useNavigate();
 
+  const handleProviders = async(serviceId)=>{
+    
+  }
+
   const handleLogout = () => {
     localStorage.removeItem("token");
     navigate("/login");
