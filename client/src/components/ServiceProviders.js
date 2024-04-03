@@ -5,7 +5,11 @@ function ServiceProviders() {
   const [data,setData] = useState('')
   const [error,setError] = useState('')
   useEffect(()=>{
-    
+    const response = async()=>{
+      try {
+        
+      }
+    }
   },[])
   return (
     <div>ServiceProviders</div>
