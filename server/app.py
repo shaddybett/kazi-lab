@@ -213,8 +213,8 @@ def handle_service_request():
 class ServiceProvider(Resource):
     @jwt_required()
     def get(self):
-        id = get_jwt_identity()
-        user =User.query.filter_by(id=id).first()
+        email = get_jwt_identity()
+        user =User.query.filter_by(email=email).first()
         if user:
             response = make_response({'first_name':user.first_name})
             return response
