@@ -1,6 +1,6 @@
 import React from "react";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate,Link } from "react-router-dom";
 import { Avatar, Dropdown, Navbar, Button, Card } from "flowbite-react";
 
 function ClientDashboard() {
@@ -112,8 +112,8 @@ function ClientDashboard() {
                   {service.name}
                 </h5>
                 <Button >
-                  navigate('/providers')
-                  Service Providers
+                  <Link to='/providers'>Service Providers</Link>
+                  
                   <svg
                     className="-mr-1 ml-2 h-4 w-4"
                     fill="currentColor"
