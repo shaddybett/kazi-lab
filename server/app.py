@@ -214,13 +214,17 @@ class ServiceProvider(Resource):
     @jwt_required()
     def get(self):
         id = get_jwt_identity()
-        user = ProviderService.query.filter_by(id=id).first()
+        user =User.query.filter_by(id=id).first()
+        if user:
+            response = make_response({'first_name':user.first_name})
+            return response
 
 
 
 api.add_resource(Signup, '/signup')
 api.add_resource(Login, '/login')
 api.add_resource(Dashboard, '/dashboard')
+api.add_resource(ServiceProvider,'/service-provider')
 
 if __name__ == '__main__':
     app.run(debug=True, port=4000)
