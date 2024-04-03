@@ -8,7 +8,7 @@ function ClientDashboard() {
   const [error, setError] = useState("");
   const [services, setServices] = useState("");
 
-  const navigate = useNavigate();
+
   const handleProviders = async (service) => {
     try {
       const token = localStorage.getItem("token");
@@ -23,54 +23,15 @@ function ClientDashboard() {
         }
       );
       if (response.ok) {
-        const responseData = await response.json();
-
-        // Handle successful response
-        console.log("Providers:", responseData.provider_ids);
-        navigate('/providers')
-        // Example: navigate to "/providers"
-      } else if (response.status === 404) {
-        // Handle 404 error
-        const errorMessage = await response.json();
-        console.error("Error:", errorMessage.error);
-        // Example: show error message to the user
+        navigate("/providers");
       } else {
-        // Handle other errors
-        console.error("Unexpected error occurred");
-        // Example: show a generic error message to the user
+        const errorMessage = await response.json();
+        setError(errorMessage.error);
       }
     } catch (error) {
-      console.error("An error occurred:", error);
-      // Example: show a generic error message to the user
+      setError("An error occurred please try again later");
     }
   };
-  
-
-  // const handleProviders = async (service) => {
-  //   try {
-  //     const token = localStorage.getItem("token");
-  //     const response = await fetch(
-  //       `/service-provider?serviceId=${service.id}`,
-  //       {
-  //         method: "GET",
-  //         headers: {
-  //           Authorization: `Bearer ${token}`,
-  //           "Content-Type": "application/json",
-  //         },
-  //       }
-  //     );
-  //     if (response.ok) {
-  //       navigate("/providers");
-  //     } else {
-  //       const errorMessage = await response.json();
-  //       setError(errorMessage.error);
-  //     }
-  //   } catch (error) {
-  //     setError("An error occurred please try again later");
-  //   }
-  // };
-
-
 
 
   const handleLogout = () => {
