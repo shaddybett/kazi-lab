@@ -24,7 +24,9 @@ function ServiceProviders() {
           setError(errorMessage)
         }
       }
-      
+      catch (error){
+        
+      }
     }
   },[])
   return (
