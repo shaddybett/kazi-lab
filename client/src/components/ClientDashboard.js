@@ -1,6 +1,6 @@
 import React from "react";
 import { useEffect, useState } from "react";
-import { useNavigate,Link } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { Avatar, Dropdown, Navbar, Button, Card } from "flowbite-react";
 
 function ClientDashboard() {
@@ -10,18 +10,26 @@ function ClientDashboard() {
 
   const navigate = useNavigate();
 
-  const handleProviders = async(service)=>{
+  const handleProviders = async (service) => {
     try {
-      const token = localStorage.getItem('token')
-      const response = await fetch(`/service-provider?serviceId=${service.id}`,{
-        method:'GET',
-        Authorization:`Bearer ${token}`
-      })
+      const token = localStorage.getItem("token");
+      const response = await fetch(
+        `/service-provider?serviceId=${service.id}`,
+        {
+          method: "GET",
+          Authorization: `Bearer ${token}`,
+        }
+      );
+      if (response.ok) {
+        navigate("/providers");
+      } else {
+        const errorMessage = await response.json();
+        setError(errorMessage.error);
+      }
+    } catch (error) {
+      setError("An error occurred please try again later");
     }
-    if (response.ok){
-      navigate('/providers')
-    }
-  }
+  };
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -124,21 +132,8 @@ function ClientDashboard() {
                 <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
                   {service.name}
                 </h5>
-                <Button >
-                  <Link to='/providers'>Service Providers</Link>
-                  
-                  <svg
-                    className="-mr-1 ml-2 h-4 w-4"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
+                <Button onClick={() => handleProviders(service)}>
+                  Service Providers
                 </Button>
               </Card>
             </div>

@@ -211,7 +211,7 @@ class ServiceProvider(Resource):
     def get(self):
         args = provider_parser.parse_args()
         serviceId = args['serviceId']
-        providerId =  ProviderService.query.filter_by(id = serviceId).all()
+        providerId =  ProviderService.query.filter_by(service_id = serviceId).all()
         if providerId:
             provider_ids = [provider.provider_id for provider in provider_ids]
             response = make_response({'provider_ids':provider_ids})
@@ -221,11 +221,26 @@ class ServiceProvider(Resource):
             return response
 
 
+provider_list = reqparse.RequestParser()
+provider_list.add_argument('provider_ids', type=int, required=True, help='Provider ID is required')
+
 class ProviderList(Resource):
     @jwt_required()
     def get(self):
-        id = get_jwt_identity()
-        user = User.query.filter_by(id=id).first
+        args = provider_list.parse_args()
+        provider_ids = args['provider_ids']
+
+        # Query User table to get user details based on provider IDs
+        users = User.query.filter(User.id.in_(provider_ids)).all()
+
+        if users:
+            # Extract first names of users
+            first_names = [user.first_name for user in users]
+            response = make_response({'first_names': first_names})
+            return response
+        else:
+            # No users found for the given provider IDs
+            return {'error': 'No users found for the given provider IDs'}, 404
 
         
 
