@@ -25,12 +25,14 @@ function ServiceProviders() {
         }
       }
       catch (error){
-        
+        setError('An error occurred. PLease try again later')
       }
     }
   },[])
   return (
-    <div>ServiceProviders</div>
+    <div>{data && data.map((service,index)=>{
+      
+    })}</div>
   )
 }
 
