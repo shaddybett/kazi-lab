@@ -223,7 +223,7 @@ def handle_service_request():
 #             return response
 
 provider_parser = reqparse.RequestParser()
-provider_parser.add_argument('serviceId', type=int, required=True, help='Service Id required')
+provider_parser.add_argument('service_id', type=int, required=True, help='Service Id required')
 
 class ServiceProvider(Resource):
     @jwt_required()
