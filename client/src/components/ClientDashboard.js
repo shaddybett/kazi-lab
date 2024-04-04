@@ -13,15 +13,16 @@ function ClientDashboard() {
   const handleProviders = async (service) => {
     try {
       const token = localStorage.getItem("token");
+      const queryParams = new URLSearchParams({serviceId: service.id}).toString();
       const response = await fetch(
-        '/service-provider',
+        `/service-provider?${queryParams}`,
         {
           method: "GET",
           headers: {
+            "Content-Type": "application/json", 
             Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-          body:JSON.stringify({'serviceId':service.id})
+           
+          }
         }
       );
       if (response.ok) {
