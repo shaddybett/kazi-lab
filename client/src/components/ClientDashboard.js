@@ -14,13 +14,14 @@ function ClientDashboard() {
     try {
       const token = localStorage.getItem("token");
       const response = await fetch(
-        `/service-provider?serviceId=${service.id}`,
+        '/service-provider',
         {
           method: "GET",
           headers: {
             Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
+          body:JSON.stringify({'serviceId':service.id})
         }
       );
       if (response.ok) {
@@ -136,7 +137,7 @@ function ClientDashboard() {
                 <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
                   {service.name}
                 </h5>
-                <Button onClick={() => handleProviders(service)}>
+                <Button onClick={()=>handleProviders(service)} >
                   Service Providers
                 </Button>
               </Card>
