@@ -250,7 +250,7 @@ id_parser.add_argument('service_id',type=int,required=True,help="Service id requ
 class ProviderIds(Resource):
     def get(self):
         args = id_parser.parse_args()
-        
+        service_id = args['service_id']
 
 
 api.add_resource(ProviderList, '/provider-details')
