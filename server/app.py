@@ -246,7 +246,7 @@ class ProviderList(Resource):
             return {'error': 'No users found for the given provider IDs'}, 404
 
 id_parser = reqparse.RequestParser()
-
+id_parser.add_argument('service_id',type=int,required=True,help="Service id required")
 class ProviderIds(Resource):
     def get(self):
 
