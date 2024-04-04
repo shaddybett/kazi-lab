@@ -253,19 +253,20 @@ class ProviderIds(Resource):
         service_id = args['service_id']
         provider_id = ProviderService.query.filter_by(service_id=service_id).all()
         if provider_id:
-            response = make_response({'provider_ids':provider_id.provider_id})
+            ids = [provider.provider_id for provider in provider_id]
+            response = make_response({'provider_ids':ids})
             return response
         else:
             response = make_response({'error':'Provider ids do not exist'},404)
             return response
 
-
+api.add_resource(ProviderIds,'/provider-ids')
 api.add_resource(ProviderList, '/provider-details')
 api.add_resource(ServiceProvider,'/service-provider')
 api.add_resource(Signup, '/signup')
 api.add_resource(Login, '/login')
 api.add_resource(Dashboard, '/dashboard')
-api.add_resource(ProviderIds,'provider-ids')
+
 
 
 if __name__ == '__main__':
