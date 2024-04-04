@@ -251,7 +251,13 @@ class ProviderIds(Resource):
     def get(self):
         args = id_parser.parse_args()
         service_id = args['service_id']
-        
+        provider_id = ProviderService.query.filter_by(service_id=service_id).all()
+        if provider_id:
+            response = make_response({'provider_ids':provider_id.provider_id})
+            return response
+        else:
+            response = make_response({'error':'Provider ids do not exist'},404)
+            return response
 
 
 api.add_resource(ProviderList, '/provider-details')
