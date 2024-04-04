@@ -245,22 +245,35 @@ class ProviderList(Resource):
             # No users found for the given provider IDs
             return {'error': 'No users found for the given provider IDs'}, 404
 
-id_parser = reqparse.RequestParser()
-id_parser.add_argument('service_id',type=int,required=True,help="Service id required")
+# id_parser = reqparse.RequestParser()
+# id_parser.add_argument('service_id',type=int,required=True,help="Service id required")
+# class ProviderIds(Resource):
+#     def get(self):
+#         args = id_parser.parse_args()
+#         service_id = args['service_id']
+#         provider_id = ProviderService.query.filter_by(service_id=service_id).all()
+#         if provider_id:
+#             ids = [provider.provider_id for provider in provider_id]
+#             response = make_response({'provider_ids':ids})
+#             return response
+#         else:
+#             response = make_response({'error':'Provider ids do not exist'},404)
+#             return response
+
 class ProviderIds(Resource):
-    def get(self):
-        args = id_parser.parse_args()
-        service_id = args['service_id']
-        provider_id = ProviderService.query.filter_by(service_id=service_id).all()
-        if provider_id:
-            ids = [provider.provider_id for provider in provider_id]
-            response = make_response({'provider_ids':ids})
+    def get(self, service_id):
+        provider_ids = ProviderService.query.filter_by(service_id=service_id).all()
+        if provider_ids:
+            ids = [provider.provider_id for provider in provider_ids]
+            response = make_response({'provider_ids': ids})
             return response
         else:
-            response = make_response({'error':'Provider ids do not exist'},404)
+            response = make_response({'error': 'Provider ids do not exist'}, 404)
             return response
 
-api.add_resource(ProviderIds,'/provider-ids')
+
+
+api.add_resource(ProviderIds,'/provider-ids/<int:service_id>')
 api.add_resource(ProviderList, '/provider-details')
 api.add_resource(ServiceProvider,'/service-provider')
 api.add_resource(Signup, '/signup')
