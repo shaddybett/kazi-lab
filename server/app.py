@@ -251,6 +251,7 @@ class ProviderIds(Resource):
     def get(self):
         args = id_parser.parse_args()
         service_id = args['service_id']
+        
 
 
 api.add_resource(ProviderList, '/provider-details')
