@@ -13,7 +13,7 @@ function ClientDashboard() {
   const handleProviders = async (service) => {
     try {
       const token = localStorage.getItem("token");
-      const queryParams = new URLSearchParams({serviceId: service.id}).toString();
+      const queryParams = new URLSearchParams({service_id: service.id}).toString();
       const response = await fetch(
         `/service-provider?${queryParams}`,
         {
