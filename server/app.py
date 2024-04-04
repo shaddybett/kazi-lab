@@ -204,24 +204,6 @@ def handle_service_request():
         response = make_response({'all_services': all_services_data})
         return response
 
-# provider_parser = reqparse.RequestParser()
-# provider_parser.add_argument('serviceId', type=int, required=True, help='Service Id required')
-
-# class ServiceProvider(Resource):
-#     @jwt_required()
-#     def get(self):
-#         args = provider_parser.parse_args()
-#         serviceId = args['serviceId']
-#         provider_ids = ProviderService.query.filter_by(service_id=serviceId).all()
-        
-#         if provider_ids:
-#             provider_ids = [provider.provider_id for provider in provider_ids]
-#             response = make_response({'provider_ids': provider_ids})
-#             return response
-#         else:
-#             response = make_response({'error': 'No Service providers found for this service'}, 404)
-#             return response
-
 provider_parser = reqparse.RequestParser()
 provider_parser.add_argument('service_id', type=int, required=True, help='Service Id required')
 
@@ -239,6 +221,24 @@ class ServiceProvider(Resource):
         else:
             response = make_response({'error': 'No Service providers found for this service'}, 404)
             return response
+
+# provider_parser = reqparse.RequestParser()
+# provider_parser.add_argument('service_id', type=int, required=True, help='Service Id required')
+
+# class ServiceProvider(Resource):
+#     @jwt_required()
+#     def get(self):
+#         args = provider_parser.parse_args()
+#         service_id = args['service_id']
+#         provider_ids = ProviderService.query.filter_by(service_id=service_id).all()
+        
+#         if provider_ids:
+#             provider_ids = [provider.provider_id for provider in provider_ids]
+#             response = make_response({'provider_ids': provider_ids})
+#             return response
+#         else:
+#             response = make_response({'error': 'No Service providers found for this service'}, 404)
+#             return response
 
 
 provider_list = reqparse.RequestParser()
