@@ -229,7 +229,7 @@ class ServiceProvider(Resource):
     @jwt_required()
     def get(self):
         args = provider_parser.parse_args()
-        service_id = args['serviceId']
+        service_id = args['service_id']
         provider_ids = ProviderService.query.filter_by(service_id=service_id).all()
         
         if provider_ids:
