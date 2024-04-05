@@ -228,7 +228,7 @@ provider_list = reqparse.RequestParser()
 provider_list.add_argument('provider_ids', type=int, required=True, help='Provider ID is required')
 
 class ProviderList(Resource):
-    @jwt_required()
+    # @jwt_required()
     def get(self):
         args = provider_list.parse_args()
         provider_ids = args['provider_ids']
