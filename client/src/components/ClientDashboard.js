@@ -97,6 +97,8 @@ function ClientDashboard() {
     fetchData();
     handleUser();
     handleProviders();
+    handleLogout();
+    handleProfile();
   }, []);
 
   return (
