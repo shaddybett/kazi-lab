@@ -228,7 +228,7 @@ provider_list = reqparse.RequestParser()
 provider_list.add_argument('provider_ids', type=int, required=True, help='Provider ID is required')
 
 class ProviderList(Resource):
-    @jwt_required()
+    # @jwt_required()
     def get(self):
         args = provider_list.parse_args()
         provider_ids = args['provider_ids']
@@ -238,27 +238,13 @@ class ProviderList(Resource):
 
         if users:
             # Extract first names of users
+            
             first_names = [user.first_name for user in users]
             response = make_response({'first_names': first_names})
             return response
         else:
             # No users found for the given provider IDs
             return {'error': 'No users found for the given provider IDs'}, 404
-
-# id_parser = reqparse.RequestParser()
-# id_parser.add_argument('service_id',type=int,required=True,help="Service id required")
-# class ProviderIds(Resource):
-#     def get(self):
-#         args = id_parser.parse_args()
-#         service_id = args['service_id']
-#         provider_id = ProviderService.query.filter_by(service_id=service_id).all()
-#         if provider_id:
-#             ids = [provider.provider_id for provider in provider_id]
-#             response = make_response({'provider_ids':ids})
-#             return response
-#         else:
-#             response = make_response({'error':'Provider ids do not exist'},404)
-#             return response
 
 class ProviderIds(Resource):
     def get(self, service_id):
@@ -272,9 +258,9 @@ class ProviderIds(Resource):
             return response
 
 
-
-api.add_resource(ProviderIds,'/provider-ids/<int:service_id>')
 api.add_resource(ProviderList, '/provider-details')
+api.add_resource(ProviderIds,'/provider-ids/<int:service_id>')
+
 api.add_resource(ServiceProvider,'/service-provider')
 api.add_resource(Signup, '/signup')
 api.add_resource(Login, '/login')
