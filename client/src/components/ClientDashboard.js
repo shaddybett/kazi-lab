@@ -84,7 +84,7 @@ function ClientDashboard() {
       }
       else{
         const errorMessage = await response.json()
-        setError(errorMessage)
+        setError(errorMessage.error || "An error occurred")
       }
     }
     catch(error){
@@ -94,6 +94,7 @@ function ClientDashboard() {
     }
 
     fetchData();
+    handleUser();
   }, []);
 
   return (
