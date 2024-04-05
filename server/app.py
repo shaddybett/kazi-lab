@@ -238,6 +238,7 @@ class ProviderList(Resource):
 
         if users:
             # Extract first names of users
+            
             first_names = [user.first_name for user in users]
             response = make_response({'first_names': first_names})
             return response
