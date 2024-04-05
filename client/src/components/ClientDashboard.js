@@ -231,7 +231,7 @@ function ClientDashboard() {
     try {
       const token = localStorage.getItem("token");
       // const queryParams = new URLSearchParams({ service_id: service.id }).toString();
-      const response = await fetch(`/provider-ids?${queryParams}`, {
+      const response = await fetch(`/provider-ids?${service.id}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
