@@ -257,9 +257,9 @@ class ProviderIds(Resource):
             return response
 
 
-
-api.add_resource(ProviderIds,'/provider-ids/<int:service_id>')
 api.add_resource(ProviderList, '/provider-details')
+api.add_resource(ProviderIds,'/provider-ids/<int:service_id>')
+
 api.add_resource(ServiceProvider,'/service-provider')
 api.add_resource(Signup, '/signup')
 api.add_resource(Login, '/login')

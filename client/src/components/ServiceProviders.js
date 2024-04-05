@@ -6,23 +6,16 @@ function ServiceProviders() {
   useEffect(() => {
     const fetchProviderDetails = async () => {
       try {
-        // Fetch provider details using provider IDs
-        // Use fetch or any other method to send a request to the backend
-        // and retrieve the details of each provider
+        // Fetch provider details using the /provider-details endpoint
         const response = await fetch("/provider-details", {
-          method: "POST",
+          method: "GET",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({
-            providerIds: [
-              /* Array of provider IDs */
-            ],
-          }),
         });
         if (response.ok) {
           const providerDetails = await response.json();
-          setProviders(providerDetails);
+          setProviders(providerDetails.first_names);
         } else {
           throw new Error("Failed to fetch provider details");
         }
@@ -38,8 +31,8 @@ function ServiceProviders() {
     <div>
       <h1>Providers</h1>
       <ul>
-        {providers.map((provider) => (
-          <li key={provider.id}>{provider.first_name}</li>
+        {providers.map((provider, index) => (
+          <li key={index}>{provider}</li>
         ))}
       </ul>
     </div>
@@ -47,5 +40,3 @@ function ServiceProviders() {
 }
 
 export default ServiceProviders;
-
-
