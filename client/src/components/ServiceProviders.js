@@ -7,6 +7,7 @@ function ServiceProviders() {
     const fetchProviderDetails = async () => {
       try {
         // Fetch provider details using the /provider-details endpoint
+        const token = localstorage.getItem("token")
         const response = await fetch("/provider-details", {
           method: "GET",
           headers: {
