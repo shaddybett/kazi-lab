@@ -9,41 +9,7 @@ function ClientDashboard() {
   const [providerIds, setProviderIds] = useState([]);
   const navigate = useNavigate();
 
-  const handleProviders = async (service) => {
-    try {
-      const token = localStorage.getItem("token");
-      const queryParams = new URLSearchParams({ service_id: service.id }).toString();
-      const response = await fetch(
-        `/provider-ids?${queryParams}`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      if (response.ok) {
-        const responseData = await response.json();
-        setProviderIds(responseData.provider_ids);
-        navigate("/providers");
-      } else {
-        const errorMessage = await response.json();
-        setError(errorMessage.error);
-      }
-    } catch (error) {
-      setError("An error occurred please try again later");
-    }
-  };
 
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    navigate("/login");
-  };
-
-  const handleProfile = () => {
-    navigate("/profile");
-  };
 
 
   useEffect(() => {
@@ -92,9 +58,45 @@ function ClientDashboard() {
 
     }
     }
+    const handleProviders = async (service) => {
+      try {
+        const token = localStorage.getItem("token");
+        const queryParams = new URLSearchParams({ service_id: service.id }).toString();
+        const response = await fetch(
+          `/provider-ids?${queryParams}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        if (response.ok) {
+          const responseData = await response.json();
+          setProviderIds(responseData.provider_ids);
+          navigate("/providers");
+        } else {
+          const errorMessage = await response.json();
+          setError(errorMessage.error);
+        }
+      } catch (error) {
+        setError("An error occurred please try again later");
+      }
+    };
+  
+    const handleLogout = () => {
+      localStorage.removeItem("token");
+      navigate("/login");
+    };
+  
+    const handleProfile = () => {
+      navigate("/profile");
+    };
 
     fetchData();
     handleUser();
+    handleProviders();
   }, []);
 
   return (
