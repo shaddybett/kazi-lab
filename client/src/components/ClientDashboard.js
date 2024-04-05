@@ -82,8 +82,13 @@ function ClientDashboard() {
         const responseData = await response.json()
         setData(responseData)
       }
+      else{
+        const errorMessage = await response.json()
+        setError(errorMessage)
+      }
     }
-    catch(){
+    catch(error){
+      setError('An error occurred. Please try again later')
 
     }
     }
