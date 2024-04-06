@@ -224,24 +224,24 @@ class ServiceProvider(Resource):
             return response
 
 
-# class ProviderList(Resource):
-#     @jwt_required()
-#     def get(self):
-#         provider_ids = request.args.getlist('provider_ids')
-#         if not provider_ids:
-#             return {'error': 'No provider IDs provided in the request'}, 400
+class ProviderList(Resource):
+    @jwt_required()
+    def get(self):
+        provider_ids = request.args.getlist('provider_ids')
+        if not provider_ids:
+            return {'error': 'No provider IDs provided in the request'}, 400
         
-#         # Query User table to get user details based on provider IDs
-#         users = User.query.filter(User.id.in_(provider_ids)).all()
+        # Query User table to get user details based on provider IDs
+        users = User.query.filter(User.id.in_(provider_ids)).all()
 
-#         if users:
-#             # Extract first names of users
-#             first_names = [user.first_name for user in users]
-#             response = make_response({'first_names': first_names})
-#             return response
-#         else:
-#             # No users found for the given provider IDs
-#             return {'error': 'No users found for the given provider IDs'}, 404
+        if users:
+            # Extract first names of users
+            first_names = [user.first_name for user in users]
+            response = make_response({'first_names': first_names})
+            return response
+        else:
+            # No users found for the given provider IDs
+            return {'error': 'No users found for the given provider IDs'}, 404
 
 
 class ProviderIds(Resource):
