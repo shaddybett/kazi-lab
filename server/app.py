@@ -226,7 +226,7 @@ class ServiceProvider(Resource):
 
 class ProviderList(Resource):
     @jwt_required()
-    def get(self):
+    def get(self, provider_ids):
         provider_ids = request.args.getlist('provider_ids')
         if not provider_ids:
             return {'error': 'No provider IDs provided in the request'}, 400
