@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Avatar, Dropdown, Navbar, Button, Card } from "flowbite-react";
@@ -7,7 +6,7 @@ function ClientDashboard() {
   const [data, setData] = useState({});
   const [error, setError] = useState("");
   const [services, setServices] = useState([]);
-  const [providers,setProviders] = usestate([])
+  const [providers, setProviders] = useState([]);
   const [providerIds, setProviderIds] = useState([]);
   const navigate = useNavigate();
 
@@ -37,12 +36,12 @@ function ClientDashboard() {
     const handleUser = async () => {
       try {
         const token = localStorage.getItem("token");
-        const response = await fetch('/dashboard', {
-          method: 'GET',
+        const response = await fetch("/dashboard", {
+          method: "GET",
           headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
-          }
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
         });
         if (response.ok) {
           const responseData = await response.json();
@@ -52,7 +51,7 @@ function ClientDashboard() {
           setError(errorMessage.error || "An error occurred");
         }
       } catch (error) {
-        setError('An error occurred. Please try again later');
+        setError("An error occurred. Please try again later");
       }
     };
 
@@ -72,8 +71,8 @@ function ClientDashboard() {
       });
       if (response.ok) {
         const responseData = await response.json();
-        const providerIds = responseData.provider_ids.join(',');
-        const userResponse = await fetch(`/provider-details?provider_ids=${providerIds}`, {
+        const providerIds = responseData.provider_ids.join(",");
+        const userResponse = await fetch(`/provider-details/${providerIds}`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -92,13 +91,14 @@ function ClientDashboard() {
         }
       } else {
         const errorMessage = await response.json();
-        setError(errorMessage.error || "An error occurred while fetching provider IDs");
+        setError(
+          errorMessage.error || "An error occurred while fetching provider IDs"
+        );
       }
     } catch (error) {
       setError("An error occurred please try again later");
     }
   };
-  
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -128,7 +128,9 @@ function ClientDashboard() {
               <span className="block text-sm">
                 {data.first_name} {data.last_name}
               </span>
-              <span className="block truncate text-sm font-medium">{data.email}</span>
+              <span className="block truncate text-sm font-medium">
+                {data.email}
+              </span>
             </Dropdown.Header>
             <Dropdown.Item onClick={handleProfile}>Profile</Dropdown.Item>
             <Dropdown.Divider />
@@ -137,7 +139,9 @@ function ClientDashboard() {
           <Navbar.Toggle />
         </div>
         <Navbar.Collapse>
-          <Navbar.Link href="/link1" active>Link 1</Navbar.Link>
+          <Navbar.Link href="/link1" active>
+            Link 1
+          </Navbar.Link>
           <Navbar.Link href="/link2">Link 2</Navbar.Link>
           <Navbar.Link href="/link3">Link 3</Navbar.Link>
           <Navbar.Link href="/link4">Link 4</Navbar.Link>
@@ -151,7 +155,9 @@ function ClientDashboard() {
               <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
                 {service.name}
               </h5>
-              <Button onClick={() => handleProviders(service)}>Service Providers</Button>
+              <Button onClick={() => handleProviders(service)}>
+                Service Providers
+              </Button>
             </Card>
           </div>
         ))}
