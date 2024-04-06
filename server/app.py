@@ -224,14 +224,14 @@ class ServiceProvider(Resource):
             return response
 
 
-provider_list = reqparse.RequestParser()
-provider_list.add_argument('provider_ids', type=int, required=True, help='Provider ID is required')
+# provider_list = reqparse.RequestParser()
+# provider_list.add_argument('provider_ids', type=int, required=True, help='Provider ID is required')
 
 class ProviderList(Resource):
-    # @jwt_required()
-    def get(self):
-        args = provider_list.parse_args()
-        provider_ids = args['provider_ids']
+    @jwt_required()
+    def get(self,provider_ids):
+        # args = provider_list.parse_args()
+        # provider_ids = args['provider_ids']
 
         # Query User table to get user details based on provider IDs
         users = User.query.filter(User.id.in_(provider_ids)).all()
@@ -257,8 +257,8 @@ class ProviderIds(Resource):
             response = make_response({'error': 'Provider ids do not exist'}, 404)
             return response
 
-
-api.add_resource(ProviderList, '/provider-details')
+api.add_resource(ProviderList, '/provider-details/<int:provider_ids>')
+# api.add_resource(ProviderList, '/provider-details')
 api.add_resource(ProviderIds,'/provider-ids/<int:service_id>')
 
 api.add_resource(ServiceProvider,'/service-provider')
