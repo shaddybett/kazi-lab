@@ -57,7 +57,7 @@ function ServiceProviders() {
         // const queryString = providerIds.map(id => `provider_ids[]=${id}`).join('&');
         
         // Fetch provider details using the /provider-details endpoint
-        const response = await fetch(`/provider-details/${providerIds.join(',')}`, {
+        const response = await fetch(`/provider-details?provider_ids=${providerIds.join(',')}`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",

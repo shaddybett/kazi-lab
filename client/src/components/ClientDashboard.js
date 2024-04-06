@@ -7,6 +7,7 @@ function ClientDashboard() {
   const [data, setData] = useState({});
   const [error, setError] = useState("");
   const [services, setServices] = useState([]);
+  const [providers,setProviders] = usestate([])
   const [providerIds, setProviderIds] = useState([]);
   const navigate = useNavigate();
 
@@ -62,7 +63,6 @@ function ClientDashboard() {
   const handleProviders = async (service) => {
     try {
       const token = localStorage.getItem("token");
-      // const queryParams = new URLSearchParams({ service_id: service.id }).toString();
       const response = await fetch(`/provider-ids/${service.id}`, {
         method: "GET",
         headers: {
@@ -72,16 +72,33 @@ function ClientDashboard() {
       });
       if (response.ok) {
         const responseData = await response.json();
-        setProviderIds(responseData.provider_ids);
-        navigate("/providers");
+        const providerIds = responseData.provider_ids.join(',');
+        const userResponse = await fetch(`/provider-details?provider_ids=${providerIds}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        if (userResponse.ok) {
+          const userData = await userResponse.json();
+          // Extracting provider names from the user data
+          const providerNames = userData.first_names;
+          setProviders(providerNames); // Set provider names in the state
+          navigate("/providers");
+        } else {
+          const errorMessage = await userResponse.json();
+          setError(errorMessage.error);
+        }
       } else {
         const errorMessage = await response.json();
-        setError(errorMessage.error);
+        setError(errorMessage.error || "An error occurred while fetching provider IDs");
       }
     } catch (error) {
       setError("An error occurred please try again later");
     }
   };
+  
 
   const handleLogout = () => {
     localStorage.removeItem("token");
