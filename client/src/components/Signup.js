@@ -50,6 +50,7 @@ function Signup() {
       });
       if (response.ok) {
         const responseData = await response.json();
+        console.log(responseData.role_id)
         if (responseData.role_id === 2) {
           navigate("/provider-details");
         } else {
