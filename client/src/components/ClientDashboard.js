@@ -144,8 +144,8 @@ function ClientDashboard() {
           </Navbar.Link>
           <Navbar.Link href="/link2"></Navbar.Link>
           <Navbar.Link href="/link3"></Navbar.Link>
-          <Navbar.Link href="/link4">Link 4</Navbar.Link>
-          <Navbar.Link href="/link5">Link 5</Navbar.Link>
+          <Navbar.Link href="/link4"></Navbar.Link>
+          <Navbar.Link href="/link5"></Navbar.Link>
         </Navbar.Collapse>
       </Navbar>
       <Card className="max-w-sm">
