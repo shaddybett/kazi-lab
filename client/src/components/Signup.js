@@ -86,39 +86,3 @@
 // }
 
 // export default Signup
-
-const handleSignup = async (e) => {
-  e.preventDefault();
-  if (password !== confirmPassword) {
-    setError('Passwords do not match');
-    return;
-  }
-  try {
-    const response = await fetch('/signup', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        first_name,
-        last_name,
-        email,
-        password,
-        selectedRole: mapRoleToId(selectedRole)
-      })
-    });
-    if (response.ok) {
-      const responseData = await response.json();
-      if (responseData.role_id === 2) {
-        navigate('/provider-details');
-      } else {
-        navigate('/login');
-      }
-    } else {
-      const errorMessage = await response.json();
-      setError(errorMessage.error);
-    }
-  } catch (error) {
-    setError('An error occurred, please try again later!');
-  }
-};
