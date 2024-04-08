@@ -8,7 +8,7 @@ function ServiceProviders() {
       try {
         // Retrieve the access token from localStorage
         const token = localStorage.getItem("token");
-        const providerIds = JSON.parse(localStorage.getItem("providerIds")).join(",");; // Assuming you have an array of provider IDs
+        const providerIds = JSON.parse(localStorage.getItem("providerIds")).join(","); // Assuming you have an array of provider IDs
         // const queryString = providerIds.map(id => `provider_ids[]=${id}`).join('&');
 
         // Fetch provider details using the /provider-details endpoint
