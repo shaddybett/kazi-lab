@@ -246,27 +246,21 @@ class ServiceProvider(Resource):
 class ProviderList(Resource):
     @jwt_required()
     def get(self):
-        provider_ids = request.args.get('provider_ids')  # Get the parameter from the query string
-        
-        if provider_ids is None:
-            return {'error': 'No provider IDs provided'}, 400  # Bad request if no provider IDs provided
-        
-        # Split the comma-separated string into a list of IDs
-        provider_ids_list = provider_ids.split(',')
+        provider_ids = request.args.get('provider_ids')
 
-        # Convert each ID to integer
+        if provider_ids is None:
+            return {'error': 'No provider IDs provided'}, 400
+
+        provider_ids_list = provider_ids.split(',')
         provider_ids_list = [int(provider_id) for provider_id in provider_ids_list]
 
-        # Query User table to get user details based on provider IDs
         users = User.query.filter(User.id.in_(provider_ids_list)).all()
 
         if users:
-            # Extract first names of users
             first_names = [user.first_name for user in users]
             response = make_response({'first_names': first_names})
             return response
         else:
-            # No users found for the given provider IDs
             return {'error': 'No users found for the given provider IDs'}, 404
 
 class ProviderIds(Resource):
