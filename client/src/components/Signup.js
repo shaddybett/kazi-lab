@@ -53,14 +53,17 @@ function Signup() {
         if (responseData.role_id === 2) {
           navigate("/provider-details");
         } else {
-          const errorMessage = await response.json();
-          setError(errorMessage.error);
+          navigate("/login");
         }
+      } else {
+        const errorMessage = await response.json();
+        setError(errorMessage.error);
       }
     } catch (error) {
       setError("An error occurred please try again later!");
     }
   };
+
   return (
     <div>
       <form onSubmit={handleSignup}>
