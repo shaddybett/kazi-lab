@@ -142,8 +142,8 @@ function ClientDashboard() {
           <Navbar.Link href="/link1" active>
             Link 1
           </Navbar.Link>
-          <Navbar.Link href="/link2">Link 2</Navbar.Link>
-          <Navbar.Link href="/link3">Link 3</Navbar.Link>
+          <Navbar.Link href="/link2"></Navbar.Link>
+          <Navbar.Link href="/link3"></Navbar.Link>
           <Navbar.Link href="/link4">Link 4</Navbar.Link>
           <Navbar.Link href="/link5">Link 5</Navbar.Link>
         </Navbar.Collapse>
