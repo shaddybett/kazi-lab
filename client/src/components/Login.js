@@ -27,7 +27,7 @@ function Login() {
         localStorage.setItem("id", data.id);
         if (data.role_id === 2) {
           console.log(data.role_id);
-          navigate("/provider-details");
+          navigate("/providerPage");
         } else {
           console.log("Redirecting to providerPage");
           navigate("/clientPage");
