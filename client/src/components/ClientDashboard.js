@@ -83,7 +83,7 @@ function ClientDashboard() {
           const userData = await userResponse.json();
          
           const providerNames = userData.first_names;
-          setProviders(providerNames); // Set provider names in the state
+          setProviders(providerNames); 
           navigate("/providers");
         } else {
           const errorMessage = await userResponse.json();
