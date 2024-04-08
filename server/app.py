@@ -244,7 +244,7 @@ class ServiceProvider(Resource):
 #             return {'error': 'No users found for the given provider IDs'}, 404
 
 class ProviderList(Resource):
-    # @jwt_required()
+    @jwt_required()
     def get(self,provider_ids):
         provider_ids = request.args.get('provider_ids')  # Get the parameter from the query string
         
