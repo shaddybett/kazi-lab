@@ -71,6 +71,7 @@ function ClientDashboard() {
       });
       if (response.ok) {
         const responseData = await response.json();
+        localStorage.setItem("providerIds", JSON.stringify(responseData.provider_ids));
         const providerIds = responseData.provider_ids.join(",");
         const userResponse = await fetch(`/provider-details?provider_ids=${providerIds}`, {
           method: "GET",
