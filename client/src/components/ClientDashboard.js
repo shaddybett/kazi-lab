@@ -72,7 +72,7 @@ function ClientDashboard() {
       if (response.ok) {
         const responseData = await response.json();
         const providerIds = responseData.provider_ids.join(",");
-        const userResponse = await fetch(`/provider-details/${providerIds}`, {
+        const userResponse = await fetch(`/provider-details?provider_ids=${providerIds}`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
