@@ -13,7 +13,7 @@ function ServiceProviders() {
 
         // Fetch provider details using the /provider-details endpoint
         const response = await fetch(
-          `/provider-details/${providerIds.join(",")}`,
+          `/provider-details?provider_ids=${providerIds.join(",")}`,
           {
             method: "GET",
             headers: {
