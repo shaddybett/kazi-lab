@@ -245,7 +245,7 @@ class ServiceProvider(Resource):
 
 class ProviderList(Resource):
     @jwt_required()
-    def get(self,provider_ids):
+    def get(self):
         provider_ids = request.args.get('provider_ids')  # Get the parameter from the query string
         
         if provider_ids is None:
