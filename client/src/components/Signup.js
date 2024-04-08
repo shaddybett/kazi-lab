@@ -109,7 +109,7 @@ const handleSignup = async (e) => {
     });
     if (response.ok) {
       const responseData = await response.json();
-      if (responseData.role_id === 2) { // Check if the role ID is 2 (service provider)
+      if (responseData.role_id === 2) {
         navigate('/provider-details');
       } else {
         navigate('/login');
