@@ -81,7 +81,7 @@ function ClientDashboard() {
         });
         if (userResponse.ok) {
           const userData = await userResponse.json();
-          // Extracting provider names from the user data
+         
           const providerNames = userData.first_names;
           setProviders(providerNames); // Set provider names in the state
           navigate("/providers");
