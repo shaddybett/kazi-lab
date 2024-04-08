@@ -280,7 +280,7 @@ class ProviderIds(Resource):
             response = make_response({'error': 'Provider ids do not exist'}, 404)
             return response
 
-api.add_resource(ProviderList, '/provider-details/<int:provider_ids>')
+api.add_resource(ProviderList, '/provider-details')
 # api.add_resource(ProviderList, '/provider-details')
 api.add_resource(ProviderIds,'/provider-ids/<int:service_id>')
 
