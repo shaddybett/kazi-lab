@@ -244,7 +244,7 @@ class ServiceProvider(Resource):
 #             return {'error': 'No users found for the given provider IDs'}, 404
 
 class ProviderList(Resource):
-    # @jwt_required()
+    @jwt_required()
     def get(self, provider_ids):
         # Split the comma-separated string into a list of IDs
         provider_ids_list = provider_ids.split(',')
