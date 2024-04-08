@@ -52,6 +52,7 @@ function Signup() {
         const responseData = await response.json();
         console.log(responseData.role_id)
         if (responseData.role_id === 2) {
+          console.log('here we go')
           navigate("/provider-details");
         } else {
           navigate("/login");
