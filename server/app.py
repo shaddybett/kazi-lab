@@ -204,6 +204,83 @@ class Dashboard(Resource):
 #         return response        
 
 
+@app.route('/service', methods=['GET', 'POST'])
+@jwt_required()
+def handle_service_request():
+    if request.method == 'GET':
+        try:
+            current_user = get_jwt_identity()
+            user = User.query.filter_by(email=current_user).first()
+            if not user:
+                return {'error': 'User not found'}, 404
+
+            all_services = Service.query.all()
+            all_services_data = [{'id': service.id, 'name': service.service_name} for service in all_services]
+
+            return {'all_services': all_services_data}, 200
+
+        except Exception as e:
+            return {'error': 'An error occurred while processing the request'}, 500
+
+    elif request.method == 'POST':
+        try:
+            current_user = get_jwt_identity()
+            user = User.query.filter_by(email=current_user).first()
+
+            if not user:
+                return {'error': 'User not found'}, 404
+
+            args = request.json
+            existing_services = args.get('existing_services', [])
+            new_service_name = args.get('service_name')
+
+            # Check if at least one service is provided
+            if not existing_services and not new_service_name:
+                return {'error': 'At least one service must be provided'}, 400
+
+            # Initialize a list to hold service IDs
+            service_ids = []
+
+            # Handle existing services selected from the dropdown
+            for service_id in existing_services:
+                service = Service.query.get(service_id)
+                if service:
+                    provider_service = ProviderService(
+                        provider_id=user.id,
+                        service_id=service_id
+                    )
+                    db.session.add(provider_service)
+                    service_ids.append(service_id)
+
+            # Handle new service entered manually
+            if new_service_name:
+                existing_service = Service.query.filter(func.lower(Service.service_name) == func.lower(new_service_name)).first()
+                if existing_service:
+                    return {'error': f'Service "{new_service_name}" already exists, kindly check the list provided'}, 401
+
+                new_service = Service(
+                    service_name=new_service_name,
+                    provider_id=user.id
+                )
+                db.session.add(new_service)
+                db.session.flush()
+                provider_service = ProviderService(
+                    provider_id=user.id,
+                    service_id=new_service.id
+                )
+                db.session.add(provider_service)
+                service_ids.append(new_service.id)
+
+            # Commit all changes to the database
+            db.session.commit()
+
+            return {'message': f'Services created and associated with {user.first_name} {user.last_name}', 'service_ids': service_ids}, 201
+
+        except Exception as e:
+            return {'error': 'An error occurred while processing the request'}, 500
+
+
+
 provider_parser = reqparse.RequestParser()
 provider_parser.add_argument('service_id', type=int, required=True, help='Service Id required')
 
