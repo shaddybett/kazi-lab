@@ -50,6 +50,8 @@ function Signup() {
       });
       if (response.ok) {
         const responseData = await response.json();
+        localStorage.setItem("token", responseData.access_token);
+        localStorage.setItem("id", responseData.id);
         console.log(responseData.role_id)
         if (responseData.role_id === 2) {
           console.log('here we go')
