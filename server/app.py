@@ -89,7 +89,8 @@ class Signup(Resource):
             return {'error': str(e)}, 500
 
         access_token = create_access_token(identity=email)
-        return {'message': 'Sign up successful', 'token': access_token, 'id': new_user.id}, 201
+        response = make_response({'message': 'Sign up successful', 'token': access_token, 'id': new_user.id,'role_id':new_user.role_id}, 201)
+        return response
 
 
 login_parse = reqparse.RequestParser()
