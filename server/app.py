@@ -46,40 +46,33 @@ class Signup(Resource):
         first_name = args['first_name']
         last_name = args['last_name']
         role_id = args['selectedRole']
-        service_name = args['service_name']
+        service_name = args.get('service_name')  # Use .get() to avoid KeyError if service_name is not provided
 
         if not all([email, password, first_name, last_name, role_id]):
-            response = make_response({'error': 'Fill in all forms'}, 401)
-            return response
+            return {'error': 'Fill in all forms'}, 400
 
         if not password_pattern.match(password):
-            response = make_response({'error': 'Password must meet the required criteria'}, 401)
-            return response
+            return {'error': 'Password must meet the required criteria'}, 400
 
         if not email_pattern.match(email):
-            response = make_response({'error': 'Invalid email format'}, 401)
-            return response
+            return {'error': 'Invalid email format'}, 400
 
         hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
 
         existing_user = User.query.filter_by(email=email).first()
         if existing_user:
-            response = make_response({'error': 'Email already exists'}, 401)
-            return response
-        else:
-            new_user = User(
-                first_name=first_name,
-                last_name=last_name,
-                email=email,
-                password=hashed_password,
-                role_id=role_id
-            )
-            db.session.add(new_user)
-            db.session.commit()
-            access_token=create_access_token(identity=email)
-            id = new_user.id
-            response = make_response({'message':'Sign up successful','token':access_token,'id':id},200)
-            return response
+            return {'error': 'Email already exists'}, 400
+
+        new_user = User(
+            first_name=first_name,
+            last_name=last_name,
+            email=email,
+            password=hashed_password,
+            role_id=role_id
+        )
+        db.session.add(new_user)
+
+        # Add provider service if role_id is 2 and service_name is provided
         if role_id == 2 and service_name:
             service = Service.query.filter(func.lower(Service.service_name) == func.lower(service_name)).first()
             if service:
@@ -88,13 +81,15 @@ class Signup(Resource):
                     service_id=service.id
                 )
                 db.session.add(provider_service)
-                db.session.commit()
 
-        user_id = new_user.id
-        role_id = new_user.role_id
+        try:
+            db.session.commit()
+        except Exception as e:
+            db.session.rollback()
+            return {'error': str(e)}, 500
 
-        response = make_response({'message': 'User Created Successfully', 'user_id': user_id, 'role_id':role_id}, 201)
-        return response
+        access_token = create_access_token(identity=email)
+        return {'message': 'Sign up successful', 'token': access_token, 'id': new_user.id}, 201
 
 
 login_parse = reqparse.RequestParser()
