@@ -46,26 +46,22 @@ class Signup(Resource):
         first_name = args['first_name']
         last_name = args['last_name']
         role_id = args['selectedRole']
-        service_name = args['service_name']
+        service_name = args.get('service_name')  # Use .get() to avoid KeyError if service_name is not provided
 
         if not all([email, password, first_name, last_name, role_id]):
-            response = make_response({'error': 'Fill in all forms'}, 401)
-            return response
+            return {'error': 'Fill in all forms'}, 400
 
         if not password_pattern.match(password):
-            response = make_response({'error': 'Password must meet the required criteria'}, 401)
-            return response
+            return {'error': 'Password must meet the required criteria'}, 400
 
         if not email_pattern.match(email):
-            response = make_response({'error': 'Invalid email format'}, 401)
-            return response
+            return {'error': 'Invalid email format'}, 400
 
         hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
 
         existing_user = User.query.filter_by(email=email).first()
         if existing_user:
-            response = make_response({'error': 'Email already exists'}, 401)
-            return response
+            return {'error': 'Email already exists'}, 400
 
         new_user = User(
             first_name=first_name,
@@ -74,10 +70,9 @@ class Signup(Resource):
             password=hashed_password,
             role_id=role_id
         )
-
         db.session.add(new_user)
-        db.session.commit()
 
+        # Add provider service if role_id is 2 and service_name is provided
         if role_id == 2 and service_name:
             service = Service.query.filter(func.lower(Service.service_name) == func.lower(service_name)).first()
             if service:
@@ -86,11 +81,15 @@ class Signup(Resource):
                     service_id=service.id
                 )
                 db.session.add(provider_service)
-                db.session.commit()
 
-        user_id = new_user.id
+        try:
+            db.session.commit()
+        except Exception as e:
+            db.session.rollback()
+            return {'error': str(e)}, 500
 
-        response = make_response({'message': 'User Created Successfully', 'user_id': user_id}, 201)
+        access_token = create_access_token(identity=email)
+        response = make_response({'message': 'Sign up successful', 'token': access_token, 'id': new_user.id,'role_id':new_user.role_id}, 201)
         return response
 
 
@@ -136,6 +135,74 @@ class Dashboard(Resource):
         else:
             response = make_response({'error': 'Error fetching user details'}, 404)
             return response
+
+# @app.route('/service', methods=['POST', 'GET'])
+# @jwt_required()
+# def handle_service_request():
+#     if request.method == 'POST':
+#         try:
+#             current_user = get_jwt_identity()
+#             user = User.query.filter_by(email=current_user).first()
+
+#             if not user:
+#                 abort(404, {'error': 'User not found'})
+
+#             args = request.json
+
+#             new_service_name = args.get('service_name')
+#             existing_services = args.get('existing_services', [])
+
+#             if not new_service_name and not existing_services:
+#                 abort(400, {'error': 'At least one service must be provided'})
+
+#             for service_id in existing_services:
+#                 service = Service.query.get(service_id)
+#                 if service:
+#                     provider_service = ProviderService(
+#                         provider_id=user.id,
+#                         service_id=service_id
+#                     )
+
+#                     db.session.add(provider_service)
+#                     db.session.commit()
+
+
+#             if new_service_name:
+#                 existing_service = Service.query.filter(func.lower(Service.service_name) == func.lower(new_service_name)).first()
+#                 if existing_service:
+#                     abort(401, {'error': f'Service "{new_service_name}" already exists, kindly check the list provided'})
+
+#                 new_service = Service(
+#                     service_name=new_service_name,
+#                     provider_id=user.id
+#                 )
+#                 db.session.add(new_service)
+#                 db.session.flush()
+#                 provider_service = ProviderService(
+#                     provider_id=user.id,
+#                     service_id=new_service.id
+#                 )
+#                 db.session.add(provider_service)
+
+#             db.session.commit()
+
+#             return {'message': f'Services created and associated with {user.first_name} {user.last_name}'}, 201
+
+#         except Exception as e:
+#             return {'error': 'An error occurred while processing the request'}, 500
+        
+#     elif request.method == 'GET':
+#         current_user = get_jwt_identity()
+#         user = User.query.filter_by(email=current_user).first()
+#         if not user:
+#             return {'error': 'User not found'}, 404
+
+#         all_services = Service.query.all()
+#         all_services_data = [{'id': service.id, 'name': service.service_name} for service in all_services]
+
+#         response = make_response({'all_services': all_services_data})
+#         return response
+        
 
 @app.route('/service', methods=['POST', 'GET'])
 @jwt_required()
@@ -202,7 +269,7 @@ def handle_service_request():
         all_services_data = [{'id': service.id, 'name': service.service_name} for service in all_services]
 
         response = make_response({'all_services': all_services_data})
-        return response
+        return response        
 
 
 provider_parser = reqparse.RequestParser()
@@ -224,29 +291,13 @@ class ServiceProvider(Resource):
             return response
 
 
-class ProviderList(Resource):
-    # @jwt_required()
-    def get(self, provider_ids):
-        if isinstance(provider_ids, int):
-            provider_ids = [provider_ids]
-        else:
-            provider_ids = provider_ids.split(',')
-        # Query User table to get user details based on provider IDs
-        users = User.query.filter(User.id.in_(provider_ids)).all()
-
-        if users:
-            # Extract first names of users
-            first_names = [user.first_name for user in users]
-            response = make_response({'first_names': first_names})
-            return response
-        else:
-            # No users found for the given provider IDs
-            return {'error': 'No users found for the given provider IDs'}, 404
-
 # class ProviderList(Resource):
 #     # @jwt_required()
-#     def get(self,provider_ids):
-#         provider_ids = request.args.getlist('provider_ids')
+#     def get(self, provider_ids):
+#         if isinstance(provider_ids, int):
+#             provider_ids = [provider_ids]
+#         else:
+#             provider_ids = provider_ids.split(',')
 #         # Query User table to get user details based on provider IDs
 #         users = User.query.filter(User.id.in_(provider_ids)).all()
 
@@ -259,8 +310,25 @@ class ProviderList(Resource):
 #             # No users found for the given provider IDs
 #             return {'error': 'No users found for the given provider IDs'}, 404
 
+class ProviderList(Resource):
+    @jwt_required()
+    def get(self):
+        provider_ids = request.args.get('provider_ids')
 
+        if provider_ids is None:
+            return {'error': 'No provider IDs provided'}, 400
 
+        provider_ids_list = provider_ids.split(',')
+        provider_ids_list = [int(provider_id) for provider_id in provider_ids_list]
+
+        users = User.query.filter(User.id.in_(provider_ids_list)).all()
+
+        if users:
+            first_names = [user.first_name for user in users]
+            response = make_response({'first_names': first_names})
+            return response
+        else:
+            return {'error': 'No users found for the given provider IDs'}, 404
 
 class ProviderIds(Resource):
     def get(self, service_id):
@@ -273,7 +341,7 @@ class ProviderIds(Resource):
             response = make_response({'error': 'Provider ids do not exist'}, 404)
             return response
 
-api.add_resource(ProviderList, '/provider-details/<int:provider_ids>')
+api.add_resource(ProviderList, '/provider-details')
 # api.add_resource(ProviderList, '/provider-details')
 api.add_resource(ProviderIds,'/provider-ids/<int:service_id>')
 

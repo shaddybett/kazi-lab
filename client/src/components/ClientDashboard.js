@@ -71,8 +71,9 @@ function ClientDashboard() {
       });
       if (response.ok) {
         const responseData = await response.json();
+        localStorage.setItem("providerIds", JSON.stringify(responseData.provider_ids));
         const providerIds = responseData.provider_ids.join(",");
-        const userResponse = await fetch(`/provider-details/${providerIds}`, {
+        const userResponse = await fetch(`/provider-details?provider_ids=${providerIds}`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -142,10 +143,10 @@ function ClientDashboard() {
           <Navbar.Link href="/link1" active>
             Link 1
           </Navbar.Link>
-          <Navbar.Link href="/link2">Link 2</Navbar.Link>
-          <Navbar.Link href="/link3">Link 3</Navbar.Link>
-          <Navbar.Link href="/link4">Link 4</Navbar.Link>
-          <Navbar.Link href="/link5">Link 5</Navbar.Link>
+          <Navbar.Link href="/link2"></Navbar.Link>
+          <Navbar.Link href="/link3"></Navbar.Link>
+          <Navbar.Link href="/link4"></Navbar.Link>
+          <Navbar.Link href="/link5"></Navbar.Link>
         </Navbar.Collapse>
       </Navbar>
       <Card className="max-w-sm">
