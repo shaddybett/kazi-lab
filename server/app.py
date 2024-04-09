@@ -66,17 +66,20 @@ class Signup(Resource):
         if existing_user:
             response = make_response({'error': 'Email already exists'}, 401)
             return response
+        else:
 
-        new_user = User(
-            first_name=first_name,
-            last_name=last_name,
-            email=email,
-            password=hashed_password,
-            role_id=role_id
-        )
+            new_user = User(
+                first_name=first_name,
+                last_name=last_name,
+                email=email,
+                password=hashed_password,
+                role_id=role_id
+            )
 
         db.session.add(new_user)
         db.session.commit()
+        
+
 
         if role_id == 2 and service_name:
             service = Service.query.filter(func.lower(Service.service_name) == func.lower(service_name)).first()
