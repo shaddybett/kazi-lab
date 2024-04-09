@@ -89,8 +89,9 @@ class Signup(Resource):
                 db.session.commit()
 
         user_id = new_user.id
+        role_id = new_user.role_id
 
-        response = make_response({'message': 'User Created Successfully', 'user_id': user_id}, 201)
+        response = make_response({'message': 'User Created Successfully', 'user_id': user_id, 'role_id':role_id}, 201)
         return response
 
 
