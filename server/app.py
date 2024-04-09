@@ -74,13 +74,12 @@ class Signup(Resource):
                 password=hashed_password,
                 role_id=role_id
             )
-
-        db.session.add(new_user)
-        db.session.commit()
-        access_token=create_access_token(identity=email)
-        id = new_user.id
-        response = make_response({'token':access_token,'id':id})
-        return response
+            db.session.add(new_user)
+            db.session.commit()
+            access_token=create_access_token(identity=email)
+            id = new_user.id
+            response = make_response({'message':'Sign up successful','token':access_token,'id':id},200)
+            return response
         if role_id == 2 and service_name:
             service = Service.query.filter(func.lower(Service.service_name) == func.lower(service_name)).first()
             if service:
