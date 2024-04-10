@@ -82,9 +82,9 @@ function ClientDashboard() {
         });
         if (userResponse.ok) {
           const userData = await userResponse.json();
-         
+
           const providerNames = userData.first_names;
-          setProviders(providerNames); 
+          setProviders(providerNames);
           navigate("/providers");
         } else {
           const errorMessage = await userResponse.json();
@@ -141,7 +141,7 @@ function ClientDashboard() {
         </div>
         <Navbar.Collapse>
           <Navbar.Link href="/link1" active>
-            Link 1
+
           </Navbar.Link>
           <Navbar.Link href="/link2"></Navbar.Link>
           <Navbar.Link href="/link3"></Navbar.Link>
@@ -163,18 +163,9 @@ function ClientDashboard() {
           </div>
         ))}
       </Card>
-      <div>
-        <h2>Provider IDs:</h2>
-        <ul>
-          {providerIds.map((id) => (
-            <li key={id}>{id}</li>
-          ))}
-        </ul>
-      </div>
       {error && <p>{error}</p>}
     </div>
   );
 }
 
 export default ClientDashboard;
-

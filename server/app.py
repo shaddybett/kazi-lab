@@ -1,5 +1,5 @@
 
-from flask import Flask, make_response, abort, request
+from flask import Flask, make_response, abort, request,jsonify
 from flask_restful import Api, Resource, reqparse
 from models import db, User, Service, ProviderService
 from flask_bcrypt import Bcrypt
@@ -134,95 +134,47 @@ class Dashboard(Resource):
             return response
         else:
             response = make_response({'error': 'Error fetching user details'}, 404)
-            return response
-
-# @app.route('/service', methods=['POST', 'GET'])
-# @jwt_required()
-# def handle_service_request():
-#     if request.method == 'POST':
-#         try:
-#             current_user = get_jwt_identity()
-#             user = User.query.filter_by(email=current_user).first()
-
-#             if not user:
-#                 abort(404, {'error': 'User not found'})
-
-#             args = request.json
-
-#             new_service_name = args.get('service_name')
-#             existing_services = args.get('existing_services', [])
-
-#             if not new_service_name and not existing_services:
-#                 abort(400, {'error': 'At least one service must be provided'})
-
-#             for service_id in existing_services:
-#                 service = Service.query.get(service_id)
-#                 if service:
-#                     provider_service = ProviderService(
-#                         provider_id=user.id,
-#                         service_id=service_id
-#                     )
-
-#                     db.session.add(provider_service)
-#                     db.session.commit()
+            return response      
 
 
-#             if new_service_name:
-#                 existing_service = Service.query.filter(func.lower(Service.service_name) == func.lower(new_service_name)).first()
-#                 if existing_service:
-#                     abort(401, {'error': f'Service "{new_service_name}" already exists, kindly check the list provided'})
-
-#                 new_service = Service(
-#                     service_name=new_service_name,
-#                     provider_id=user.id
-#                 )
-#                 db.session.add(new_service)
-#                 db.session.flush()
-#                 provider_service = ProviderService(
-#                     provider_id=user.id,
-#                     service_id=new_service.id
-#                 )
-#                 db.session.add(provider_service)
-
-#             db.session.commit()
-
-#             return {'message': f'Services created and associated with {user.first_name} {user.last_name}'}, 201
-
-#         except Exception as e:
-#             return {'error': 'An error occurred while processing the request'}, 500
-        
-#     elif request.method == 'GET':
-#         current_user = get_jwt_identity()
-#         user = User.query.filter_by(email=current_user).first()
-#         if not user:
-#             return {'error': 'User not found'}, 404
-
-#         all_services = Service.query.all()
-#         all_services_data = [{'id': service.id, 'name': service.service_name} for service in all_services]
-
-#         response = make_response({'all_services': all_services_data})
-#         return response
-        
-
-@app.route('/service', methods=['POST', 'GET'])
+@app.route('/service', methods=['GET', 'POST'])
 @jwt_required()
 def handle_service_request():
-    if request.method == 'POST':
+    if request.method == 'GET':
+        try:
+            current_user = get_jwt_identity()
+            user = User.query.filter_by(email=current_user).first()
+            if not user:
+                return {'error': 'User not found'}, 404
+
+            all_services = Service.query.all()
+            all_services_data = [{'id': service.id, 'name': service.service_name} for service in all_services]
+
+            return {'all_services': all_services_data}, 200
+
+        except Exception as e:
+            return {'error': 'An error occurred while processing the request'}, 500
+
+    elif request.method == 'POST':
         try:
             current_user = get_jwt_identity()
             user = User.query.filter_by(email=current_user).first()
 
             if not user:
-                abort(404, {'error': 'User not found'})
+                return {'error': 'User not found'}, 404
 
             args = request.json
-
-            new_service_name = args.get('service_name')
             existing_services = args.get('existing_services', [])
+            new_service_name = args.get('service_name')
 
-            if not new_service_name and not existing_services:
-                abort(400, {'error': 'At least one service must be provided'})
+            # Check if at least one service is provided
+            if not existing_services and not new_service_name:
+                return {'error': 'At least one service must be provided'}, 400
 
+            # Initialize a list to hold service IDs
+            service_ids = []
+
+            # Handle existing services selected from the dropdown
             for service_id in existing_services:
                 service = Service.query.get(service_id)
                 if service:
@@ -230,15 +182,14 @@ def handle_service_request():
                         provider_id=user.id,
                         service_id=service_id
                     )
-
                     db.session.add(provider_service)
-                    db.session.commit()
+                    service_ids.append(service_id)
 
-
+            # Handle new service entered manually
             if new_service_name:
                 existing_service = Service.query.filter(func.lower(Service.service_name) == func.lower(new_service_name)).first()
                 if existing_service:
-                    abort(401, {'error': f'Service "{new_service_name}" already exists, kindly check the list provided'})
+                    return {'error': f'Service "{new_service_name}" already exists, kindly check the list provided'}, 401
 
                 new_service = Service(
                     service_name=new_service_name,
@@ -251,25 +202,16 @@ def handle_service_request():
                     service_id=new_service.id
                 )
                 db.session.add(provider_service)
+                service_ids.append(new_service.id)
 
+            # Commit all changes to the database
             db.session.commit()
 
-            return {'message': f'Services created and associated with {user.first_name} {user.last_name}'}, 201
+            return {'message': f'Services created and associated with {user.first_name} {user.last_name}', 'service_ids': service_ids}, 201
 
         except Exception as e:
             return {'error': 'An error occurred while processing the request'}, 500
-        
-    elif request.method == 'GET':
-        current_user = get_jwt_identity()
-        user = User.query.filter_by(email=current_user).first()
-        if not user:
-            return {'error': 'User not found'}, 404
 
-        all_services = Service.query.all()
-        all_services_data = [{'id': service.id, 'name': service.service_name} for service in all_services]
-
-        response = make_response({'all_services': all_services_data})
-        return response        
 
 
 provider_parser = reqparse.RequestParser()
@@ -290,26 +232,6 @@ class ServiceProvider(Resource):
             response = make_response({'error': 'No Service providers found for this service'}, 404)
             return response
 
-
-# class ProviderList(Resource):
-#     # @jwt_required()
-#     def get(self, provider_ids):
-#         if isinstance(provider_ids, int):
-#             provider_ids = [provider_ids]
-#         else:
-#             provider_ids = provider_ids.split(',')
-#         # Query User table to get user details based on provider IDs
-#         users = User.query.filter(User.id.in_(provider_ids)).all()
-
-#         if users:
-#             # Extract first names of users
-#             first_names = [user.first_name for user in users]
-#             response = make_response({'first_names': first_names})
-#             return response
-#         else:
-#             # No users found for the given provider IDs
-#             return {'error': 'No users found for the given provider IDs'}, 404
-
 class ProviderList(Resource):
     @jwt_required()
     def get(self):
@@ -324,11 +246,12 @@ class ProviderList(Resource):
         users = User.query.filter(User.id.in_(provider_ids_list)).all()
 
         if users:
-            first_names = [user.first_name for user in users]
-            response = make_response({'first_names': first_names})
-            return response
+            # Format the user data as a list of dictionaries
+            user_details = [{'first_name': user.first_name, 'last_name': user.last_name} for user in users]
+            return jsonify(user_details)
         else:
             return {'error': 'No users found for the given provider IDs'}, 404
+
 
 class ProviderIds(Resource):
     def get(self, service_id):
@@ -342,7 +265,6 @@ class ProviderIds(Resource):
             return response
 
 api.add_resource(ProviderList, '/provider-details')
-# api.add_resource(ProviderList, '/provider-details')
 api.add_resource(ProviderIds,'/provider-ids/<int:service_id>')
 
 api.add_resource(ServiceProvider,'/service-provider')

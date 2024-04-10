@@ -24,7 +24,7 @@ function ServiceProviders() {
         );
         if (response.ok) {
           const providerDetails = await response.json();
-          setProviders(providerDetails.first_names);
+          setProviders(providerDetails);
         } else {
           throw new Error("Failed to fetch provider details");
         }
@@ -41,7 +41,9 @@ function ServiceProviders() {
       <h1>Providers</h1>
       <ul>
         {providers.map((provider, index) => (
-          <li key={index}>{provider}</li>
+          <li key={index}>
+            {provider.first_name} {provider.last_name}
+          </li>
         ))}
       </ul>
     </div>
