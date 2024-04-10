@@ -163,14 +163,6 @@ function ClientDashboard() {
           </div>
         ))}
       </Card>
-      <div>
-        <h2>Provider IDs:</h2>
-        <ul>
-          {providerIds.map((id) => (
-            <li key={id}>{id}</li>
-          ))}
-        </ul>
-      </div>
       {error && <p>{error}</p>}
     </div>
   );
