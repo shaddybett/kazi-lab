@@ -134,74 +134,7 @@ class Dashboard(Resource):
             return response
         else:
             response = make_response({'error': 'Error fetching user details'}, 404)
-            return response
-
-# @app.route('/service', methods=['POST', 'GET'])
-# @jwt_required()
-# def handle_service_request():
-#     if request.method == 'POST':
-#         try:
-#             current_user = get_jwt_identity()
-#             user = User.query.filter_by(email=current_user).first()
-
-#             if not user:
-#                 abort(404, {'error': 'User not found'})
-
-#             args = request.json
-
-#             new_service_name = args.get('service_name')
-#             existing_services = args.get('existing_services', [])
-
-#             if not new_service_name and not existing_services:
-#                 abort(400, {'error': 'At least one service must be provided'})
-
-#             for service_id in existing_services:
-#                 service = Service.query.get(service_id)
-#                 if service:
-#                     provider_service = ProviderService(
-#                         provider_id=user.id,
-#                         service_id=service_id
-#                     )
-
-#                     db.session.add(provider_service)
-#                     db.session.commit()
-
-
-#             if new_service_name:
-#                 existing_service = Service.query.filter(func.lower(Service.service_name) == func.lower(new_service_name)).first()
-#                 if existing_service:
-#                     abort(401, {'error': f'Service "{new_service_name}" already exists, kindly check the list provided'})
-
-#                 new_service = Service(
-#                     service_name=new_service_name,
-#                     provider_id=user.id
-#                 )
-#                 db.session.add(new_service)
-#                 db.session.flush()
-#                 provider_service = ProviderService(
-#                     provider_id=user.id,
-#                     service_id=new_service.id
-#                 )
-#                 db.session.add(provider_service)
-
-#             db.session.commit()
-
-#             return {'message': f'Services created and associated with {user.first_name} {user.last_name}'}, 201
-
-#         except Exception as e:
-#             return {'error': 'An error occurred while processing the request'}, 500
-        
-#     elif request.method == 'GET':
-#         current_user = get_jwt_identity()
-#         user = User.query.filter_by(email=current_user).first()
-#         if not user:
-#             return {'error': 'User not found'}, 404
-
-#         all_services = Service.query.all()
-#         all_services_data = [{'id': service.id, 'name': service.service_name} for service in all_services]
-
-#         response = make_response({'all_services': all_services_data})
-#         return response        
+            return response      
 
 
 @app.route('/service', methods=['GET', 'POST'])
