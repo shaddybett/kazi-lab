@@ -232,26 +232,6 @@ class ServiceProvider(Resource):
             response = make_response({'error': 'No Service providers found for this service'}, 404)
             return response
 
-
-# class ProviderList(Resource):
-#     # @jwt_required()
-#     def get(self, provider_ids):
-#         if isinstance(provider_ids, int):
-#             provider_ids = [provider_ids]
-#         else:
-#             provider_ids = provider_ids.split(',')
-#         # Query User table to get user details based on provider IDs
-#         users = User.query.filter(User.id.in_(provider_ids)).all()
-
-#         if users:
-#             # Extract first names of users
-#             first_names = [user.first_name for user in users]
-#             response = make_response({'first_names': first_names})
-#             return response
-#         else:
-#             # No users found for the given provider IDs
-#             return {'error': 'No users found for the given provider IDs'}, 404
-
 class ProviderList(Resource):
     @jwt_required()
     def get(self):
