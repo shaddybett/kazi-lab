@@ -41,7 +41,7 @@ function ServiceProviders() {
       <h1>Providers</h1>
       <ul>
         {providers.map((provider, index) => (
-          <li key={index}>{provider}</li>
+          <li key={index}>{provider.first_names} {provider.last_name}</li>
         ))}
       </ul>
     </div>
