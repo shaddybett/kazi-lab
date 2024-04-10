@@ -246,9 +246,7 @@ class ProviderList(Resource):
         users = User.query.filter(User.id.in_(provider_ids_list)).all()
 
         if users:
-            first_names = [user.first_name for user in users]
-            last_name = [user.last_name for user in users]
-            response = make_response({'first_names': first_names,'last_name':last_name})
+            response = make_response({'first_names': user.first_names,'last_name':user.last_name} for user in users)
             return response
         else:
             return {'error': 'No users found for the given provider IDs'}, 404
