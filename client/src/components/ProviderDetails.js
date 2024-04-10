@@ -7,48 +7,6 @@ function ProviderDetails() {
   const [newServiceName, setNewServiceName] = useState("");
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
-
-  // const handleForm = async (e) => {
-  //   e.preventDefault();
-  //   try {
-  //     const token = localStorage.getItem("token");
-  //     const id = localStorage.getItem("id");
-  //     const requestBody = {
-  //       user_id: id,
-  //     };
-
-  //     if (newServiceName.trim() !== "") {
-  //       requestBody.service_name = newServiceName;
-  //     } else if (selectedServices.length > 0) {
-  //       requestBody.existing_services = selectedServices.map(
-  //         (service) => service.id
-  //       );
-  //     } else {
-  //       setError("Please select at least one service.");
-  //       return;
-  //     }
-
-  //     const response = await fetch("/service", {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //         Authorization: `Bearer ${token}`,
-  //       },
-  //       body: JSON.stringify(requestBody),
-  //     });
-
-  //     if (response.ok) {
-  //       const responseData = await response.json();
-  //       setMessage(responseData.message);
-  //     } else {
-  //       const errors = await response.json();
-  //       setError(errors.error);
-  //     }
-  //   } catch (error) {
-  //     setError("An error occurred. Please try again later.");
-  //   }
-  // };
-  // Inside the handleForm function in ProviderDetails component
   const handleForm = async (e) => {
     e.preventDefault();
     try {
