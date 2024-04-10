@@ -1,5 +1,5 @@
 
-from flask import Flask, make_response, abort, request
+from flask import Flask, make_response, abort, request,jsonify
 from flask_restful import Api, Resource, reqparse
 from models import db, User, Service, ProviderService
 from flask_bcrypt import Bcrypt
@@ -246,10 +246,16 @@ class ProviderList(Resource):
         users = User.query.filter(User.id.in_(provider_ids_list)).all()
 
         if users:
-            response = make_response({'first_names': user.first_name,'last_name':user.last_name} for user in users)
-            return response
+            # Format the user data as a list of dictionaries
+            user_details = [{'first_name': user.first_name, 'last_name': user.last_name} for user in users]
+            return jsonify(user_details)
         else:
             return {'error': 'No users found for the given provider IDs'}, 404
+        # if users:
+        #     response = make_response({'first_names': user.first_name,'last_name':user.last_name} for user in users)
+        #     return response
+        # else:
+        #     return {'error': 'No users found for the given provider IDs'}, 404
 
 class ProviderIds(Resource):
     def get(self, service_id):
