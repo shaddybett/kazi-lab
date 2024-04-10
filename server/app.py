@@ -251,11 +251,7 @@ class ProviderList(Resource):
             return jsonify(user_details)
         else:
             return {'error': 'No users found for the given provider IDs'}, 404
-        # if users:
-        #     response = make_response({'first_names': user.first_name,'last_name':user.last_name} for user in users)
-        #     return response
-        # else:
-        #     return {'error': 'No users found for the given provider IDs'}, 404
+
 
 class ProviderIds(Resource):
     def get(self, service_id):
