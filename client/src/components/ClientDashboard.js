@@ -141,7 +141,7 @@ function ClientDashboard() {
         </div>
         <Navbar.Collapse>
           <Navbar.Link href="/link1" active>
-            Link 1
+            
           </Navbar.Link>
           <Navbar.Link href="/link2"></Navbar.Link>
           <Navbar.Link href="/link3"></Navbar.Link>
