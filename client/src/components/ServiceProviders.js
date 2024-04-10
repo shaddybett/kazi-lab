@@ -24,7 +24,7 @@ function ServiceProviders() {
         );
         if (response.ok) {
           const providerDetails = await response.json();
-          setProviders(providerDetails.first_names);
+          setProviders(providerDetails);
         } else {
           throw new Error("Failed to fetch provider details");
         }
