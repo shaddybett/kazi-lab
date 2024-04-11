@@ -116,6 +116,12 @@ function ProviderDetails() {
         <input type='text' placeholder='0722000000' value={number} onChange={(e)=>setNumber(e.target.value)} />
         <input type='text' placeholder='12345678' value={id} onChange={(e)=>setId(e.target.value)} />
         <input type='text' placeholder='mamaJunior' value={image} onChange={(e)=>setImage(e.target.value)} />
+        <div>
+          <div className="mb-2 block">
+            <Label htmlFor="file-upload" value="Upload file" />
+          </div>
+          <FileInput id="file-upload" />
+        </div>
 
       </form>
       <form onSubmit={handleForm}>
