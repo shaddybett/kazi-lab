@@ -7,6 +7,10 @@ function ProviderDetails() {
   const [newServiceName, setNewServiceName] = useState("");
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
+  const [middleName,setMiddleName] = useState('')
+  const [id,setId] = useState('')
+  const [number,setNumber] = useState('')
+  const [image,setImage] = useState('')
 
   const handleDetails = async(e)=>{
     e.preventDefault()
