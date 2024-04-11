@@ -25,7 +25,7 @@ function ProviderDetails() {
           Authorization:`Bearer ${token}`
         },
         body:JSON.stringify({middleName,id,number,image})
-      }),
+      })
       if (response.ok){
         const message = await  response.json()
         setMessage(message)
@@ -111,6 +111,9 @@ function ProviderDetails() {
 
   return (
     <div>
+      <form>
+        
+      </form>
       <form onSubmit={handleForm}>
         <Dropdown label="Services">
           {data &&
