@@ -37,6 +37,10 @@ signup_parser.add_argument('password', type=str, required=True, help='Password i
 signup_parser.add_argument('selectedRole', type=int, required=True, help='Role is required')
 signup_parser.add_argument('service_name', type=str, required=False, help='service name is required')
 
+signup_parser.add_argument('middleName', type=str, required=False)
+signup_parser.add_argument('id', type=str, required=False)
+signup_parser.add_argument('number', type=str, required=False)
+signup_parser.add_argument('image', type=str, required=False)
 
 class Signup(Resource):
     def post(self):
@@ -46,7 +50,12 @@ class Signup(Resource):
         first_name = args['first_name']
         last_name = args['last_name']
         role_id = args['selectedRole']
-        service_name = args.get('service_name')  # Use .get() to avoid KeyError if service_name is not provided
+        service_name = args.get('service_name')
+        middle_name = args.get('middleName')
+        national_id = args.get('id')
+        image = args.get('image')
+        phone_number = args.get('number')
+
 
         if not all([email, password, first_name, last_name, role_id]):
             return {'error': 'Fill in all forms'}, 400
@@ -68,7 +77,11 @@ class Signup(Resource):
             last_name=last_name,
             email=email,
             password=hashed_password,
-            role_id=role_id
+            role_id=role_id,
+            middle_name=middle_name,
+            national_id=national_id,
+            image=image,
+            phone_number=phone_number
         )
         db.session.add(new_user)
 
