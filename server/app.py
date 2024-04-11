@@ -37,6 +37,10 @@ signup_parser.add_argument('password', type=str, required=True, help='Password i
 signup_parser.add_argument('selectedRole', type=int, required=True, help='Role is required')
 signup_parser.add_argument('service_name', type=str, required=False, help='service name is required')
 
+signup_parser.add_argument('middle_name', type=str, required=False)
+signup_parser.add_argument('id', type=str, required=False)
+signup_parser.add_argument('number', type=str, required=False)
+signup_parser.add_argument('image', type=str, required=False)
 
 class Signup(Resource):
     def post(self):
