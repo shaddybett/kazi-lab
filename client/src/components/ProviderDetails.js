@@ -12,7 +12,7 @@ function ProviderDetails() {
   const [id,setId] = useState('')
   const [number,setNumber] = useState('')
   const [image,setImage] = useState('')
-  
+  const navigate = useNavigate()
 
   const handleDetails = async(e)=>{
     e.preventDefault()
