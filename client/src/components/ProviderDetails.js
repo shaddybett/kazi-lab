@@ -7,6 +7,14 @@ function ProviderDetails() {
   const [newServiceName, setNewServiceName] = useState("");
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
+
+  const handleDetails = async(e)=>{
+    e.preventDefault()
+    try{
+      const response = await fetch('/signup'),
+    }
+  }
+
   const handleForm = async (e) => {
     e.preventDefault();
     try {
