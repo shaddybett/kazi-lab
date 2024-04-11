@@ -12,7 +12,10 @@ function ProviderDetails() {
     e.preventDefault()
     try{
       const response = await fetch('/signup',{
-        method:'POST'
+        method:'POST',
+        headers:{
+          
+        }
       }),
     }
   }
