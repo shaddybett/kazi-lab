@@ -11,7 +11,9 @@ function ProviderDetails() {
   const handleDetails = async(e)=>{
     e.preventDefault()
     try{
-      const response = await fetch('/signup'),
+      const response = await fetch('/signup',{
+        method:'POST'
+      }),
     }
   }
 
