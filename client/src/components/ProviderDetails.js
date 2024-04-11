@@ -24,6 +24,9 @@ function ProviderDetails() {
         },
         body:JSON.stringify({middleName,id,number,image})
       }),
+      if (response.ok){
+        const message = await  response.json()
+      }
     }
   }
 
