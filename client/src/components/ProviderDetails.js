@@ -111,8 +111,9 @@ function ProviderDetails() {
 
   return (
     <div>
-      <form>
-        
+      <form onSubmit={handleDetails}>
+        <input type='text' placeholder='mamaJunior' value={middleName} onChange={(e)=>setMiddleName(e.target.value)} />
+
       </form>
       <form onSubmit={handleForm}>
         <Dropdown label="Services">
