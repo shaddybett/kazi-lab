@@ -22,7 +22,7 @@ function ProviderDetails() {
           'Content-Type':'application/json',
           Authorization:`Bearer ${token}`
         },
-        body:JSON.stringify({})
+        body:JSON.stringify({middleName,id,number,image})
       }),
     }
   }
