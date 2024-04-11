@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Dropdown } from "flowbite-react";
+import {useNavigate} from 'react-router-dom'
 
 function ProviderDetails() {
   const [data, setData] = useState([]);
@@ -11,6 +12,7 @@ function ProviderDetails() {
   const [id,setId] = useState('')
   const [number,setNumber] = useState('')
   const [image,setImage] = useState('')
+  
 
   const handleDetails = async(e)=>{
     e.preventDefault()
