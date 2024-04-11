@@ -36,6 +36,9 @@ function ProviderDetails() {
         setError(errorMessage)
       }
     }
+    catch(error){
+      setError("An error occurred.Please try again later.")
+    }
   }
 
   const handleForm = async (e) => {
