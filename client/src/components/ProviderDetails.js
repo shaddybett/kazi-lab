@@ -142,8 +142,9 @@ function ProviderDetails() {
           onChange={(e) => setNewServiceName(e.target.value)}
           placeholder="Enter new service name"
         />
-        <button type="submit">Add Services</button>
+        {/* <button type="submit">Add Services</button> */}
       </form>
+      <button type="submit">Submit</button>
       {error && <p>{error}</p>}
       {message && <p>{message}</p>}
     </div>
