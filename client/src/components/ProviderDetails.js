@@ -29,7 +29,7 @@ function ProviderDetails() {
       if (response.ok){
         const message = await  response.json()
         setMessage(message)
-        Navigate("")
+        navigate("/providerPage")
       }
       else
     }
