@@ -114,8 +114,8 @@ function ProviderDetails() {
       <form onSubmit={handleDetails}>
         <input type='text' placeholder='mamaJunior' value={middleName} onChange={(e)=>setMiddleName(e.target.value)} />
         <input type='text' placeholder='0722000000' value={number} onChange={(e)=>setNumber(e.target.value)} />
-        <input type='text' placeholder='mamaJunior' value={middleName} onChange={(e)=>setMiddleName(e.target.value)} />
-        <input type='text' placeholder='mamaJunior' value={middleName} onChange={(e)=>setMiddleName(e.target.value)} />
+        <input type='text' placeholder='12345678' value={id} onChange={(e)=>setId(e.target.value)} />
+        <input type='text' placeholder='mamaJunior' value={} onChange={(e)=>setMiddleName(e.target.value)} />
 
       </form>
       <form onSubmit={handleForm}>
