@@ -31,7 +31,10 @@ function ProviderDetails() {
         setMessage(message)
         navigate("/providerPage")
       }
-      else
+      else{
+        const errorMessage = await response.json()
+        setError(errorMessage)
+      }
     }
   }
 
