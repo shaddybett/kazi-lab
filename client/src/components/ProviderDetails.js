@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Dropdown } from "flowbite-react";
+import { Dropdown , FileInput, Label } from "flowbite-react";
 import {useNavigate} from 'react-router-dom'
 
 function ProviderDetails() {
