@@ -158,10 +158,9 @@
 
 // export default ProviderDetails;
 
-
 import React, { useEffect, useState } from "react";
 import { Dropdown, FileInput, Label } from "flowbite-react";
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from "react-router-dom";
 
 function ProviderDetails() {
   const [data, setData] = useState([]);
@@ -169,23 +168,26 @@ function ProviderDetails() {
   const [newServiceName, setNewServiceName] = useState("");
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
-  const [middleName, setMiddleName] = useState('');
-  const [id, setId] = useState('');
-  const [number, setNumber] = useState('');
+  const [middleName, setMiddleName] = useState("");
+  const [id, setId] = useState("");
+  const [number, setNumber] = useState("");
   const [image, setImage] = useState(null);
   const navigate = useNavigate();
-
 
   const handleProviderDetailsSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('/signup', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ middleName, id, number, image })
+      const formData = new FormData();
+      formData.append("middleName", middleName);
+      formData.append("id", id);
+      formData.append("number", number);
+      formData.append("image", image);
+
+      const response = await fetch("/signup", {
+        method: "POST",
+        body: formData,
       });
+
       if (response.ok) {
         const message = await response.json();
         setMessage(message);
@@ -268,12 +270,27 @@ function ProviderDetails() {
   return (
     <div>
       <form onSubmit={handleProviderDetailsSubmit}>
-        <input type='text' placeholder='Middle Name' value={middleName} onChange={(e) => setMiddleName(e.target.value)} />
-        <input type='text' placeholder='ID' value={id} onChange={(e) => setId(e.target.value)} />
-        <input type='text' placeholder='Number' value={number} onChange={(e) => setNumber(e.target.value)} />
+        <input
+          type="text"
+          placeholder="Middle Name"
+          value={middleName}
+          onChange={(e) => setMiddleName(e.target.value)}
+        />
+        <input
+          type="text"
+          placeholder="ID"
+          value={id}
+          onChange={(e) => setId(e.target.value)}
+        />
+        <input
+          type="text"
+          placeholder="Number"
+          value={number}
+          onChange={(e) => setNumber(e.target.value)}
+        />
         <div>
           <div className="mb-2 block">
-            <Label htmlFor="file-upload" value={image} />
+            <Label htmlFor="file-upload" value={image} onChange={(e)=>setImage(e.target.value)}/>
           </div>
           <FileInput id="file-upload" />
         </div>
@@ -314,6 +331,3 @@ function ProviderDetails() {
 }
 
 export default ProviderDetails;
-
-
-
