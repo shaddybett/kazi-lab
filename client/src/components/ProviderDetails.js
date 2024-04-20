@@ -141,7 +141,58 @@ function ProviderDetails() {
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
 
+  const handleServiceFormSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const token = localStorage.getItem("token");
+      const id = localStorage.getItem("id");
 
+      // Send request to add services
+      const serviceRequestBody = {
+        user_id: id,
+        existing_services: selectedServices.map((service) => service.id),
+        service_name: newServiceName.trim() !== "" ? newServiceName : null,
+      };
+      const serviceResponse = await fetch("/service", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(serviceRequestBody),
+      });
+
+      // Send request to add user details
+      const userDetailsRequestBody = {
+        middle_name: middle.trim() !== "" ? middle : null,
+        national_id: n_id.trim() !== "" ? n_id : null,
+        phone_number: number.trim() !== "" ? number : null,
+      };
+      const userDetailsResponse = await fetch("/signup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(userDetailsRequestBody),
+      });
+
+      // Check if both requests were successful
+      if (serviceResponse.ok && userDetailsResponse.ok) {
+        const serviceData = await serviceResponse.json();
+        const userDetailsData = await userDetailsResponse.json();
+        setMessage("Services and user details added successfully");
+        navigate("/providerPage");
+      } else {
+        // Handle errors if any request fails
+        const serviceErrors = await serviceResponse.json();
+        const userDetailsErrors = await userDetailsResponse.json();
+        setError(serviceErrors.error || userDetailsErrors.error);
+      }
+    } catch (error) {
+      setError(error.message || "An error occurred. Please try again later.");
+    }
+  };
 
   useEffect(() => {
     const fetchData = async () => {
