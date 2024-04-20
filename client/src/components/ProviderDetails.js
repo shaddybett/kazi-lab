@@ -39,11 +39,12 @@ function ProviderDetails() {
         const errors = await response.json();
         setError(errors.error);
       }
-      const requestBody = {
+      const detailsrequestBody = {
         middle_name: middle.trim() !== "" ? middle : null,
         national_id: n_id.trim () !== "" ? n_id : null,
         phone_number: number.trim () !== "" ? number : null,
       };
+      
     } catch (error) {
       setError("An error occurred. Please try again later.");
     }
