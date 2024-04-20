@@ -193,6 +193,7 @@ function ProviderDetails() {
       }
   
       setMessage("Services and user details added successfully");
+      navigate("/signup")
   
     } catch (error) {
       setError(error.message || "An error occurred. Please try again later.");
