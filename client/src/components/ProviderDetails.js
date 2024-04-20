@@ -22,6 +22,8 @@ function ProviderDetails() {
         user_id: id,
         existing_services: selectedServices.map((service) => service.id),
         service_name: newServiceName.trim() !== "" ? newServiceName : null,
+        middle_name:
+        
       };
       const response = await fetch("/service", {
         method: "POST",
