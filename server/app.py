@@ -39,7 +39,7 @@ signup_parser.add_argument('service_name', type=str, required=False, help='servi
 
 signup_parser.add_argument('middle_name', type=str, required=False)
 signup_parser.add_argument('national_id', type=str, required=False)
-signup_parser.add_argument('number', type=str, required=False)
+signup_parser.add_argument('phone_number', type=str, required=False)
 signup_parser.add_argument('image', type=str, required=False)
 
 class Signup(Resource):
@@ -54,7 +54,7 @@ class Signup(Resource):
         middle_name = args.get('middle_name')
         national_id = args.get('national_id')
         image = args.get('image')
-        phone_number = args.get('number')
+        phone_number = args.get('phone_number')
 
 
         if not all([email, password, first_name, last_name, role_id]):
