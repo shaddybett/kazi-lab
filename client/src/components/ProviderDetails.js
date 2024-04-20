@@ -22,7 +22,7 @@ function ProviderDetails() {
         user_id: id,
         existing_services: selectedServices.map((service) => service.id),
         service_name: newServiceName.trim() !== "" ? newServiceName : null,
-        middle_name:
+        middle_name: middle.trim() !== "" ? middle : null,
         national_id:
         phone_number:
       };
