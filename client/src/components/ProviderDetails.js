@@ -7,7 +7,8 @@ function ProviderDetails() {
   const [selectedServices, setSelectedServices] = useState([]);
   const [newServiceName, setNewServiceName] = useState("");
   const [error, setError] = useState("");
-  const [middle,setMiddle] = useState("");
+  const [middle,setMiddle] = useState(""); 
+  const [number,setNumber] = useState("");
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
 
