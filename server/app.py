@@ -37,8 +37,8 @@ signup_parser.add_argument('password', type=str, required=True, help='Password i
 signup_parser.add_argument('selectedRole', type=int, required=True, help='Role is required')
 signup_parser.add_argument('service_name', type=str, required=False, help='service name is required')
 
-signup_parser.add_argument('middleName', type=str, required=False)
-signup_parser.add_argument('id', type=str, required=False)
+signup_parser.add_argument('middle_name', type=str, required=False)
+signup_parser.add_argument('national_id', type=str, required=False)
 signup_parser.add_argument('number', type=str, required=False)
 signup_parser.add_argument('image', type=str, required=False)
 
@@ -51,8 +51,8 @@ class Signup(Resource):
         last_name = args['last_name']
         role_id = args['selectedRole']
         service_name = args.get('service_name')
-        middle_name = args.get('middleName')
-        national_id = args.get('id')
+        middle_name = args.get('middle_name')
+        national_id = args.get('national_id')
         image = args.get('image')
         phone_number = args.get('number')
 
