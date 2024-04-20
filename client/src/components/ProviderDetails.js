@@ -7,7 +7,7 @@
 //   const [selectedServices, setSelectedServices] = useState([]);
 //   const [newServiceName, setNewServiceName] = useState("");
 //   const [error, setError] = useState("");
-//   const [middle,setMiddle] = useState(""); 
+//   const [middle,setMiddle] = useState("");
 //   const [number,setNumber] = useState("");
 //   const [n_id,setN_id] = useState("")
 //   const [message, setMessage] = useState("");
@@ -34,7 +34,7 @@
 //       if (response.ok) {
 //         const responseData = await response.json();
 //         setMessage(responseData.message);
-        
+
 //       } else {
 //         const errors = await response.json();
 //         setError(errors.error);
@@ -44,7 +44,6 @@
 //         national_id: n_id.trim () !== "" ? n_id : null,
 //         phone_number: number.trim () !== "" ? number : null,
 //       };
-
 
 //     } catch (error) {
 //       setError("An error occurred. Please try again later.");
@@ -127,18 +126,8 @@
 
 // export default ProviderDetails;
 
-
-
-
-
-
-
-
-
-
-
 import React, { useEffect, useState } from "react";
-import { Dropdown} from "flowbite-react";
+import { Dropdown } from "flowbite-react";
 import { useNavigate } from "react-router-dom";
 
 function ProviderDetails() {
@@ -146,9 +135,9 @@ function ProviderDetails() {
   const [selectedServices, setSelectedServices] = useState([]);
   const [newServiceName, setNewServiceName] = useState("");
   const [error, setError] = useState("");
-  const [middle,setMiddle] = useState(""); 
-  const [number,setNumber] = useState("");
-  const [n_id,setN_id] = useState("")
+  const [middle, setMiddle] = useState("");
+  const [number, setNumber] = useState("");
+  const [n_id, setN_id] = useState("");
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
 
@@ -173,17 +162,16 @@ function ProviderDetails() {
       if (response.ok) {
         const responseData = await response.json();
         setMessage(responseData.message);
-        
       } else {
         const errors = await response.json();
         setError(errors.error);
       }
       const userDetailsRequestBody = {
         middle_name: middle.trim() !== "" ? middle : null,
-        national_id: n_id.trim () !== "" ? n_id : null,
-        phone_number: number.trim () !== "" ? number : null,
+        national_id: n_id.trim() !== "" ? n_id : null,
+        phone_number: number.trim() !== "" ? number : null,
       };
-          // Fetch request for user details
+      // Fetch request for user details
       const userDetailsResponse = await fetch("/signup", {
         method: "POST",
         headers: {
@@ -198,9 +186,7 @@ function ProviderDetails() {
       }
 
       setMessage("Services and user details added successfully");
-      navigate("/providerPage")
-
-
+      navigate("/providerPage");
     } catch (error) {
       setError("An error occurred. Please try again later.");
     }
@@ -261,29 +247,38 @@ function ProviderDetails() {
               </Dropdown.Item>
             ))}
         </Dropdown>
-        <input type="text" placeholder="mama Junior" value={middle} onChange={(e)=>setMiddle(e.target.value)} />
-        <input type="text" placeholder="0722000000" value={number} onChange={(e)=>setNumber(e.target.value)} />
-        <input type="text" placeholder="12345678" value={n_id} onChange={(e)=>setN_id(e.target.value)} />
         <input
           type="text"
           value={newServiceName}
           onChange={(e) => setNewServiceName(e.target.value)}
           placeholder="Enter new service name"
         />
+        <input
+          type="text"
+          placeholder="mama Junior"
+          value={middle}
+          onChange={(e) => setMiddle(e.target.value)}
+        />
+        <input
+          type="text"
+          placeholder="0722000000"
+          value={number}
+          onChange={(e) => setNumber(e.target.value)}
+        />
+        <input
+          type="text"
+          placeholder="12345678"
+          value={n_id}
+          onChange={(e) => setN_id(e.target.value)}
+        />
+
         <button type="submit">Add Services</button>
       </form>
 
       {error && <p>{error}</p>}
       {message && <p>{message}</p>}
-
     </div>
   );
 }
 
 export default ProviderDetails;
-
-
-
-
-
-
