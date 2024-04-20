@@ -7,9 +7,6 @@ function ProviderDetails() {
   const [selectedServices, setSelectedServices] = useState([]);
   const [newServiceName, setNewServiceName] = useState("");
   const [error, setError] = useState("");
-  const [middle,setMiddle] = useState(""); 
-  const [number,setNumber] = useState("");
-  const [n_id,setN_id] = useState("")
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
 
@@ -37,7 +34,7 @@ function ProviderDetails() {
       if (response.ok) {
         const responseData = await response.json();
         setMessage(responseData.message);
-        navigate("/providerPage")
+        
       } else {
         const errors = await response.json();
         setError(errors.error);
