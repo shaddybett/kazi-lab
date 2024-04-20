@@ -31,14 +31,14 @@
 //         },
 //         body: JSON.stringify(requestBody),
 //       });
-//       if (response.ok) {
-//         const responseData = await response.json();
-//         setMessage(responseData.message);
+// if (response.ok) {
+//   const responseData = await response.json();
+//   setMessage(responseData.message);
 
-//       } else {
-//         const errors = await response.json();
-//         setError(errors.error);
-//       }
+// } else {
+//   const errors = await response.json();
+//   setError(errors.error);
+// }
 //       const userDetailsRequestBody = {
 //         middle_name: middle.trim() !== "" ? middle : null,
 //         national_id: n_id.trim () !== "" ? n_id : null,
@@ -126,14 +126,8 @@
 
 // export default ProviderDetails;
 
-
-
-
-
-
-
 import React, { useEffect, useState } from "react";
-import { Dropdown} from "flowbite-react";
+import { Dropdown } from "flowbite-react";
 import { useNavigate } from "react-router-dom";
 
 function ProviderDetails() {
@@ -141,9 +135,9 @@ function ProviderDetails() {
   const [selectedServices, setSelectedServices] = useState([]);
   const [newServiceName, setNewServiceName] = useState("");
   const [error, setError] = useState("");
-  const [middle,setMiddle] = useState("");
-  const [number,setNumber] = useState("");
-  const [n_id,setN_id] = useState("")
+  const [middle, setMiddle] = useState("");
+  const [number, setNumber] = useState("");
+  const [n_id, setN_id] = useState("");
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
 
@@ -152,12 +146,12 @@ function ProviderDetails() {
     try {
       const token = localStorage.getItem("token");
       const id = localStorage.getItem("id");
-      const serviceRequestBody = {
+      const requestBody = {
         user_id: id,
         existing_services: selectedServices.map((service) => service.id),
         service_name: newServiceName.trim() !== "" ? newServiceName : null,
       };
-  
+
       // Fetch request for service-related data
       const serviceResponse = await fetch("/service", {
         method: "POST",
@@ -165,19 +159,19 @@ function ProviderDetails() {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify(serviceRequestBody),
+        body: JSON.stringify(requestBody),
       });
-  
+
       if (!serviceResponse.ok) {
         throw new Error("Failed to add services");
       }
-  
+
       const userDetailsRequestBody = {
         middle_name: middle.trim() !== "" ? middle : null,
         national_id: n_id.trim() !== "" ? n_id : null,
         phone_number: number.trim() !== "" ? number : null,
       };
-  
+
       // Fetch request for user details
       const userDetailsResponse = await fetch("/signup", {
         method: "POST",
@@ -187,19 +181,20 @@ function ProviderDetails() {
         },
         body: JSON.stringify(userDetailsRequestBody),
       });
-  
-      if (!userDetailsResponse.ok) {
-        throw new Error("Failed to update user details");
+      if (response.ok) {
+        const userDetailsResponse = await userDetailsResponse.json();
+        setMessage(userDetailsResponse.message);
+      } else {
+        const errors = await userDetailsResponse.json();
+        setError(errors.error);
       }
-  
+
       setMessage("Services and user details added successfully");
-      navigate("/signup")
-  
+      navigate("/providerPage");
     } catch (error) {
       setError(error.message || "An error occurred. Please try again later.");
     }
   };
-  
 
   useEffect(() => {
     const fetchData = async () => {
@@ -256,9 +251,24 @@ function ProviderDetails() {
               </Dropdown.Item>
             ))}
         </Dropdown>
-        <input type="text" placeholder="mama Junior" value={middle} onChange={(e)=>setMiddle(e.target.value)} />
-        <input type="text" placeholder="0722000000" value={number} onChange={(e)=>setNumber(e.target.value)} />
-        <input type="text" placeholder="12345678" value={n_id} onChange={(e)=>setN_id(e.target.value)} />
+        <input
+          type="text"
+          placeholder="mama Junior"
+          value={middle}
+          onChange={(e) => setMiddle(e.target.value)}
+        />
+        <input
+          type="text"
+          placeholder="0722000000"
+          value={number}
+          onChange={(e) => setNumber(e.target.value)}
+        />
+        <input
+          type="text"
+          placeholder="12345678"
+          value={n_id}
+          onChange={(e) => setN_id(e.target.value)}
+        />
         <input
           type="text"
           value={newServiceName}
@@ -270,7 +280,6 @@ function ProviderDetails() {
 
       {error && <p>{error}</p>}
       {message && <p>{message}</p>}
-
     </div>
   );
 }
