@@ -37,6 +37,7 @@ function ProviderDetails() {
       if (response.ok) {
         const responseData = await response.json();
         setMessage(responseData.message);
+        navigate("/providerPage")
       } else {
         const errors = await response.json();
         setError(errors.error);
