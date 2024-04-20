@@ -98,6 +98,7 @@ function ProviderDetails() {
               </Dropdown.Item>
             ))}
         </Dropdown>
+        <input type="text" placeholder="mama Junior" value={middle} onChange={(e)=>setMiddle(e.target.value)} />
 
         <input
           type="text"
