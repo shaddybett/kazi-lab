@@ -45,6 +45,7 @@ function ProviderDetails() {
         phone_number: number.trim () !== "" ? number : null,
       };
       
+
     } catch (error) {
       setError("An error occurred. Please try again later.");
     }
