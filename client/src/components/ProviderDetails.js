@@ -24,7 +24,7 @@ function ProviderDetails() {
         service_name: newServiceName.trim() !== "" ? newServiceName : null,
         middle_name: middle.trim() !== "" ? middle : null,
         national_id: n_id.trim () !== "" ? n_id : null,
-        phone_number:
+        phone_number: number.trim () !== "" ? number : null,
       };
       const response = await fetch("/service", {
         method: "POST",
