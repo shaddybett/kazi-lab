@@ -23,7 +23,7 @@ function ProviderDetails() {
         existing_services: selectedServices.map((service) => service.id),
         service_name: newServiceName.trim() !== "" ? newServiceName : null,
         middle_name: middle.trim() !== "" ? middle : null,
-        national_id:
+        national_id: n_id.trim () !== "" ? n_id : null,
         phone_number:
       };
       const response = await fetch("/service", {
