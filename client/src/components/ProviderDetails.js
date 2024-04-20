@@ -9,7 +9,7 @@ function ProviderDetails() {
   const [error, setError] = useState("");
   const [middle,setMiddle] = useState(""); 
   const [number,setNumber] = useState("");
-  const [id,setId] = useState("")
+  const [n_id,setN_id] = useState("")
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
 
