@@ -99,7 +99,7 @@ function ProviderDetails() {
             ))}
         </Dropdown>
         <input type="text" placeholder="mama Junior" value={middle} onChange={(e)=>setMiddle(e.target.value)} />
-
+        <input type="text" placeholder="0722000000" value={number} onChange={(e)=>setNumber(e.target.value)} />
         <input
           type="text"
           value={newServiceName}
