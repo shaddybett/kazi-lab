@@ -141,60 +141,7 @@ function ProviderDetails() {
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
 
-  const handleServiceFormSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const token = localStorage.getItem("token");
-      const id = localStorage.getItem("id");
-      const requestBody = {
-        user_id: id,
-        existing_services: selectedServices.map((service) => service.id),
-        service_name: newServiceName.trim() !== "" ? newServiceName : null,
-      };
 
-      // Fetch request for service-related data
-      const serviceResponse = await fetch("/service", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(requestBody),
-      });
-
-      if (!serviceResponse.ok) {
-        throw new Error("Failed to add services");
-      }
-
-      const userDetailsRequestBody = {
-        middle_name: middle.trim() !== "" ? middle : null,
-        national_id: n_id.trim() !== "" ? n_id : null,
-        phone_number: number.trim() !== "" ? number : null,
-      };
-
-      // Fetch request for user details
-      const userDetailsResponse = await fetch("/signup", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(userDetailsRequestBody),
-      });
-      if (response.ok) {
-        const userDetailsResponse = await userDetailsResponse.json();
-        setMessage(userDetailsResponse.message);
-      } else {
-        const errors = await userDetailsResponse.json();
-        setError(errors.error);
-      }
-
-      setMessage("Services and user details added successfully");
-      navigate("/providerPage");
-    } catch (error) {
-      setError(error.message || "An error occurred. Please try again later.");
-    }
-  };
 
   useEffect(() => {
     const fetchData = async () => {
