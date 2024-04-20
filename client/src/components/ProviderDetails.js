@@ -7,6 +7,9 @@ function ProviderDetails() {
   const [selectedServices, setSelectedServices] = useState([]);
   const [newServiceName, setNewServiceName] = useState("");
   const [error, setError] = useState("");
+  const [middle,setMiddle] = useState(""); 
+  const [number,setNumber] = useState("");
+  const [n_id,setN_id] = useState("")
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
 
@@ -19,6 +22,9 @@ function ProviderDetails() {
         user_id: id,
         existing_services: selectedServices.map((service) => service.id),
         service_name: newServiceName.trim() !== "" ? newServiceName : null,
+        middle_name: middle.trim() !== "" ? middle : null,
+        national_id: n_id.trim () !== "" ? n_id : null,
+        phone_number: number.trim () !== "" ? number : null,
       };
       const response = await fetch("/service", {
         method: "POST",
@@ -96,6 +102,9 @@ function ProviderDetails() {
               </Dropdown.Item>
             ))}
         </Dropdown>
+        <input type="text" placeholder="mama Junior" value={middle} onChange={(e)=>setMiddle(e.target.value)} />
+        <input type="text" placeholder="0722000000" value={number} onChange={(e)=>setNumber(e.target.value)} />
+        <input type="text" placeholder="12345678" value={n_id} onChange={(e)=>setN_id(e.target.value)} />
         <input
           type="text"
           value={newServiceName}
