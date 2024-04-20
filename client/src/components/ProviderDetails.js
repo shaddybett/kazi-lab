@@ -133,6 +133,10 @@
 
 
 
+
+
+
+
 import React, { useEffect, useState } from "react";
 import { Dropdown} from "flowbite-react";
 import { useNavigate } from "react-router-dom";
@@ -153,34 +157,34 @@ function ProviderDetails() {
     try {
       const token = localStorage.getItem("token");
       const id = localStorage.getItem("id");
-      const serviceRequestBody = {
+      const requestBody = {
         user_id: id,
         existing_services: selectedServices.map((service) => service.id),
         service_name: newServiceName.trim() !== "" ? newServiceName : null,
       };
-  
-      // Fetch request for service-related data
-      const serviceResponse = await fetch("/service", {
+      const response = await fetch("/service", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify(serviceRequestBody),
+        body: JSON.stringify(requestBody),
       });
-  
-      if (!serviceResponse.ok) {
-        throw new Error("Failed to add services");
+      if (response.ok) {
+        const responseData = await response.json();
+        setMessage(responseData.message);
+        
+      } else {
+        const errors = await response.json();
+        setError(errors.error);
       }
-  
       const userDetailsRequestBody = {
         middle_name: middle.trim() !== "" ? middle : null,
-        national_id: n_id.trim() !== "" ? n_id : null,
-        phone_number: number.trim() !== "" ? number : null,
+        national_id: n_id.trim () !== "" ? n_id : null,
+        phone_number: number.trim () !== "" ? number : null,
       };
-  
-      // Fetch request for user details
-      const userDetailsResponse = await fetch("/userdetails", {
+          // Fetch request for user details
+      const userDetailsResponse = await fetch("/signup", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -188,18 +192,55 @@ function ProviderDetails() {
         },
         body: JSON.stringify(userDetailsRequestBody),
       });
-  
+
       if (!userDetailsResponse.ok) {
         throw new Error("Failed to update user details");
       }
-  
+
       setMessage("Services and user details added successfully");
-  
+      navigate("/providerPage")
+
+
     } catch (error) {
-      setError(error.message || "An error occurred. Please try again later.");
+      setError("An error occurred. Please try again later.");
     }
   };
-  
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const response = await fetch("/service", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        if (response.ok) {
+          const responseData = await response.json();
+          setData(responseData.all_services);
+        } else {
+          const errorMessage = await response.json();
+          setError(errorMessage.error);
+        }
+      } catch (error) {
+        setError("An error occurred. Please try again later.");
+      }
+    };
+    fetchData();
+  }, []);
+
+  const handleCheckboxChange = (service) => {
+    const selectedIndex = selectedServices.findIndex(
+      (s) => s.id === service.id
+    );
+    if (selectedIndex === -1) {
+      setSelectedServices([...selectedServices, service]);
+    } else {
+      setSelectedServices(selectedServices.filter((s) => s.id !== service.id));
+    }
+  };
 
   return (
     <div>
@@ -240,6 +281,8 @@ function ProviderDetails() {
 }
 
 export default ProviderDetails;
+
+
 
 
 

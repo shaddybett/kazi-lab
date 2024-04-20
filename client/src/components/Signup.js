@@ -11,9 +11,6 @@ function Signup() {
   const [last_name, setLastName] = useState("");
   const [error, setError] = useState("");
   const [selectedRole, setSelectedRole] = useState("");
-  const [middle,setMiddle] = useState(""); 
-  const [number,setNumber] = useState("");
-  const [n_id,setN_id] = useState("")
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
 
