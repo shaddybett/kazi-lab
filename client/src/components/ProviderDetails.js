@@ -167,16 +167,15 @@ function ProviderDetails() {
         setError(errors.error);
       }
       const userDetailsRequestBody = {
-        middle_name: middle.trim() !== "" ? middle : null,
-        national_id: n_id.trim() !== "" ? n_id : null,
-        phone_number: number.trim() !== "" ? number : null,
+        middleName: middle.trim() !== "" ? middle : null,
+        id: n_id.trim() !== "" ? n_id : null,
+        number: number.trim() !== "" ? number : null,
       };
       // Fetch request for user details
       const userDetailsResponse = await fetch("/signup", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(userDetailsRequestBody),
       });
