@@ -106,7 +106,7 @@ function ProviderDetails() {
       </form>
 
       {error && <p>{error}</p>}
-      {message && typeof message === 'object' ? <p>{message.error}</p> : <p>{message}</p>}
+      {message && <p>{message}</p>}
 
     </div>
   );
