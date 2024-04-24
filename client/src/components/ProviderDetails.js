@@ -152,7 +152,7 @@ function ProviderDetails() {
         },
         body: JSON.stringify(serviceRequestBody),
       });
-
+      const userData = localStorage.getItem("userData")
       const userDetailsResponse = await fetch("/signup", {
         method: "POST",
         headers: {
