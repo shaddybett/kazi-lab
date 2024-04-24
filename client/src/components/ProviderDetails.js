@@ -208,6 +208,14 @@ function ProviderDetails() {
       }
     };
     fetchData();
+    const userData = JSON.parse(localStorage.getItem("userData"));
+    if (userData) {
+      setFirst_name(userData.first_name || "");
+      setLast_name(userData.last_name || "");
+      setEmail(userData.email || "");
+      setPassword(userData.password || "");
+      setSelectedRole(userData.role_id || "");
+    }
   }, []);
 
   const handleCheckboxChange = (service) => {
