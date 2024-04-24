@@ -127,7 +127,7 @@ function ProviderDetails() {
   const [newServiceName, setNewServiceName] = useState("");
   const [error, setError] = useState("");
   const [middle_name, setMiddle] = useState("");
-  const [phone_numbernumber, setNumber] = useState("");
+  const [phone_number, setNumber] = useState("");
   const [national_id, setN_id] = useState("");
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
@@ -157,7 +157,7 @@ function ProviderDetails() {
       // const userDetailsRequestBody = {
       //   middle_name: middle_name.trim() !== "" ? middle_name : null,
       //   national_id: national_id.trim() !== "" ? national_id : null,
-      //   phone_number: phone_numbernumber.trim() !== "" ? phone_numbernumber : null,
+      //   phone_number: phone_number.trim() !== "" ? phone_number : null,
       // };
       const userDetailsResponse = await fetch("/signup", {
         method: "POST",
@@ -249,7 +249,7 @@ function ProviderDetails() {
         <input
           type="text"
           placeholder="0722000000"
-          value={phone_numbernumber}
+          value={phone_number}
           onChange={(e) => setNumber(e.target.value)}
         />
         <input
