@@ -137,6 +137,7 @@ function ProviderDetails() {
     try {
       const token = localStorage.getItem("token");
       const id = localStorage.getItem("id");
+      const userData = JSON.parse(localStorage.getItem("userData"));
       
 
       // Send request to add services
@@ -153,8 +154,6 @@ function ProviderDetails() {
         },
         body: JSON.stringify(serviceRequestBody),
       });
-      const userData = localStorage.getItem("userData")
-      console.log(userData)
       const userDetailsResponse = await fetch("/signup", {
         method: "POST",
         headers: {
