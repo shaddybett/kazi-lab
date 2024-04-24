@@ -126,9 +126,9 @@ function ProviderDetails() {
   const [selectedServices, setSelectedServices] = useState([]);
   const [newServiceName, setNewServiceName] = useState("");
   const [error, setError] = useState("");
-  const [middle, setMiddle] = useState("");
-  const [number, setNumber] = useState("");
-  const [n_id, setN_id] = useState("");
+  const [middle_name, setMiddle] = useState("");
+  const [phone_number, setNumber] = useState("");
+  const [national_id, setN_id] = useState("");
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
 
@@ -137,6 +137,11 @@ function ProviderDetails() {
     try {
       const token = localStorage.getItem("token");
       const id = localStorage.getItem("id");
+      const role_id = localStorage.getItem("role_id")
+      const userData = JSON.parse(localStorage.getItem("userData"));
+      console.log(userData)
+      console.log(role_id)
+      
 
       // Send request to add services
       const serviceRequestBody = {
@@ -152,20 +157,13 @@ function ProviderDetails() {
         },
         body: JSON.stringify(serviceRequestBody),
       });
-
-      // Send request to add user details
-      const userDetailsRequestBody = {
-        middle_name: middle.trim() !== "" ? middle : null,
-        national_id: n_id.trim() !== "" ? n_id : null,
-        phone_number: number.trim() !== "" ? number : null,
-      };
       const userDetailsResponse = await fetch("/signup", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify(userDetailsRequestBody),
+        body: JSON.stringify({...userData,selectedRole:role_id,middle_name,national_id,phone_number}),
       });
 
       // Check if both requests were successful
@@ -208,8 +206,8 @@ function ProviderDetails() {
       }
     };
     fetchData();
-  }, []);
 
+  }, []);
   const handleCheckboxChange = (service) => {
     const selectedIndex = selectedServices.findIndex(
       (s) => s.id === service.id
@@ -223,6 +221,7 @@ function ProviderDetails() {
 
   return (
     <div>
+      
       <form onSubmit={handleServiceFormSubmit}>
         <Dropdown label="Services">
           {data &&
@@ -240,22 +239,23 @@ function ProviderDetails() {
               </Dropdown.Item>
             ))}
         </Dropdown>
+        
         <input
           type="text"
           placeholder="mama Junior"
-          value={middle}
+          value={middle_name}
           onChange={(e) => setMiddle(e.target.value)}
         />
         <input
           type="text"
           placeholder="0722000000"
-          value={number}
+          value={phone_number}
           onChange={(e) => setNumber(e.target.value)}
         />
         <input
           type="text"
           placeholder="12345678"
-          value={n_id}
+          value={national_id}
           onChange={(e) => setN_id(e.target.value)}
         />
         <input
