@@ -236,7 +236,7 @@ function ProviderDetails() {
               </Dropdown.Item>
             ))}
         </Dropdown>
-        <p>Hello {first_name}</p>
+        <p>Hello {userData.first_name} {last_name}</p>
         <input
           type="text"
           placeholder="mama Junior"
