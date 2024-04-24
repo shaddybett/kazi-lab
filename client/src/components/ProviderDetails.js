@@ -153,12 +153,6 @@ function ProviderDetails() {
         body: JSON.stringify(serviceRequestBody),
       });
 
-      // Send request to add user details
-      // const userDetailsRequestBody = {
-      //   middle_name: middle_name.trim() !== "" ? middle_name : null,
-      //   national_id: national_id.trim() !== "" ? national_id : null,
-      //   phone_number: phone_number.trim() !== "" ? phone_number : null,
-      // };
       const userDetailsResponse = await fetch("/signup", {
         method: "POST",
         headers: {
