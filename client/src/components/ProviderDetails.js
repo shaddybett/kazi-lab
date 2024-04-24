@@ -138,6 +138,7 @@ function ProviderDetails() {
       const token = localStorage.getItem("token");
       const id = localStorage.getItem("id");
       const userData = JSON.parse(localStorage.getItem("userData"));
+      console.log(userData)
       
 
       // Send request to add services
