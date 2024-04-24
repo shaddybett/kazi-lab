@@ -34,6 +34,10 @@ function Signup() {
       setError("Passwords do not match");
       return;
     }
+    localStorage.setItem(
+      "userData",
+      JSON.stringify({ first_name, last_name, email, password, role_id })
+    );
     try {
       const response = await fetch("/signup", {
         method: "POST",
@@ -52,9 +56,9 @@ function Signup() {
         const responseData = await response.json();
         localStorage.setItem("token", responseData.token);
         localStorage.setItem("id", responseData.id);
-        console.log(responseData.role_id)
+        console.log(responseData.role_id);
         if (responseData.role_id === 2) {
-          console.log('here we go')
+          console.log("here we go");
           navigate("/provider-details");
         } else {
           navigate("/login");
