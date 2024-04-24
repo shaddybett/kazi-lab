@@ -165,7 +165,7 @@ function ProviderDetails() {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify(userDetailsRequestBody),
+        body: JSON.stringify({middle_name,}),
       });
 
       // Check if both requests were successful
