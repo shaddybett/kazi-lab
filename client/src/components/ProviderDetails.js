@@ -126,9 +126,9 @@ function ProviderDetails() {
   const [selectedServices, setSelectedServices] = useState([]);
   const [newServiceName, setNewServiceName] = useState("");
   const [error, setError] = useState("");
-  const [middle, setMiddle] = useState("");
-  const [number, setNumber] = useState("");
-  const [n_id, setN_id] = useState("");
+  const [middle_name, setMiddle] = useState("");
+  const [phone_numbernumber, setNumber] = useState("");
+  const [national_id, setN_id] = useState("");
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
 
@@ -155,9 +155,9 @@ function ProviderDetails() {
 
       // Send request to add user details
       const userDetailsRequestBody = {
-        middle_name: middle.trim() !== "" ? middle : null,
-        national_id: n_id.trim() !== "" ? n_id : null,
-        phone_number: number.trim() !== "" ? number : null,
+        middle_name: middle_name.trim() !== "" ? middle_name : null,
+        national_id: national_id.trim() !== "" ? national_id : null,
+        phone_number: phone_numbernumber.trim() !== "" ? phone_numbernumber : null,
       };
       const userDetailsResponse = await fetch("/signup", {
         method: "POST",
@@ -243,19 +243,19 @@ function ProviderDetails() {
         <input
           type="text"
           placeholder="mama Junior"
-          value={middle}
+          value={middle_name}
           onChange={(e) => setMiddle(e.target.value)}
         />
         <input
           type="text"
           placeholder="0722000000"
-          value={number}
+          value={phone_numbernumber}
           onChange={(e) => setNumber(e.target.value)}
         />
         <input
           type="text"
           placeholder="12345678"
-          value={n_id}
+          value={national_id}
           onChange={(e) => setN_id(e.target.value)}
         />
         <input
