@@ -34,7 +34,6 @@ function Signup() {
       setError("Passwords do not match");
       return;
     }
-    localStorage.setItem("userData", { first_name, last_name, email, password, selectedRole });
 
     try {
       const response = await fetch("/signup", {
