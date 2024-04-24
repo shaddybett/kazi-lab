@@ -218,6 +218,7 @@ function ProviderDetails() {
 
   return (
     <div>
+      
       <form onSubmit={handleServiceFormSubmit}>
         <Dropdown label="Services">
           {data &&
@@ -235,7 +236,7 @@ function ProviderDetails() {
               </Dropdown.Item>
             ))}
         </Dropdown>
-        <p>Hello {userData.first_name} {last_name}</p>
+        
         <input
           type="text"
           placeholder="mama Junior"
