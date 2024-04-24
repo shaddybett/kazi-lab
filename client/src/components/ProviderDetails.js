@@ -154,11 +154,11 @@ function ProviderDetails() {
       });
 
       // Send request to add user details
-      const userDetailsRequestBody = {
-        middle_name: middle_name.trim() !== "" ? middle_name : null,
-        national_id: national_id.trim() !== "" ? national_id : null,
-        phone_number: phone_numbernumber.trim() !== "" ? phone_numbernumber : null,
-      };
+      // const userDetailsRequestBody = {
+      //   middle_name: middle_name.trim() !== "" ? middle_name : null,
+      //   national_id: national_id.trim() !== "" ? national_id : null,
+      //   phone_number: phone_numbernumber.trim() !== "" ? phone_numbernumber : null,
+      // };
       const userDetailsResponse = await fetch("/signup", {
         method: "POST",
         headers: {
