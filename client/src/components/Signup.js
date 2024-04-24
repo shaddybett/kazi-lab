@@ -53,6 +53,7 @@ function Signup() {
         const responseData = await response.json();
         localStorage.setItem("token", responseData.token);
         localStorage.setItem("id", responseData.id);
+        localStorage.setItem("role_id",responseData.role_id)
         localStorage.setItem("userData", JSON.stringify({first_name,last_name,email}))
         console.log(responseData.role_id);
         if (responseData.role_id === 2) {
