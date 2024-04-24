@@ -236,6 +236,7 @@ function ProviderDetails() {
               </Dropdown.Item>
             ))}
         </Dropdown>
+        <p>Hello {first_name}</p>
         <input
           type="text"
           placeholder="mama Junior"
