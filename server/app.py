@@ -102,7 +102,7 @@ class Signup(Resource):
             return {'error': str(e)}, 500
 
         access_token = create_access_token(identity=email)
-        response = make_response({'message': 'Sign up successful', 'token': access_token, 'id': new_user.id,'role_id':new_user.role_id,'first_name':new_user.first_name,'last_name':new_user.last_name}, 201)
+        response = make_response({'message': 'Sign up successful', 'token': access_token, 'id': new_user.id,'role_id':new_user.role_id,'first_name':new_user.first_name,'last_name':new_user.last_name,'email':new_user.email}, 201)
         return response
 
 
