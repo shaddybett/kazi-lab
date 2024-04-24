@@ -57,8 +57,8 @@ class Signup(Resource):
         phone_number = args.get('phone_number')
 
 
-        if not all([email, password, first_name, last_name, role_id]):
-            return {'error': 'Fill in all forms'}, 400
+        # if not all([email, password, first_name, last_name, role_id]):
+        #     return {'error': 'Fill in all forms'}, 400
 
         if not password_pattern.match(password):
             return {'error': 'Password must meet the required criteria'}, 400
