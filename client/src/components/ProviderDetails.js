@@ -117,6 +117,9 @@
 
 // export default ProviderDetails;
 
+
+
+
 import React, { useEffect, useState } from "react";
 import { Dropdown } from "flowbite-react";
 import { useNavigate } from "react-router-dom";
@@ -126,9 +129,9 @@ function ProviderDetails() {
   const [selectedServices, setSelectedServices] = useState([]);
   const [newServiceName, setNewServiceName] = useState("");
   const [error, setError] = useState("");
-  const [middle_name, setMiddle] = useState("");
-  const [phone_number, setNumber] = useState("");
-  const [national_id, setN_id] = useState("");
+  const [middle_name, setMiddleName] = useState(""); // Corrected state variable name
+  const [phone_number, setPhoneNumber] = useState(""); // Corrected state variable name
+  const [national_id, setNationalId] = useState(""); // Corrected state variable name
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
 
@@ -153,13 +156,18 @@ function ProviderDetails() {
         body: JSON.stringify(serviceRequestBody),
       });
 
+      // Send request to add user details
       const userDetailsResponse = await fetch("/signup", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({middle_name,national_id,phone_number,userData}),
+        body: JSON.stringify({
+          middle_name, // Corrected variable name
+          national_id, // Corrected variable name
+          phone_number, // Corrected variable name
+        }),
       });
 
       // Check if both requests were successful
@@ -202,13 +210,13 @@ function ProviderDetails() {
       }
     };
     fetchData();
+    // Retrieving user data from localStorage
     const userData = JSON.parse(localStorage.getItem("userData"));
     if (userData) {
-      setFirst_name(userData.first_name || "");
-      setLast_name(userData.last_name || "");
-      setEmail(userData.email || "");
-      setPassword(userData.password || "");
-      setSelectedRole(userData.role_id || "");
+      // Setting user data if available
+      setMiddleName(userData.middle_name || ""); // Corrected variable name
+      setPhoneNumber(userData.phone_number || ""); // Corrected variable name
+      setNationalId(userData.national_id || ""); // Corrected variable name
     }
   }, []);
 
@@ -246,19 +254,19 @@ function ProviderDetails() {
           type="text"
           placeholder="mama Junior"
           value={middle_name}
-          onChange={(e) => setMiddle(e.target.value)}
+          onChange={(e) => setMiddleName(e.target.value)}
         />
         <input
           type="text"
           placeholder="0722000000"
           value={phone_number}
-          onChange={(e) => setNumber(e.target.value)}
+          onChange={(e) => setPhoneNumber(e.target.value)}
         />
         <input
           type="text"
           placeholder="12345678"
           value={national_id}
-          onChange={(e) => setN_id(e.target.value)}
+          onChange={(e) => setNationalId(e.target.value)}
         />
         <input
           type="text"
