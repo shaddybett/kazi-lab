@@ -62,7 +62,10 @@ class Signup(Resource):
 
         if not password_pattern.match(password):
             return {'error': 'Password must meet the required criteria'}, 400
-
+        if len(phone_number) != 10:
+            return {'error': 'Enter a valid Phone Number'}
+        if len(national_id) != 8:
+            return {'error': 'Enter a valid National Identity Number'}
         if not email_pattern.match(email):
             return {'error': 'Invalid email format'}, 400
 
@@ -102,7 +105,7 @@ class Signup(Resource):
             return {'error': str(e)}, 500
 
         access_token = create_access_token(identity=email)
-        response = make_response({'message': 'Sign up successful', 'token': access_token, 'id': new_user.id,'role_id':new_user.role_id,'first_name':new_user.first_name,'last_name':new_user.last_name,'email':new_user.email}, 201)
+        response = make_response({'message': 'Sign up successful', 'token': access_token, 'id': new_user.id,'role_id':new_user.role_id,'first_name':new_user.first_name,'last_name':new_user.last_name,'email':new_user.email,'password':new_user.password}, 201)
         return response
 
 
@@ -233,7 +236,7 @@ provider_parser.add_argument('service_id', type=int, required=True, help='Servic
 class ServiceProvider(Resource):
     @jwt_required()
     def get(self):
-        args = provider_parser.parse_args()
+        args = provider_parser.parse_args() 
         service_id = args['service_id']
         provider_ids = ProviderService.query.filter_by(service_id=service_id).all()
         
