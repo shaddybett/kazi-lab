@@ -457,7 +457,6 @@ class Dashboard(Resource):
 def handle_service_request():
     if request.method == 'GET':
         try:
-
             all_services = Service.query.all()
             all_services_data = [{'id': service.id, 'name': service.service_name} for service in all_services]
 
