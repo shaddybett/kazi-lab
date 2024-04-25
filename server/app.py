@@ -64,7 +64,7 @@ class Signup(Resource):
             return {'error': 'Password must meet the required criteria'}, 400
         if len(phone_number) > 10:
             return {'error': 'Enter a valid Phone Number'}
-        if len(national_id) > 10:
+        if len(national_id) > 8:
             return {'error': 'Enter a valid Phone Number'}
         if not email_pattern.match(email):
             return {'error': 'Invalid email format'}, 400
