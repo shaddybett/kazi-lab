@@ -467,11 +467,7 @@ def handle_service_request():
 
     elif request.method == 'POST':
         try:
-            current_user = get_jwt_identity()
-            user = User.query.filter_by(email=current_user).first()
-
-            if not user:
-                return {'error': 'User not found'}, 404
+            user = 
 
             args = request.json
             existing_services = args.get('existing_services', [])
