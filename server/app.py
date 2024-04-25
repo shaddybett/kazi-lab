@@ -457,10 +457,6 @@ class Dashboard(Resource):
 def handle_service_request():
     if request.method == 'GET':
         try:
-            current_user = get_jwt_identity()
-            user = User.query.filter_by(email=current_user).first()
-            if not user:
-                return {'error': 'User not found'}, 404
 
             all_services = Service.query.all()
             all_services_data = [{'id': service.id, 'name': service.service_name} for service in all_services]
