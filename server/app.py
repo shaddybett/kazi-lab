@@ -236,7 +236,7 @@ provider_parser.add_argument('service_id', type=int, required=True, help='Servic
 class ServiceProvider(Resource):
     @jwt_required()
     def get(self):
-        args = provider_parser.parse_args()
+        args = provider_parser.parse_args() 
         service_id = args['service_id']
         provider_ids = ProviderService.query.filter_by(service_id=service_id).all()
         
