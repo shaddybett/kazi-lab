@@ -453,7 +453,7 @@ class Dashboard(Resource):
 
 
 @app.route('/service', methods=['GET', 'POST'])
-
+@jwt_required()
 def handle_service_request():
     if request.method == 'GET':
         try:
