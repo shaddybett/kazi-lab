@@ -466,7 +466,7 @@ def handle_service_request():
             return {'error': 'An error occurred while processing the request'}, 500
 
     elif request.method == 'POST':
-        @jwt_required()
+        
         try:
             user = get_jwt_identity()
             args = request.json
