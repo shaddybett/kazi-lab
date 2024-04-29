@@ -137,7 +137,6 @@ function ProviderDetails() {
     try {
       const token = localStorage.getItem("token");
       const id = localStorage.getItem("id");
-      console.log(userData)
       console.log(role_id)
       
 
