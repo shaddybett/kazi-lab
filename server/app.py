@@ -468,7 +468,6 @@ def handle_service_request():
     elif request.method == 'POST':
         try:
             user = 
-
             args = request.json
             existing_services = args.get('existing_services', [])
             new_service_name = args.get('service_name')
