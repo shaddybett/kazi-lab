@@ -339,6 +339,7 @@ signup_parser.add_argument('service_name', type=str, required=False, help='servi
 signup_parser.add_argument('middle_name', type=str, required=False)
 signup_parser.add_argument('national_id', type=str, required=False)
 signup_parser.add_argument('phone_number', type=str, required=False)
+signup_parser.add_argument('uuid', type=str, required=True, help='uuid is required')
 signup_parser.add_argument('image', type=str, required=False)
 
 class Signup(Resource):
@@ -349,11 +350,12 @@ class Signup(Resource):
         first_name = args['first_name']
         last_name = args['last_name']
         role_id = args['selectedRole']
-        service_name = args.get('service_name')
-        middle_name = args.get('middle_name')
-        national_id = args.get('national_id')
-        image = args.get('image')
-        phone_number = args.get('phone_number')
+        service_name = args('service_name')
+        middle_name = args('middle_name')
+        national_id = args('national_id')
+        image = args('image')
+        phone_number = args('phone_number')
+        uuid = args['uuid']
 
 
         if not all([email, password, first_name, last_name, role_id]):
@@ -373,7 +375,9 @@ class Signup(Resource):
         existing_user = User.query.filter_by(email=email).first()
         if existing_user:
             return {'error': 'Email already exists'}, 400
-
+        user = User.query.filter_by(uuid=uuid).first()
+        if not user:
+            return {'error':'User not found'},404
         new_user = User(
             first_name=first_name,
             last_name=last_name,
