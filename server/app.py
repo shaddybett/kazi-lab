@@ -382,7 +382,6 @@ class Signup(Resource):
         user.national_id = national_id
         user.phone_number = phone_number
         db.session.commit()
-        return {'message': 'Details successfully added'}
         new_user = User(
             first_name=first_name,
             last_name=last_name,
