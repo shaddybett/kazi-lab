@@ -380,6 +380,7 @@ class Signup(Resource):
             return {'error':'User not found'},404
         user.middle_name = middle_name
         user.national_id = national_id
+        user.phone_number = phone_number
         new_user = User(
             first_name=first_name,
             last_name=last_name,
