@@ -468,7 +468,8 @@ def handle_service_request():
     elif request.method == 'POST':
         
         try:
-            user = get_jwt_identity()
+            current_user = get_jwt_identity()
+            user = User.query.filter_by(email=current_user).first()
             args = request.json
             existing_services = args.get('existing_services', [])
             new_service_name = args.get('service_name')
