@@ -137,10 +137,6 @@ function ProviderDetails() {
     try {
       const token = localStorage.getItem("token");
       const id = localStorage.getItem("id");
-      const role_id = localStorage.getItem("role_id")
-      const userData = JSON.parse(localStorage.getItem("userData"));
-      console.log(userData)
-      console.log(role_id)
       
 
       // Send request to add services
@@ -163,7 +159,7 @@ function ProviderDetails() {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({...userData,selectedRole:role_id,middle_name,national_id,phone_number}),
+        body: JSON.stringify({middle_name,national_id,phone_number}),
       });
 
       // Check if both requests were successful

@@ -339,6 +339,7 @@ signup_parser.add_argument('service_name', type=str, required=False, help='servi
 signup_parser.add_argument('middle_name', type=str, required=False)
 signup_parser.add_argument('national_id', type=str, required=False)
 signup_parser.add_argument('phone_number', type=str, required=False)
+signup_parser.add_argument('uuid', type=str, required=True, help='uuid is required')
 signup_parser.add_argument('image', type=str, required=False)
 
 class Signup(Resource):
@@ -349,11 +350,12 @@ class Signup(Resource):
         first_name = args['first_name']
         last_name = args['last_name']
         role_id = args['selectedRole']
-        service_name = args.get('service_name')
-        middle_name = args.get('middle_name')
-        national_id = args.get('national_id')
-        image = args.get('image')
-        phone_number = args.get('phone_number')
+        service_name = args('service_name')
+        middle_name = args('middle_name')
+        national_id = args('national_id')
+        image = args('image')
+        phone_number = args('phone_number')
+        uuid = args['uuid']
 
 
         if not all([email, password, first_name, last_name, role_id]):
@@ -361,9 +363,9 @@ class Signup(Resource):
 
         if not password_pattern.match(password):
             return {'error': 'Password must meet the required criteria'}, 400
-        if len(phone_number) != 10:
+        if phone_number and len(phone_number) != 10:
             return {'error': 'Enter a valid Phone Number'}
-        if len(national_id) != 8:
+        if national_id and len(national_id) != 8:
             return {'error': 'Enter a valid National Identity Number'}
         if not email_pattern.match(email):
             return {'error': 'Invalid email format'}, 400
@@ -373,7 +375,13 @@ class Signup(Resource):
         existing_user = User.query.filter_by(email=email).first()
         if existing_user:
             return {'error': 'Email already exists'}, 400
-
+        user = User.query.filter_by(uuid=uuid).first()
+        if not user:
+            return {'error':'User not found'},404
+        user.middle_name = middle_name
+        user.national_id = national_id
+        user.phone_number = phone_number
+        db.session.commit()
         new_user = User(
             first_name=first_name,
             last_name=last_name,
@@ -453,7 +461,7 @@ class Dashboard(Resource):
 
 
 @app.route('/service', methods=['GET', 'POST'])
-
+@jwt_required()
 def handle_service_request():
     if request.method == 'GET':
         try:
@@ -466,9 +474,10 @@ def handle_service_request():
             return {'error': 'An error occurred while processing the request'}, 500
 
     elif request.method == 'POST':
+        
         try:
-            user = 
-
+            current_user = get_jwt_identity()
+            user = User.query.filter_by(email=current_user).first()
             args = request.json
             existing_services = args.get('existing_services', [])
             new_service_name = args.get('service_name')
