@@ -49,6 +49,7 @@ function Signup() {
           email,
           password,
           selectedRole: mapRoleToId(selectedRole),
+          uuid: localStorage.getItem('signupUUID'),
         }),
       });
       if (response.ok) {
