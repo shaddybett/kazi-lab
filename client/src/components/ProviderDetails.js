@@ -137,7 +137,7 @@ function ProviderDetails() {
     try {
       const token = localStorage.getItem("token");
       const id = localStorage.getItem("id");
-      console.log(role_id)
+
       
 
       // Send request to add services
