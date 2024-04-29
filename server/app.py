@@ -361,7 +361,7 @@ class Signup(Resource):
 
         if not password_pattern.match(password):
             return {'error': 'Password must meet the required criteria'}, 400
-        if len(phone_number) != 10:
+        if phone_number and len(phone_number) != 10:
             return {'error': 'Enter a valid Phone Number'}
         if len(national_id) != 8:
             return {'error': 'Enter a valid National Identity Number'}
