@@ -137,6 +137,7 @@ function ProviderDetails() {
     try {
       const token = localStorage.getItem("token");
       const id = localStorage.getItem("id");
+      const uuid = localStorage.getItem('signupUUID');
       
 
       // Send request to add services
@@ -159,7 +160,7 @@ function ProviderDetails() {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({middle_name,national_id,phone_number}),
+        body: JSON.stringify({middle_name,national_id,phone_number,uuid}),
       });
 
       // Check if both requests were successful
