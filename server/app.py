@@ -350,7 +350,7 @@ class Signup(Resource):
         first_name = args['first_name']
         last_name = args['last_name']
         role_id = args['selectedRole']
-        service_name = args('service_name')
+        service_name = args.get('service_name')
         middle_name = args('middle_name')
         national_id = args('national_id')
         image = args('image')
