@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Label, Checkbox } from "flowbite-react";
 import { Button } from "flowbite-react";
+import {v4 as uuidv4} from 'uuid';
 
 function Signup() {
   const [email, setEmail] = useState("");
