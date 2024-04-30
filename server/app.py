@@ -351,10 +351,10 @@ class Signup(Resource):
         last_name = args['last_name']
         role_id = args['selectedRole']
         service_name = args.get('service_name')
-        middle_name = args('middle_name')
-        national_id = args('national_id')
-        image = args('image')
-        phone_number = args('phone_number')
+        middle_name = args['middle_name']
+        national_id = args['national_id']
+        image = args['image']
+        phone_number = args['phone_number']
         uuid = args['uuid']
 
 
