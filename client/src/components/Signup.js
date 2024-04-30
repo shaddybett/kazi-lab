@@ -14,7 +14,7 @@ function Signup() {
   const [selectedRole, setSelectedRole] = useState("");
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
-  const uuid = generateUUID();
+  const uuid = uuidv4()
   localStorage.setItem('signupUUID', uuid);
 
   const handleRoleChange = (e) => {
