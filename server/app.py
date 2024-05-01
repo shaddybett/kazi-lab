@@ -385,6 +385,7 @@ class Signup(Resource):
             image=image
         )
         db.session.add(new_user)
+        db.session.commit()
         user = User.query.filter_by(uuid=uuid).first()
         if not user:
             return {'error':'User not found'},404
