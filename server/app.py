@@ -396,6 +396,7 @@ class Signup(Resource):
             national_id=national_id,
             phone_number=phone_number
         )
+        db.session.add(new)
 
         # Add provider service if role_id is 2 and service_name is provided
         if role_id == 2 and service_name:
