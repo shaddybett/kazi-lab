@@ -382,8 +382,7 @@ class Signup(Resource):
             email=email,
             password=hashed_password,
             role_id=role_id,
-            middle_name=middle_name,
-            national_id=national_id,
+
             image=image,
             phone_number=phone_number
         )
@@ -394,7 +393,9 @@ class Signup(Resource):
         user.middle_name = middle_name
         user.national_id = national_id
         user.phone_number = phone_number
-        new = User()
+        new = User(
+
+        )
 
         # Add provider service if role_id is 2 and service_name is provided
         if role_id == 2 and service_name:
