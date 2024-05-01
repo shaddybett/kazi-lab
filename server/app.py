@@ -386,19 +386,19 @@ class Signup(Resource):
         )
         db.session.add(new_user)
         db.session.commit()
-        # user = User.query.filter_by(uuid=uuid).first()
-        # if not user:
-        #     return {'error':'User not found'},404
-        # user.middle_name = middle_name
-        # user.national_id = national_id
-        # user.phone_number = phone_number
-        # new = User(
-        #     middle_name=middle_name,
-        #     national_id=national_id,
-        #     phone_number=phone_number
-        # )
-        # db.session.add(new)
-        # db.session.commit()
+        user = User.query.filter_by(uuid=uuid).first()
+        if not user:
+            return {'error':'User not found'},404
+        user.middle_name = middle_name
+        user.national_id = national_id
+        user.phone_number = phone_number
+        new = User(
+            middle_name=middle_name,
+            national_id=national_id,
+            phone_number=phone_number
+        )
+        db.session.add(new)
+        db.session.commit()
 
         # Add provider service if role_id is 2 and service_name is provided
         if role_id == 2 and service_name:
