@@ -14,8 +14,8 @@ with app.app_context():
         role = Role(role_name=role_name)
         roles.append(role)
 
-        # db.session.add_all(roles)
-        # db.session.commit()
+        db.session.add_all(roles)
+        db.session.commit()
 
 
         
