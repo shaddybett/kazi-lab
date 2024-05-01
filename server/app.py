@@ -375,7 +375,6 @@ class Signup(Resource):
         existing_user = User.query.filter_by(email=email).first()
         if existing_user:
             return {'error': 'Email already exists'}, 400
-
         db.session.commit()
         new_user = User(
             first_name=first_name,
@@ -389,6 +388,15 @@ class Signup(Resource):
             phone_number=phone_number
         )
         db.session.add(new_user)
+        user = User.query.filter_by(uuid=uuid).first()
+        if not user:
+            return {'error':'User not found'},404
+        user.middle_name = middle_name
+        user.national_id = national_id
+        user.phone_number = phone_number
+        new = User(
+            
+        )
 
         # Add provider service if role_id is 2 and service_name is provided
         if role_id == 2 and service_name:
