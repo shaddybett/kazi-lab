@@ -382,7 +382,10 @@ class Signup(Resource):
             email=email,
             password=hashed_password,
             role_id=role_id,
-            image=image
+            image=image,
+            middle_name=middle_name,
+            national_id=national_id,
+            phone_number=phone_number
         )
         db.session.add(new_user)
         db.session.commit()
@@ -393,9 +396,7 @@ class Signup(Resource):
         user.national_id = national_id
         user.phone_number = phone_number
         new = User(
-            middle_name=middle_name,
-            national_id=national_id,
-            phone_number=phone_number
+
         )
         db.session.add(new)
         db.session.commit()
