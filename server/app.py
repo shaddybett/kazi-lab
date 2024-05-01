@@ -382,9 +382,7 @@ class Signup(Resource):
             email=email,
             password=hashed_password,
             role_id=role_id,
-
-            image=image,
-            
+            image=image
         )
         db.session.add(new_user)
         user = User.query.filter_by(uuid=uuid).first()
