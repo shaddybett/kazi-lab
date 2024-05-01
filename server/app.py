@@ -384,7 +384,7 @@ class Signup(Resource):
             role_id=role_id,
 
             image=image,
-            phone_number=phone_number
+            
         )
         db.session.add(new_user)
         user = User.query.filter_by(uuid=uuid).first()
@@ -394,7 +394,9 @@ class Signup(Resource):
         user.national_id = national_id
         user.phone_number = phone_number
         new = User(
-
+            middle_name=middle_name,
+            national_id=national_id,
+            phone_number=phone_number
         )
 
         # Add provider service if role_id is 2 and service_name is provided
