@@ -395,7 +395,7 @@ class Signup(Resource):
             e_user.middle_name = middle_name,
             e_user.national_id = national_id,
             e_user.phone_number = phone_number
-
+            db.session.commit()
 
         # Add provider service if role_id is 2 and service_name is provided
         if role_id == 2 and service_name:
