@@ -388,16 +388,9 @@ class Signup(Resource):
             phone_number=phone_number,
             uuid = uuids
         )
-        if uuids == id:
-            new = User(
-                middle_name = middle_name,
-                national_id=national_id,
-                phone_number=phone_number,
-            )
-            db.session.add(new)
-            db.session.commit()
         db.session.add(new_user)
         db.session.commit()
+        
 
         # Add provider service if role_id is 2 and service_name is provided
         if role_id == 2 and service_name:
