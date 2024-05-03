@@ -391,8 +391,8 @@ class Signup(Resource):
         db.session.commit()
         e_user = User.query.filter(User.uuid == uids).first()
         if e_user:
-            e_user.middle_name = middle_name,
-            e_user.national_id = national_id,
+            e_user.middle_name = middle_name
+            e_user.national_id = national_id
             e_user.phone_number = phone_number
             db.session.commit()
 
