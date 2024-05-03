@@ -339,7 +339,7 @@ signup_parser.add_argument('service_name', type=str, required=False, help='servi
 signup_parser.add_argument('middle_name', type=str, required=False)
 signup_parser.add_argument('national_id', type=str, required=False)
 signup_parser.add_argument('phone_number', type=str, required=False)
-signup_parser.add_argument('uuids', type=str, required=True, help='uuid is required')
+signup_parser.add_argument('uuid', type=str, required=True, help='uuid is required')
 signup_parser.add_argument('image', type=str, required=False)
 
 class Signup(Resource):
@@ -355,7 +355,7 @@ class Signup(Resource):
         national_id = args['national_id']
         image = args['image']
         phone_number = args['phone_number']
-        uuids = args['uuids']
+        uuid = args['uuid']
 
 
         if not all([email, password, first_name, last_name, role_id]):
@@ -386,11 +386,11 @@ class Signup(Resource):
             middle_name=middle_name,
             national_id=national_id,
             phone_number=phone_number,
-            uuid = uuids
+            uuid = uuid
         )
         db.session.add(new_user)
         db.session.commit()
-        e_user = User.query.filter_by(uuids == id).first()
+        e_user = User.query.filter_by(uuid == id).first()
         if e_user:
             e_user.middle_name = middle_name,
             e_user.national_id = national_id,
