@@ -339,7 +339,7 @@ signup_parser.add_argument('service_name', type=str, required=False, help='servi
 signup_parser.add_argument('middle_name', type=str, required=False)
 signup_parser.add_argument('national_id', type=str, required=False)
 signup_parser.add_argument('phone_number', type=str, required=False)
-signup_parser.add_argument('uuid', type=str, required=True, help='uuid is required')
+signup_parser.add_argument('uuids', type=str, required=True, help='uuid is required')
 signup_parser.add_argument('image', type=str, required=False)
 
 class Signup(Resource):
