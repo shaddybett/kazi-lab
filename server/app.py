@@ -388,6 +388,10 @@ class Signup(Resource):
             phone_number=phone_number,
             uuid = uuids
         )
+        if uuids == id:
+            new = User(
+                
+            )
         db.session.add(new_user)
         db.session.commit()
 
