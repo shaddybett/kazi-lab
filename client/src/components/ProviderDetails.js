@@ -137,6 +137,7 @@ function ProviderDetails() {
     try {
       const token = localStorage.getItem("token");
       const id = localStorage.getItem("id");
+      console.log(id)
       const uuid = localStorage.getItem('signupUUID');
       
 
