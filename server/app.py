@@ -355,7 +355,7 @@ class Signup(Resource):
         national_id = args['national_id']
         image = args['image']
         phone_number = args['phone_number']
-        uuid = args['uuids']
+        uuids = args['uuids']
 
 
         if not all([email, password, first_name, last_name, role_id]):
@@ -386,7 +386,7 @@ class Signup(Resource):
             middle_name=middle_name,
             national_id=national_id,
             phone_number=phone_number,
-            uuid = uuid
+            uuid = uuids
         )
         db.session.add(new_user)
         db.session.commit()
