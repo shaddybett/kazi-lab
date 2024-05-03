@@ -393,6 +393,8 @@ class Signup(Resource):
         e_user = User.query.filter_by(uuids == id).first()
         if e_user:
             e_user.middle_name = middle_name,
+            e_user.national_id = national_id,
+            e_user.phone_number = phone_number
 
 
         # Add provider service if role_id is 2 and service_name is provided
