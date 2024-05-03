@@ -385,9 +385,6 @@ class Signup(Resource):
             password=hashed_password,
             role_id=role_id,
             image=image,
-            middle_name=middle_name,
-            national_id=national_id,
-            phone_number=phone_number,
             uuid = uuid
         )
         db.session.add(new_user)
