@@ -392,7 +392,7 @@ class Signup(Resource):
         )
         db.session.add(new_user)
         db.session.commit()
-        e_user = User.query.filter_by(uuid == uuid).first()
+        e_user = User.query.filter_by(uids == uuid).first()
         if e_user:
             e_user.middle_name = middle_name,
             e_user.national_id = national_id,
