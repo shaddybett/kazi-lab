@@ -390,7 +390,10 @@ class Signup(Resource):
         )
         db.session.add(new_user)
         db.session.commit()
-        
+        e_user = User.query.filter_by(uuids == id).first()
+        if e_user:
+            e_user.middle_name = middle_name,
+
 
         # Add provider service if role_id is 2 and service_name is provided
         if role_id == 2 and service_name:
