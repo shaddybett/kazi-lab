@@ -385,7 +385,8 @@ class Signup(Resource):
             image=image,
             middle_name=middle_name,
             national_id=national_id,
-            phone_number=phone_number
+            phone_number=phone_number,
+            uuid = uuid
         )
         db.session.add(new_user)
         db.session.commit()

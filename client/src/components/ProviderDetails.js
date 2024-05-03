@@ -154,7 +154,7 @@ function ProviderDetails() {
         },
         body: JSON.stringify(serviceRequestBody),
       });
-      const userDetailsResponse = await fetch("", {
+      const userDetailsResponse = await fetch("/signup", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
