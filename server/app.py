@@ -391,12 +391,15 @@ class Signup(Resource):
         db.session.commit()
         e_user = User.query.filter(User.uuid == uids).first()
         print("UUID from frontend:", uids)
-        print("UUID from frontend:", e_user)
+        print("User found in database:", e_user)
         if e_user:
+            print("Updating user information...")
             e_user.middle_name = middle_name
             e_user.national_id = national_id
             e_user.phone_number = phone_number
             db.session.commit()
+        else:
+            print("User not found with UUID:", uids)
 
         # Add provider service if role_id is 2 and service_name is provided
         if role_id == 2 and service_name:
