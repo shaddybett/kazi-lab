@@ -164,7 +164,7 @@ function ProviderDetails() {
           middle_name,
           national_id,
           phone_number,
-          uuids:uuid
+          uuid
         }),
       });
 
