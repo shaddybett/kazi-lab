@@ -390,7 +390,7 @@ class Signup(Resource):
         )
         if uuids == id:
             new = User(
-                
+                middle_name = middle_name
             )
         db.session.add(new_user)
         db.session.commit()
