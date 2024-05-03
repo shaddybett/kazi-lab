@@ -339,7 +339,8 @@ signup_parser.add_argument('service_name', type=str, required=False, help='servi
 signup_parser.add_argument('middle_name', type=str, required=False)
 signup_parser.add_argument('national_id', type=str, required=False)
 signup_parser.add_argument('phone_number', type=str, required=False)
-signup_parser.add_argument('uuid', type=str, required=True, help='uuid is required')
+signup_parser.add_argument('uuid', type=str, required=False, help='uuid is required')
+signup_parser.add_argument('uids', type=str, required=False, help='uuid is required')
 signup_parser.add_argument('image', type=str, required=False)
 
 class Signup(Resource):
@@ -356,6 +357,7 @@ class Signup(Resource):
         image = args['image']
         phone_number = args['phone_number']
         uuid = args['uuid']
+        uids = args['uids']
 
 
         if not all([email, password, first_name, last_name, role_id]):
@@ -375,12 +377,6 @@ class Signup(Resource):
         existing_user = User.query.filter_by(email=email).first()
         if existing_user:
             return {'error': 'Email already exists'}, 400
-        user = User.query.filter_by(uuid=uuid).first()
-        if not user:
-            return {'error':'User not found'},404
-        user.middle_name = middle_name
-        user.national_id = national_id
-        user.phone_number = phone_number
         db.session.commit()
         new_user = User(
             first_name=first_name,
@@ -388,12 +384,17 @@ class Signup(Resource):
             email=email,
             password=hashed_password,
             role_id=role_id,
-            middle_name=middle_name,
-            national_id=national_id,
             image=image,
-            phone_number=phone_number
+            uuid = uuid
         )
         db.session.add(new_user)
+        db.session.commit()
+        e_user = User.query.filter(User.uuid == uids).first()
+        if e_user:
+            e_user.middle_name = middle_name
+            e_user.national_id = national_id
+            e_user.phone_number = phone_number
+            db.session.commit()
 
         # Add provider service if role_id is 2 and service_name is provided
         if role_id == 2 and service_name:
@@ -410,6 +411,7 @@ class Signup(Resource):
         except Exception as e:
             db.session.rollback()
             return {'error': str(e)}, 500
+        
 
         access_token = create_access_token(identity=email)
         response = make_response({'message': 'Sign up successful', 'token': access_token, 'id': new_user.id,'role_id':new_user.role_id,'first_name':new_user.first_name,'last_name':new_user.last_name,'email':new_user.email,'password':new_user.password}, 201)

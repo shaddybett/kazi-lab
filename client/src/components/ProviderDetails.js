@@ -137,8 +137,8 @@ function ProviderDetails() {
     try {
       const token = localStorage.getItem("token");
       const id = localStorage.getItem("id");
-      const uuid = localStorage.getItem('signupUUID');
-      
+      const uuid = localStorage.getItem("signupUUID");
+      console.log(uuid);
 
       // Send request to add services
       const serviceRequestBody = {
@@ -160,7 +160,12 @@ function ProviderDetails() {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({middle_name,national_id,phone_number,uuid}),
+        body: JSON.stringify({
+          middle_name,
+          national_id,
+          phone_number,
+          uids:uuid
+        }),
       });
 
       // Check if both requests were successful
@@ -203,7 +208,6 @@ function ProviderDetails() {
       }
     };
     fetchData();
-
   }, []);
   const handleCheckboxChange = (service) => {
     const selectedIndex = selectedServices.findIndex(
@@ -218,7 +222,6 @@ function ProviderDetails() {
 
   return (
     <div>
-      
       <form onSubmit={handleServiceFormSubmit}>
         <Dropdown label="Services">
           {data &&
@@ -236,7 +239,7 @@ function ProviderDetails() {
               </Dropdown.Item>
             ))}
         </Dropdown>
-        
+
         <input
           type="text"
           placeholder="mama Junior"
