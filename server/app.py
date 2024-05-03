@@ -391,6 +391,7 @@ class Signup(Resource):
         db.session.commit()
         e_user = User.query.filter(User.uuid == uids).first()
         print("UUID from frontend:", uids)
+        print("UUID from frontend:", e_user)
         if e_user:
             e_user.middle_name = middle_name
             e_user.national_id = national_id
