@@ -355,7 +355,7 @@ class Signup(Resource):
         national_id = args['national_id']
         image = args['image']
         phone_number = args['phone_number']
-        uuid = args['uuid']
+        uuid = args['uuids']
 
 
         if not all([email, password, first_name, last_name, role_id]):
