@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Label, Checkbox } from "flowbite-react";
 import { Button } from "flowbite-react";
-import {v4 as uuidv4} from 'uuid';
+import {parse, v4 as uuidv4} from 'uuid';
 
 function Signup() {
   const [email, setEmail] = useState("");
@@ -15,6 +15,7 @@ function Signup() {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const uuid = uuidv4()
+  
   localStorage.setItem('signupUUID', uuid);
 
   const handleRoleChange = (e) => {
