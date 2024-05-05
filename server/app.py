@@ -358,6 +358,8 @@ class Signup(Resource):
         phone_number = args['phone_number']
         uuid = args['uuid']
         uids = args['uids']
+        print("UUID:", uuid)
+        print("UIDS:", uids)
 
 
         if not all([email, password, first_name, last_name, role_id]):
