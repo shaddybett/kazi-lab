@@ -164,7 +164,7 @@ function ProviderDetails() {
           middle_name,
           national_id,
           phone_number,
-          uids:uuid
+          uids:localStorage.getItem('signupUUID')
         }),
       });
 
