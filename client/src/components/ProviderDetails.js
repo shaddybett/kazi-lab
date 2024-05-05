@@ -154,7 +154,7 @@ function ProviderDetails() {
         },
         body: JSON.stringify(serviceRequestBody),
       });
-      const userDetailsResponse = await fetch("/signup", {
+      const userDetailsResponse = await fetch("/signup?uids=${localStorage.getItem('signupUUID')", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
