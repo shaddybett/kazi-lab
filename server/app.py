@@ -357,7 +357,7 @@ class Signup(Resource):
         image = args['image']
         phone_number = args['phone_number']
         uuid = args['uuid']
-        uids = args.get("uids")
+        uids = args['uids']
         print("UUID:", uuid)
         print("UIDS:", uids)
 
