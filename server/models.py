@@ -16,6 +16,7 @@ class User(db.Model):
     role_id = db.Column(db.Integer, db.ForeignKey('roles.id'), nullable=False)
     role = db.relationship('Role', backref=db.backref('users', lazy=True))
     uuid = db.Column(db.String(36),nullable=False,default='default_uuid_value')
+    uids = db.Column(db.String(36),nullable=False,default='default_uuid_value')
     services = db.relationship('Service', secondary='provider_services', backref=db.backref('providers', lazy=True))
     
 
