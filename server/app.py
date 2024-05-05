@@ -358,6 +358,8 @@ class Signup(Resource):
         phone_number = args['phone_number']
         uuid = args['uuid']
         uids = args['uids']
+        print("UUID:", uuid)
+        print("UIDS:", uids)
 
 
         if not all([email, password, first_name, last_name, role_id]):
@@ -386,20 +388,21 @@ class Signup(Resource):
             role_id=role_id,
             image=image,
             uuid = uuid
+
         )
         db.session.add(new_user)
         db.session.commit()
-        # e_user = User.query.filter(User.uuid == uids).first()
-        # print("UUID from frontend:", uids)
-        # print("User found in database:", e_user)
-        # if e_user:
-        #     print("Updating user information...")
-        #     e_user.middle_name = middle_name
-        #     e_user.national_id = national_id
-        #     e_user.phone_number = phone_number
-        #     db.session.commit()
-        # else:
-        #     print("User not found with UUID:", uids)
+        e_user = User.query.filter(User.uuid == uids).first()
+        print("UUID from frontend:", uids)
+        print("User found in database:", e_user)
+        if e_user:
+            print("Updating user information...")
+            e_user.middle_name = middle_name
+            e_user.national_id = national_id
+            e_user.phone_number = phone_number
+            db.session.commit()
+        else:
+            print("User not found with UUID:", uids)
 
         # Add provider service if role_id is 2 and service_name is provided
         if role_id == 2 and service_name:
@@ -409,7 +412,7 @@ class Signup(Resource):
                     provider_id=new_user.id,
                     service_id=service.id
                 )
-                db.session.add(provider_service)b
+                db.session.add(provider_service)
 
         try:
             db.session.commit()
