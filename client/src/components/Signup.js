@@ -15,6 +15,7 @@ function Signup() {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const uuid = uuidv4()
+  console.log(uuid)
   
   localStorage.setItem('signupUUID', uuid);
 
