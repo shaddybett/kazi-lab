@@ -167,7 +167,7 @@ function ProviderDetails() {
         }),
       });
 
-      // Check if both requests were successful
+      // Check if both requests were successful 
       if (serviceResponse.ok && userDetailsResponse.ok) {
         const serviceData = await serviceResponse.json();
         const userDetailsData = await userDetailsResponse.json();
