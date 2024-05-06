@@ -360,6 +360,7 @@ class Signup(Resource):
         uids = args['uids']
         print("UUID:", uuid)
         print("UIDS:", uids)
+        print("middle name:", middle_name)
 
 
         if not all([email, password, first_name, last_name, role_id]):
