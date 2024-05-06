@@ -41,6 +41,8 @@ function Signup() {
       setError("Passwords do not match");
       return;
     }
+    const iiid = localStorage.getItem('signupUUID')
+    console.log(first_name,last_name,email,password,iiid)
 
     try {
       const response = await fetch("/signup", {
