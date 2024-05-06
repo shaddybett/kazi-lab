@@ -387,13 +387,13 @@ class Signup(Resource):
             password=hashed_password,
             role_id=role_id,
             image=image,
-            uuid = uuid
+            uuid = uuid,
             uids = uids
 
         )
         db.session.add(new_user)
         db.session.commit()
-        e_user = User.query.filter(User.uuid == uids).first()
+        e_user = User.query.filter(User.uuid == User.uids).first()
         print("UUID from frontend:", uids)
         print("User found in database:", e_user)
         if e_user:
