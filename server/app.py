@@ -388,6 +388,7 @@ class Signup(Resource):
             role_id=role_id,
             image=image,
             uuid = uuid
+            uids = uids
 
         )
         db.session.add(new_user)
