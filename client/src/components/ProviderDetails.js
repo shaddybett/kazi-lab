@@ -154,6 +154,7 @@ function ProviderDetails() {
         },
         body: JSON.stringify(serviceRequestBody),
       });
+      console.log(middle_name,national_id,phone_number,uuid)
       const userDetailsResponse = await fetch("/signup", {
         method: "POST",
         headers: {
