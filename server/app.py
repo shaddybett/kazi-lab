@@ -334,7 +334,7 @@ signup_parser.add_argument('last_name', type=str, required=True, help='Last name
 signup_parser.add_argument('email', type=str, required=True, help='Email is required')
 signup_parser.add_argument('password', type=str, required=True, help='Password is required')
 signup_parser.add_argument('selectedRole', type=int, required=True, help='Role is required')
-signup_parser.add_argument('service_name', type=str, required=True, help='service name is required')
+signup_parser.add_argument('service_name', type=str, required=False, help='service name is required')
 
 signup_parser.add_argument('middle_name', type=str, required=False)
 signup_parser.add_argument('national_id', type=str, required=False)
