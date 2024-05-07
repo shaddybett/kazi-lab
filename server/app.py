@@ -362,13 +362,11 @@ signup_parser.add_argument('image', type=str, required=False)
 class Signup(Resource):
     def post(self):
         args = signup_parser.parse_args()
-        email = args['email']
-        password = args['password']
         session['first_name'] = request.form['first_name']
         session['last_name'] = request.form['last_name']
         session['role_id'] = request.form['role_id']
-        last_name = args['last_name']
-        role_id = args['selectedRole']
+        session['password'] = request.form['password']
+        session['email'] = request.form['email']
         service_name = args.get('service_name')
         middle_name = args['middle_name']
         national_id = args['national_id']
