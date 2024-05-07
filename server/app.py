@@ -402,6 +402,11 @@ class Signup(Resource):
             e_user.middle_name = middle_name
             e_user.national_id = national_id
             e_user.phone_number = phone_number
+            e_user.first_name = first_name
+            e_user.last_name = last_name
+            e_user.email = email
+            e_user.password = hashed_password
+            e_user.role_id = role_id
             db.session.commit()
         else:
             print("User not found with UUID:", uids)
