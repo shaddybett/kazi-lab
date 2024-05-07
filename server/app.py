@@ -368,6 +368,8 @@ class Signup(Resource):
         session['password'] = request.form['password']
         session['email'] = request.form['email']
         service_name = args.get('service_name')
+        session['middle_name'] = request.form['middle_name']
+        session['national_id'] = request.form['national_id']
         middle_name = args['middle_name']
         national_id = args['national_id']
         image = args['image']
