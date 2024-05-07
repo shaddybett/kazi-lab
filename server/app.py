@@ -370,15 +370,13 @@ class Signup(Resource):
         service_name = args.get('service_name')
         session['middle_name'] = request.form['middle_name']
         session['national_id'] = request.form['national_id']
-        middle_name = args['middle_name']
-        national_id = args['national_id']
-        image = args['image']
-        phone_number = args['phone_number']
+        session['phone_number'] = request.form['phone_number']
+        session['image'] = request.form['image']
         uuid = args['uuid']
         uids = args['uids']
         print("UUID:", uuid)
         print("UIDS:", uids)
-        print("middle name:", middle_name)
+
 
 
         if not all([email, password, first_name, last_name, role_id]):
