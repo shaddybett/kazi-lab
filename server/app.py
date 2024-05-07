@@ -365,6 +365,7 @@ class Signup(Resource):
         email = args['email']
         password = args['password']
         session['first_name'] = request.form['first_name']
+        session['last_name'] = request.form['last_name']
         last_name = args['last_name']
         role_id = args['selectedRole']
         service_name = args.get('service_name')
