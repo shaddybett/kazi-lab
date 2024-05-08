@@ -315,7 +315,6 @@
 
 
 
-
 from flask import Flask, make_response, abort, request,jsonify,session
 from flask_restful import Api, Resource, reqparse
 from models import db, User, Service, ProviderService
@@ -352,9 +351,11 @@ signup_parser.add_argument('last_name', type=str, required=True, help='Last name
 signup_parser.add_argument('email', type=str, required=True, help='Email is required')
 signup_parser.add_argument('password', type=str, required=True, help='Password is required')
 signup_parser.add_argument('selectedRole', type=int, required=True, help='Role is required')
+signup_parser.add_argument('service_name', type=str, required=False, help='service name is required')
 
-
-
+signup_parser.add_argument('middle_name', type=str, required=True)
+signup_parser.add_argument('national_id', type=str, required=True)
+signup_parser.add_argument('phone_number', type=str, required=True)
 signup_parser.add_argument('uuid', type=str, required=False, help='uuid is required')
 signup_parser.add_argument('uids', type=str, required=True, help='uuid is required')
 signup_parser.add_argument('image', type=str, required=False)
@@ -396,60 +397,57 @@ class Signup(Resource):
         existing_user = User.query.filter_by(email=email).first()
         if existing_user:
             return {'error': 'Email already exists'}, 400
-        session['user_details'] = {
-            'first_name':first_name,
-            'last_name':last_name,
-            'email':email,
-            'password':hashed_password,
-            'role_id':role_id,
-            'uuid':uuid
-        }
-signup_parser.add_argument('middle_name', type=str, required=True)
-signup_parser.add_argument('national_id', type=str, required=True)
-signup_parser.add_argument('phone_number', type=str, required=True)
-signup_parser.add_argument('service_name', type=str, required=False, help='service name is required')
-class Signup2(Resource):
-        def post():
-            args = signup_parser.parse_args()
-            user_details = session.get('user_details')
-            role_id = user_details.role_id
-            email = user_details.email
-            if not user_details:
-                return{'error':'session data not found'}
-            else:
-                user_details.update({
-                    'middle_name':args['middle_name'],
-                    'national_id':args['national_id'],
-                    'phone_number':args['phone_number'],
-                    'service_name':args.get('service_name')
-                })
-                service_name = user_details.service_name
-                new_user = User(
-                    user_details
-                )
-                db.session.add(new_user)
-                db.session.commit()
+        db.session.commit()
+        new_user = User(
+            first_name=first_name,
+            last_name=last_name,
+            email=email,
+            password=hashed_password,
+            role_id=role_id,
+            image=image,
+            uuid = uuid,
+            uids = uids
+
+        )
+        db.session.add(new_user)
+        db.session.commit()
+        e_user = User.query.filter(User.uuid == User.uids).first()
+        print("UUID from frontend:", uids)
+        print("User found in database:", e_user)
+        if e_user:
+            print("Updating user information...")
+            e_user.middle_name = middle_name
+            e_user.national_id = national_id
+            e_user.phone_number = phone_number
+            e_user.first_name = first_name
+            e_user.last_name = last_name
+            e_user.email = email
+            e_user.password = hashed_password
+            e_user.role_id = role_id
+            db.session.commit()
+        else:
+            print("User not found with UUID:", uids)
 
         # Add provider service if role_id is 2 and service_name is provided
-            if role_id == 2 and service_name:
-                service = Service.query.filter(func.lower(Service.service_name) == func.lower(service_name)).first()
-                if service:
-                    provider_service = ProviderService(
-                        provider_id=new_user.id,
-                        service_id=service.id
-                    )
-                    db.session.add(provider_service)
+        if role_id == 2 and service_name:
+            service = Service.query.filter(func.lower(Service.service_name) == func.lower(service_name)).first()
+            if service:
+                provider_service = ProviderService(
+                    provider_id=new_user.id,
+                    service_id=service.id
+                )
+                db.session.add(provider_service)
 
-            try:
-                db.session.commit()
-            except Exception as e:
-                db.session.rollback()
-                return {'error': str(e)}, 500
+        try:
+            db.session.commit()
+        except Exception as e:
+            db.session.rollback()
+            return {'error': str(e)}, 500
         
 
-            access_token = create_access_token(identity=email)
-            response = make_response({'message': 'Sign up successful', 'token': access_token, 'id': new_user.id,'role_id':new_user.role_id,'first_name':new_user.first_name,'last_name':new_user.last_name,'email':new_user.email,'password':new_user.password}, 201)
-            return response
+        access_token = create_access_token(identity=email)
+        response = make_response({'message': 'Sign up successful', 'token': access_token, 'id': new_user.id,'role_id':new_user.role_id,'first_name':new_user.first_name,'last_name':new_user.last_name,'email':new_user.email,'password':new_user.password}, 201)
+        return response
 
 
 login_parse = reqparse.RequestParser()
@@ -622,16 +620,8 @@ api.add_resource(ServiceProvider,'/service-provider')
 api.add_resource(Signup, '/signup')
 api.add_resource(Login, '/login')
 api.add_resource(Dashboard, '/dashboard')
-api.add_resource(Signup2,'/signu2')
 
 
 
 if __name__ == '__main__':
     app.run(debug=True, port=4000)
-
-
-
-
-
-
-
