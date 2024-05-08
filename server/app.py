@@ -453,6 +453,7 @@ signup_parser.add_argument('image', type=str, required=False)
 
 class signup2(Resource):
     def post():
+        args = signup_parser.parse_args()
         
 
 login_parse = reqparse.RequestParser()
