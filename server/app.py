@@ -402,7 +402,7 @@ class Signup(Resource):
             'first_name':first_name,
             'last_name':last_name,
             'email':email,
-            'password':password,
+            'password':hashed_password,
             'role_id':role_id,
             'uuid':uuid
         }
