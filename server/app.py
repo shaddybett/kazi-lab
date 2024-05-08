@@ -454,7 +454,7 @@ signup_parser.add_argument('image', type=str, required=False)
 class signup2(Resource):
     def post():
         args = signup_parser.parse_args()
-        
+        middle_name = args['middle_name']
 
 login_parse = reqparse.RequestParser()
 login_parse.add_argument('email', type=str, required=True, help='email is required'),
