@@ -12,6 +12,7 @@ function ProviderDetails() {
   const [phone_number, setNumber] = useState("");
   const [national_id, setN_id] = useState("");
   const [message, setMessage] = useState("");
+  const [image,setImage] = useState("")
   const navigate = useNavigate();
 
   const handleServiceFormSubmit = async (e) => {
