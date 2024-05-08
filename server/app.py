@@ -447,7 +447,7 @@ class signup2(Resource):
         uids = args['uids']
         image = args['image']
 
-        exists = User.query.filter(uids = User.uuid).first()
+        exists = User.query.filter_by(uuid = uids).first()
         if exists:
             updated = User(
                 middle_name=middle_name,
@@ -458,6 +458,8 @@ class signup2(Resource):
             db.session.add(updated)
             db.session.commit()
             return {'message':'user details updated successfully'}
+        else:
+            return {'error':'Update failed'}
 
 
 login_parse = reqparse.RequestParser()
