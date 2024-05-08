@@ -469,6 +469,7 @@ class signup2(Resource):
                 image = image
             )
             db.session.add(updated)
+            db.session.commit()
 
 
 login_parse = reqparse.RequestParser()
