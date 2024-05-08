@@ -460,6 +460,10 @@ class signup2(Resource):
         uids = args['uids']
         image = args['image']
 
+        exists = User.query.filter(uids = User.uuid).first()
+        # if exists:
+        #     updated = 
+
 
 login_parse = reqparse.RequestParser()
 login_parse.add_argument('email', type=str, required=True, help='email is required'),
