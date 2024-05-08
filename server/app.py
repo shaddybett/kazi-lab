@@ -455,6 +455,9 @@ class signup2(Resource):
     def post():
         args = signup_parser.parse_args()
         middle_name = args['middle_name']
+        national_id = args['national_id']
+        middle_name = args['middle_name']
+        middle_name = args['middle_name']
 
 login_parse = reqparse.RequestParser()
 login_parse.add_argument('email', type=str, required=True, help='email is required'),
