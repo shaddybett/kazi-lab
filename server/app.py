@@ -413,6 +413,11 @@ class Signup2(Resource):
             user_details = session.get('user_details')
             if not user_details:
                 return{'error':'session data not found'}
+            else:
+                signup_data.update({
+                    'middle_name':args['middle_name'],
+                    'national_id':args['national_id']
+                })
 
         # Add provider service if role_id is 2 and service_name is provided
         if role_id == 2 and service_name:
