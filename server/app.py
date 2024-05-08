@@ -450,6 +450,10 @@ class signup2(Resource):
         existing_user = User.query.filter_by(uuid = uids).first()
         if existing_user:
             existing_user.middle_name = middle_name
+            existing_user.national_id = national_id
+            existing_user.middle_name = middle_name
+            existing_user.middle_name = middle_name
+
             db.session.commit()
             return {'message':'user details updated successfully'}
         else:
