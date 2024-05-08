@@ -352,7 +352,7 @@ signup_parser.add_argument('email', type=str, required=True, help='Email is requ
 signup_parser.add_argument('password', type=str, required=True, help='Password is required')
 signup_parser.add_argument('selectedRole', type=int, required=True, help='Role is required')
 signup_parser.add_argument('service_name', type=str, required=False, help='service name is required')
-signup_parser.add_argument('uuid', type=str, required=False, help='uuid is required')
+signup_parser.add_argument('uuid', type=str, required=True, help='uuid is required')
 
 
 class Signup(Resource):
@@ -457,7 +457,9 @@ class signup2(Resource):
         middle_name = args['middle_name']
         national_id = args['national_id']
         phone_number = args['phone_number']
-        middle_name = args['middle_name']
+        uids = args['uids']
+        image = args['image']
+
 
 login_parse = reqparse.RequestParser()
 login_parse.add_argument('email', type=str, required=True, help='email is required'),
