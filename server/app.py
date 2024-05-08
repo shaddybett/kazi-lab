@@ -419,9 +419,14 @@ class Signup2(Resource):
                 user_details.update({
                     'middle_name':args['middle_name'],
                     'national_id':args['national_id'],
-                    'phone_number':args['phone_number']
+                    'phone_number':args['phone_number'],
                     'service_name':args.get('service_name')
                 })
+                service_name = user_details.service_name
+                new_user = User(
+                    user_details
+                )
+                
 
         # Add provider service if role_id is 2 and service_name is provided
             if role_id == 2 and service_name:
