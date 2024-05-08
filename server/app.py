@@ -366,8 +366,6 @@ class Signup(Resource):
         service_name = args.get('service_name')
         middle_name = args['middle_name']
         national_id = args['national_id']
-        image = args['image']
-        phone_number = args['phone_number']
         uuid = args['uuid']
 
 
@@ -376,10 +374,6 @@ class Signup(Resource):
 
         if not password_pattern.match(password):
             return {'error': 'Password must meet the required criteria'}, 400
-        if phone_number and len(phone_number) != 10:
-            return {'error': 'Enter a valid Phone Number'}
-        if national_id and len(national_id) != 8:
-            return {'error': 'Enter a valid National Identity Number'}
         if not email_pattern.match(email):
             return {'error': 'Invalid email format'}, 400
 
