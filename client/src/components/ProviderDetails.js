@@ -149,6 +149,11 @@ function ProviderDetails() {
           placeholder="Enter new service name"
         />
 
+        <div className="mb-2 block">
+          <Label htmlFor="file-upload" value="Upload file" />
+        </div>
+        <FileInput id="file-upload" />
+
         <button type="submit">Submit</button>
       </form>
 
