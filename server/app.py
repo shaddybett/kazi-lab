@@ -375,7 +375,7 @@ class Signup(Resource):
         print("middle name:", middle_name)
 
 
-        if not all([email, password, first_name, last_name, role_id]):
+        if not all([email, password, first_name, last_name, role_id,uuid]):
             return {'error': 'Fill in all forms'}, 400
 
         if not password_pattern.match(password):
