@@ -354,9 +354,7 @@ signup_parser.add_argument('password', type=str, required=True, help='Password i
 signup_parser.add_argument('selectedRole', type=int, required=True, help='Role is required')
 signup_parser.add_argument('service_name', type=str, required=False, help='service name is required')
 
-signup_parser.add_argument('middle_name', type=str, required=True)
-signup_parser.add_argument('national_id', type=str, required=True)
-signup_parser.add_argument('phone_number', type=str, required=True)
+
 signup_parser.add_argument('uuid', type=str, required=False, help='uuid is required')
 signup_parser.add_argument('uids', type=str, required=True, help='uuid is required')
 signup_parser.add_argument('image', type=str, required=False)
@@ -406,22 +404,12 @@ class Signup(Resource):
             'role_id':role_id,
             'uuid':uuid
         }
-        e_user = User.query.filter(User.uuid == User.uids).first()
-        print("UUID from frontend:", uids)
-        print("User found in database:", e_user)
-        if e_user:
-            print("Updating user information...")
-            e_user.middle_name = middle_name
-            e_user.national_id = national_id
-            e_user.phone_number = phone_number
-            e_user.first_name = first_name
-            e_user.last_name = last_name
-            e_user.email = email
-            e_user.password = hashed_password
-            e_user.role_id = role_id
-            db.session.commit()
-        else:
-            print("User not found with UUID:", uids)
+signup_parser.add_argument('middle_name', type=str, required=True)
+signup_parser.add_argument('national_id', type=str, required=True)
+signup_parser.add_argument('phone_number', type=str, required=True)
+class Signup2(Resource):
+        def post():
+
 
         # Add provider service if role_id is 2 and service_name is provided
         if role_id == 2 and service_name:
