@@ -408,9 +408,9 @@ signup_parser.add_argument('middle_name', type=str, required=True)
 signup_parser.add_argument('national_id', type=str, required=True)
 signup_parser.add_argument('phone_number', type=str, required=True)
 class Signup2(Resource):
-        # def post():
-        #     args = signup_parser.parse_args()
-        #     user_details = 
+        def post():
+            args = signup_parser.parse_args()
+            user_details = 
 
 
         # Add provider service if role_id is 2 and service_name is provided
