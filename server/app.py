@@ -470,6 +470,7 @@ class signup2(Resource):
             )
             db.session.add(updated)
             db.session.commit()
+            return {'message':'user details updated successfully'}
 
 
 login_parse = reqparse.RequestParser()
