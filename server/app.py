@@ -426,9 +426,9 @@ class signup2(Resource):
         uids = args['uids']
         image = args['image']
 
-        if national_id and len() != 8:
+        if national_id and len(national_id) != 8:
             return {'error':'Enter a valid national id'}
-        if phone_number and len() != 10:
+        if phone_number and len(phone_number) != 10:
             return {'error':'Enter a valid phone number'}
         existing_user = User.query.filter_by(uuid = uids).first()
         if existing_user:
