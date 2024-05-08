@@ -346,13 +346,13 @@ jwt = JWTManager(app)
 jwt.init_app(app)
 
 signup_parser = reqparse.RequestParser()
-signup_parser.add_argument('first_name', type=str, required=True, help='First name is required')
-signup_parser.add_argument('last_name', type=str, required=True, help='Last name is required')
-signup_parser.add_argument('email', type=str, required=True, help='Email is required')
-signup_parser.add_argument('password', type=str, required=True, help='Password is required')
-signup_parser.add_argument('selectedRole', type=int, required=True, help='Role is required')
+signup_parser.add_argument('first_name', type=str, required=False, help='First name is required')
+signup_parser.add_argument('last_name', type=str, required=False, help='Last name is required')
+signup_parser.add_argument('email', type=str, required=False, help='Email is required')
+signup_parser.add_argument('password', type=str, required=False, help='Password is required')
+signup_parser.add_argument('selectedRole', type=int, required=False, help='Role is required')
 signup_parser.add_argument('service_name', type=str, required=False, help='service name is required')
-signup_parser.add_argument('uuid', type=str, required=True, help='uuid is required')
+signup_parser.add_argument('uuid', type=str, required=False, help='uuid is required')
 
 
 class Signup(Resource):
@@ -439,7 +439,7 @@ signup_parser.add_argument('uids', type=str, required=False, help='uuid is requi
 signup_parser.add_argument('image', type=str, required=False)
 
 class signup2(Resource):
-    def post():
+    def post(self):
         args = signup_parser.parse_args()
         middle_name = args['middle_name']
         national_id = args['national_id']
