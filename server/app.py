@@ -352,7 +352,7 @@ signup_parser.add_argument('last_name', type=str, required=True, help='Last name
 signup_parser.add_argument('email', type=str, required=True, help='Email is required')
 signup_parser.add_argument('password', type=str, required=True, help='Password is required')
 signup_parser.add_argument('selectedRole', type=int, required=True, help='Role is required')
-signup_parser.add_argument('service_name', type=str, required=False, help='service name is required')
+
 
 
 signup_parser.add_argument('uuid', type=str, required=False, help='uuid is required')
@@ -407,6 +407,7 @@ class Signup(Resource):
 signup_parser.add_argument('middle_name', type=str, required=True)
 signup_parser.add_argument('national_id', type=str, required=True)
 signup_parser.add_argument('phone_number', type=str, required=True)
+signup_parser.add_argument('service_name', type=str, required=False, help='service name is required')
 class Signup2(Resource):
         def post():
             args = signup_parser.parse_args()
@@ -419,23 +420,24 @@ class Signup2(Resource):
                     'middle_name':args['middle_name'],
                     'national_id':args['national_id'],
                     'phone_number':args['phone_number']
+                    'service_name':args.get('service_name')
                 })
 
         # Add provider service if role_id is 2 and service_name is provided
-        if role_id == 2 and service_name:
-            service = Service.query.filter(func.lower(Service.service_name) == func.lower(service_name)).first()
-            if service:
-                provider_service = ProviderService(
-                    provider_id=new_user.id,
-                    service_id=service.id
-                )
-                db.session.add(provider_service)
+            if role_id == 2 and service_name:
+                service = Service.query.filter(func.lower(Service.service_name) == func.lower(service_name)).first()
+                if service:
+                    provider_service = ProviderService(
+                        provider_id=new_user.id,
+                        service_id=service.id
+                    )
+                    db.session.add(provider_service)
 
-        try:
-            db.session.commit()
-        except Exception as e:
-            db.session.rollback()
-            return {'error': str(e)}, 500
+            try:
+                db.session.commit()
+            except Exception as e:
+                db.session.rollback()
+                return {'error': str(e)}, 500
         
 
         access_token = create_access_token(identity=email)
