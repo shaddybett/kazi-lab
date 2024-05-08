@@ -456,7 +456,7 @@ class signup2(Resource):
         args = signup_parser.parse_args()
         middle_name = args['middle_name']
         national_id = args['national_id']
-        middle_name = args['middle_name']
+        phone_number = args['phone_number']
         middle_name = args['middle_name']
 
 login_parse = reqparse.RequestParser()
