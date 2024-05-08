@@ -414,7 +414,6 @@ class Signup2(Resource):
             if not user_details:
                 return{'error':'session data not found'}
 
-
         # Add provider service if role_id is 2 and service_name is provided
         if role_id == 2 and service_name:
             service = Service.query.filter(func.lower(Service.service_name) == func.lower(service_name)).first()
