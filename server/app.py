@@ -622,7 +622,7 @@ api.add_resource(ServiceProvider,'/service-provider')
 api.add_resource(Signup, '/signup')
 api.add_resource(Login, '/login')
 api.add_resource(Dashboard, '/dashboard')
-api.add_resource(Signup2,'/signup2')
+api.add_resource(Signup2,'/signu2')
 
 
 
