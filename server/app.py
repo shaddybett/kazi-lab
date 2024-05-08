@@ -389,17 +389,11 @@ class Signup(Resource):
             email=email,
             password=hashed_password,
             role_id=role_id,
-            image=image,
             uuid = uuid,
-            uids = uids
 
         )
         db.session.add(new_user)
         db.session.commit()
-        e_user = User.query.filter(User.uuid == User.uids).first()
-        print("UUID from frontend:", uids)
-        print("User found in database:", e_user)
-
         # Add provider service if role_id is 2 and service_name is provided
         if role_id == 2 and service_name:
             service = Service.query.filter(func.lower(Service.service_name) == func.lower(service_name)).first()
