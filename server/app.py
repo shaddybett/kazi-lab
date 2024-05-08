@@ -352,11 +352,12 @@ signup_parser.add_argument('email', type=str, required=True, help='Email is requ
 signup_parser.add_argument('password', type=str, required=True, help='Password is required')
 signup_parser.add_argument('selectedRole', type=int, required=True, help='Role is required')
 signup_parser.add_argument('service_name', type=str, required=False, help='service name is required')
+signup_parser.add_argument('uuid', type=str, required=False, help='uuid is required')
 
 signup_parser.add_argument('middle_name', type=str, required=True)
 signup_parser.add_argument('national_id', type=str, required=True)
 signup_parser.add_argument('phone_number', type=str, required=True)
-signup_parser.add_argument('uuid', type=str, required=False, help='uuid is required')
+
 signup_parser.add_argument('uids', type=str, required=True, help='uuid is required')
 signup_parser.add_argument('image', type=str, required=False)
 
