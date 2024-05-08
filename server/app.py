@@ -398,7 +398,13 @@ class Signup(Resource):
         existing_user = User.query.filter_by(email=email).first()
         if existing_user:
             return {'error': 'Email already exists'}, 400
-        
+        session['user_details'] = {
+            'first_name':first_name,
+            'last_name':last_name,
+            'email':email,
+            'password':password,
+            'uuid':uuid
+        }
         e_user = User.query.filter(User.uuid == User.uids).first()
         print("UUID from frontend:", uids)
         print("User found in database:", e_user)
