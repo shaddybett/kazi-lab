@@ -403,6 +403,7 @@ class Signup(Resource):
             'last_name':last_name,
             'email':email,
             'password':password,
+            'role_id':role_id,
             'uuid':uuid
         }
         e_user = User.query.filter(User.uuid == User.uids).first()
