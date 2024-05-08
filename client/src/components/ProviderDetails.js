@@ -48,6 +48,7 @@ function ProviderDetails() {
           national_id,
           phone_number,
           uids:localStorage.getItem('signupUUID'),
+          image
         }),
 
 
@@ -151,7 +152,7 @@ function ProviderDetails() {
         />
 
         <div className="mb-2 block">
-          <Label htmlFor="file-upload" value="Upload file" />
+          <Label htmlFor="file-upload" value={image} onChange={(e)=> setImage(e.target.value)} />
         </div>
         <FileInput id="file-upload" />
 
