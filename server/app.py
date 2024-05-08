@@ -413,6 +413,7 @@ class Signup2(Resource):
             args = signup_parser.parse_args()
             user_details = session.get('user_details')
             role_id = user_details.role_id
+            email = user_details.email
             if not user_details:
                 return{'error':'session data not found'}
             else:
@@ -446,9 +447,9 @@ class Signup2(Resource):
                 return {'error': str(e)}, 500
         
 
-        access_token = create_access_token(identity=email)
-        response = make_response({'message': 'Sign up successful', 'token': access_token, 'id': new_user.id,'role_id':new_user.role_id,'first_name':new_user.first_name,'last_name':new_user.last_name,'email':new_user.email,'password':new_user.password}, 201)
-        return response
+            access_token = create_access_token(identity=email)
+            response = make_response({'message': 'Sign up successful', 'token': access_token, 'id': new_user.id,'role_id':new_user.role_id,'first_name':new_user.first_name,'last_name':new_user.last_name,'email':new_user.email,'password':new_user.password}, 201)
+            return response
 
 
 login_parse = reqparse.RequestParser()
