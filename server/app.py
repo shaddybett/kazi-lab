@@ -357,7 +357,6 @@ signup_parser.add_argument('uuid', type=str, required=False, help='uuid is requi
 signup_parser.add_argument('middle_name', type=str, required=True)
 signup_parser.add_argument('national_id', type=str, required=True)
 signup_parser.add_argument('phone_number', type=str, required=True)
-
 signup_parser.add_argument('uids', type=str, required=True, help='uuid is required')
 signup_parser.add_argument('image', type=str, required=False)
 
