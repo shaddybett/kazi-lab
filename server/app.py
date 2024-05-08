@@ -411,6 +411,7 @@ class Signup2(Resource):
         def post():
             args = signup_parser.parse_args()
             user_details = session.get('user_details')
+            role_id = user_details.role_id
             if not user_details:
                 return{'error':'session data not found'}
             else:
