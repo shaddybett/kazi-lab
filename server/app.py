@@ -364,8 +364,6 @@ class Signup(Resource):
         last_name = args['last_name']
         role_id = args['selectedRole']
         service_name = args.get('service_name')
-        middle_name = args['middle_name']
-        national_id = args['national_id']
         uuid = args['uuid']
 
 
@@ -378,7 +376,6 @@ class Signup(Resource):
             return {'error': 'Invalid email format'}, 400
 
         hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
-
         existing_user = User.query.filter_by(email=email).first()
         if existing_user:
             return {'error': 'Email already exists'}, 400
@@ -390,7 +387,6 @@ class Signup(Resource):
             password=hashed_password,
             role_id=role_id,
             uuid = uuid,
-
         )
         db.session.add(new_user)
         db.session.commit()
