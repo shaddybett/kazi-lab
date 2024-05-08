@@ -48,6 +48,8 @@ function ProviderDetails() {
           phone_number,
           uids:localStorage.getItem('signupUUID'),
         }),
+        
+
       });
 
       // Check if both requests were successful 
