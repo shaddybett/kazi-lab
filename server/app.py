@@ -447,8 +447,8 @@ class signup2(Resource):
         uids = args['uids']
         image = args['image']
 
-        exists = User.query.filter_by(uuid = uids).first()
-        if exists:
+        existing_user = User.query.filter_by(uuid = uids).first()
+        if existing_user:
             updated = User(
                 middle_name=middle_name,
                 national_id=national_id,
