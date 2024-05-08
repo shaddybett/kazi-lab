@@ -410,7 +410,8 @@ signup_parser.add_argument('phone_number', type=str, required=True)
 class Signup2(Resource):
         def post():
             args = signup_parser.parse_args()
-            user_details = 
+            user_details = session.get('user_details')
+            if not 
 
 
         # Add provider service if role_id is 2 and service_name is provided
