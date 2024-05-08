@@ -461,8 +461,14 @@ class signup2(Resource):
         image = args['image']
 
         exists = User.query.filter(uids = User.uuid).first()
-        # if exists:
-        #     updated = 
+        if exists:
+            updated = User(
+                middle_name=middle_name,
+                national_id=national_id,
+                phone_number = phone_number,
+                image = image
+            )
+            db.session.add(updated)
 
 
 login_parse = reqparse.RequestParser()
