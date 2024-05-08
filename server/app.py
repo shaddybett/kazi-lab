@@ -452,7 +452,7 @@ class signup2(Resource):
             existing_user.middle_name = middle_name
             existing_user.national_id = national_id
             existing_user.phone_number = phone_number
-            existing_user.middle_name = middle_name
+            existing_user.image = image
 
             db.session.commit()
             return {'message':'user details updated successfully'}
