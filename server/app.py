@@ -630,7 +630,7 @@ api.add_resource(ServiceProvider,'/service-provider')
 api.add_resource(Signup, '/signup')
 api.add_resource(Login, '/login')
 api.add_resource(Dashboard, '/dashboard')
-
+api.add_resource(signup2, '/signup2')
 
 
 if __name__ == '__main__':
