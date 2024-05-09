@@ -439,6 +439,8 @@ class signup2(Resource):
             phone_number = request.form.get('phone_number')
             uids = request.form.get('uids')
             image_file = request.files['image']
+        else:
+            return {'error': 'Unsupported content type'},400
 
         if not os.path.exists(UPLOAD_FOLDER):
             os.makedirs(UPLOAD_FOLDER)
