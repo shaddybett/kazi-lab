@@ -116,14 +116,6 @@ class signup2(Resource):
             phone_number = args['phone_number']
             uids = args['uids']
             image_file = args['image']
-        elif request.headers['Content-Type'].startswith('multipart/form-data'):
-            middle_name = request.form.get('middle_name')
-            national_id = request.form.get('national_id')
-            phone_number = request.form.get('phone_number')
-            uids = request.form.get('uids')
-            image_file = request.files['image']
-        else:
-            return {'error': 'Unsupported content type'},400
 
         if not os.path.exists(UPLOAD_FOLDER):
             os.makedirs(UPLOAD_FOLDER)
