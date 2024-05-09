@@ -213,7 +213,7 @@ function ProviderDetails() {
       const userDetailsResponse = await fetch("/signup2", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": "multipart/form-data",
         },
         body: formData,
       });
