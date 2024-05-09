@@ -102,116 +102,57 @@ signup_parser.add_argument('phone_number', type=str, required=False)
 signup_parser.add_argument('uids', type=str, required=False, help='uuid is required')
 signup_parser.add_argument('image', type=FileStorage , required=False,location = 'files')
 
-# UPLOAD_FOLDER = 'server/userImages'
-# ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif' }
-
-# def allowed_file(filename):
-#     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
-# class signup2(Resource):
-#     def post(self):
-#         if request.headers['Content-Type'] == 'application/json':                
-#             args = signup_parser.parse_args()
-#             middle_name = args['middle_name']
-#             national_id = args['national_id']
-#             phone_number = args['phone_number']
-#             uids = args['uids']
-#             image_file = args['image']
-#         elif request.headers['Content-Type'].startswith('multipart/form-data'):
-#             middle_name = request.form.get('middle_name')
-#             national_id = request.form.get('national_id')
-#             phone_number = request.form.get('phone_number')
-#             uids = request.form.get('uids')
-#             image_file = request.files['image']
-#         else:
-#             return {'error': 'Unsupported content type'},400
-
-#         if not os.path.exists(UPLOAD_FOLDER):
-#             os.makedirs(UPLOAD_FOLDER)
-#         if image_file and allowed_file(image_file.filename):
-#             image_filename = secure_filename(image_file.filename)
-#             image_file.save(os.path.join(UPLOAD_FOLDER,image_filename))
-#         else:
-#             return {'error': 'Invalid file type or no file uploaded'},400
-#         if national_id:
-#             if len(national_id) != 8:
-#                 return {'error':'Enter a valid national id'}
-
-#         if phone_number:
-#             if len(phone_number) != 10:
-#                 return {'error':'Enter a valid phone number'}
-
-#         existing_user = User.query.filter_by(uuid = uids).first()
-#         if existing_user:
-#             existing_user.middle_name = middle_name
-#             existing_user.national_id = national_id
-#             existing_user.phone_number = phone_number
-#             existing_user.image = image_filename
-#             existing_user.uids = uids
-
-#             db.session.commit()
-#             return {'message':'user details updated successfully'}
-#         else:
-#             return {'error':'Update failed'}
-
 UPLOAD_FOLDER = 'server/userImages'
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif' }
 
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
-
 class signup2(Resource):
     def post(self):
-        try:
-            if request.headers['Content-Type'] == 'application/json':                
-                args = signup_parser.parse_args()
-                middle_name = args['middle_name']
-                national_id = args['national_id']
-                phone_number = args['phone_number']
-                uids = args['uids']
-                image_file = args['image']
-            elif request.headers['Content-Type'].startswith('multipart/formData'):
-                middle_name = request.form.get('middle_name')
-                national_id = request.form.get('national_id')
-                phone_number = request.form.get('phone_number')
-                uids = request.form.get('uids')
-                image_file = request.files['image']
-            else:
-                return {'error': 'Unsupported content type'}, 400
+        if request.headers['Content-Type'] == 'application/json':                
+            args = signup_parser.parse_args()
+            middle_name = args['middle_name']
+            national_id = args['national_id']
+            phone_number = args['phone_number']
+            uids = args['uids']
+            image_file = args['image']
+        elif request.headers['Content-Type'].startswith('multipart/form-data'):
+            middle_name = request.form.get('middle_name')
+            national_id = request.form.get('national_id')
+            phone_number = request.form.get('phone_number')
+            uids = request.form.get('uids')
+            image_file = request.files['image']
+        else:
+            return {'error': 'Unsupported content type'},400
 
-            if not os.path.exists(UPLOAD_FOLDER):
-                os.makedirs(UPLOAD_FOLDER)
+        if not os.path.exists(UPLOAD_FOLDER):
+            os.makedirs(UPLOAD_FOLDER)
+        if image_file and allowed_file(image_file.filename):
+            image_filename = secure_filename(image_file.filename)
+            image_file.save(os.path.join(UPLOAD_FOLDER,image_filename))
+        else:
+            return {'error': 'Invalid file type or no file uploaded'},400
+        if national_id:
+            if len(national_id) != 8:
+                return {'error':'Enter a valid national id'}
 
-            if image_file and allowed_file(image_file.filename):
-                image_filename = secure_filename(image_file.filename)
-                image_file.save(os.path.join(UPLOAD_FOLDER, image_filename))
-                print("File saved successfully:", image_filename)
-            else:
-                print("Invalid file type or no file uploaded")
-                return {'error': 'Invalid file type or no file uploaded'}, 400
+        if phone_number:
+            if len(phone_number) != 10:
+                return {'error':'Enter a valid phone number'}
 
-            if national_id:
-                if len(national_id) != 8:
-                    return {'error':'Enter a valid national id'}
+        existing_user = User.query.filter_by(uuid = uids).first()
+        if existing_user:
+            existing_user.middle_name = middle_name
+            existing_user.national_id = national_id
+            existing_user.phone_number = phone_number
+            existing_user.image = image_filename
+            existing_user.uids = uids
 
-            if phone_number:
-                if len(phone_number) != 10:
-                    return {'error':'Enter a valid phone number'}
-
-            existing_user = User.query.filter_by(uuid = uids).first()
-            if existing_user:
-                existing_user.middle_name = middle_name
-                existing_user.national_id = national_id
-                existing_user.phone_number = phone_number
-                existing_user.image = image_filename
-                existing_user.uids = uids
-
-                db.session.commit()
-                return {'message':'user details updated successfully'}
-            else:
-                return {'error':'Update failed'}
-        except Exception as e:
-            print("An error occurred:", str(e))
-            return {'error': 'An error occurred while processing the request'}, 500
+            db.session.commit()
+            return {'message':'user details updated successfully'}
+        else:
+            return {'error':'Update failed'}
+        
 
 login_parse = reqparse.RequestParser()
 login_parse.add_argument('email', type=str, required=True, help='email is required'),
