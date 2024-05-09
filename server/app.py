@@ -426,12 +426,13 @@ def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 class signup2(Resource):
     def post(self):
-        args = signup_parser.parse_args()
-        middle_name = args['middle_name']
-        national_id = args['national_id']
-        phone_number = args['phone_number']
-        uids = args['uids']
-        image_file = args['image']
+        if request.headers['Content-Type'] == 'application/json':                
+            args = signup_parser.parse_args()
+            middle_name = args['middle_name']
+            national_id = args['national_id']
+            phone_number = args['phone_number']
+            uids = args['uids']
+            image_file = args['image']
 
         if not os.path.exists(UPLOAD_FOLDER):
             os.makedirs(UPLOAD_FOLDER)
