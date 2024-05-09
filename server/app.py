@@ -96,12 +96,6 @@ class Signup(Resource):
         return response
 
 
-signup_parser.add_argument('middle_name', type=str, required=False)
-signup_parser.add_argument('national_id', type=str, required=False)
-signup_parser.add_argument('phone_number', type=str, required=False)
-signup_parser.add_argument('uids', type=str, required=False, help='uuid is required')
-signup_parser.add_argument('image', type=FileStorage , required=False,location = 'files')
-
 UPLOAD_FOLDER = 'server/userImages'
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif' }
 
@@ -109,14 +103,7 @@ def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 class signup2(Resource):
     def post(self):
-        if request.headers['Content-Type'] == 'application/json':                
-            args = signup_parser.parse_args()
-            middle_name = args['middle_name']
-            national_id = args['national_id']
-            phone_number = args['phone_number']
-            uids = args['uids']
-            image_file = args['image']
-        elif request.headers['Content-Type'].startswith('multipart/form-data'):
+        if request.headers['Content-Type'].startswith('multipart/form-data'):
             middle_name = request.form.get('middle_name')
             national_id = request.form.get('national_id')
             phone_number = request.form.get('phone_number')
