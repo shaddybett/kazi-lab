@@ -426,9 +426,10 @@ class signup2(Resource):
         national_id = args['national_id']
         phone_number = args['phone_number']
         uids = args['uids']
-        image = args['image']
+        image_file = args['image']
 
         app.config['UPLOAD_FOLDER'] = 'server/userImages'
+        image_filename = secure_filename(image_file.filename)
         if national_id:
             if len(national_id) != 8:
                 return {'error':'Enter a valid national id'}
