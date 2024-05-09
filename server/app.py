@@ -433,6 +433,7 @@ class signup2(Resource):
             phone_number = args['phone_number']
             uids = args['uids']
             image_file = args['image']
+        elif request.headers['Content-Type'].startswith('multipart/form-data'):
 
         if not os.path.exists(UPLOAD_FOLDER):
             os.makedirs(UPLOAD_FOLDER)
