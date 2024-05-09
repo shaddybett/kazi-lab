@@ -50,10 +50,9 @@
 //           image
 //         }),
 
-
 //       });
 
-//       // Check if both requests were successful 
+//       // Check if both requests were successful
 //       if (serviceResponse.ok && userDetailsResponse.ok) {
 //         const serviceData = await serviceResponse.json();
 //         const userDetailsData = await userDetailsResponse.json();
@@ -166,9 +165,8 @@
 
 // export default ProviderDetails;
 
-
 import React, { useEffect, useState } from "react";
-import { Dropdown,FileInput, Label } from "flowbite-react";
+import { Dropdown, FileInput, Label } from "flowbite-react";
 import { useNavigate } from "react-router-dom";
 
 function ProviderDetails() {
@@ -180,7 +178,7 @@ function ProviderDetails() {
   const [phone_number, setNumber] = useState("");
   const [national_id, setN_id] = useState("");
   const [message, setMessage] = useState("");
-  const [image,setImage] = useState(null);
+  const [image, setImage] = useState(null);
   const navigate = useNavigate();
 
   const handleServiceFormSubmit = async (e) => {
@@ -210,25 +208,17 @@ function ProviderDetails() {
       formData.append("national_id", national_id);
       formData.append("phone_number", phone_number);
       formData.append("uids", localStorage.getItem("signupUUID"));
-      formData.append("image", image); 
-      console.log(middle_name,national_id,phone_number,uuid)
+      formData.append("image", image);
+      console.log(middle_name, national_id, phone_number, uuid);
       const userDetailsResponse = await fetch("/signup2", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          middle_name,
-          national_id,
-          phone_number,
-          uids:localStorage.getItem('signupUUID'),
-          image
-        }),
-
-
+        body: formData,
       });
 
-      // Check if both requests were successful 
+      // Check if both requests were successful
       if (serviceResponse.ok && userDetailsResponse.ok) {
         const serviceData = await serviceResponse.json();
         const userDetailsData = await userDetailsResponse.json();
@@ -326,9 +316,12 @@ function ProviderDetails() {
         />
 
         <div className="mb-2 block">
-          <Label htmlFor="file-upload" value={image} onChange={(e)=> setImage(e.target.value)} />
+          <Label
+            htmlFor="file-upload"
+            value={image ? image.name : ""}
+          />
         </div>
-        <FileInput id="file-upload" />
+        <input id="file-upload" type="file" onChange={(e)=> setImage(e.target.files[0]) } />
 
         <button type="submit">Submit</button>
       </form>
