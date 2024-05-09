@@ -111,8 +111,8 @@ class signup2(Resource):
         else:
             return {'error': 'Unsupported content type'},400
 
-        if not os.path.exists(UPLOAD_FOLDER):
-            os.makedirs(UPLOAD_FOLDER)
+        # if not os.path.exists(UPLOAD_FOLDER):
+        #     os.makedirs(UPLOAD_FOLDER)
         # if image_file and allowed_file(image_file.filename):
         #     image_filename = secure_filename(image_file.filename)
         #     image_file.save(os.path.join(UPLOAD_FOLDER,image_filename))
