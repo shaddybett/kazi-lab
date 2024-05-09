@@ -107,17 +107,17 @@ class signup2(Resource):
             national_id = request.form.get('national_id')
             phone_number = request.form.get('phone_number')
             uids = request.form.get('uids')
-            image_file = request.files['image']
+            # image_file = request.files['image']
         else:
             return {'error': 'Unsupported content type'},400
 
         if not os.path.exists(UPLOAD_FOLDER):
             os.makedirs(UPLOAD_FOLDER)
-        if image_file and allowed_file(image_file.filename):
-            image_filename = secure_filename(image_file.filename)
-            image_file.save(os.path.join(UPLOAD_FOLDER,image_filename))
-        else:
-            return {'error': 'Invalid file type or no file uploaded'},400
+        # if image_file and allowed_file(image_file.filename):
+        #     image_filename = secure_filename(image_file.filename)
+        #     image_file.save(os.path.join(UPLOAD_FOLDER,image_filename))
+        # else:
+        #     return {'error': 'Invalid file type or no file uploaded'},400
         if national_id:
             if len(national_id) != 8:
                 return {'error':'Enter a valid national id'}
@@ -131,7 +131,7 @@ class signup2(Resource):
             existing_user.middle_name = middle_name
             existing_user.national_id = national_id
             existing_user.phone_number = phone_number
-            existing_user.image = image_filename
+            # existing_user.image = image_filename
             existing_user.uids = uids
 
             db.session.commit()
