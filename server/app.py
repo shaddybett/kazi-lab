@@ -316,6 +316,7 @@
 
 
 from flask import Flask, make_response, abort, request,jsonify,session
+from werkzeug.utils import secure_filename
 from flask_restful import Api, Resource, reqparse
 from models import db, User, Service, ProviderService
 from flask_bcrypt import Bcrypt
@@ -415,7 +416,7 @@ signup_parser.add_argument('middle_name', type=str, required=False)
 signup_parser.add_argument('national_id', type=str, required=False)
 signup_parser.add_argument('phone_number', type=str, required=False)
 signup_parser.add_argument('uids', type=str, required=False, help='uuid is required')
-signup_parser.add_argument('image', type=str, required=False)
+signup_parser.add_argument('image', type=werkzeug.datastructures.FileStorage , required=False,location = 'files')
 
 class signup2(Resource):
     def post(self):
@@ -426,6 +427,7 @@ class signup2(Resource):
         uids = args['uids']
         image = args['image']
 
+        app.config['UPLOAD_FOLDER'] = 'server/userImages'
         if national_id:
             if len(national_id) != 8:
                 return {'error':'Enter a valid national id'}
