@@ -108,13 +108,22 @@ ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif' }
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 class signup2(Resource):
-    def post(self):              
-        args = signup_parser.parse_args()
-        middle_name = args['middle_name']
-        national_id = args['national_id']
-        phone_number = args['phone_number']
-        uids = args['uids']
-        image_file = args['image']
+    def post(self):
+        if request.headers['Content-Type'] == 'application/json':                
+            args = signup_parser.parse_args()
+            middle_name = args['middle_name']
+            national_id = args['national_id']
+            phone_number = args['phone_number']
+            uids = args['uids']
+            image_file = args['image']
+        elif request.headers['Content-Type'].startswith('multipart/form-data'):
+            middle_name = request.form.get('middle_name')
+            national_id = request.form.get('national_id')
+            phone_number = request.form.get('phone_number')
+            uids = request.form.get('uids')
+            image_file = request.files['image']
+        else:
+            return {'error': 'Unsupported content type'},400
 
         if not os.path.exists(UPLOAD_FOLDER):
             os.makedirs(UPLOAD_FOLDER)
@@ -144,6 +153,7 @@ class signup2(Resource):
         else:
             return {'error':'Update failed'}
         
+
 
 login_parse = reqparse.RequestParser()
 login_parse.add_argument('email', type=str, required=True, help='email is required'),

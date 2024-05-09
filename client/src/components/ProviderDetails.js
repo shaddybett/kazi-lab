@@ -203,19 +203,19 @@ function ProviderDetails() {
         },
         body: JSON.stringify(serviceRequestBody),
       });
+      const formData = new FormData();
+      formData.append("middle_name", middle_name);
+      formData.append("national_id", national_id);
+      formData.append("phone_number", phone_number);
+      formData.append("uids", localStorage.getItem("signupUUID"));
+      formData.append("image", image);
       console.log(middle_name, national_id, phone_number, uuid);
       const userDetailsResponse = await fetch("/signup2", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          middle_name,
-          national_id,
-          phone_number,
-          uids:uuid,
-          image
-        })
+        body: formData,
       });
 
       // Check if both requests were successful
