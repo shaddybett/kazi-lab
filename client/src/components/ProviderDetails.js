@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import { Dropdown,FileInput, Label } from "flowbite-react";
 import { useNavigate } from "react-router-dom";
@@ -12,7 +11,7 @@ function ProviderDetails() {
   const [phone_number, setNumber] = useState("");
   const [national_id, setN_id] = useState("");
   const [message, setMessage] = useState("");
-  const [image,setImage] = useState("")
+  const [image,setImage] = useState(null)
   const navigate = useNavigate();
 
   const handleServiceFormSubmit = async (e) => {
