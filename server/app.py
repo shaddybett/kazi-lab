@@ -430,9 +430,8 @@ class signup2(Resource):
         uids = args['uids']
         image_file = args['image']
 
-        app.config['UPLOAD_FOLDER'] = 'server/userImages'
-        image_filename = secure_filename(image_file.filename)
-        image_file.save(os.path.join(app.config['UPLOAD_FOLDER'], image_filename))
+        if not os.path.exists(UPLOAD_FOLDER):
+            os.makedirs(UPLOAD_FOLDER)
         if national_id:
             if len(national_id) != 8:
                 return {'error':'Enter a valid national id'}
