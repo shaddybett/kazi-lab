@@ -420,6 +420,8 @@ signup_parser.add_argument('uids', type=str, required=False, help='uuid is requi
 signup_parser.add_argument('image', type=FileStorage , required=False,location = 'files')
 
 UPLOAD_FOLDER = 'server/userImages'
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif' }
+
 
 class signup2(Resource):
     def post(self):
