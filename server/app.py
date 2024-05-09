@@ -141,7 +141,7 @@ class signup2(Resource):
             existing_user.middle_name = middle_name
             existing_user.national_id = national_id
             existing_user.phone_number = phone_number
-            existing_user.image = image_filename
+            # existing_user.image = image_filename
             existing_user.uids = uids
 
             db.session.commit()
