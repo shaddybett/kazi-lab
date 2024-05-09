@@ -209,7 +209,13 @@ function ProviderDetails() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: formData,
+        body: JSON.stringify({
+          middle_name,
+          national_id,
+          phone_number,
+          uids:uuid,
+          image
+        })
       });
 
       // Check if both requests were successful
