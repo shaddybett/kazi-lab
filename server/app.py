@@ -422,7 +422,8 @@ signup_parser.add_argument('image', type=FileStorage , required=False,location =
 UPLOAD_FOLDER = 'server/userImages'
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif' }
 
-
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 class signup2(Resource):
     def post(self):
         args = signup_parser.parse_args()
@@ -434,11 +435,11 @@ class signup2(Resource):
 
         if not os.path.exists(UPLOAD_FOLDER):
             os.makedirs(UPLOAD_FOLDER)
-        if image_file:
+        if image_file and allowed_file(image_file.filename):
             image_filename = secure_filename(image_file.filename)
             image_file.save(os.path.join(UPLOAD_FOLDER,image_filename))
         else:
-            image_filename = None
+            return {'error': 'Invalid file type or no file uploaded'},400
         if national_id:
             if len(national_id) != 8:
                 return {'error':'Enter a valid national id'}
