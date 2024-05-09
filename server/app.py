@@ -124,12 +124,14 @@ class signup2(Resource):
                 image_file = request.files['image']
             else:
                 return {'error': 'Unsupported content type'},400
+            print("Image File:", image_file)
 
             if not os.path.exists(UPLOAD_FOLDER):
                 os.makedirs(UPLOAD_FOLDER)
             if image_file and allowed_file(image_file.filename):
                 image_filename = secure_filename(image_file.filename)
                 image_file.save(os.path.join(UPLOAD_FOLDER,image_filename))
+                print("Image saved as:", os.path.join(UPLOAD_FOLDER, image_filename))
             else:
                 return {'error': 'Invalid file type or no file uploaded'},400
             if national_id:
@@ -152,6 +154,9 @@ class signup2(Resource):
                 return {'message':'user details updated successfully'}
             else:
                 return {'error':'Update failed'}
+        except Exception as e:
+            print("Error:", e)
+            return {'error': 'An error occurred while processing the request'}, 500
         
 login_parse = reqparse.RequestParser()
 login_parse.add_argument('email', type=str, required=True, help='email is required'),
