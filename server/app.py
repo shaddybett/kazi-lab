@@ -432,6 +432,8 @@ class signup2(Resource):
 
         if not os.path.exists(UPLOAD_FOLDER):
             os.makedirs(UPLOAD_FOLDER)
+        if image_file:
+            image_filename = secure_filename(image_file.filename)
         if national_id:
             if len(national_id) != 8:
                 return {'error':'Enter a valid national id'}
