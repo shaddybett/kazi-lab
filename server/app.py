@@ -419,6 +419,8 @@ signup_parser.add_argument('phone_number', type=str, required=False)
 signup_parser.add_argument('uids', type=str, required=False, help='uuid is required')
 signup_parser.add_argument('image', type=FileStorage , required=False,location = 'files')
 
+UPLOAD_FOLDER = 'server/userImages'
+
 class signup2(Resource):
     def post(self):
         args = signup_parser.parse_args()
@@ -444,7 +446,7 @@ class signup2(Resource):
             existing_user.middle_name = middle_name
             existing_user.national_id = national_id
             existing_user.phone_number = phone_number
-            existing_user.image = image
+            existing_user.image = image_filename
             existing_user.uids = uids
 
             db.session.commit()
