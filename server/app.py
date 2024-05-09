@@ -434,6 +434,9 @@ class signup2(Resource):
             os.makedirs(UPLOAD_FOLDER)
         if image_file:
             image_filename = secure_filename(image_file.filename)
+            image_file.save(os.path.join(UPLOAD_FOLDER,image_filename))
+        else:
+            image_filename = None
         if national_id:
             if len(national_id) != 8:
                 return {'error':'Enter a valid national id'}
