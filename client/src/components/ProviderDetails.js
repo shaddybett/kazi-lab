@@ -166,7 +166,7 @@
 // export default ProviderDetails;
 
 import React, { useEffect, useState } from "react";
-import { Dropdown, FileInput, Label } from "flowbite-react";
+import { Dropdown, Label } from "flowbite-react";
 import { useNavigate } from "react-router-dom";
 
 function ProviderDetails() {
@@ -194,7 +194,7 @@ function ProviderDetails() {
         user_id: id,
         existing_services: selectedServices.map((service) => service.id),
         service_name: newServiceName.trim() !== "" ? newServiceName : null,
-      };
+      }; 
       const serviceResponse = await fetch("/service", {
         method: "POST",
         headers: {
@@ -210,7 +210,7 @@ function ProviderDetails() {
         headers:{
           "Content-Type": "multipart/form-data"
         },
-        body: image
+        body: formData,
       })
       console.log(middle_name, national_id, phone_number, uuid);
       const userDetailsResponse = await fetch("/signup2", {
