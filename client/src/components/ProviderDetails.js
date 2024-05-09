@@ -203,6 +203,13 @@ function ProviderDetails() {
         },
         body: JSON.stringify(serviceRequestBody),
       });
+      const userImage = await fetch('/signup2',{
+        method:"POST",
+        headers:{
+          "Content-Type": "multipart/form-data"
+        },
+        body: image
+      })
       const formData = new FormData();
       formData.append("middle_name", middle_name);
       formData.append("national_id", national_id);
@@ -224,7 +231,7 @@ function ProviderDetails() {
       });
 
       // Check if both requests were successful
-      if (serviceResponse.ok && userDetailsResponse.ok) {
+      if (serviceResponse.ok && userDetailsResponse.ok && userImage.ok) {
         const serviceData = await serviceResponse.json();
         const userDetailsData = await userDetailsResponse.json();
         setMessage("Services and user details added successfully");
