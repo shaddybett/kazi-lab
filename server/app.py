@@ -119,9 +119,9 @@ class signup2(Resource):
                 national_id = args['national_id']
                 phone_number = args['phone_number']
                 uids = args['uids']
-                image_file = args['image']
-            elif request.headers['Content-Type'].startswith('multipart/form-data'):
                 image_file = request.files['image']
+            elif request.headers['Content-Type'].startswith('multipart/form-data'):
+                
             else:
                 return {'error': 'Unsupported content type'},400
             print("Image File:", image_file)
