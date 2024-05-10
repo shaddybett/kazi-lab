@@ -41,6 +41,7 @@ function ProviderDetails() {
       formData.append("image", image);
       formData.append("middle_name", middle_name);
       formData.append("national_id", national_id);
+      formData.append("phone_number", phone_number);
       const userImage = await fetch('/signup2',{
         method:"POST",
         headers:{
