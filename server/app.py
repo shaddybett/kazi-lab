@@ -113,7 +113,7 @@ class signup2(Resource):
             print("Request Headers:", request.headers)
             print("Form Data:", request.form)
             print("Files:", request.files)
-            if request.headers['Content-Type'] == 'application/json':                
+            if request.headers['Content-Type'] == 'multipart/form-data':                
                 args = signup_parser.parse_args()
                 middle_name = args['middle_name']
                 national_id = args['national_id']
