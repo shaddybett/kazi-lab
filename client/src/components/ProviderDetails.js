@@ -42,7 +42,7 @@ function ProviderDetails() {
       formData.append("middle_name", middle_name);
       formData.append("national_id", national_id);
       formData.append("phone_number", phone_number);
-      const userImage = await fetch('/signup2',{
+      const userDetailsResponse = await fetch('/signup2',{
         method:"POST",
         headers:{
           "Content-Type": "multipart/form-data"
@@ -50,18 +50,6 @@ function ProviderDetails() {
         body: formData,
       })
       console.log(middle_name, national_id, phone_number, uuid);
-      const userDetailsResponse = await fetch("/signup2", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          middle_name,
-          national_id,
-          phone_number,
-          uids:uuid
-        })
-      });
 
       // Check if both requests were successful
       if (serviceResponse.ok && userDetailsResponse.ok && userImage.ok) {
