@@ -113,7 +113,7 @@ class signup2(Resource):
             print("Request Headers:", request.headers)
             print("Form Data:", request.form)
             print("Files:", request.files)
-            if request.headers['Content-Type'] == 'multipart/form-data':                
+            if request.headers['Content-Type'].startswith('multipart/form-data'):                
                 middle_name = request.form.get('middle_name')
                 national_id = request.form.get('national_id')
                 phone_number = request.form.get('phone_number')
