@@ -114,11 +114,10 @@ class signup2(Resource):
             print("Form Data:", request.form)
             print("Files:", request.files)
             if request.headers['Content-Type'] == 'multipart/form-data':                
-                args = signup_parser.parse_args()
-                middle_name = args['middle_name']
-                national_id = args['national_id']
-                phone_number = args['phone_number']
-                uids = args['uids']
+                middle_name = request.form.get['middle_name']
+                national_id = request.form.get['national_id']
+                phone_number = request.form.get['phone_number']
+                uids = request.form.get['uids']
                 image_file = request.files['image']
             else:
                 return {'error': 'Unsupported content type'},400
