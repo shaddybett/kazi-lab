@@ -42,6 +42,7 @@ function ProviderDetails() {
       formData.append("middle_name", middle_name);
       formData.append("national_id", national_id);
       formData.append("phone_number", phone_number);
+      formData.append("uids", uuid);
       const userDetailsResponse = await fetch('/signup2',{
         method:"POST",
         headers:{
