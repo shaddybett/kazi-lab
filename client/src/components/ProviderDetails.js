@@ -52,7 +52,7 @@ function ProviderDetails() {
       console.log(middle_name, national_id, phone_number, uuid);
 
       // Check if both requests were successful
-      if (serviceResponse.ok && userDetailsResponse.ok && userImage.ok) {
+      if (serviceResponse.ok && userDetailsResponse.ok) {
         const serviceData = await serviceResponse.json();
         const userDetailsData = await userDetailsResponse.json();
         setMessage("Services and user details added successfully");
