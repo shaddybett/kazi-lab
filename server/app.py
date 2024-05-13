@@ -104,10 +104,6 @@ signup_parser.add_argument('image', type=FileStorage , required=False,location =
 
 UPLOAD_FOLDER = '/files'
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'webp' }
-
-# def allowed_file(filename):
-#     return '.' in filename and \
-#            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 class signup2(Resource):
