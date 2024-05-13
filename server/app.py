@@ -128,8 +128,6 @@ class signup2(Resource):
                 print("Phone Number:", phone_number)
                 print("UIDs:", uids)
                 print("Image File:", image_file)
-            else:
-                return {'error': 'Unsupported content type'},400
             print("Image File:", image_file)
 
             if not os.path.exists(UPLOAD_FOLDER):
