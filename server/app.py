@@ -102,9 +102,8 @@ signup_parser.add_argument('phone_number', type=str, required=False)
 signup_parser.add_argument('uids', type=str, required=False, help='uuid is required')
 signup_parser.add_argument('image', type=FileStorage , required=False,location = 'files')
 
-UPLOAD_FOLDER = 'server/userImages'
-ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif' }
-
+UPLOAD_FOLDER = '/files'
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'webp' }
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 class signup2(Resource):
@@ -117,25 +116,30 @@ class signup2(Resource):
                 print(f"Form Field - {key}: {value}")
 
             for key, file in request.files.items():
-                print(f"File Field - {key}: {file.filename}")
-            if request.headers['Content-Type'].startswith('multipart/form-data'):                
-                middle_name = request.form.get('middle_name')
-                national_id = request.form.get('national_id')
-                phone_number = request.form.get('phone_number')
-                uids = request.form.get('uids')
-                image_file = request.files.get('image')
-                print("Middle Name:", middle_name)
-                print("National ID:", national_id)
-                print("Phone Number:", phone_number)
-                print("UIDs:", uids)
-                print("Image File:", image_file)
-            else:
-                return {'error': 'Unsupported content type'},400
+                print(f"File Field - {key}: {file.filename}")              
+            middle_name = request.form['middle_name']
+            national_id = request.form['national_id']
+            phone_number = request.form['phone_number']
+            uids = request.form['uids']
+            image_file = request.files['image']
+            print("Middle Name:", middle_name)
+            print("National ID:", national_id)
+            print("Phone Number:", phone_number)
+            print("UIDs:", uids)
             print("Image File:", image_file)
 
             if not os.path.exists(UPLOAD_FOLDER):
                 os.makedirs(UPLOAD_FOLDER)
-            if image_file and allowed_file(image_file.filename):
+            image_file = request.files.get('file-upload') 
+            if image_file is None:
+                return {'error': 'No file uploaded'}, 400
+
+            if not allowed_file(image_file.filename):
+                return {'error': 'Invalid file type'}, 400
+
+
+
+            if image_file and allowed_file(image_file.filename) :
                 image_filename = secure_filename(image_file.filename)
                 image_file.save(os.path.join(UPLOAD_FOLDER,image_filename))
                 print("Image saved as:", os.path.join(UPLOAD_FOLDER, image_filename))

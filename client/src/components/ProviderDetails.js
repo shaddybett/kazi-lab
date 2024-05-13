@@ -50,7 +50,7 @@ function ProviderDetails() {
         },
         body: formData,
       })
-      console.log(middle_name, national_id, phone_number, uuid);
+      console.log(middle_name, national_id, phone_number, uuid, image);
 
       // Check if both requests were successful
       if (serviceResponse.ok && userDetailsResponse.ok) {
