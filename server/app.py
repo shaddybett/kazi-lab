@@ -105,8 +105,8 @@ signup_parser.add_argument('image', type=FileStorage , required=False,location =
 UPLOAD_FOLDER = 'server/userImages'
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif' }
 
-def allowed_file(filename):
-    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+# def allowed_file(filename):
+#     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 class signup2(Resource):
     def post(self):
         try:
@@ -135,7 +135,7 @@ class signup2(Resource):
 
             if not os.path.exists(UPLOAD_FOLDER):
                 os.makedirs(UPLOAD_FOLDER)
-            if image_file and allowed_file(image_file.filename):
+            if image_file :
                 image_filename = secure_filename(image_file.filename)
                 image_file.save(os.path.join(UPLOAD_FOLDER,image_filename))
                 print("Image saved as:", os.path.join(UPLOAD_FOLDER, image_filename))
