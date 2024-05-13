@@ -118,10 +118,10 @@ class signup2(Resource):
             for key, file in request.files.items():
                 print(f"File Field - {key}: {file.filename}")              
             middle_name = request.form['middle_name']
-            national_id = request.form.get['national_id']
-            phone_number = request.form.get['phone_number']
-            uids = request.form.get['uids']
-            image_file = request.files.get['image']
+            national_id = request.form['national_id']
+            phone_number = request.form['phone_number']
+            uids = request.form['uids']
+            image_file = request.files['image']
             print("Middle Name:", middle_name)
             print("National ID:", national_id)
             print("Phone Number:", phone_number)
