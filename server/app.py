@@ -102,9 +102,12 @@ signup_parser.add_argument('phone_number', type=str, required=False)
 signup_parser.add_argument('uids', type=str, required=False, help='uuid is required')
 signup_parser.add_argument('image', type=FileStorage , required=False,location = 'files')
 
-UPLOAD_FOLDER = 'server/userImages'
-ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif' }
+UPLOAD_FOLDER = '../userImages'
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'webp' }
 
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 # def allowed_file(filename):
 #     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 class signup2(Resource):
