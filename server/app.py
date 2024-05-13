@@ -117,16 +117,16 @@ class signup2(Resource):
 
             for key, file in request.files.items():
                 print(f"File Field - {key}: {file.filename}")              
-                middle_name = request.form.get('middle_name')
-                national_id = request.form.get('national_id')
-                phone_number = request.form.get('phone_number')
-                uids = request.form.get('uids')
-                image_file = request.files.get('image')
-                print("Middle Name:", middle_name)
-                print("National ID:", national_id)
-                print("Phone Number:", phone_number)
-                print("UIDs:", uids)
-                print("Image File:", image_file)
+            middle_name = request.form.get('middle_name')
+            national_id = request.form.get('national_id')
+            phone_number = request.form.get('phone_number')
+            uids = request.form.get('uids')
+            image_file = request.files.get('image')
+            print("Middle Name:", middle_name)
+            print("National ID:", national_id)
+            print("Phone Number:", phone_number)
+            print("UIDs:", uids)
+            print("Image File:", image_file)
             print("Image File:", image_file)
 
             if not os.path.exists(UPLOAD_FOLDER):
