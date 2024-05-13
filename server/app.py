@@ -111,7 +111,7 @@ ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'webp' }
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 class signup2(Resource):
-    def patch(self):
+    def post(self):
         try:
             print("Request Headers:", request.headers)
             print("Form Data:", request.form)
