@@ -105,13 +105,13 @@ signup_parser.add_argument('image', type=FileStorage , required=False,location =
 UPLOAD_FOLDER = '/files'
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'webp' }
 
-def allowed_file(filename):
-    return '.' in filename and \
-           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 # def allowed_file(filename):
-#     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+#     return '.' in filename and \
+#            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 class signup2(Resource):
-    def post(self):
+    def patch(self):
         try:
             print("Request Headers:", request.headers)
             print("Form Data:", request.form)
@@ -138,6 +138,15 @@ class signup2(Resource):
 
             if not os.path.exists(UPLOAD_FOLDER):
                 os.makedirs(UPLOAD_FOLDER)
+            image_file = request.files.get('file-upload') 
+            if image_file is None:
+                return {'error': 'No file uploaded'}, 400
+
+            if not allowed_file(image_file.filename):
+                return {'error': 'Invalid file type'}, 400
+
+
+
             if image_file & allowed_file(image_file.filename) :
                 image_filename = secure_filename(image_file.filename)
                 image_file.save(os.path.join(UPLOAD_FOLDER,image_filename))
