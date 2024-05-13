@@ -116,8 +116,7 @@ class signup2(Resource):
                 print(f"Form Field - {key}: {value}")
 
             for key, file in request.files.items():
-                print(f"File Field - {key}: {file.filename}")
-            if request.headers['Content-Type'].startswith('multipart/form-data'):                
+                print(f"File Field - {key}: {file.filename}")              
                 middle_name = request.form.get('middle_name')
                 national_id = request.form.get('national_id')
                 phone_number = request.form.get('phone_number')
