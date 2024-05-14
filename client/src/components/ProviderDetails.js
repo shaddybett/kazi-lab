@@ -51,7 +51,7 @@ function ProviderDetails() {
         body: formData,
       })
       console.log(middle_name, national_id, phone_number, uuid, image);
-      if (serviceResponse.ok && !userDetailsResponse.ok) {
+      if (serviceResponse.ok && !userResponse.ok) {
         setError(userDetailsErrors.error)
       }
       if (userDetailsResponse.ok && !serviceResponse.ok) {
