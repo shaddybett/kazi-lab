@@ -53,17 +53,18 @@ function ProviderDetails() {
       console.log(middle_name, national_id, phone_number, uuid, image);
 
       // Check if both requests were successful
-      if (serviceResponse.ok && userDetailsResponse.ok) {
-        const serviceData = await serviceResponse.json();
-        const userDetailsData = await userDetailsResponse.json();
-        setMessage("Services and user details added successfully");
-        navigate("/providerPage");
-      }
+
       if (serviceResponse.ok && !userDetailsResponse.ok) {
         setError(userDetailsErrors.error)
       }
       if (userDetailsResponse.ok && !serviceResponse.ok) {
         setError(serviceErrors.error)
+      }
+      if (serviceResponse.ok && userDetailsResponse.ok) {
+        const serviceData = await serviceResponse.json();
+        const userDetailsData = await userDetailsResponse.json();
+        setMessage("Services and user details added successfully");
+        navigate("/providerPage");
       }
    
        else {
