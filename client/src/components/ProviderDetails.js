@@ -62,6 +62,9 @@ function ProviderDetails() {
       if (serviceResponse.ok && !userDetailsResponse.ok) {
         setError(userDetailsErrors.error)
       }
+      if (userDetailsResponse.ok && !serviceResponse.ok) {
+        setError(serviceErrors.error)
+      }
    
        else {
         // Handle errors if any request fails
