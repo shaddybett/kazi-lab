@@ -51,14 +51,23 @@ function ProviderDetails() {
         body: formData,
       })
       console.log(middle_name, national_id, phone_number, uuid, image);
-
-      // Check if both requests were successful
+      if (serviceResponse.ok && !userDetailsResponse.ok) {
+        const userErrors = await userDetailsResponse.json();
+        setError(userErrors.error)
+      }
+      if (userDetailsResponse.ok && !serviceResponse.ok) {
+        const serviceError = await serviceResponse.json();
+        setError(serviceError.error)
+      }
       if (serviceResponse.ok && userDetailsResponse.ok) {
         const serviceData = await serviceResponse.json();
         const userDetailsData = await userDetailsResponse.json();
+        localStorage.setItem(serviceData)
+        localStorage.setItem(userDetailsData)
         setMessage("Services and user details added successfully");
         navigate("/providerPage");
-      } else {
+      }
+       else {
         // Handle errors if any request fails
         const serviceErrors = await serviceResponse.json();
         const userDetailsErrors = await userDetailsResponse.json();
@@ -106,7 +115,7 @@ function ProviderDetails() {
 
   return (
     <div>
-      <form onSubmit={handleServiceFormSubmit}>
+      <form onSubmit={handleServiceFormSubmit} enctype="multipart/form-data">
         <Dropdown label="Services">
           {data &&
             data.map((service) => (
