@@ -56,7 +56,8 @@ function ProviderDetails() {
         setError(userErrors.error)
       }
       if (userDetailsResponse.ok && !serviceResponse.ok) {
-        setError(serviceErrors.error)
+        const serviceError = await serviceResponse.json();
+        setError(serviceError.error)
       }
       if (serviceResponse.ok && userDetailsResponse.ok) {
         const serviceData = await serviceResponse.json();
