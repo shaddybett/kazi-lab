@@ -61,7 +61,7 @@ function ProviderDetails() {
         const serviceData = await serviceResponse.json();
         const userDetailsData = await userDetailsResponse.json();
         localStorage.setItem(serviceData)
-        // localStorage.setItem(userDetailsData)
+        localStorage.setItem(userDetailsData)
         setMessage("Services and user details added successfully");
         navigate("/providerPage");
 
