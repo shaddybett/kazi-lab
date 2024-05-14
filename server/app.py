@@ -74,7 +74,7 @@ class Signup(Resource):
         )
         db.session.add(new_user)
         db.session.commit()
-re
+        # Add provider service if role_id is 2 and service_name is provided
         if role_id == 2 and service_name:
             service = Service.query.filter(func.lower(Service.service_name) == func.lower(service_name)).first()
             if service:
