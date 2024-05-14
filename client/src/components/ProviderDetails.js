@@ -52,6 +52,7 @@ function ProviderDetails() {
       })
       console.log(middle_name, national_id, phone_number, uuid, image);
       if (serviceResponse.ok && !userDetailsResponse.ok) {
+        const userErrors = await userDetailsResponse.json();
         setError(userErrors.error)
       }
       if (userDetailsResponse.ok && !serviceResponse.ok) {
