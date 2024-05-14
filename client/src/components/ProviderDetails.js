@@ -53,7 +53,6 @@ function ProviderDetails() {
       console.log(middle_name, national_id, phone_number, uuid, image);
 
       // Check if both requests were successful
-
       if (serviceResponse.ok && !userDetailsResponse.ok) {
         setError(userDetailsErrors.error)
       }
