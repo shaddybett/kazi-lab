@@ -58,7 +58,12 @@ function ProviderDetails() {
         const userDetailsData = await userDetailsResponse.json();
         setMessage("Services and user details added successfully");
         navigate("/providerPage");
-      } else {
+      }
+      if (serviceResponse.ok && !userDetailsResponse.ok) {
+        setError(userDetailsErrors.error)
+      }
+   
+       else {
         // Handle errors if any request fails
         const serviceErrors = await serviceResponse.json();
         const userDetailsErrors = await userDetailsResponse.json();
