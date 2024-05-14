@@ -64,10 +64,7 @@ function ProviderDetails() {
         localStorage.setItem(userDetailsData)
         setMessage("Services and user details added successfully");
         navigate("/providerPage");
-
       }
-      
-   
        else {
         // Handle errors if any request fails
         const serviceErrors = await serviceResponse.json();
