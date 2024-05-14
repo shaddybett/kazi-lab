@@ -115,7 +115,7 @@ function ProviderDetails() {
 
   return (
     <div>
-      <form onSubmit={handleServiceFormSubmit}>
+      <form onSubmit={handleServiceFormSubmit} enctype="multipart/form-data">
         <Dropdown label="Services">
           {data &&
             data.map((service) => (
