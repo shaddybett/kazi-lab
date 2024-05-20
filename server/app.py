@@ -128,6 +128,7 @@ class signup2(Resource):
             print("UIDs:", uids)
             print("Image File:", image_file)
 
+
             if not os.path.exists(UPLOAD_FOLDER):
                 os.makedirs(UPLOAD_FOLDER)
             image_file = request.files.get('file-upload') 
