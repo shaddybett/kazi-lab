@@ -117,11 +117,13 @@ class signup2(Resource):
 
             for key, file in request.files.items():
                 print(f"File Field - {key}: {file.filename}")              
-            middle_name = request.form['middle_name']
-            national_id = request.form['national_id']
-            phone_number = request.form['phone_number']
-            uids = request.form['uids']
-            image_file = request.files['image']
+            middle_name = request.form.get('middle_name')
+            national_id = request.form.get('national_id')
+            phone_number = request.form.get('phone_number')
+            uids = request.form.get('uids')
+            image_file = request.files.get('image')
+            if not middle_name or not national_id or not phone_number or not uids or not image_file:
+                return {'error': 'Missing required fields'}, 400
             print("Middle Name:", middle_name)
             print("National ID:", national_id)
             print("Phone Number:", phone_number)
@@ -130,28 +132,20 @@ class signup2(Resource):
 
             if not os.path.exists(UPLOAD_FOLDER):
                 os.makedirs(UPLOAD_FOLDER)
-            image_file = request.files.get('file-upload') 
-            if image_file is None:
-                return {'error': 'No file uploaded'}, 400
 
             if not allowed_file(image_file.filename):
                 return {'error': 'Invalid file type'}, 400
 
+            image_filename = secure_filename(image_file.filename)
+            image_path = os.path.join(UPLOAD_FOLDER, image_filename)
+            image_file.save(image_path)
+            print("Image saved as:", image_path)
 
+            if len(national_id) != 8:
+                return {'error':'Enter a valid national id'}, 400
 
-            if image_file and allowed_file(image_file.filename) :
-                image_filename = secure_filename(image_file.filename)
-                image_file.save(os.path.join(UPLOAD_FOLDER,image_filename))
-                print("Image saved as:", os.path.join(UPLOAD_FOLDER, image_filename))
-            else:
-                return {'error': 'Invalid file type or no file uploaded'},400
-            if national_id:
-                if len(national_id) != 8:
-                    return {'error':'Enter a valid national id'}
-
-            if phone_number:
-                if len(phone_number) != 10:
-                    return {'error':'Enter a valid phone number'}
+            if len(phone_number) != 10:
+                return {'error':'Enter a valid phone number'}, 400
 
             existing_user = User.query.filter_by(uuid = uids).first()
             if existing_user:
