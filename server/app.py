@@ -142,7 +142,7 @@ class signup2(Resource):
             print("Image saved as:", image_path)
 
             if len(national_id) != 8:
-                return {'error':'Enter a valid national id'}
+                return {'error':'Enter a valid national id'},400
 
             if len(phone_number) != 10:
                 return {'error':'Enter a valid phone number'}
