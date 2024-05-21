@@ -43,7 +43,7 @@ function Profile() {
                 <Avatar img="/images/people/profile-picture-5.jpg" size="xl" />
                 <div>
                 <h3 className="text-l font-bold tracking-tight text-gray-900 dark:text-white">
-                   Name: <p className="font-normal text-gray-700 dark:text-gray-400">{data.first_name} {data.last_name}</p>
+                   Name: <p className="font-normal text-gray-700 dark:text-gray-400">{data.first_name} {data.middle_name} {data.last_name}</p>
                 </h3>
                 <h3 className="text-l font-bold tracking-tight text-gray-900 dark:text-white">
                    Email: <p className="font-normal text-gray-700 dark:text-gray-400">{data.email}</p>
