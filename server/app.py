@@ -138,7 +138,7 @@ class signup2(Resource):
 
             image_filename = secure_filename(image_file.filename)
             image_path = os.path.join(UPLOAD_FOLDER, image_filename)
-            image_file.save(os.path.join(UPLOAD_FOLDER,image_filename))
+            image_file.save()
             print("Image saved as:", os.path.join(UPLOAD_FOLDER, image_filename))
             if national_id:
                 if len(national_id) != 8:
