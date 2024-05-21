@@ -119,7 +119,7 @@ class signup2(Resource):
                 print(f"File Field - {key}: {file.filename}")              
             middle_name = request.form.get('middle_name')
             national_id = request.form.get('national_id')
-            phone_number = request.form['phone_number']
+            phone_number = request.form.get('phone_number')
             uids = request.form['uids']
             image_file = request.files['image']
             print("Middle Name:", middle_name)
