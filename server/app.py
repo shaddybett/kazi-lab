@@ -144,7 +144,6 @@ class signup2(Resource):
                 if len(national_id) != 8:
                     return {'error':'Enter a valid national id'}
 
-            if phone_number:
             if len(phone_number) != 10:
                 return {'error':'Enter a valid phone number'}
 
