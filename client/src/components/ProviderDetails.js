@@ -1,7 +1,7 @@
 
 import React, { useEffect, useState } from "react";
 import { Dropdown, Label } from "flowbite-react";
-import { useNavigate } from "react-router-dom";
+import { json, useNavigate } from "react-router-dom";
 
 function ProviderDetails() {
   const [data, setData] = useState([]);
@@ -54,8 +54,8 @@ function ProviderDetails() {
       if (serviceResponse.ok && userDetailsResponse.ok) {
         const serviceData = await serviceResponse.json();
         const userDetailsData = await userDetailsResponse.json();
-        localStorage.setItem(serviceData)
-        localStorage.setItem(userDetailsData)
+        localStorage.setItem("serviceData", JSON.stringify(serviceData))
+        localStorage.setItem("userDetailsData", JSON.stringify(userDetailsData))
         setMessage("Services and user details added successfully");
         navigate("/providerPage");
       }
