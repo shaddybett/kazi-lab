@@ -149,7 +149,7 @@ class signup2(Resource):
                 existing_user.uids = uids
 
                 db.session.commit()
-                return {'message':'user details updated successfully','middle_name':middle_name,}
+                return {'message':'user details updated successfully','middle_name':middle_name,'national_id':national_id,}
             else:
                 return {'error':'Update failed'}
         except Exception as e:
