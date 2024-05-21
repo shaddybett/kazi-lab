@@ -193,7 +193,7 @@ class Dashboard(Resource):
         if user:
             response = make_response(
                 {'first_name': user.first_name, 'last_name': user.last_name, 'email': user.email,
-                 'role_id': user.role_id, 'phone_number': user.phone_number})
+                 'role_id': user.role_id, 'phone_number': user.phone_number,'middle_name':user.middle_name,'national_id':user.national_id})
             return response
         else:
             response = make_response({'error': 'Error fetching user details'}, 404)
