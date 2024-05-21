@@ -137,6 +137,7 @@ class signup2(Resource):
                 return {'error': 'Invalid file type'}, 400
 
             image_filename = secure_filename(image_file.filename)
+            image_path = os.path.join(UPLOAD_FOLDER, image_filename)
             image_file.save(os.path.join(UPLOAD_FOLDER,image_filename))
             print("Image saved as:", os.path.join(UPLOAD_FOLDER, image_filename))
             if national_id:
