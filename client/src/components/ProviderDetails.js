@@ -46,7 +46,7 @@ function ProviderDetails() {
       const userDetailsResponse = await fetch('/signup2',{
         method:"POST",
         headers:{
-          
+          Authorization: `Bearer ${token}`,
         },
         body: formData,
       })
