@@ -145,8 +145,8 @@ class signup2(Resource):
                     return {'error':'Enter a valid national id'}
 
             if phone_number:
-                if len(phone_number) != 10:
-                    return {'error':'Enter a valid phone number'}
+            if len(phone_number) != 10:
+                return {'error':'Enter a valid phone number'}
 
             existing_user = User.query.filter_by(uuid = uids).first()
             if existing_user:
