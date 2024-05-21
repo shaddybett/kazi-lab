@@ -95,13 +95,6 @@ class Signup(Resource):
         response = make_response({'message': 'Sign up successful', 'token': access_token, 'id': new_user.id,'role_id':new_user.role_id,'first_name':new_user.first_name,'last_name':new_user.last_name,'email':new_user.email,'password':new_user.password}, 201)
         return response
 
-
-signup_parser.add_argument('middle_name', type=str, required=False)
-signup_parser.add_argument('national_id', type=str, required=False)
-signup_parser.add_argument('phone_number', type=str, required=False)
-signup_parser.add_argument('uids', type=str, required=False, help='uuid is required')
-signup_parser.add_argument('image', type=FileStorage , required=False,location = 'files')
-
 UPLOAD_FOLDER = '/files'
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'webp' }
 def allowed_file(filename):
