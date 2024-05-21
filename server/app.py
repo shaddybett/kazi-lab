@@ -120,7 +120,7 @@ class signup2(Resource):
             middle_name = request.form.get('middle_name')
             national_id = request.form.get('national_id')
             phone_number = request.form.get('phone_number')
-            uids = request.form['uids']
+            uids = request.form.get('uids')
             image_file = request.files['image']
             print("Middle Name:", middle_name)
             print("National ID:", national_id)
