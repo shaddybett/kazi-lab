@@ -140,8 +140,6 @@ class signup2(Resource):
                 image_filename = secure_filename(image_file.filename)
                 image_file.save(os.path.join(UPLOAD_FOLDER,image_filename))
                 print("Image saved as:", os.path.join(UPLOAD_FOLDER, image_filename))
-            else:
-                return {'error': 'Invalid file type or no file uploaded'},400
             if national_id:
                 if len(national_id) != 8:
                     return {'error':'Enter a valid national id'}
