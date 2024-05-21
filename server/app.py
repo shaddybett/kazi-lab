@@ -142,10 +142,10 @@ class signup2(Resource):
             print("Image saved as:", image_path)
 
             if len(national_id) != 8:
-                return {'error':'Enter a valid national id'},400
+                return {'error':'Enter a valid national id'}, 400
 
             if len(phone_number) != 10:
-                return {'error':'Enter a valid phone number'}
+                return {'error':'Enter a valid phone number'}, 400
 
             existing_user = User.query.filter_by(uuid = uids).first()
             if existing_user:
