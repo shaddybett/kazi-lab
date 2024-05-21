@@ -122,6 +122,8 @@ class signup2(Resource):
             phone_number = request.form.get('phone_number')
             uids = request.form.get('uids')
             image_file = request.files.get('image')
+            if not middle_name or not national_id or not phone_number or not uids or not image_file:
+                return {'error': 'Missing required fields'}, 400
             print("Middle Name:", middle_name)
             print("National ID:", national_id)
             print("Phone Number:", phone_number)
