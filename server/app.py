@@ -132,9 +132,6 @@ class signup2(Resource):
 
             if not os.path.exists(UPLOAD_FOLDER):
                 os.makedirs(UPLOAD_FOLDER)
-            image_file = request.files.get('file-upload') 
-            if image_file is None:
-                return {'error': 'No file uploaded'}, 400
 
             if not allowed_file(image_file.filename):
                 return {'error': 'Invalid file type'}, 400
