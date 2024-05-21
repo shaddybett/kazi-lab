@@ -136,10 +136,9 @@ class signup2(Resource):
             if not allowed_file(image_file.filename):
                 return {'error': 'Invalid file type'}, 400
 
-            if image_file and allowed_file(image_file.filename) :
-                image_filename = secure_filename(image_file.filename)
-                image_file.save(os.path.join(UPLOAD_FOLDER,image_filename))
-                print("Image saved as:", os.path.join(UPLOAD_FOLDER, image_filename))
+            image_filename = secure_filename(image_file.filename)
+            image_file.save(os.path.join(UPLOAD_FOLDER,image_filename))
+            print("Image saved as:", os.path.join(UPLOAD_FOLDER, image_filename))
             if national_id:
                 if len(national_id) != 8:
                     return {'error':'Enter a valid national id'}
