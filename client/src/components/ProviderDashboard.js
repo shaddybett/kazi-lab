@@ -102,6 +102,7 @@ function ProviderDashboard() {
       <div>
         <h2>Hello, {data.first_name} welcome </h2>
         <h1>Services you offer</h1>
+        <ul> {service.service_name} </ul>
       </div>
       {error && <p>{error}</p>}
     </div>

@@ -207,7 +207,7 @@ class Dashboard(Resource):
             return response      
 
 class Services(Resource):
-    @jwt_required
+    @jwt_required ()
     def get (self):
         user = get_jwt_identity()
         existing_user = User.query.filter_by(email=user).first()
@@ -215,8 +215,7 @@ class Services(Resource):
             user_id = existing_user.id
         servicer = Service.query.filter_by(provider_id = user_id).first()
         if servicer:
-            return {'service_name':servicer.service_name,}
-
+            return {'service_name':servicer.service_name}
 
 @app.route('/service', methods=['GET', 'POST'])
 @jwt_required()
