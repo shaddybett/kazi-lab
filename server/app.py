@@ -206,7 +206,8 @@ class Dashboard(Resource):
             response = make_response({'error': 'Error fetching user details'}, 404)
             return response      
 
-
+class Services(Resource):
+    
 
 @app.route('/service', methods=['GET', 'POST'])
 @jwt_required()
