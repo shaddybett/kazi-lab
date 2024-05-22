@@ -51,7 +51,7 @@ function ProviderDashboard() {
         });
         if (response.ok) {
           const responseData = await response.json();
-          setData(responseData.all_services);
+          setService(responseData.service_name);
         } else {
           const errorMessage = await response.json();
           setError(errorMessage.error);
