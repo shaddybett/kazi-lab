@@ -210,7 +210,7 @@ class Services(Resource):
     @jwt_required
     def get (self):
         user = get_jwt_identity()
-        
+        existing_user = User.query.filter_by(email=user)
 
 @app.route('/service', methods=['GET', 'POST'])
 @jwt_required()
