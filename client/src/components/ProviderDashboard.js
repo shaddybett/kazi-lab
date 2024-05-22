@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 
 function ProviderDashboard() {
   const [data, setData] = useState("");
+  const [service, setService] = useState("")
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
@@ -41,7 +42,7 @@ function ProviderDashboard() {
     const fetchData = async () => {
       try {
         const token = localStorage.getItem("token");
-        const response = await fetch("/service", {
+        const response = await fetch("/services", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
