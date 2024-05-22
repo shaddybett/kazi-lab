@@ -210,7 +210,9 @@ class Services(Resource):
     @jwt_required
     def get (self):
         user = get_jwt_identity()
-        existing_user = User.query.filter_by(email=user)
+        existing_user = User.query.filter_by(email=user).first()
+        if existing_user:
+            
 
 @app.route('/service', methods=['GET', 'POST'])
 @jwt_required()
