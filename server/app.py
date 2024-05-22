@@ -207,6 +207,7 @@ class Dashboard(Resource):
             return response      
 
 
+
 @app.route('/service', methods=['GET', 'POST'])
 @jwt_required()
 def handle_service_request():
