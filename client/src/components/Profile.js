@@ -1,5 +1,5 @@
 import React,{useEffect, useState} from 'react'
-import { Card } from "flowbite-react";
+import { Card,Avatar } from "flowbite-react";
 
 function Profile() {
     const [data,setData] = useState([])
@@ -40,7 +40,7 @@ function Profile() {
     <div>
         <Card className="max-w-sm ml-80 mt-20">
             <div className="flex items-center gap-5 mt-10 ml-5">
-                <img src={data.image} alt='profile' />
+                <Avatar img="/images/people/profile-picture-5.jpg" size="xl" />
                 <div>
                 <h3 className="text-l font-bold tracking-tight text-gray-900 dark:text-white">
                    Name: <p className="font-normal text-gray-700 dark:text-gray-400">{data.first_name} {data.middle_name} {data.last_name}</p>
