@@ -49,7 +49,7 @@ function ProviderDashboard() {
             label={
               <Avatar
                 alt="User settings"
-                img=
+                img= {data.image}
                 rounded
               />
             }
