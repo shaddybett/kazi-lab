@@ -76,6 +76,10 @@ function ProviderDashboard() {
           <Navbar.Link href="#"></Navbar.Link>
         </Navbar.Collapse>
       </Navbar>
+      <div>
+        <h2>Hello, {data.first_name} welcome </h2>
+        <h1></h1>
+      </div>
       {error && <p>{error}</p>}
     </div>
   );
