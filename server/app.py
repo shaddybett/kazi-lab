@@ -99,7 +99,8 @@ UPLOAD_FOLDER = '/files'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 @app.route('/files/<filename>')
-
+def uploaded_file(filename):
+    return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'webp' }
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
