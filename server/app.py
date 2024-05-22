@@ -140,6 +140,7 @@ class signup2(Resource):
             print("Image saved as:", image_path)
 
             image_url = url_for('uploaded_file', filename=image_filename, _external=True)
+            print("Image URL:", image_url)
             if len(national_id) != 8:
                 return {'error':'Enter a valid national id'}, 400
 
