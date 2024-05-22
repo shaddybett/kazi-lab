@@ -1,4 +1,4 @@
-from flask import Flask, make_response, abort, request,jsonify,session
+from flask import Flask, make_response, abort, request,jsonify,session,send_from_directory, url_for
 from werkzeug.utils import secure_filename
 from werkzeug.datastructures import FileStorage
 from flask_restful import Api, Resource, reqparse
@@ -96,6 +96,11 @@ class Signup(Resource):
         return response
 
 UPLOAD_FOLDER = '/files'
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+@app.route('/files/<filename>')
+def uploaded_file(filename):
+    return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'webp' }
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
@@ -134,6 +139,8 @@ class signup2(Resource):
             image_file.save(image_path)
             print("Image saved as:", image_path)
 
+            image_url = url_for('uploaded_file', filename=image_filename, _external=True)
+            print("Image URL:", image_url)
             if len(national_id) != 8:
                 return {'error':'Enter a valid national id'}, 400
 
@@ -145,7 +152,7 @@ class signup2(Resource):
                 existing_user.middle_name = middle_name
                 existing_user.national_id = national_id
                 existing_user.phone_number = phone_number
-                existing_user.image = image_filename
+                existing_user.image = image_url
                 existing_user.uids = uids
 
                 db.session.commit()
@@ -193,7 +200,7 @@ class Dashboard(Resource):
         if user:
             response = make_response(
                 {'first_name': user.first_name, 'last_name': user.last_name, 'email': user.email,
-                 'role_id': user.role_id, 'phone_number': user.phone_number,'middle_name':user.middle_name,'national_id':user.national_id})
+                 'role_id': user.role_id, 'phone_number': user.phone_number,'middle_name':user.middle_name,'national_id':user.national_id, 'image':user.image})
             return response
         else:
             response = make_response({'error': 'Error fetching user details'}, 404)
