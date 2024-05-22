@@ -212,7 +212,7 @@ class Services(Resource):
         user = get_jwt_identity()
         existing_user = User.query.filter_by(email=user).first()
         if existing_user:
-            
+            user_id = existing_user.id
 
 @app.route('/service', methods=['GET', 'POST'])
 @jwt_required()
