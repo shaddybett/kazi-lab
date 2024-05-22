@@ -1,5 +1,5 @@
 import React,{useEffect, useState} from 'react'
-import { Card,Avatar } from "flowbite-react";
+import { Card } from "flowbite-react";
 
 function Profile() {
     const [data,setData] = useState([])
