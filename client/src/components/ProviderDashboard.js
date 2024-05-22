@@ -16,7 +16,6 @@ function ProviderDashboard() {
     localStorage.removeItem("token");
     navigate("/login");
   };
-  const response = async()
   useEffect(() => {
     const handleEntry = async () => {
       const token = localStorage.getItem("token");
