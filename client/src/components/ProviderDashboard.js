@@ -78,7 +78,7 @@ function ProviderDashboard() {
       </Navbar>
       <div>
         <h2>Hello, {data.first_name} welcome </h2>
-        <h1></h1>
+        <h1>Services you offer</h1>
       </div>
       {error && <p>{error}</p>}
     </div>
