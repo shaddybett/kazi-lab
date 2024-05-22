@@ -215,7 +215,7 @@ class Services(Resource):
             user_id = existing_user.id
         servicer = Service.query.filter_by(provider_id = user_id).first()
         if servicer:
-            return {'message':'Check',}
+            return {'service_name':servicer.service_name,}
 
 
 @app.route('/service', methods=['GET', 'POST'])
