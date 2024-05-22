@@ -209,7 +209,8 @@ class Dashboard(Resource):
 class Services(Resource):
     @jwt_required
     def get (self):
-        user = 
+        user = get_jwt_identity()
+        
 
 @app.route('/service', methods=['GET', 'POST'])
 @jwt_required()
