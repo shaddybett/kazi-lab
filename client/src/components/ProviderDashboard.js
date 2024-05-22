@@ -15,6 +15,7 @@ function ProviderDashboard() {
     localStorage.removeItem("token");
     navigate("/login");
   };
+  const response = async()
   useEffect(() => {
     const handleEntry = async () => {
       const token = localStorage.getItem("token");
@@ -37,6 +38,28 @@ function ProviderDashboard() {
         setError("An error occurred. Please try again later");
       }
     };
+    const fetchData = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const response = await fetch("/service", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        if (response.ok) {
+          const responseData = await response.json();
+          setData(responseData.all_services);
+        } else {
+          const errorMessage = await response.json();
+          setError(errorMessage.error);
+        }
+      } catch (error) {
+        setError("An error occurred. Please try again later.");
+      }
+    };
+    fetchData();
     handleEntry();
   }, []);
   return (
