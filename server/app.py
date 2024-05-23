@@ -51,6 +51,8 @@ class Update(Resource):
         if existing_user:
             if first_name:
                 existing_user.first_name = first_name
+            if middle_name:
+                existing_user.middle_name = middle_name
             db.session.commit()
 
 signup_parser = reqparse.RequestParser()
