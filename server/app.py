@@ -49,8 +49,9 @@ class Update(Resource):
         national_id = args['national_id']
         phone_number = args['phone_number']
         password = args['password']
-        if not password_pattern.match(password):
-            return {'error':'Password must meet the required criteria'}
+        if password:
+            if not password_pattern.match(password):
+                return {'error':'Password must meet the required criteria'}
         hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
         existing_user = User.query.filter_by(email = user).first()
         if existing_user:
@@ -64,7 +65,7 @@ class Update(Resource):
                 existing_user.national_id = national_id
             if phone_number is not None:
                 existing_user.phone_number = phone_number
-            if password is not None:
+            if password:
                 existing_user.password = hashed_password
             db.session.commit()
             return {'message': 'Update Successful'}, 200

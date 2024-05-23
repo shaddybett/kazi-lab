@@ -205,8 +205,6 @@
 // export default Profile;
 
 
-
-
 import React, { useEffect, useState } from 'react';
 import { Card, Avatar, Button, TextInput, Label, Checkbox } from 'flowbite-react';
 
@@ -222,8 +220,8 @@ function Profile() {
     phone_number: '',
     password: ''
   });
-  const [showUpdateForm, setShowUpdateForm] = useState(false); // State to control the visibility of the update form
-  const [showPassword, setShowPassword] = useState(false); // State to control password visibility
+  const [showUpdateForm, setShowUpdateForm] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const [refresh, setRefresh] = useState(false);
 
   useEffect(() => {
@@ -260,7 +258,7 @@ function Profile() {
       }
     };
     handleEntry();
-  }, [refresh]); // Dependency array includes 'refresh'
+  }, [refresh]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -277,19 +275,29 @@ function Profile() {
       if (!token) {
         throw new Error('Token not found');
       }
+
+      // Create an object with only the fields that have values
+      const updatedFields = {};
+      Object.keys(form).forEach(key => {
+        if (form[key]) {
+          updatedFields[key] = form[key];
+        }
+      });
+
       const response = await fetch('/update', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`
         },
-        body: JSON.stringify(form)
+        body: JSON.stringify(updatedFields)
       });
+
       if (response.ok) {
         const responseData = await response.json();
         setMessage(responseData.message);
-        setRefresh(!refresh); // Trigger data refetch
-        setShowUpdateForm(false); // Hide update form after successful update
+        setRefresh(!refresh);
+        setShowUpdateForm(false);
       } else {
         const errorMessage = await response.json();
         setError(errorMessage.error || 'An error occurred');
@@ -320,9 +328,9 @@ function Profile() {
               </h3>
             </div>
           </div>
-          <Button className="mt-5" onClick={() => setShowUpdateForm(!showUpdateForm)}>Update</Button> {/* Toggle button */}
+          <Button className="mt-5" onClick={() => setShowUpdateForm(!showUpdateForm)}>Update</Button>
         </Card>
-        {showUpdateForm && ( /* Conditionally render the update form */
+        {showUpdateForm && (
           <Card className="max-w-sm ml-10">
             <form onSubmit={handleSubmit}>
               <div className="mb-4">
