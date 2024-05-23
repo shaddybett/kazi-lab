@@ -36,6 +36,7 @@ update_parser.add_argument('middle_name', type=str)
 update_parser.add_argument('last_name',type=str)
 update_parser.add_argument('national_id', type=str)
 update_parser.add_argument('phone_number',type=str)
+update_parser.add_argument('password',type=str)
 
 class Update(Resource):
     @jwt_required()
