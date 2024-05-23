@@ -215,9 +215,8 @@ class Services(Resource):
         services = Service.query.filter(Service.id.in_(service_ids)).all()
         if services:
             service_names = [service.service_name for service in services]
-            print("services :", services.service_name)
-
-            return {'service_name':services.service_name}, 200
+            print("services :", service_names)
+            return {'service_name':service_names}, 200
     
 @app.route('/service', methods=['GET', 'POST'])
 @jwt_required()
