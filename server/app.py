@@ -50,7 +50,11 @@ class Update(Resource):
         existing_user = User.query.filter_by(email = user).first()
         if existing_user:
             updated = {
-                
+                'first_name':first_name,
+                'middle_name':middle_name,
+                'last_name':last_name,
+                'national_id':national_id,
+                'phone_number':phone_number
             }
 
 signup_parser = reqparse.RequestParser()
