@@ -215,7 +215,6 @@ class Services(Resource):
         if existing_service:
             return {'service_name':existing_service.service_name}
     
-
 @app.route('/service', methods=['GET', 'POST'])
 @jwt_required()
 def handle_service_request():
