@@ -34,7 +34,10 @@ update_parser = reqparse.RequestParser()
 update_parser.add_argument('first_name', type=str)
 update_parser.add_argument('middle_name', type=str)
 update_parser.add_argument('last_name',type=str)
+update_parser.add_argument('national_id', type=str)
+update_parser.add_argument('phone_number',type=str)
 
+class Update(Resource):
 
 signup_parser = reqparse.RequestParser()
 signup_parser.add_argument('first_name', type=str, required=False, help='First name is required')
