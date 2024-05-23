@@ -52,6 +52,8 @@ class Update(Resource):
         if password:
             if not password_pattern.match(password):
                 return {'error':'Password must meet the required criteria'}
+        else:
+            return {'error':'You must enter your password'}
         hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
         existing_user = User.query.filter_by(email = user).first()
         if existing_user:
