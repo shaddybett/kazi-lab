@@ -38,6 +38,7 @@ update_parser.add_argument('national_id', type=str)
 update_parser.add_argument('phone_number',type=str)
 
 class Update(Resource):
+    @jwt_required()
     def put (self):
         args = update_parser.parse_args()
         first_name = args['first_name']
