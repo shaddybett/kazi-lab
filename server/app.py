@@ -38,6 +38,8 @@ update_parser.add_argument('national_id', type=str)
 update_parser.add_argument('phone_number',type=str)
 
 class Update(Resource):
+    def put (self):
+        
 
 signup_parser = reqparse.RequestParser()
 signup_parser.add_argument('first_name', type=str, required=False, help='First name is required')
