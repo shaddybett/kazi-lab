@@ -212,9 +212,11 @@ class Services(Resource):
         args = service_parser.parse_args()
         service_ids = args['service_ids']
         print("Received service IDs:", service_ids)
-        existing_service = Service.query.filter_by(id = service_ids).first()
+        existing_service = Service.query.filter(Service.id.in_(service_ids)).all()
         if existing_service:
+        
             print("existing_service :", existing_service.service_name)
+
             return {'service_name':existing_service.service_name}, 200
     
 @app.route('/service', methods=['GET', 'POST'])
