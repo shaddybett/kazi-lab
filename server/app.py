@@ -214,7 +214,7 @@ class Services(Resource):
         existing_service = Service.query.filter_by(id = service_ids).first()
         if existing_service:
             print("existing_service :", existing_service.service_name)
-            return {'service_name':existing_service.service_name}
+            return {'service_name':existing_service.service_name}, 200
     
 @app.route('/service', methods=['GET', 'POST'])
 @jwt_required()
