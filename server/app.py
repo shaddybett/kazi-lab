@@ -43,6 +43,7 @@ class Update(Resource):
         first_name = args['first_name']
         middle_name = args['middle_name']
         last_name = args['last_name']
+        national_id = args['national_id']
 
 signup_parser = reqparse.RequestParser()
 signup_parser.add_argument('first_name', type=str, required=False, help='First name is required')
