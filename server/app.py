@@ -212,12 +212,12 @@ class Services(Resource):
         args = service_parser.parse_args()
         service_ids = args['service_ids']
         print("Received service IDs:", service_ids)
-        existing_service = Service.query.filter(Service.id.in_(service_ids)).all()
-        if existing_service:
-        
-            print("existing_service :", existing_service.service_name)
+        services = Service.query.filter(Service.id.in_(service_ids)).all()
+        if services:
+            service_names = [service.service_name for service in services]
+            print("services :", services.service_name)
 
-            return {'service_name':existing_service.service_name}, 200
+            return {'service_name':services.service_name}, 200
     
 @app.route('/service', methods=['GET', 'POST'])
 @jwt_required()
