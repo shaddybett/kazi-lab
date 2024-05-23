@@ -42,7 +42,7 @@ function ProviderDashboard() {
     const fetchData = async () => {
       try {
         const service_ids = localStorage.getItem("serviceData");
-        
+        console.log(service_ids)
         const response = await fetch("/services", {
           method: "GET",
           headers: {
