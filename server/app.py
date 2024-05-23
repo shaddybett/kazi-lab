@@ -211,6 +211,7 @@ class Services(Resource):
     def post (self):
         args = service_parser.parse_args()
         service_ids = args['service_ids']
+        print("Received service IDs:", service_ids)
         existing_service = Service.query.filter_by(id = service_ids).first()
         if existing_service:
             print("existing_service :", existing_service.service_name)
