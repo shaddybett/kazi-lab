@@ -31,6 +31,7 @@ jwt = JWTManager(app)
 jwt.init_app(app)
 
 update_parser = reqparse.RequestParser()
+update_parser.add_argument('first_name', type=str)
 
 
 signup_parser = reqparse.RequestParser()
