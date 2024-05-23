@@ -48,6 +48,7 @@ class Update(Resource):
         last_name = args['last_name']
         national_id = args['national_id']
         phone_number = args['phone_number']
+        password = args['password']
         existing_user = User.query.filter_by(email = user).first()
         if existing_user:
             if first_name:
