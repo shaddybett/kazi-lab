@@ -60,7 +60,7 @@ class Update(Resource):
                 existing_user.middle_name = middle_name
             if last_name is not None:
                 existing_user.last_name = last_name
-            if national_id:
+            if national_id is not None:
                 existing_user.national_id = national_id
             if phone_number:
                 existing_user.phone_number = phone_number
