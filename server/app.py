@@ -62,7 +62,7 @@ class Update(Resource):
                 existing_user.last_name = last_name
             if national_id is not None:
                 existing_user.national_id = national_id
-            if phone_number:
+            if phone_number is not None:
                 existing_user.phone_number = phone_number
             if password:
                 existing_user.password = hashed_password
