@@ -106,9 +106,9 @@ function ProviderDashboard() {
       <div>
         <h2>Hello, {data.first_name} welcome </h2>
         <h1>Services you offer</h1>
-        {services.length > 0 && (
+        {service.length > 0 && (
         <ul>
-          {services.map((service, index) => (
+          {service.map((service, index) => (
             <li key={index}>{service}</li>
           ))}
         </ul>
