@@ -205,10 +205,10 @@ class Dashboard(Resource):
         else:
             response = make_response({'error': 'Error fetching user details'}, 404)
             return response      
-
+serviceParser = reqparse.RequestParser()
 class Services(Resource):
     def post (self):
-        user = get_jwt_identity()
+        service_ids = 
         existing_user = User.query.filter_by(email=user).first()
         if existing_user:
             user_id = existing_user.id
