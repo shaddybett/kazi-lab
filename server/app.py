@@ -212,6 +212,8 @@ class Services(Resource):
     def post (self):
         args = service_parser.parse_args()
         service_ids = args['service_ids']
+        existing_service = Service.query.filter_by(id = service_ids).first()
+        
     
 
 @app.route('/service', methods=['GET', 'POST'])
