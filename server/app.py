@@ -49,6 +49,8 @@ class Update(Resource):
         phone_number = args['phone_number']
         existing_user = User.query.filter_by(email = user).first()
         if existing_user:
+            if first_name:
+                
             db.session.commit()
 
 signup_parser = reqparse.RequestParser()
