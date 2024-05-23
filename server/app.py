@@ -211,7 +211,7 @@ class Services(Resource):
     def post (self):
         args = service_parser.parse_args()
         service_ids = args['service_ids']
-        existing_service = Service.query.filter_by(email=user).first()
+        existing_service = ProviderService.query.filter_by(service_id=service_ids).first()
         if existing_user:
             user_id = existing_user.id
         servicer = Service.query.filter_by(provider_id = user_id).first()
