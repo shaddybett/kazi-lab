@@ -47,6 +47,7 @@ class Update(Resource):
         last_name = args['last_name']
         national_id = args['national_id']
         phone_number = args['phone_number']
+        existing_user = User.query.filter_by(email = user).first()
 
 signup_parser = reqparse.RequestParser()
 signup_parser.add_argument('first_name', type=str, required=False, help='First name is required')
