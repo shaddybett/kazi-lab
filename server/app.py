@@ -211,7 +211,7 @@ class Services(Resource):
     def post (self):
         args = service_parser.parse_args()
         service_ids = args['service_ids']
-        existing_service = ProviderService.query.filter_by(service_id=service_ids).first()
+    
 
 @app.route('/service', methods=['GET', 'POST'])
 @jwt_required()
