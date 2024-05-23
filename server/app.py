@@ -385,6 +385,7 @@ api.add_resource(Login, '/login')
 api.add_resource(Dashboard, '/dashboard')
 api.add_resource(signup2, '/signup2')
 api.add_resource(Services, '/services')
+api.add_resource(Update, '/update')
 
 if __name__ == '__main__':
     app.run(debug=True, port=4000)
