@@ -213,7 +213,7 @@ class Services(Resource):
         user = get_jwt_identity()
         existing_user = User.query.filter_by(email=user).first()
         if existing_user:
-            
+            user_id = existing_user.id
         args = service_parser.parse_args()
         service_ids = args['service_ids']
     
