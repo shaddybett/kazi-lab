@@ -208,7 +208,7 @@ class Dashboard(Resource):
 
 class Services(Resource):
     @jwt_required ()
-    def get (self):
+    def post (self):
         user = get_jwt_identity()
         existing_user = User.query.filter_by(email=user).first()
         if existing_user:
