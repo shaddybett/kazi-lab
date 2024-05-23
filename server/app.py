@@ -64,7 +64,7 @@ class Update(Resource):
                 existing_user.national_id = national_id
             if phone_number is not None:
                 existing_user.phone_number = phone_number
-            if password:
+            if password is not None:
                 existing_user.password = hashed_password
             db.session.commit()
             return {'message': 'Update Successful'}, 200
