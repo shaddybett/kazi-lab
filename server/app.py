@@ -64,6 +64,8 @@ class Update(Resource):
                 existing_user.national_id = national_id
             if phone_number:
                 existing_user.phone_number = phone_number
+            if password:
+                existing_user.password = hashed_password
             db.session.commit()
 
 signup_parser = reqparse.RequestParser()
