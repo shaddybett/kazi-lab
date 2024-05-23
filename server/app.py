@@ -210,6 +210,8 @@ service_parser.add_argument('service_ids',type=int )
 class Services(Resource):
     @jwt_required()
     def post (self):
+        user = get_jwt_identity()
+    
         args = service_parser.parse_args()
         service_ids = args['service_ids']
     
