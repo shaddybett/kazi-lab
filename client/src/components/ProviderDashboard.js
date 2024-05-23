@@ -50,7 +50,7 @@ function ProviderDashboard() {
           headers: {
             "Content-Type": "application/json",
           },
-          body: service_ids
+          body: JSON.stringify({service_ids})
         });
         if (response.ok) {
           const responseData = await response.json();
