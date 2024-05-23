@@ -56,7 +56,7 @@ class Update(Resource):
         if existing_user:
             if first_name is not None:
                 existing_user.first_name = first_name
-            if middle_name:
+            if middle_name is not None:
                 existing_user.middle_name = middle_name
             if last_name:
                 existing_user.last_name = last_name
