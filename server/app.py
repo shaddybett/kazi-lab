@@ -67,6 +67,7 @@ class Update(Resource):
             if password:
                 existing_user.password = hashed_password
             db.session.commit()
+            return {'message': 'Update Successful'}, 200
 
 signup_parser = reqparse.RequestParser()
 signup_parser.add_argument('first_name', type=str, required=False, help='First name is required')
