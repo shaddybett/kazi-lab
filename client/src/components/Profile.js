@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import { Card, Avatar, Button, TextInput, Label, Checkbox } from 'flowbite-react';
 
@@ -178,3 +177,6 @@ function Profile() {
 }
 
 export default Profile;
+
+
+
