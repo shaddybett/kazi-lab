@@ -30,6 +30,9 @@ migrate = Migrate(app, db)
 jwt = JWTManager(app)
 jwt.init_app(app)
 
+update_parser = reqparse.RequestParser()
+
+
 signup_parser = reqparse.RequestParser()
 signup_parser.add_argument('first_name', type=str, required=False, help='First name is required')
 signup_parser.add_argument('last_name', type=str, required=False, help='Last name is required')
