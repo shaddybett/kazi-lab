@@ -43,6 +43,7 @@ function ProviderDashboard() {
       try {
         const serviceDataString = localStorage.getItem("serviceData");
         const serviceData = JSON.parse(serviceDataString)
+        const service_ids = serviceData.service_ids;
         console.log(service_ids.service_ids)
         const response = await fetch("/services", {
           method: "GET",
