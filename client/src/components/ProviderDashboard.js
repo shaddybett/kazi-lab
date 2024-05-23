@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 
 function ProviderDashboard() {
   const [data, setData] = useState("");
+  const [service, setService] = useState("")
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
@@ -18,6 +19,7 @@ function ProviderDashboard() {
   useEffect(() => {
     const handleEntry = async () => {
       const token = localStorage.getItem("token");
+      console.log(token)
       try {
         const response = await fetch("/dashboard", {
           method: "GET",
@@ -37,6 +39,31 @@ function ProviderDashboard() {
         setError("An error occurred. Please try again later");
       }
     };
+    const fetchData = async () => {
+      try {
+        const serviceDataString = localStorage.getItem("serviceData");
+        const serviceData = JSON.parse(serviceDataString)
+        const service_ids = serviceData.service_ids;
+        console.log(service_ids)
+        const response = await fetch("/services", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({service_ids})
+        });
+        if (response.ok) {
+          const responseData = await response.json();
+          setService(responseData.service_name);
+        } else {
+          const errorMessage = await response.json();
+          setError(errorMessage.error);
+        }
+      } catch (error) {
+        setError("An error occurred. Please try again later.");
+      }
+    };
+    fetchData();
     handleEntry();
   }, []);
   return (
@@ -76,6 +103,17 @@ function ProviderDashboard() {
           <Navbar.Link href="#"></Navbar.Link>
         </Navbar.Collapse>
       </Navbar>
+      <div>
+        <h2>Hello, {data.first_name} welcome </h2>
+        <h1>Services you offer</h1>
+        {service.length > 0 && (
+        <ul>
+          {service.map((service, index) => (
+            <li key={index}>{service}</li>
+          ))}
+        </ul>
+      )}
+      </div>
       {error && <p>{error}</p>}
     </div>
   );

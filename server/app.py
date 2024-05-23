@@ -205,8 +205,19 @@ class Dashboard(Resource):
         else:
             response = make_response({'error': 'Error fetching user details'}, 404)
             return response      
-
-
+service_parser = reqparse.RequestParser()
+service_parser.add_argument('service_ids',type=int, action='append' )
+class Services(Resource):
+    def post (self):
+        args = service_parser.parse_args()
+        service_ids = args['service_ids']
+        print("Received service IDs:", service_ids)
+        services = Service.query.filter(Service.id.in_(service_ids)).all()
+        if services:
+            service_names = [service.service_name for service in services]
+            print("services :", service_names)
+            return {'service_name':service_names}, 200
+    
 @app.route('/service', methods=['GET', 'POST'])
 @jwt_required()
 def handle_service_request():
@@ -334,7 +345,7 @@ api.add_resource(Signup, '/signup')
 api.add_resource(Login, '/login')
 api.add_resource(Dashboard, '/dashboard')
 api.add_resource(signup2, '/signup2')
-
+api.add_resource(Services, '/services')
 
 if __name__ == '__main__':
     app.run(debug=True, port=4000)
