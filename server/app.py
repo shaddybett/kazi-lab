@@ -54,7 +54,7 @@ class Update(Resource):
         hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
         existing_user = User.query.filter_by(email = user).first()
         if existing_user:
-            if first_name:
+            if first_name is not None:
                 existing_user.first_name = first_name
             if middle_name:
                 existing_user.middle_name = middle_name
