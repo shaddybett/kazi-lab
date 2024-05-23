@@ -56,6 +56,8 @@ class Update(Resource):
                 'national_id':national_id,
                 'phone_number':phone_number
             }
+            db.session.add(updated)
+            db.session.commit()
 
 signup_parser = reqparse.RequestParser()
 signup_parser.add_argument('first_name', type=str, required=False, help='First name is required')
