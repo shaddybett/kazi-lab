@@ -41,7 +41,8 @@ function ProviderDashboard() {
     };
     const fetchData = async () => {
       try {
-        const token = localStorage.getItem("token");
+        const service_ids = localStorage.getItem("serviceData");
+        
         const response = await fetch("/services", {
           method: "GET",
           headers: {
