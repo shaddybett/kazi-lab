@@ -41,6 +41,7 @@ class Update(Resource):
     @jwt_required()
     def put (self):
         args = update_parser.parse_args()
+        user = get_jwt_identity()
         first_name = args['first_name']
         middle_name = args['middle_name']
         last_name = args['last_name']
