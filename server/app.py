@@ -211,7 +211,7 @@ class Services(Resource):
     @jwt_required()
     def post (self):
         user = get_jwt_identity()
-    
+        existing_user = User.query.filter_by(email=user).first()
         args = service_parser.parse_args()
         service_ids = args['service_ids']
     
