@@ -50,7 +50,7 @@ class Update(Resource):
         existing_user = User.query.filter_by(email = user).first()
         if existing_user:
             if first_name:
-                
+                existing_user.first_name = first_name
             db.session.commit()
 
 signup_parser = reqparse.RequestParser()
