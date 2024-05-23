@@ -212,11 +212,6 @@ class Services(Resource):
         args = service_parser.parse_args()
         service_ids = args['service_ids']
         existing_service = ProviderService.query.filter_by(service_id=service_ids).first()
-        if existing_service:
-            user_id = existing_user.id
-        servicer = Service.query.filter_by(provider_id = user_id).first()
-        if servicer:
-            return {'service_name':servicer.service_name}
 
 @app.route('/service', methods=['GET', 'POST'])
 @jwt_required()
