@@ -213,6 +213,7 @@ class Services(Resource):
         service_ids = args['service_ids']
         existing_service = Service.query.filter_by(id = service_ids).first()
         if existing_service:
+            print("existing_service :", existing_service.service_name)
             return {'service_name':existing_service.service_name}
     
 @app.route('/service', methods=['GET', 'POST'])
