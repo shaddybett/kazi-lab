@@ -39,7 +39,8 @@ update_parser.add_argument('phone_number',type=str)
 
 class Update(Resource):
     def put (self):
-        
+        args = update_parser.parse_args()
+        first_name = args['first_name']
 
 signup_parser = reqparse.RequestParser()
 signup_parser.add_argument('first_name', type=str, required=False, help='First name is required')
