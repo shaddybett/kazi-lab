@@ -209,7 +209,7 @@ service_parser = reqparse.RequestParser()
 service_parser.add_argument('service_ids',type=int )
 class Services(Resource):
     def post (self):
-        service_ids = 
+        args = service_parser.parse_args()
         existing_user = User.query.filter_by(email=user).first()
         if existing_user:
             user_id = existing_user.id
