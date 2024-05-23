@@ -205,7 +205,8 @@ class Dashboard(Resource):
         else:
             response = make_response({'error': 'Error fetching user details'}, 404)
             return response      
-serviceParser = reqparse.RequestParser()
+service_parser = reqparse.RequestParser()
+service_parser.add_argument('service_ids',type=int )
 class Services(Resource):
     def post (self):
         service_ids = 
