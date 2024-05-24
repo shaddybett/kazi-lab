@@ -64,25 +64,7 @@ function Profile() {
         setPasswordError(false)
     }
   };
-  const handleDelete = async (e)=> {
-    e.preventDefault();
-    const token = localStorage.getItem('token')
-    const response =  await fetch('/delete', {
-        method: 'DELETE',
-        headers: {
-            Authorization: `Bearer ${token}`
-        }
 
-    })
-    if (response.ok){
-        const message = await response.json()
-        setMessage(message.message)
-    }
-    else {
-        const errorMessage = await response.json() 
-        setError(errorMessage.error)
-    }
-  } 
 
   const handleSubmit = async (e) => {
     e.preventDefault();
