@@ -72,6 +72,8 @@ class Update(Resource):
             db.session.commit()
             return {'message': 'Update Successful'}, 200
 
+class DeleteUser(Resource):
+
 signup_parser = reqparse.RequestParser()
 signup_parser.add_argument('first_name', type=str, required=False, help='First name is required')
 signup_parser.add_argument('last_name', type=str, required=False, help='Last name is required')
