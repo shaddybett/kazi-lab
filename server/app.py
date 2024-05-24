@@ -74,6 +74,8 @@ class Update(Resource):
 
 class DeleteUser(Resource):
     @jwt_required()
+    def delete (self):
+        
 
 signup_parser = reqparse.RequestParser()
 signup_parser.add_argument('first_name', type=str, required=False, help='First name is required')
