@@ -68,7 +68,9 @@ function Profile() {
     }
   };
   const handleDelete = async () => {
-    const result = await Swal.fire({})
+    const result = await Swal.fire({
+        title: "Are you sure?",
+    })
     try {
       const token = localStorage.getItem('token');
       if (!token) {
