@@ -69,7 +69,10 @@ function Profile() {
     const token = localStorage.getItem('token')
     const response =  await fetch('/delete', {
         method: 'DELETE',
-        
+        headers: {
+            Authorization: `Bearer{token}`
+        }
+
     })
   } 
 
