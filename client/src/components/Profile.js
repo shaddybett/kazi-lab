@@ -18,6 +18,7 @@ function Profile() {
   const [showPassword, setShowPassword] = useState(false);
   const [refresh, setRefresh] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
+  const navigate = useNavigate()
 
   useEffect(() => {
     const handleEntry = async () => {
