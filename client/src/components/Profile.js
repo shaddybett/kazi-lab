@@ -71,6 +71,8 @@ function Profile() {
     const result = await Swal.fire({
         title: "Are you sure?",
         text: "You won't be able to revert this!",
+        icon: "warning",
+        
     })
     try {
       const token = localStorage.getItem('token');
