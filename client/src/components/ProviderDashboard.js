@@ -23,8 +23,10 @@ function ProviderDashboard() {
       cancelButtonColor: "#d33",
       confirmButtonText: "Yes, Logout!"
   })
+  if (result.isConfirmed){
     localStorage.removeItem("token");
     navigate("/login");
+  }
   };
   useEffect(() => {
     const handleEntry = async () => {
