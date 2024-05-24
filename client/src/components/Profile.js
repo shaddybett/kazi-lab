@@ -67,6 +67,10 @@ function Profile() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!form.password){
+        setPasswordError(true);
+        return;
+    }
     try {
       const token = localStorage.getItem('token');
       if (!token) {
