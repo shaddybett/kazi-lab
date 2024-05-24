@@ -204,6 +204,7 @@ function Profile() {
                 </div>
               </div>
               <Button type="submit">Update</Button>
+              <Button className="mt-5" onClick={handleDelete} color="failure">Delete Account</Button>
             </form>
           </Card>
         )}
