@@ -70,7 +70,7 @@ function Profile() {
       if (!token) {
         throw new Error('Token not found');
       }
-      const response = await fetch('/delete_account', {
+      const response = await fetch('/delete', {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
@@ -81,7 +81,7 @@ function Profile() {
       if (response.ok) {
         const responseData = await response.json();
         setMessage(responseData.message);
-        // Add any additional actions like redirecting the user to a different page
+        
       } else {
         const errorMessage = await response.json();
         setError(errorMessage.error || 'An error occurred');
