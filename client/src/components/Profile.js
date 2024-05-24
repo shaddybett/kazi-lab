@@ -64,6 +64,9 @@ function Profile() {
         setPasswordError(false)
     }
   };
+  const handleDelete = async (e)=> {
+    
+  } 
 
   const handleSubmit = async (e) => {
     e.preventDefault();
