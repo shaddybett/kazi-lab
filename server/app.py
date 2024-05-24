@@ -213,7 +213,6 @@ class signup2(Resource):
             else:
                 return {'error':'Update failed'}
         except Exception as e:
-            print("Error:", e)
             return {'error': 'An error occurred while processing the request'}, 500
         
 login_parse = reqparse.RequestParser()
