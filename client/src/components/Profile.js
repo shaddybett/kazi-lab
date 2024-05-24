@@ -80,7 +80,7 @@ function Profile() {
     }
     else {
         const errorMessage = await response.json() 
-        setError()
+        setError(errorMessage.error)
     }
   } 
 
