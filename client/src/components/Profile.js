@@ -68,6 +68,7 @@ function Profile() {
     e.preventDefault();
     const token = localStorage.getItem('token')
     const response =  await fetch('/delete', {
+        method: 'DELETE',
         
     })
   } 
