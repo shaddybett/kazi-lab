@@ -65,7 +65,8 @@ function Profile() {
     }
   };
   const handleDelete = async (e)=> {
-    
+    e.preventDefault();
+    const token = localStorage.getItem('token')
   } 
 
   const handleSubmit = async (e) => {
