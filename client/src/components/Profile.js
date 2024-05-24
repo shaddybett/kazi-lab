@@ -159,6 +159,7 @@ function Profile() {
             </div>
           </div>
           <Button className="mt-5" onClick={() => setShowUpdateForm(!showUpdateForm)}>Update</Button>
+          <Button className="mt-5" onClick={handleDelete} color="failure">Delete Account</Button>
         </Card>
         {showUpdateForm && (
           <Card className="max-w-sm ml-10">
