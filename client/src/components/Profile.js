@@ -64,7 +64,32 @@ function Profile() {
         setPasswordError(false)
     }
   };
+  const handleDelete = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        throw new Error('Token not found');
+      }
+      const response = await fetch('/delete_account', {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        }
+      });
 
+      if (response.ok) {
+        const responseData = await response.json();
+        setMessage(responseData.message);
+        // Add any additional actions like redirecting the user to a different page
+      } else {
+        const errorMessage = await response.json();
+        setError(errorMessage.error || 'An error occurred');
+      }
+    } catch (error) {
+      setError('An error occurred. Please try again later.');
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
