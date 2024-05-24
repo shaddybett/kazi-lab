@@ -250,11 +250,9 @@ class Services(Resource):
     def post (self):
         args = service_parser.parse_args()
         service_ids = args['service_ids']
-        print("Received service IDs:", service_ids)
         services = Service.query.filter(Service.id.in_(service_ids)).all()
         if services:
             service_names = [service.service_name for service in services]
-            print("services :", service_names)
             return {'service_name':service_names}, 200
     
 @app.route('/service', methods=['GET', 'POST'])
