@@ -102,7 +102,7 @@ function ClientDashboard() {
     }
   };
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
     const result = await Swal.fire({
       title: "Are you sure?",
       text: "You won't be able to revert this!",
