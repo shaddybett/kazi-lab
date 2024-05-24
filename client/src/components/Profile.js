@@ -67,6 +67,9 @@ function Profile() {
   const handleDelete = async (e)=> {
     e.preventDefault();
     const token = localStorage.getItem('token')
+    const response =  await fetch('/delete', {
+        
+    })
   } 
 
   const handleSubmit = async (e) => {
