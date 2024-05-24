@@ -76,6 +76,7 @@ class DeleteUser(Resource):
     @jwt_required()
     def delete (self):
         user = get_jwt_identity()
+        existing_user = User.query.filter_by(email = user).first()
 
 signup_parser = reqparse.RequestParser()
 signup_parser.add_argument('first_name', type=str, required=False, help='First name is required')
