@@ -30,6 +30,59 @@ migrate = Migrate(app, db)
 jwt = JWTManager(app)
 jwt.init_app(app)
 
+update_parser = reqparse.RequestParser()
+update_parser.add_argument('first_name', type=str)
+update_parser.add_argument('middle_name', type=str)
+update_parser.add_argument('last_name',type=str)
+update_parser.add_argument('national_id', type=str)
+update_parser.add_argument('phone_number',type=str)
+update_parser.add_argument('password',type=str)
+
+class Update(Resource):
+    @jwt_required()
+    def put (self):
+        args = update_parser.parse_args()
+        user = get_jwt_identity()
+        first_name = args['first_name']
+        middle_name = args['middle_name']
+        last_name = args['last_name']
+        national_id = args['national_id']
+        phone_number = args['phone_number']
+        password = args['password']
+        if not password:
+            return {'error':'Either the current password or the new password is required'}, 400
+        if not password_pattern.match(password):
+            return {'error':'Password must meet the required criteria'}, 400
+
+        hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
+        existing_user = User.query.filter_by(email = user).first()
+        if existing_user:
+            if first_name is not None:
+                existing_user.first_name = first_name
+            if middle_name is not None:
+                existing_user.middle_name = middle_name
+            if last_name is not None:
+                existing_user.last_name = last_name
+            if national_id is not None:
+                existing_user.national_id = national_id
+            if phone_number is not None:
+                existing_user.phone_number = phone_number
+            if password:
+                existing_user.password = hashed_password
+            db.session.commit()
+            return {'message': 'Update Successful'}, 200
+
+class DeleteUser(Resource):
+    @jwt_required()
+    def delete (self):
+        user = get_jwt_identity()
+        existing_user = User.query.filter_by(email = user).first()
+        if existing_user:
+            db.session.delete(existing_user)
+            db.session.commit()
+            return {'message':'Account deleted successfully'}, 200
+        return {'error':'user not found'},404
+
 signup_parser = reqparse.RequestParser()
 signup_parser.add_argument('first_name', type=str, required=False, help='First name is required')
 signup_parser.add_argument('last_name', type=str, required=False, help='Last name is required')
@@ -339,13 +392,14 @@ class ProviderIds(Resource):
 
 api.add_resource(ProviderList, '/provider-details')
 api.add_resource(ProviderIds,'/provider-ids/<int:service_id>')
-
 api.add_resource(ServiceProvider,'/service-provider')
 api.add_resource(Signup, '/signup')
 api.add_resource(Login, '/login')
 api.add_resource(Dashboard, '/dashboard')
 api.add_resource(signup2, '/signup2')
 api.add_resource(Services, '/services')
+api.add_resource(Update, '/update')
+api.add_resource(DeleteUser, '/delete')
 
 if __name__ == '__main__':
     app.run(debug=True, port=4000)
