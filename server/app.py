@@ -73,6 +73,7 @@ class Update(Resource):
             return {'message': 'Update Successful'}, 200
 
 class DeleteUser(Resource):
+    @jwt_required()
 
 signup_parser = reqparse.RequestParser()
 signup_parser.add_argument('first_name', type=str, required=False, help='First name is required')
