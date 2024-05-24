@@ -70,12 +70,12 @@ function Profile() {
     const response =  await fetch('/delete', {
         method: 'DELETE',
         headers: {
-            Authorization: `Bearer{token}`
+            Authorization: `Bearer ${token}`
         }
 
     })
     if (response.ok){
-        
+
     }
   } 
 
