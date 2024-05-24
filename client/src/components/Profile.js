@@ -77,33 +77,34 @@ function Profile() {
         cancelButtonColor: "#d33",
         confirmButtonText: "Yes, delete it!"
     })
-    try {
-      const token = localStorage.getItem('token');
-      if (!token) {
-        throw new Error('Token not found');
-      }
-      const response = await fetch('/delete', {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
+    if (result.isConfirmed){
+        try {
+            const token = localStorage.getItem('token');
+            if (!token) {
+              throw new Error('Token not found');
+            }
+            const response = await fetch('/delete', {
+              method: 'DELETE',
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+              }
+            });
+      
+            if (response.ok) {
+              const responseData = await response.json();
+              setMessage(responseData.message);
+              navigate("/")
+              
+            } else {
+              const errorMessage = await response.json();
+              setError(errorMessage.error || 'An error occurred');
+            }
+          } catch (error) {
+            setError('An error occurred. Please try again later.');
+          }
         }
-      });
-
-      if (response.ok) {
-        const responseData = await response.json();
-        setMessage(responseData.message);
-        navigate("/")
-        
-      } else {
-        const errorMessage = await response.json();
-        setError(errorMessage.error || 'An error occurred');
-      }
-    } catch (error) {
-      setError('An error occurred. Please try again later.');
     }
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!form.password){
