@@ -108,6 +108,7 @@ function ProviderDetails() {
 
   return (
     <div>
+      <h1>Fill the forms below to complete your signup</h1>
       <form onSubmit={handleServiceFormSubmit} enctype="multipart/form-data">
         <Dropdown label="Services">
           {data &&
