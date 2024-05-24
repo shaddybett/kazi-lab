@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Card, Avatar, Button, TextInput, Label, Checkbox } from 'flowbite-react';
+import { useNavigate } from 'react-router-dom';
 
 function Profile() {
   const [data, setData] = useState({});
