@@ -50,9 +50,9 @@ class Update(Resource):
         phone_number = args['phone_number']
         password = args['password']
         if not password:
-            return {'error':'Either the current password or the new password is required'}
+            return {'error':'Either the current password or the new password is required'}, 400
         if not password_pattern.match(password):
-            return {'error':'Password must meet the required criteria'}
+            return {'error':'Password must meet the required criteria'}, 400
 
         hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
         existing_user = User.query.filter_by(email = user).first()
