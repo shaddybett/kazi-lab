@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Card, Avatar, Button, TextInput, Label, Checkbox } from 'flowbite-react';
 import { useNavigate } from 'react-router-dom';
-// import Swal from 'sweetalert2'
+import Swal from 'sweetalert2'
 
 function Profile() {
   const [data, setData] = useState({});
@@ -68,6 +68,7 @@ function Profile() {
     }
   };
   const handleDelete = async () => {
+    const result = await Swal.fire({})
     try {
       const token = localStorage.getItem('token');
       if (!token) {
