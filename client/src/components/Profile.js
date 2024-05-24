@@ -76,7 +76,7 @@ function Profile() {
     })
     if (response.ok){
         const message = await response.json()
-        
+        setMessage(message.message)
     }
   } 
 
