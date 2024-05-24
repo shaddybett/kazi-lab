@@ -60,6 +60,9 @@ function Profile() {
       ...form,
       [name]: value
     });
+    if (name === 'password' && value){
+        setPasswordError(false)
+    }
   };
 
   const handleSubmit = async (e) => {
