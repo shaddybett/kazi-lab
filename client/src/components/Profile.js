@@ -16,6 +16,7 @@ function Profile() {
   const [showUpdateForm, setShowUpdateForm] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [refresh, setRefresh] = useState(false);
+  const [passwordError, setPasswordError] = useState(false);
 
   useEffect(() => {
     const handleEntry = async () => {
