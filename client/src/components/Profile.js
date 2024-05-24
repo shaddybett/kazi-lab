@@ -166,6 +166,7 @@ function Profile() {
                   value={form.password} 
                   onChange={handleChange} 
                 />
+                {passwordError && <p className="text-red-500">Password is required either current or new</p>}
                 <div className="flex items-center mt-2">
                   <Checkbox 
                     id="show_password" 
