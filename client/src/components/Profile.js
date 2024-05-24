@@ -78,6 +78,10 @@ function Profile() {
         const message = await response.json()
         setMessage(message.message)
     }
+    else {
+        const errorMessage = await response.json() 
+        setError()
+    }
   } 
 
   const handleSubmit = async (e) => {
