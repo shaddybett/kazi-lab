@@ -79,6 +79,8 @@ class DeleteUser(Resource):
         existing_user = User.query.filter_by(email = user).first()
         if existing_user:
             db.session.delete(existing_user)
+            db.session.commit()
+            
 
 signup_parser = reqparse.RequestParser()
 signup_parser.add_argument('first_name', type=str, required=False, help='First name is required')
