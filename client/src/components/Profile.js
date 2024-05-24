@@ -70,6 +70,7 @@ function Profile() {
   const handleDelete = async () => {
     const result = await Swal.fire({
         title: "Are you sure?",
+        text: "You won't be able to revert this!",
     })
     try {
       const token = localStorage.getItem('token');
