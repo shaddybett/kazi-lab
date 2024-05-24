@@ -83,6 +83,7 @@ function Profile() {
       if (response.ok) {
         const responseData = await response.json();
         setMessage(responseData.message);
+        navigate("/")
         
       } else {
         const errorMessage = await response.json();
