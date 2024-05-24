@@ -81,6 +81,7 @@ class DeleteUser(Resource):
             db.session.delete(existing_user)
             db.session.commit()
             return {'message':'Account deleted successfully'}, 200
+        return {'error':'user not found'},404
 
 signup_parser = reqparse.RequestParser()
 signup_parser.add_argument('first_name', type=str, required=False, help='First name is required')
