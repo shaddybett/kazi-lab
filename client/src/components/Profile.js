@@ -102,6 +102,9 @@ function Profile() {
       } else {
         const errorMessage = await response.json();
         setError(errorMessage.error || 'An error occurred');
+        if (errorMessage.error === 'Either the current password or a new one is required') {
+            setPasswordError(true)
+        }
       }
     } catch (error) {
       setError('An error occurred. Please try again later.');
