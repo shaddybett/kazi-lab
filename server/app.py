@@ -78,8 +78,6 @@ class DeleteUser(Resource):
         user = get_jwt_identity()
         existing_user = User.query.filter_by(email = user).first()
         if existing_user:
-            user_id = existing_user.id
-            Service.query.filter_by(provider_id = user_id).delete()
             db.session.delete(existing_user)
             db.session.commit()
             return {'message':'Account deleted successfully'}, 200
