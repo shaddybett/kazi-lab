@@ -74,6 +74,9 @@ function Profile() {
         }
 
     })
+    if (response.ok){
+        
+    }
   } 
 
   const handleSubmit = async (e) => {
