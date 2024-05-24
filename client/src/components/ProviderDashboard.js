@@ -13,7 +13,7 @@ function ProviderDashboard() {
   const handleProfile = () => {
     navigate("/profile");
   };
-  const handleLogout = () => {
+  const handleLogout = async() => {
     localStorage.removeItem("token");
     navigate("/login");
   };
