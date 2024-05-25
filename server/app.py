@@ -181,10 +181,10 @@ class signup2(Resource):
 
             image_url = url_for('uploaded_file', filename=image_filename, _external=True)
             
-            if len(national_id) != 8:
+            if len(str(national_id)) != 8:
                 return {'error':'Enter a valid national id'}, 400
 
-            if len(phone_number) != 10:
+            if len(str(phone_number)) != 10:
                 return {'error':'Enter a valid phone number'}, 400
 
             existing_user = User.query.filter_by(uuid = uids).first()
