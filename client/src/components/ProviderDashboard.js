@@ -2,6 +2,7 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { Avatar, Dropdown, Navbar } from "flowbite-react";
 import { useNavigate } from "react-router-dom";
+import Swal from 'sweetalert2'
 
 function ProviderDashboard() {
   const [data, setData] = useState("");
@@ -12,9 +13,19 @@ function ProviderDashboard() {
   const handleProfile = () => {
     navigate("/profile");
   };
-  const handleLogout = () => {
+  const handleLogout = async() => {
+    const result = await Swal.fire({
+      title: "Are you sure?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, Logout!"
+  })
+  if (result.isConfirmed){
     localStorage.removeItem("token");
     navigate("/login");
+  }
   };
   useEffect(() => {
     const handleEntry = async () => {

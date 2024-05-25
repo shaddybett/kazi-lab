@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Card, Avatar, Button, TextInput, Label, Checkbox } from 'flowbite-react';
 import { useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2'
 
 function Profile() {
   const [data, setData] = useState({});
@@ -67,33 +68,43 @@ function Profile() {
     }
   };
   const handleDelete = async () => {
-    try {
-      const token = localStorage.getItem('token');
-      if (!token) {
-        throw new Error('Token not found');
-      }
-      const response = await fetch('/delete', {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
+    const result = await Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!"
+    })
+    if (result.isConfirmed){
+        try {
+            const token = localStorage.getItem('token');
+            if (!token) {
+              throw new Error('Token not found');
+            }
+            const response = await fetch('/delete', {
+              method: 'DELETE',
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+              }
+            });
+
+            if (response.ok) {
+              const responseData = await response.json();
+              setMessage(responseData.message);
+              navigate("/")
+
+            } else {
+              const errorMessage = await response.json();
+              setError(errorMessage.error || 'An error occurred');
+            }
+          } catch (error) {
+            setError('An error occurred. Please try again later.');
+          }
         }
-      });
-
-      if (response.ok) {
-        const responseData = await response.json();
-        setMessage(responseData.message);
-        navigate("/")
-        
-      } else {
-        const errorMessage = await response.json();
-        setError(errorMessage.error || 'An error occurred');
-      }
-    } catch (error) {
-      setError('An error occurred. Please try again later.');
     }
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!form.password){
@@ -189,20 +200,20 @@ function Profile() {
               </div>
               <div className="mb-4">
                 <Label htmlFor="password" value="Password" />
-                <TextInput 
-                  id="password" 
-                  name="password" 
-                  type={showPassword ? 'text' : 'password'} 
-                  value={form.password} 
-                  onChange={handleChange} 
+                <TextInput
+                  id="password"
+                  name="password"
+                  type={showPassword ? 'text' : 'password'}
+                  value={form.password}
+                  onChange={handleChange}
                 />
-                {passwordError && <p className="text-red-500">Password is required either current or new</p>}
+                {passwordError && <p className="text-red-500">Enter either the current password or a new one</p>}
                 <div className="flex items-center mt-2">
-                  <Checkbox 
-                    id="show_password" 
-                    name="show_password" 
-                    checked={showPassword} 
-                    onChange={() => setShowPassword(!showPassword)} 
+                  <Checkbox
+                    id="show_password"
+                    name="show_password"
+                    checked={showPassword}
+                    onChange={() => setShowPassword(!showPassword)}
                   />
                   <Label htmlFor="show_password" className="ml-2">Show Password</Label>
                 </div>
@@ -219,6 +230,3 @@ function Profile() {
 }
 
 export default Profile;
-
-
-

@@ -159,15 +159,7 @@ def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 class signup2(Resource):
     def post(self):
-        try:
-            print("Request Headers:", request.headers)
-            print("Form Data:", request.form)
-            print("Files:", request.files)
-            for key, value in request.form.items():
-                print(f"Form Field - {key}: {value}")
-
-            for key, file in request.files.items():
-                print(f"File Field - {key}: {file.filename}")              
+        try:            
             middle_name = request.form.get('middle_name')
             national_id = request.form.get('national_id')
             phone_number = request.form.get('phone_number')
@@ -175,11 +167,6 @@ class signup2(Resource):
             image_file = request.files.get('image')
             if not middle_name or not national_id or not phone_number or not uids or not image_file:
                 return {'error': 'Missing required fields'}, 400
-            print("Middle Name:", middle_name)
-            print("National ID:", national_id)
-            print("Phone Number:", phone_number)
-            print("UIDs:", uids)
-            print("Image File:", image_file)
 
             if not os.path.exists(UPLOAD_FOLDER):
                 os.makedirs(UPLOAD_FOLDER)
@@ -190,14 +177,14 @@ class signup2(Resource):
             image_filename = secure_filename(image_file.filename)
             image_path = os.path.join(UPLOAD_FOLDER, image_filename)
             image_file.save(image_path)
-            print("Image saved as:", image_path)
+            
 
             image_url = url_for('uploaded_file', filename=image_filename, _external=True)
-            print("Image URL:", image_url)
-            if len(national_id) != 8:
+            
+            if len(str(national_id)) != 8:
                 return {'error':'Enter a valid national id'}, 400
 
-            if len(phone_number) != 10:
+            if len(str(phone_number)) != 10:
                 return {'error':'Enter a valid phone number'}, 400
 
             existing_user = User.query.filter_by(uuid = uids).first()
@@ -213,7 +200,6 @@ class signup2(Resource):
             else:
                 return {'error':'Update failed'}
         except Exception as e:
-            print("Error:", e)
             return {'error': 'An error occurred while processing the request'}, 500
         
 login_parse = reqparse.RequestParser()
@@ -264,11 +250,9 @@ class Services(Resource):
     def post (self):
         args = service_parser.parse_args()
         service_ids = args['service_ids']
-        print("Received service IDs:", service_ids)
         services = Service.query.filter(Service.id.in_(service_ids)).all()
         if services:
             service_names = [service.service_name for service in services]
-            print("services :", service_names)
             return {'service_name':service_names}, 200
     
 @app.route('/service', methods=['GET', 'POST'])
