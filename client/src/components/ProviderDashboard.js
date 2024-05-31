@@ -56,7 +56,7 @@ function ProviderDashboard() {
         const serviceData = JSON.parse(serviceDataString)
         const service_ids = serviceData.service_ids;
         console.log(service_ids)
-        const response = await fetch("/services", {
+        const response = await fetch("/offers", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
