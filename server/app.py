@@ -256,17 +256,21 @@ class Services(Resource):
             return {'service_name':service_names}, 200
 
 offer_parser = reqparse.RequestParser()
-offer_parser.add_argument('id',type=int,required=True,help='Id is required')
+offer_parser.add_argument('id', type=int, required=True, help='Id is required')
+
 class Offers(Resource):
     def post(self):
         args = offer_parser.parse_args()
-        id = args['id']
-        service_ids = ProviderService.query.filter_by(provider_id=id).all()
-        if service_ids:
-            services = Service.query.filter(Service.id.in_(service_ids)).all()
-            if services:
-                service_names = [service.service_name for service in services]
-                return {'service_name':service_names}, 200
+        provider_id = args['id']
+        
+        # Fetch service names directly with a single query using joins
+        services = db.session.query(Service.service_name).join(ProviderService, Service.id == ProviderService.service_id).filter(ProviderService.provider_id == provider_id).all()
+        
+        if services:
+            service_names = [service.service_name for service in services]
+            return {'service_names': service_names}, 200
+        else:
+            return {'message': 'No services found for the given provider ID'}, 404
 
 
 @app.route('/service', methods=['GET', 'POST'])
