@@ -260,7 +260,8 @@ class Offers(Resource):
     def post(self):
         email = get_jwt_identity()
         user = User.query.filter_by(email=email).first()
-        provider_id = args['id']
+        if user:
+            provider_id = User.id
         
         # Fetch service names directly with a single query using joins
         services = db.session.query(Service.service_name).join(ProviderService, Service.id == ProviderService.service_id).filter(ProviderService.provider_id == provider_id).all()
