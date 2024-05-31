@@ -259,6 +259,7 @@ offer_parser = reqparse.RequestParser()
 offer_parser.add_argument('id', type=int, required=True, help='Id is required')
 
 class Offers(Resource):
+    @jwt_required()
     def post(self):
         args = offer_parser.parse_args()
         provider_id = args['id']
