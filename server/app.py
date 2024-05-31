@@ -402,6 +402,7 @@ api.add_resource(signup2, '/signup2')
 api.add_resource(Services, '/services')
 api.add_resource(Update, '/update')
 api.add_resource(DeleteUser, '/delete')
+api.add_resource(Offers,'/offers')
 
 if __name__ == '__main__':
     app.run(debug=True, port=4000)
