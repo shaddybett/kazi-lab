@@ -1,7 +1,7 @@
 
 import React, { useEffect, useState } from "react";
 import { Dropdown, Label } from "flowbite-react";
-import { json, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function ProviderDetails() {
   const [data, setData] = useState([]);

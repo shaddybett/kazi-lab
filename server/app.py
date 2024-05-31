@@ -254,7 +254,25 @@ class Services(Resource):
         if services:
             service_names = [service.service_name for service in services]
             return {'service_name':service_names}, 200
-    
+
+class Offers(Resource):
+    @jwt_required()
+    def post(self):
+        email = get_jwt_identity()
+        user = User.query.filter_by(email=email).first()
+        if user:
+            provider_id = User.id
+        
+        # Fetch service names directly with a single query using joins
+        services = db.session.query(Service.service_name).join(ProviderService, Service.id == ProviderService.service_id).filter(ProviderService.provider_id == provider_id).all()
+        
+        if services:
+            service_names = [service.service_name for service in services]
+            return {'service_names': service_names}, 200
+        else:
+            return {'message': 'No services found for the given provider ID'}, 404
+
+
 @app.route('/service', methods=['GET', 'POST'])
 @jwt_required()
 def handle_service_request():
@@ -384,6 +402,7 @@ api.add_resource(signup2, '/signup2')
 api.add_resource(Services, '/services')
 api.add_resource(Update, '/update')
 api.add_resource(DeleteUser, '/delete')
+api.add_resource(Offers,'/offers')
 
 if __name__ == '__main__':
     app.run(debug=True, port=4000)

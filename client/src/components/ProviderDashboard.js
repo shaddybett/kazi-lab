@@ -52,16 +52,17 @@ function ProviderDashboard() {
     };
     const fetchData = async () => {
       try {
+        const token = localStorage.getItem("token")
         const serviceDataString = localStorage.getItem("serviceData");
         const serviceData = JSON.parse(serviceDataString)
         const service_ids = serviceData.service_ids;
         console.log(service_ids)
-        const response = await fetch("/services", {
+        const response = await fetch("/offers", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-          },
-          body: JSON.stringify({service_ids})
+            Authorization:`Bearer${token}`
+          }
         });
         if (response.ok) {
           const responseData = await response.json();
