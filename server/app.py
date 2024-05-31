@@ -263,7 +263,11 @@ class Offers(Resource):
         id = args['id']
         service_ids = ProviderService.query.filter_by(provider_id=id).all()
         if service_ids:
-            
+            services = Service.query.filter(Service.id.in_(service_ids)).all()
+            # if services:
+            #     service_names = [service.service_name for service in services]
+            #     return {'service_name':service_names}, 200
+
 
 @app.route('/service', methods=['GET', 'POST'])
 @jwt_required()
