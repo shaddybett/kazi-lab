@@ -30,6 +30,19 @@ class User(db.Model):
 #     service_id = db.Column(db.Integer, db.ForeignKey('services.id',ondelete='CASCADE'), primary_key=True)
 #     provider_id = db.Column(db.Integer, db.ForeignKey('users.id',ondelete='CASCADE'), primary_key=True)    
 
+class Service(db.Model):
+    __tablename__ = 'services'
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    service_name = db.Column(db.String(100), nullable=False)
+    providerss = db.relationship('ProviderService', back_populates='servic')
+
+class ProviderService(db.Model):
+    __tablename__ = 'provider_services'
+    service_id = db.Column(db.Integer, db.ForeignKey('services.id', ondelete='CASCADE'), primary_key=True)
+    provider_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='CASCADE'), primary_key=True)
+    servic = db.relationship('Service', back_populates='providerss')
+
+
 class Role(db.Model):
     __tablename__ = 'roles'    
     id = db.Column(db.Integer, primary_key=True)
