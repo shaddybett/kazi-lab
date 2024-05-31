@@ -261,6 +261,8 @@ class Offers(Resource):
     def post(self):
         args = offer_parser.parse_args()
         id = args['id']
+        service_ids = ProviderService.query.filter_by(provider_id=id).all()
+
 @app.route('/service', methods=['GET', 'POST'])
 @jwt_required()
 def handle_service_request():
