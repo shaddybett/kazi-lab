@@ -18,6 +18,7 @@ class User(db.Model):
     uuid = db.Column(db.String(36),nullable=True,default='default_uuid_value')
     uids = db.Column(db.String(36),nullable=True,default='default_uuid_value')
     services = db.relationship('Service', secondary='provider_services', backref=db.backref('providers', lazy=True, cascade="all, delete"))
+    provider_services = db.relationship('ProviderService', back_populates='provider')
     
 
 # class Service(db.Model):
