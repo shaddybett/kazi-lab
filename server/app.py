@@ -256,7 +256,7 @@ class Services(Resource):
             return {'service_name':service_names}, 200
 
 offer_parser = reqparse.RequestParser()
-
+offer_parser.add_argument('id',type=int,required=True,help='Id is required')
 class Offers(Resource):
     def post(self):
 @app.route('/service', methods=['GET', 'POST'])
