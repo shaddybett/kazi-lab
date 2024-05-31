@@ -262,9 +262,7 @@ class Offers(Resource):
         user = User.query.filter_by(email=email).first()
         if user:
             provider_id = user.id
-        
-        # Fetch service names directly with a single query using joins
-        services = db.session.query(Service.service_name).join(ProviderService, Service.id == ProviderService.service_id).filter(ProviderService.provider_id == provider_id).all()
+            services = Service.query.filter_by(provider_id=provider_id).all()
         
         if services:
             service_names = [service.service_name for service in services]
@@ -321,7 +319,7 @@ def handle_service_request():
 
                 new_service = Service(
                     service_name=new_service_name,
-                    providerss=user.id
+                    provider_id=user.id
                 )
                 db.session.add(new_service)
                 db.session.flush()
