@@ -255,12 +255,10 @@ class Services(Resource):
             service_names = [service.service_name for service in services]
             return {'service_name':service_names}, 200
 
-offer_parser = reqparse.RequestParser()
-offer_parser.add_argument('id', type=int, required=True, help='Id is required')
-
 class Offers(Resource):
     @jwt_required()
     def post(self):
+
         provider_id = args['id']
         
         # Fetch service names directly with a single query using joins
