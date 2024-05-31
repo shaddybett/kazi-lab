@@ -321,7 +321,7 @@ def handle_service_request():
 
                 new_service = Service(
                     service_name=new_service_name,
-                    provider_id=user.id
+                    providerss=user.id
                 )
                 db.session.add(new_service)
                 db.session.flush()
