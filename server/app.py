@@ -255,7 +255,7 @@ class Services(Resource):
             service_names = [service.service_name for service in services]
             return {'service_name':service_names}, 200
 class Offers(Resource):
-    
+    def post(self):
 @app.route('/service', methods=['GET', 'POST'])
 @jwt_required()
 def handle_service_request():
