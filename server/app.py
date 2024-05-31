@@ -254,6 +254,9 @@ class Services(Resource):
         if services:
             service_names = [service.service_name for service in services]
             return {'service_name':service_names}, 200
+
+offer_parser = reqparse.RequestParser()
+
 class Offers(Resource):
     def post(self):
 @app.route('/service', methods=['GET', 'POST'])
