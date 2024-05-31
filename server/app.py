@@ -263,10 +263,9 @@ class Offers(Resource):
         if user:
             provider_id = user.id
             services = Service.query.filter_by(provider_id=provider_id).all()
-        
-        if services:
-            service_names = [service.service_name for service in services]
-            return {'service_name': service_names}, 200
+            if services:
+                service_names = [service.service_name for service in services]
+                return {'service_name': service_names}, 200
         else:
             return {'message': 'No services found for the given provider ID'}, 404
 
