@@ -258,7 +258,7 @@ class Services(Resource):
 class Offers(Resource):
     @jwt_required()
     def post(self):
-
+        email = get_jwt_identity()
         provider_id = args['id']
         
         # Fetch service names directly with a single query using joins
