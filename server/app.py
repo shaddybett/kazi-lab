@@ -262,6 +262,7 @@ class Offers(Resource):
         user = User.query.filter_by(email=email).first()
         if user:
             provider_id = user.id
+            print("id:", user.id)
         
         # Fetch service names directly with a single query using joins
         services = db.session.query(Service.service_name).join(ProviderService, Service.id == ProviderService.service_id).filter(ProviderService.provider_id == provider_id).all()
