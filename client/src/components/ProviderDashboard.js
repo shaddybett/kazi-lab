@@ -61,8 +61,7 @@ function ProviderDashboard() {
           headers: {
             "Content-Type": "application/json",
             Authorization:`Bearer${token}`
-          },
-          body: JSON.stringify({service_ids})
+          }
         });
         if (response.ok) {
           const responseData = await response.json();
