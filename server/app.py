@@ -259,6 +259,7 @@ class Offers(Resource):
     @jwt_required()
     def post(self):
         email = get_jwt_identity()
+        user = User.query.filter_by(email=email).first()
         provider_id = args['id']
         
         # Fetch service names directly with a single query using joins
