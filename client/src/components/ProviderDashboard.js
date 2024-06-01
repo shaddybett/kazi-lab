@@ -67,6 +67,7 @@ function ProviderDashboard() {
         console.log('Response status:', response.status);
         if (response.ok) {
           const responseData = await response.json();
+          console.log('Response data:', responseData);
           setService(responseData.service_name);
         } else {
           const errorMessage = await response.json();
