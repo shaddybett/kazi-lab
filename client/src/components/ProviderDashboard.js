@@ -30,7 +30,6 @@ function ProviderDashboard() {
   useEffect(() => {
     const handleEntry = async () => {
       const token = localStorage.getItem("token");
-      console.log(token)
       try {
         const response = await fetch("/dashboard", {
           method: "GET",
@@ -61,11 +60,13 @@ function ProviderDashboard() {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            Authorization:`Bearer${token}`
+            Authorization:`Bearer ${token}`
           }
         });
+        console.log('Response status:', response.status);
         if (response.ok) {
           const responseData = await response.json();
+          console.log('Response data:', responseData);
           setService(responseData.service_name);
         } else {
           const errorMessage = await response.json();

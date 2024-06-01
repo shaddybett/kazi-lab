@@ -261,14 +261,15 @@ class Offers(Resource):
         email = get_jwt_identity()
         user = User.query.filter_by(email=email).first()
         if user:
-            provider_id = User.id
-        
-        # Fetch service names directly with a single query using joins
-        services = db.session.query(Service.service_name).join(ProviderService, Service.id == ProviderService.service_id).filter(ProviderService.provider_id == provider_id).all()
-        
-        if services:
-            service_names = [service.service_name for service in services]
-            return {'service_names': service_names}, 200
+            print(user.id)
+            provider_id = user.id
+            services = Service.query.filter_by(provider_id=provider_id).all()
+            print(f"Services Query Result: {services}")
+            if services:
+                print(services)
+                service_names = [service.service_name for service in services]
+                print(f"Service Names: {service_names}")
+                return {'service_name': service_names}, 200
         else:
             return {'message': 'No services found for the given provider ID'}, 404
 
