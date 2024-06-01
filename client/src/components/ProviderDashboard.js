@@ -64,6 +64,7 @@ function ProviderDashboard() {
             Authorization:`Bearer ${token}`
           }
         });
+        console.log('Response status:', response.status);
         if (response.ok) {
           const responseData = await response.json();
           setService(responseData.service_name);
