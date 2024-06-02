@@ -119,13 +119,15 @@ function ProviderDashboard() {
       <div>
         <h2>Hello, {data.first_name} welcome </h2>
         <h1>Services you offer</h1>
-        {service.length > 0 && (
-        <ul>
-          {service.map((service, index) => (
-            <li key={index}>{service}</li>
-          ))}
-        </ul>
-      )}
+        {service.length > 0 ? (
+          <ul>
+            {service.map((service, index) => (
+              <li key={index}>{service}</li>
+            ))}
+          </ul>
+        ) : (
+          <p>No services found</p>
+        )}
       </div>
       {error && <p>{error}</p>}
     </div>
