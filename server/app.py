@@ -284,6 +284,7 @@ class DeleteService(Resource):
             return {'error': 'Service not associated with the user'}
         
         db.session.delete(provider_service)
+        db.session.commit()
 class Offers(Resource):
     @jwt_required()
     def post(self):
