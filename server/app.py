@@ -256,6 +256,8 @@ class Services(Resource):
             return {'service_name':service_names}, 200
 
 class AddService(Resource):
+    @jwt_required()
+    
 class Offers(Resource):
     @jwt_required()
     def post(self):
