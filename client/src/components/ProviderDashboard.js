@@ -285,33 +285,43 @@ function ProviderDashboard() {
   }, []);
 
   const handleAddService = async () => {
-    const token = localStorage.getItem("token");
-    try {
-      const response = await fetch("/add-service", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ service_name: newService }),
-      });
-      if (response.ok) {
-        const responseData = await response.json();
-        setServices([
-          ...services,
-          { id: responseData.service_id, name: newService },
-        ]);
-        setNewService("");
-        Swal.fire("Success", "Service added successfully", "success");
-      } else {
-        const errorMessage = await response.json();
-        setError(errorMessage.error || "An error occurred");
+    const result = await Swal.fire({
+      title: "Are you sure?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, Logout!",
+    });
+    if (result.isConfirmed) {
+      const token = localStorage.getItem("token");
+      try {
+        const response = await fetch("/add-service", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ service_name: newService }),
+        });
+        if (response.ok) {
+          const responseData = await response.json();
+          setServices([
+            ...services,
+            { id: responseData.service_id, name: newService },
+          ]);
+          setNewService("");
+          Swal.fire("Success", "Service added successfully", "success");
+        } else {
+          const errorMessage = await response.json();
+          setError(errorMessage.error || "An error occurred");
+        }
+      } catch (error) {
+        setError("An error occurred. Please try again later");
       }
-    } catch (error) {
-      setError("An error occurred. Please try again later");
+    };
+  
     }
-  };
-
   const handleDeleteService = async (serviceId) => {
     const token = localStorage.getItem("token");
     try {
