@@ -285,6 +285,8 @@ class DeleteService(Resource):
         
         db.session.delete(provider_service)
         db.session.commit()
+
+        return {'message': 'Service deleted successfully'}, 200
 class Offers(Resource):
     @jwt_required()
     def post(self):
