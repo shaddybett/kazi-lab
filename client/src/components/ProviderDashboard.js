@@ -74,7 +74,7 @@ function ProviderDashboard() {
         } else {
           const errorMessage = await response.json();
           setError(
-            errorMessage.error || "An error occurred while fetching services"
+            errorMessage.error
           );
         }
       } catch (error) {
