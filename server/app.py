@@ -264,6 +264,9 @@ class AddService(Resource):
            return {'error':'user not found'},404
        args = request.json
        new_service_name = args.get('service_name')
+
+       if not new_service_name:
+           return {'error':'Service name is required'}, 400
 class Offers(Resource):
     @jwt_required()
     def post(self):
