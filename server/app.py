@@ -258,7 +258,7 @@ class Services(Resource):
 class AddService(Resource):
     @jwt_required()
     def post(self):
-        
+       current_user = get_jwt_identity() 
 class Offers(Resource):
     @jwt_required()
     def post(self):
