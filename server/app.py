@@ -244,16 +244,6 @@ class Dashboard(Resource):
         else:
             response = make_response({'error': 'Error fetching user details'}, 404)
             return response      
-service_parser = reqparse.RequestParser()
-service_parser.add_argument('service_ids',type=int, action='append' )
-class Services(Resource):
-    def post (self):
-        args = service_parser.parse_args()
-        service_ids = args['service_ids']
-        services = Service.query.filter(Service.id.in_(service_ids)).all()
-        if services:
-            service_names = [service.service_name for service in services]
-            return {'service_name':service_names}, 200
 
 class AddService(Resource):
     @jwt_required()
