@@ -274,7 +274,8 @@ class AddService(Resource):
     
 class DeleteService(Resource):
     @jwt_required()
-    
+    def delete(self,service_id):
+        
 class Offers(Resource):
     @jwt_required()
     def post(self):
