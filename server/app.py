@@ -244,16 +244,49 @@ class Dashboard(Resource):
         else:
             response = make_response({'error': 'Error fetching user details'}, 404)
             return response      
-service_parser = reqparse.RequestParser()
-service_parser.add_argument('service_ids',type=int, action='append' )
-class Services(Resource):
-    def post (self):
-        args = service_parser.parse_args()
-        service_ids = args['service_ids']
-        services = Service.query.filter(Service.id.in_(service_ids)).all()
-        if services:
-            service_names = [service.service_name for service in services]
-            return {'service_name':service_names}, 200
+
+class AddService(Resource):
+    @jwt_required()
+    def post(self):
+       current_user = get_jwt_identity() 
+       user = User.query.filter_by(email=current_user).first()
+       if not user:
+           return {'error':'user not found'},404
+       args = request.json
+       new_service_name = args.get('service_name')
+
+       if not new_service_name:
+           return {'error':'Service name is required'}, 400
+       
+    #    existing_service = Service.query.filter(func.lower(Service.service_name) == func.lower(new_service_name)).first()
+    #    if existing_service:
+    #        return {'error': 'Service already exists'},400
+       
+       new_service = Service(service_name=new_service_name, provider_id=user.id)
+       db.session.add(new_service)
+       db.session.flush()
+
+       provider_service = ProviderService(provider_id=user.id, service_id = new_service.id)
+       db.session.add(provider_service)
+       db.session.commit()
+
+       return {'message': 'Service added successfully', 'service_id': new_service.id}, 201
+    
+class DeleteService(Resource):
+    @jwt_required()
+    def delete(self,service_id):
+        current_user = get_jwt_identity()
+        user = User.query.filter_by(email=current_user).first()
+        if not user:
+            return {'error': 'User not found'}, 404
+        provider_service = ProviderService.query.filter_by(provider_id=user.id, service_id=service_id).first()
+        if not provider_service:
+            return {'error': 'Service not associated with the user'}
+        
+        db.session.delete(provider_service)
+        db.session.commit()
+
+        return {'message': 'Service deleted successfully'}, 200
 
 class Offers(Resource):
     @jwt_required()
@@ -261,18 +294,13 @@ class Offers(Resource):
         email = get_jwt_identity()
         user = User.query.filter_by(email=email).first()
         if user:
-            print(user.id)
-            provider_id = user.id
-            services = Service.query.filter_by(provider_id=provider_id).all()
-            print(f"Services Query Result: {services}")
-            if services:
-                print(services)
-                service_names = [service.service_name for service in services]
-                print(f"Service Names: {service_names}")
-                return {'service_name': service_names}, 200
-        else:
-            return {'message': 'No services found for the given provider ID'}, 404
-
+            provider_services = ProviderService.query.filter_by(provider_id=user.id).all()
+            if provider_services:
+                service_ids = [ps.service_id for ps in provider_services]
+                services = Service.query.filter(Service.id.in_(service_ids)).all()
+                service_list = [{'id': service.id, 'name': service.service_name} for service in services]
+                return {'services': service_list}, 200
+        return {'message': 'No services found for the given provider ID'}, 404
 
 @app.route('/service', methods=['GET', 'POST'])
 @jwt_required()
@@ -400,10 +428,11 @@ api.add_resource(Signup, '/signup')
 api.add_resource(Login, '/login')
 api.add_resource(Dashboard, '/dashboard')
 api.add_resource(signup2, '/signup2')
-api.add_resource(Services, '/services')
 api.add_resource(Update, '/update')
 api.add_resource(DeleteUser, '/delete')
 api.add_resource(Offers,'/offers')
+api.add_resource(AddService, '/add-service')
+api.add_resource(DeleteService, '/delete-service/<int:service_id>')
 
 if __name__ == '__main__':
     app.run(debug=True, port=4000)
