@@ -279,6 +279,8 @@ class AddService(Resource):
        provider_service = ProviderService(provider_id=user.id, service_id = new_service.id)
        db.session.add(provider_service)
        db.session.commit()
+
+       return {'message': 'Service added successfully', 'service_id': new_service.id}, 201
 class Offers(Resource):
     @jwt_required()
     def post(self):
