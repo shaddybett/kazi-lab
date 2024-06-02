@@ -168,7 +168,12 @@ function ProviderDashboard() {
         {service.length > 0 ? (
           <ul>
             {service.map((service, index) => (
-              <li key={index}>{service} <button onClick={() => handleDeleteService(service.id)}>Delete</button> </li>
+              <li key={index}>
+                {service}{" "}
+                <button onClick={() => handleDeleteService(service.id)}>
+                  Delete
+                </button>{" "}
+              </li>
             ))}
           </ul>
         ) : (
@@ -177,13 +182,13 @@ function ProviderDashboard() {
       </div>
       <div>
         <input
-            type="text"
-            value={newService}
-            onChange={(e) => setNewService(e.target.value)}
-            placeholder="Add new service"
-          />
-          <button onClick={handleAddService}>Add Service</button>
-        </div>
+          type="text"
+          value={newService}
+          onChange={(e) => setNewService(e.target.value)}
+          placeholder="Add new service"
+        />
+        <button onClick={handleAddService}>Add Service</button>
+      </div>
       {error && <p>{error}</p>}
     </div>
   );
