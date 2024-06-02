@@ -277,6 +277,7 @@ class AddService(Resource):
        db.session.flush()
 
        provider_service = ProviderService(provider_id=user.id, service_id = new_service.id)
+       db.session.add(provider_service)
 class Offers(Resource):
     @jwt_required()
     def post(self):
