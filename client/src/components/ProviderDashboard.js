@@ -2,11 +2,11 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { Avatar, Dropdown, Navbar } from "flowbite-react";
 import { useNavigate } from "react-router-dom";
-import Swal from 'sweetalert2'
+import Swal from "sweetalert2";
 
 function ProviderDashboard() {
   const [data, setData] = useState("");
-  const [service, setService] = useState("")
+  const [service, setService] = useState("");
   const [error, setError] = useState("");
   const [newService, setNewService] = useState("");
   const navigate = useNavigate();
@@ -14,19 +14,19 @@ function ProviderDashboard() {
   const handleProfile = () => {
     navigate("/profile");
   };
-  const handleLogout = async() => {
+  const handleLogout = async () => {
     const result = await Swal.fire({
       title: "Are you sure?",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, Logout!"
-  })
-  if (result.isConfirmed){
-    localStorage.removeItem("token");
-    navigate("/login");
-  }
+      confirmButtonText: "Yes, Logout!",
+    });
+    if (result.isConfirmed) {
+      localStorage.removeItem("token");
+      navigate("/login");
+    }
   };
   useEffect(() => {
     const handleEntry = async () => {
@@ -52,26 +52,28 @@ function ProviderDashboard() {
     };
     const fetchData = async () => {
       try {
-        const token = localStorage.getItem("token")
+        const token = localStorage.getItem("token");
         const serviceDataString = localStorage.getItem("serviceData");
-        const serviceData = JSON.parse(serviceDataString)
+        const serviceData = JSON.parse(serviceDataString);
         const service_ids = serviceData.service_ids;
-        console.log(service_ids)
+        console.log(service_ids);
         const response = await fetch("/offers", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            Authorization:`Bearer ${token}`
-          }
+            Authorization: `Bearer ${token}`,
+          },
         });
-        console.log('Response status:', response.status);
+        console.log("Response status:", response.status);
         if (response.ok) {
           const responseData = await response.json();
-          console.log('Response data:', responseData);
+          console.log("Response data:", responseData);
           setService(responseData.service_name);
         } else {
           const errorMessage = await response.json();
-          setError(errorMessage.error || "An error occurred while fetching services");
+          setError(
+            errorMessage.error || "An error occurred while fetching services"
+          );
         }
       } catch (error) {
         setError("An error occurred. Please try again later.");
@@ -93,7 +95,10 @@ function ProviderDashboard() {
       });
       if (response.ok) {
         const responseData = await response.json();
-        setService([...service, { id: responseData.service_id, name: newService }]);
+        setService([
+          ...service,
+          { id: responseData.service_id, name: newService },
+        ]);
         setNewService("");
         Swal.fire("Success", "Service added successfully", "success");
       } else {
@@ -116,7 +121,7 @@ function ProviderDashboard() {
         },
       });
       if (response.ok) {
-        setService(service.filter(service => service.id !== serviceId));
+        setService(service.filter((service) => service.id !== serviceId));
         Swal.fire("Success", "Service deleted successfully", "success");
       } else {
         const errorMessage = await response.json();
@@ -133,13 +138,7 @@ function ProviderDashboard() {
           <Dropdown
             arrowIcon={false}
             inline
-            label={
-              <Avatar
-                alt="User settings"
-                img= {data.image}
-                rounded
-              />
-            }
+            label={<Avatar alt="User settings" img={data.image} rounded />}
           >
             <Dropdown.Header>
               <span className="block text-sm">
@@ -169,7 +168,7 @@ function ProviderDashboard() {
         {service.length > 0 ? (
           <ul>
             {service.map((service, index) => (
-              <li key={index}>{service}</li>
+              <li key={index}>{service} <button onClick={() => handleDeleteService(service.id)}>Delete</button> </li>
             ))}
           </ul>
         ) : (
