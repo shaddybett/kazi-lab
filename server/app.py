@@ -432,5 +432,6 @@ api.add_resource(Update, '/update')
 api.add_resource(DeleteUser, '/delete')
 api.add_resource(Offers,'/offers')
 api.add_resource(AddService, '/add-service')
+api.add_resource(DeleteService, '/delete-service/<int:service_id>')
 if __name__ == '__main__':
     app.run(debug=True, port=4000)
