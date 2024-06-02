@@ -273,7 +273,7 @@ class AddService(Resource):
            return {'error': 'Service already exists'},400
        
        new_service = Service(service_name=new_service_name, provider_id=user.id)
-       
+       db.session.add(new_service)
 class Offers(Resource):
     @jwt_required()
     def post(self):
