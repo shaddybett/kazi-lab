@@ -276,6 +276,8 @@ class DeleteService(Resource):
     @jwt_required()
     def delete(self,service_id):
         current_user = get_jwt_identity()
+        user = User.query.filter_by(email=current_user).first()
+        
 class Offers(Resource):
     @jwt_required()
     def post(self):
