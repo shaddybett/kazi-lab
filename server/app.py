@@ -258,9 +258,9 @@ class AddService(Resource):
        if not new_service_name:
            return {'error':'Service name is required'}, 400
        
-       existing_service = Service.query.filter(func.lower(Service.service_name) == func.lower(new_service_name)).first()
-       if existing_service:
-           return {'error': 'Service already exists'},400
+    #    existing_service = Service.query.filter(func.lower(Service.service_name) == func.lower(new_service_name)).first()
+    #    if existing_service:
+    #        return {'error': 'Service already exists'},400
        
        new_service = Service(service_name=new_service_name, provider_id=user.id)
        db.session.add(new_service)
