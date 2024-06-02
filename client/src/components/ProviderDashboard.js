@@ -291,7 +291,7 @@ function ProviderDashboard() {
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, Logout!",
+      confirmButtonText: "Yes, Add Service!",
     });
     if (result.isConfirmed) {
       const token = localStorage.getItem("token");
@@ -323,26 +323,36 @@ function ProviderDashboard() {
   
     }
   const handleDeleteService = async (serviceId) => {
-    const token = localStorage.getItem("token");
-    try {
-      const response = await fetch(`/delete-service/${serviceId}`, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      if (response.ok) {
-        setServices(services.filter((service) => service.id !== serviceId));
-        Swal.fire("Success", "Service deleted successfully", "success");
-      } else {
-        const errorMessage = await response.json();
-        setError(errorMessage.error || "An error occurred");
+    const result = await Swal.fire({
+      title: "Are you sure?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, Add Service!",
+    });
+    if (result.isConfirmed) {
+      const token = localStorage.getItem("token");
+      try {
+        const response = await fetch(`/delete-service/${serviceId}`, {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        if (response.ok) {
+          setServices(services.filter((service) => service.id !== serviceId));
+          Swal.fire("Success", "Service deleted successfully", "success");
+        } else {
+          const errorMessage = await response.json();
+          setError(errorMessage.error || "An error occurred");
+        }
+      } catch (error) {
+        setError("An error occurred. Please try again later");
       }
-    } catch (error) {
-      setError("An error occurred. Please try again later");
+    };
     }
-  };
 
   return (
     <div>
