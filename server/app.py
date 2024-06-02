@@ -262,6 +262,8 @@ class AddService(Resource):
        user = User.query.filter_by(email=current_user).first()
        if not user:
            return {'error':'user not found'},404
+       args = request.json
+       new_service_name = args.get('service_name')
 class Offers(Resource):
     @jwt_required()
     def post(self):
