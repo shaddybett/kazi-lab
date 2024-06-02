@@ -70,7 +70,7 @@ function ProviderDashboard() {
           setService(responseData.service_name);
         } else {
           const errorMessage = await response.json();
-          setError(errorMessage.error);
+          setError(errorMessage.error || "An error occurred while fetching services");
         }
       } catch (error) {
         setError("An error occurred. Please try again later.");
