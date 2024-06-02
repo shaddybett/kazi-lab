@@ -329,7 +329,7 @@ function ProviderDashboard() {
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, Add Service!",
+      confirmButtonText: "Yes, Delete!",
     });
     if (result.isConfirmed) {
       const token = localStorage.getItem("token");
