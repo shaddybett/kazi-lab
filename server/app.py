@@ -260,6 +260,8 @@ class AddService(Resource):
     def post(self):
        current_user = get_jwt_identity() 
        user = User.query.filter_by(email=current_user).first()
+       if not user:
+           return {'error':'user not found'},404
 class Offers(Resource):
     @jwt_required()
     def post(self):
