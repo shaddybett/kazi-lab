@@ -279,6 +279,8 @@ class DeleteService(Resource):
         user = User.query.filter_by(email=current_user).first()
         if not user:
             return {'error': 'User not found'}, 404
+        provider_service = ProviderService.query.filter_by(provider_id=user.id, service_id=service_id).first()
+        
 class Offers(Resource):
     @jwt_required()
     def post(self):
