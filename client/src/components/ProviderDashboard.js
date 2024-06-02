@@ -114,6 +114,7 @@ function ProviderDashboard() {
           ]);
           setNewService("");
           Swal.fire("Success", "Service added successfully", "success");
+          window.location.reload();
         } else {
           const errorMessage = await response.json();
           setError(errorMessage.error || "An error occurred");
