@@ -269,6 +269,8 @@ class AddService(Resource):
            return {'error':'Service name is required'}, 400
        
        existing_service = Service.query.filter(func.lower(Service.service_name) == func.lower(new_service_name)).first()
+       if existing_service:
+           return {'error': 'Service already exists'},400
        
 class Offers(Resource):
     @jwt_required()
