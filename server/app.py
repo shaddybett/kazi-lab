@@ -257,7 +257,8 @@ class Services(Resource):
 
 class AddService(Resource):
     @jwt_required()
-    
+    def post(self):
+        
 class Offers(Resource):
     @jwt_required()
     def post(self):
