@@ -175,6 +175,15 @@ function ProviderDashboard() {
           <p>No services found</p>
         )}
       </div>
+      <div>
+        <input
+            type="text"
+            value={newService}
+            onChange={(e) => setNewService(e.target.value)}
+            placeholder="Add new service"
+          />
+          <button onClick={handleAddService}>Add Service</button>
+        </div>
       {error && <p>{error}</p>}
     </div>
   );
