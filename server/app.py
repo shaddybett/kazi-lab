@@ -267,6 +267,9 @@ class AddService(Resource):
 
        if not new_service_name:
            return {'error':'Service name is required'}, 400
+       
+       existing_service = Service.query.filter(func.lower(Service.service_name) == func.lower(new_service_name)).first()
+       
 class Offers(Resource):
     @jwt_required()
     def post(self):
