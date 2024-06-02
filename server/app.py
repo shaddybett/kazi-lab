@@ -273,6 +273,20 @@ class Services(Resource):
 #         else:
 #             return {'message': 'No services found for the given provider ID'}, 404
 
+class Offers(Resource):
+    @jwt_required()
+    def post(self):
+        email = get_jwt_identity()
+        user = User.query.filter_by(email=email).first()
+        if user:
+            provider_services = ProviderService.query.filter_by(provider_id=user.id).all()
+            if provider_services:
+                service_ids = [ps.service_id for ps in provider_services]
+                services = Service.query.filter(Service.id.in_(service_ids)).all()
+                service_names = [service.service_name for service in services]
+                return {'service_name': service_names}, 200
+        return {'message': 'No services found for the given provider ID'}, 404
+
 
 @app.route('/service', methods=['GET', 'POST'])
 @jwt_required()
