@@ -8,6 +8,7 @@ function ProviderDashboard() {
   const [data, setData] = useState("");
   const [service, setService] = useState("")
   const [error, setError] = useState("");
+  const [newService, setNewService] = useState("");
   const navigate = useNavigate();
 
   const handleProfile = () => {
