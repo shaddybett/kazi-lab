@@ -79,6 +79,52 @@ function ProviderDashboard() {
     fetchData();
     handleEntry();
   }, []);
+  const handleAddService = async () => {
+    const token = localStorage.getItem("token");
+    try {
+      const response = await fetch("/add-service", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ service_name: newService }),
+      });
+      if (response.ok) {
+        const responseData = await response.json();
+        setService([...service, { id: responseData.service_id, name: newService }]);
+        setNewService("");
+        Swal.fire("Success", "Service added successfully", "success");
+      } else {
+        const errorMessage = await response.json();
+        setError(errorMessage.error || "An error occurred");
+      }
+    } catch (error) {
+      setError("An error occurred. Please try again later");
+    }
+  };
+
+  const handleDeleteService = async (serviceId) => {
+    const token = localStorage.getItem("token");
+    try {
+      const response = await fetch(`/delete-service/${serviceId}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (response.ok) {
+        setService(service.filter(service => service.id !== serviceId));
+        Swal.fire("Success", "Service deleted successfully", "success");
+      } else {
+        const errorMessage = await response.json();
+        setError(errorMessage.error || "An error occurred");
+      }
+    } catch (error) {
+      setError("An error occurred. Please try again later");
+    }
+  };
   return (
     <div>
       <Navbar fluid rounded className="bg-black ">
