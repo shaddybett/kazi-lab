@@ -221,6 +221,7 @@ function ProviderDashboard() {
   const [services, setServices] = useState([]);
   const [error, setError] = useState("");
   const [newService, setNewService] = useState("");
+  const [selectedServices, setSelectedServices] = useState([]);
   const navigate = useNavigate();
 
   const handleProfile = () => {
@@ -351,7 +352,7 @@ function ProviderDashboard() {
               if (selectedIndex === -1) {
                 setSelectedServices([...selectedServices, service]);
               } else {
-                setSelectedServices(
+                setSelectedService(
                   selectedServices.filter((s) => s.id !== service.id)
                 );
               }
