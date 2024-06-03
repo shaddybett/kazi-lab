@@ -429,6 +429,22 @@ function ProviderDashboard() {
         </Navbar.Collapse>
       </Navbar>
       <div>
+      <Dropdown label="Services">
+          {data &&
+            data.map((service) => (
+              <Dropdown.Item key={service.id} className="text-black">
+                <label>
+                  <input
+                    type="checkbox"
+                    value={service.id}
+                    onChange={() => handleCheckboxChange(service)}
+                    checked={selectedServices.some((s) => s.id === service.id)}
+                  />
+                  {service.name}
+                </label>
+              </Dropdown.Item>
+            ))}
+        </Dropdown>
         <h2>Hello, {data.first_name} welcome </h2>
         <h1>Services you offer</h1>
         {services.length > 0 ? (
