@@ -320,7 +320,10 @@ function ProviderDashboard() {
         } else {
           const errorMessage = await response.json();
           setError(errorMessage.error || "An error occurred");
-          if ((errorMessage.error = "Service already exists")) {
+          if (
+            (errorMessage.error =
+              "Service already exists check the list provided")
+          ) {
             useEffect(() => {
               const fetchData = async () => {
                 try {
@@ -429,7 +432,7 @@ function ProviderDashboard() {
         </Navbar.Collapse>
       </Navbar>
       <div>
-      <Dropdown label="Services">
+        <Dropdown label="Services">
           {data &&
             data.map((service) => (
               <Dropdown.Item key={service.id} className="text-black">
