@@ -1,3 +1,4 @@
+
 // import React, { useState, useEffect } from "react";
 // import { Avatar, Dropdown, Navbar } from "flowbite-react";
 // import { useNavigate } from "react-router-dom";
@@ -8,6 +9,7 @@
 //   const [services, setServices] = useState([]);
 //   const [error, setError] = useState("");
 //   const [newService, setNewService] = useState("");
+//   const [selectedServices, setSelectedServices] = useState([]);
 //   const navigate = useNavigate();
 
 //   const handleProfile = () => {
@@ -26,6 +28,28 @@
 //     if (result.isConfirmed) {
 //       localStorage.removeItem("token");
 //       navigate("/login");
+//     }
+//   };
+
+//   const fetchData = async () => {
+//     try {
+//       const token = localStorage.getItem("token");
+//       const response = await fetch("/offers", {
+//         method: "POST",
+//         headers: {
+//           "Content-Type": "application/json",
+//           Authorization: `Bearer ${token}`,
+//         },
+//       });
+//       if (response.ok) {
+//         const responseData = await response.json();
+//         setServices(responseData.services || []);
+//       } else {
+//         const errorMessage = await response.json();
+//         setError(errorMessage.error);
+//       }
+//     } catch (error) {
+//       setError("An error occurred. Please try again later.");
 //     }
 //   };
 
@@ -49,30 +73,6 @@
 //         }
 //       } catch (error) {
 //         setError("An error occurred. Please try again later");
-//       }
-//     };
-
-//     const fetchData = async () => {
-//       try {
-//         const token = localStorage.getItem("token");
-//         const response = await fetch("/offers", {
-//           method: "POST",
-//           headers: {
-//             "Content-Type": "application/json",
-//             Authorization: `Bearer ${token}`,
-//           },
-//         });
-//         if (response.ok) {
-//           const responseData = await response.json();
-//           setServices(responseData.services || []); // Ensure responseData.services is an array
-//         } else {
-//           const errorMessage = await response.json();
-//           setError(
-//             errorMessage.error
-//           );
-//         }
-//       } catch (error) {
-//         setError("An error occurred. Please try again later.");
 //       }
 //     };
 
@@ -101,12 +101,54 @@
 //           body: JSON.stringify({ service_name: newService }),
 //         });
 //         if (response.ok) {
+//           const responseData = await response.json();
 //           setNewService("");
 //           Swal.fire("Success", "Service added successfully", "success");
-//           window.location.reload(); // Reload the entire page
+//           fetchData();
 //         } else {
 //           const errorMessage = await response.json();
 //           setError(errorMessage.error || "An error occurred");
+//           if (
+//             (errorMessage.error =
+//               "Service already exists check the list provided")
+//           ) {
+//             useEffect(() => {
+//               const fetchData = async () => {
+//                 try {
+//                   const token = localStorage.getItem("token");
+//                   const response = await fetch("/service", {
+//                     method: "GET",
+//                     headers: {
+//                       "Content-Type": "application/json",
+//                       Authorization: `Bearer ${token}`,
+//                     },
+//                   });
+//                   if (response.ok) {
+//                     const responseData = await response.json();
+//                     setData(responseData.all_services);
+//                   } else {
+//                     const errorMessage = await response.json();
+//                     setError(errorMessage.error);
+//                   }
+//                 } catch (error) {
+//                   setError("An error occurred. Please try again later.");
+//                 }
+//               };
+//               fetchData();
+//             }, []);
+//             const handleCheckboxChange = (service) => {
+//               const selectedIndex = selectedServices.findIndex(
+//                 (s) => s.id === service.id
+//               );
+//               if (selectedIndex === -1) {
+//                 setSelectedServices([...selectedServices, service]);
+//               } else {
+//                 setSelectedServices(
+//                   selectedServices.filter((s) => s.id !== service.id)
+//                 );
+//               }
+//             };
+//           }
 //         }
 //       } catch (error) {
 //         setError("An error occurred. Please try again later");
@@ -135,7 +177,7 @@
 //         });
 //         if (response.ok) {
 //           Swal.fire("Success", "Service deleted successfully", "success");
-//           window.location.reload(); // Reload the entire page
+//           fetchData();
 //         } else {
 //           const errorMessage = await response.json();
 //           setError(errorMessage.error || "An error occurred");
@@ -178,6 +220,22 @@
 //         </Navbar.Collapse>
 //       </Navbar>
 //       <div>
+//         <Dropdown label="Services">
+//           {data &&
+//             data.map((service) => (
+//               <Dropdown.Item key={service.id} className="text-black">
+//                 <label>
+//                   <input
+//                     type="checkbox"
+//                     value={service.id}
+//                     onChange={() => handleCheckboxChange(service)}
+//                     checked={selectedServices.some((s) => s.id === service.id)}
+//                   />
+//                   {service.name}
+//                 </label>
+//               </Dropdown.Item>
+//             ))}
+//         </Dropdown>
 //         <h2>Hello, {data.first_name} welcome </h2>
 //         <h1>Services you offer</h1>
 //         {services.length > 0 ? (
@@ -186,7 +244,7 @@
 //               <li key={service.id}>
 //                 {service.name}{" "}
 //                 <button onClick={() => handleDeleteService(service.id)}>
-//                   Delete
+//                   delete
 //                 </button>{" "}
 //               </li>
 //             ))}
@@ -211,6 +269,8 @@
 
 // export default ProviderDashboard;
 
+
+
 import React, { useState, useEffect } from "react";
 import { Avatar, Dropdown, Navbar } from "flowbite-react";
 import { useNavigate } from "react-router-dom";
@@ -219,8 +279,10 @@ import Swal from "sweetalert2";
 function ProviderDashboard() {
   const [data, setData] = useState({});
   const [services, setServices] = useState([]);
+  const [allServices, setAllServices] = useState([]);
   const [error, setError] = useState("");
   const [newService, setNewService] = useState("");
+  const [selectedServices, setSelectedServices] = useState([]);
   const navigate = useNavigate();
 
   const handleProfile = () => {
@@ -254,12 +316,32 @@ function ProviderDashboard() {
       });
       if (response.ok) {
         const responseData = await response.json();
-        setServices(responseData.services || []); 
+        setServices(responseData.services || []);
       } else {
         const errorMessage = await response.json();
-        setError(
-          errorMessage.error
-        );
+        setError(errorMessage.error);
+      }
+    } catch (error) {
+      setError("An error occurred. Please try again later.");
+    }
+  };
+
+  const fetchAllServices = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await fetch("/service", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (response.ok) {
+        const responseData = await response.json();
+        setAllServices(responseData.all_services || []);
+      } else {
+        const errorMessage = await response.json();
+        setError(errorMessage.error);
       }
     } catch (error) {
       setError("An error occurred. Please try again later.");
@@ -290,6 +372,7 @@ function ProviderDashboard() {
     };
 
     fetchData();
+    fetchAllServices();
     handleEntry();
   }, []);
 
@@ -314,13 +397,15 @@ function ProviderDashboard() {
           body: JSON.stringify({ service_name: newService }),
         });
         if (response.ok) {
-          const responseData = await response.json();
           setNewService("");
           Swal.fire("Success", "Service added successfully", "success");
-          fetchData(); 
+          fetchData();
         } else {
           const errorMessage = await response.json();
           setError(errorMessage.error || "An error occurred");
+          if (errorMessage.error === "Service already exists check the list provided") {
+            fetchAllServices();
+          }
         }
       } catch (error) {
         setError("An error occurred. Please try again later");
@@ -360,9 +445,18 @@ function ProviderDashboard() {
     }
   };
 
+  const handleCheckboxChange = (service) => {
+    const selectedIndex = selectedServices.findIndex((s) => s.id === service.id);
+    if (selectedIndex === -1) {
+      setSelectedServices([...selectedServices, service]);
+    } else {
+      setSelectedServices(selectedServices.filter((s) => s.id !== service.id));
+    }
+  };
+
   return (
     <div>
-      <Navbar fluid rounded className="bg-black ">
+      <Navbar fluid rounded className="bg-black">
         <div className="flex md:order-2">
           <Dropdown
             arrowIcon={false}
@@ -392,6 +486,23 @@ function ProviderDashboard() {
         </Navbar.Collapse>
       </Navbar>
       <div>
+        {error && error === "Service already exists check the list provided" && (
+          <Dropdown label="Services">
+            {allServices.map((service) => (
+              <Dropdown.Item key={service.id} className="text-black">
+                <label>
+                  <input
+                    type="checkbox"
+                    value={service.id}
+                    onChange={() => handleCheckboxChange(service)}
+                    checked={selectedServices.some((s) => s.id === service.id)}
+                  />
+                  {service.name}
+                </label>
+              </Dropdown.Item>
+            ))}
+          </Dropdown>
+        )}
         <h2>Hello, {data.first_name} welcome </h2>
         <h1>Services you offer</h1>
         {services.length > 0 ? (
@@ -399,9 +510,7 @@ function ProviderDashboard() {
             {services.map((service) => (
               <li key={service.id}>
                 {service.name}{" "}
-                <button onClick={() => handleDeleteService(service.id)}>
-                  Delete
-                </button>{" "}
+                <button onClick={() => handleDeleteService(service.id)}>delete</button>{" "}
               </li>
             ))}
           </ul>

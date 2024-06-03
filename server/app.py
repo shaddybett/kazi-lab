@@ -258,9 +258,9 @@ class AddService(Resource):
        if not new_service_name:
            return {'error':'Service name is required'}, 400
        
-    #    existing_service = Service.query.filter(func.lower(Service.service_name) == func.lower(new_service_name)).first()
-    #    if existing_service:
-    #        return {'error': 'Service already exists'},400
+       existing_service = Service.query.filter(func.lower(Service.service_name) == func.lower(new_service_name)).first()
+       if existing_service:
+           return {'error': 'Service already exists check the list provided'},400
        
        new_service = Service(service_name=new_service_name, provider_id=user.id)
        db.session.add(new_service)
@@ -299,7 +299,7 @@ class Offers(Resource):
                 service_ids = [ps.service_id for ps in provider_services]
                 services = Service.query.filter(Service.id.in_(service_ids)).all()
                 service_list = [{'id': service.id, 'name': service.service_name} for service in services]
-                return {'services': service_list}, 200
+                return {'services': service_list}, 
         return {'message': 'No services found for the given provider ID'}, 404
 
 @app.route('/service', methods=['GET', 'POST'])
@@ -418,7 +418,7 @@ class ProviderIds(Resource):
             response = make_response({'provider_ids': ids})
             return response
         else:
-            response = make_response({'error': 'Provider ids do not exist'}, 404)
+            response = make_response({'error': 'No service providers available for this service'}, 404)
             return response
 
 api.add_resource(ProviderList, '/provider-details')
