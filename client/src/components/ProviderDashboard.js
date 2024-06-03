@@ -254,12 +254,10 @@ function ProviderDashboard() {
       });
       if (response.ok) {
         const responseData = await response.json();
-        setServices(responseData.services || []); 
+        setServices(responseData.services || []);
       } else {
         const errorMessage = await response.json();
-        setError(
-          errorMessage.error
-        );
+        setError(errorMessage.error);
       }
     } catch (error) {
       setError("An error occurred. Please try again later.");
@@ -317,10 +315,48 @@ function ProviderDashboard() {
           const responseData = await response.json();
           setNewService("");
           Swal.fire("Success", "Service added successfully", "success");
-          fetchData(); 
+          fetchData();
         } else {
           const errorMessage = await response.json();
           setError(errorMessage.error || "An error occurred");
+          if ((errorMessage.error = "Service already exists")) {
+            useEffect(() => {
+              const fetchData = async () => {
+                try {
+                  const token = localStorage.getItem("token");
+                  const response = await fetch("/service", {
+                    method: "GET",
+                    headers: {
+                      "Content-Type": "application/json",
+                      Authorization: `Bearer ${token}`,
+                    },
+                  });
+                  if (response.ok) {
+                    const responseData = await response.json();
+                    setData(responseData.all_services);
+                  } else {
+                    const errorMessage = await response.json();
+                    setError(errorMessage.error);
+                  }
+                } catch (error) {
+                  setError("An error occurred. Please try again later.");
+                }
+              };
+              fetchData();
+            }, []);
+            const handleCheckboxChange = (service) => {
+              const selectedIndex = selectedServices.findIndex(
+                (s) => s.id === service.id
+              );
+              if (selectedIndex === -1) {
+                setSelectedServices([...selectedServices, service]);
+              } else {
+                setSelectedServices(
+                  selectedServices.filter((s) => s.id !== service.id)
+                );
+              }
+            };
+          }
         }
       } catch (error) {
         setError("An error occurred. Please try again later");
@@ -400,7 +436,7 @@ function ProviderDashboard() {
               <li key={service.id}>
                 {service.name}{" "}
                 <button onClick={() => handleDeleteService(service.id)}>
-                delete
+                  delete
                 </button>{" "}
               </li>
             ))}
