@@ -418,7 +418,7 @@ class ProviderIds(Resource):
             response = make_response({'provider_ids': ids})
             return response
         else:
-            response = make_response({'error': 'Provider ids do not exist'}, 404)
+            response = make_response({'error': 'No service providers available for this service'}, 404)
             return response
 
 api.add_resource(ProviderList, '/provider-details')

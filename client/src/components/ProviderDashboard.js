@@ -400,7 +400,7 @@ function ProviderDashboard() {
               <li key={service.id}>
                 {service.name}{" "}
                 <button onClick={() => handleDeleteService(service.id)}>
-                  Delete
+                delete
                 </button>{" "}
               </li>
             ))}
