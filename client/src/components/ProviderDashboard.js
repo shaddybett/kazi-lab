@@ -352,7 +352,7 @@ function ProviderDashboard() {
               if (selectedIndex === -1) {
                 setSelectedServices([...selectedServices, service]);
               } else {
-                setSelectedService(
+                setSelectedServices(
                   selectedServices.filter((s) => s.id !== service.id)
                 );
               }
