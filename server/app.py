@@ -217,7 +217,6 @@ class UpdateImage(Resource):
             image_filename = secure_filename(image_file.filename)
             image_path = os.path.join(UPLOAD_FOLDER, image_filename)
             image_file.save(image_path)
-            
             image_url = url_for('uploaded_file', filename=image_filename, _external=True)
             existing_user = User.query.filter_by(email=user).first()
             if existing_user:
