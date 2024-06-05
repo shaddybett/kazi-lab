@@ -1,58 +1,65 @@
-import React, { useEffect, useState } from 'react';
-import { Card, Avatar, Button, TextInput, Label, Checkbox } from 'flowbite-react';
-import { useNavigate } from 'react-router-dom';
-import Swal from 'sweetalert2'
+import React, { useEffect, useState } from "react";
+import {
+  Card,
+  Avatar,
+  Button,
+  TextInput,
+  Label,
+  Checkbox,
+} from "flowbite-react";
+import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 function Profile() {
   const [data, setData] = useState({});
-  const [error, setError] = useState('');
-  const [message, setMessage] = useState('');
+  const [error, setError] = useState("");
+  const [message, setMessage] = useState("");
   const [image, setImage] = useState(null);
   const [form, setForm] = useState({
-    first_name: '',
-    middle_name: '',
-    last_name: '',
-    national_id: '',
-    phone_number: '',
-    password: ''
+    first_name: "",
+    middle_name: "",
+    last_name: "",
+    national_id: "",
+    phone_number: "",
+    password: "",
   });
   const [showUpdateForm, setShowUpdateForm] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [refresh, setRefresh] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleEntry = async () => {
       try {
-        const token = localStorage.getItem('token');
+        const token = localStorage.getItem("token");
         if (!token) {
-          throw new Error('Token not found');
+          throw new Error("Token not found");
         }
-        const response = await fetch('/dashboard', {
-          method: 'GET',
+        const response = await fetch("/dashboard", {
+          method: "GET",
           headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
-          }
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
         });
         if (response.ok) {
           const responseData = await response.json();
           setData(responseData);
           setForm({
-            first_name: responseData.first_name || '',
-            middle_name: responseData.middle_name || '',
-            last_name: responseData.last_name || '',
-            national_id: responseData.national_id || '',
-            phone_number: responseData.phone_number || '',
-            password: ''
+            first_name: responseData.first_name || "",
+            middle_name: responseData.middle_name || "",
+            last_name: responseData.last_name || "",
+            national_id: responseData.national_id || "",
+            phone_number: responseData.phone_number || "",
+            password: "",
           });
         } else {
           const errorMessage = await response.json();
-          setError(errorMessage || 'An error occurred');
+          setError(errorMessage || "An error occurred");
         }
       } catch (error) {
-        setError('An error occurred. Please try again later.');
+        setError("An error occurred. Please try again later.");
       }
     };
     handleEntry();
@@ -62,86 +69,85 @@ function Profile() {
     const { name, value } = e.target;
     setForm({
       ...form,
-      [name]: value
+      [name]: value,
     });
-    if (name === 'password' && value){
-        setPasswordError(false)
+    if (name === "password" && value) {
+      setPasswordError(false);
     }
   };
   const handleDelete = async () => {
     const result = await Swal.fire({
-        title: "Are you sure?",
-        text: "You won't be able to revert this!",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Yes, delete it!"
-    })
-    if (result.isConfirmed){
-        try {
-            const token = localStorage.getItem('token');
-            if (!token) {
-              throw new Error('Token not found');
-            }
-            const response = await fetch('/delete', {
-              method: 'DELETE',
-              headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
-              }
-            });
-
-            if (response.ok) {
-              const responseData = await response.json();
-              setMessage(responseData.message);
-              navigate("/")
-
-            } else {
-              const errorMessage = await response.json();
-              setError(errorMessage.error || 'An error occurred');
-            }
-          } catch (error) {
-            setError('An error occurred. Please try again later.');
-          }
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    });
+    if (result.isConfirmed) {
+      try {
+        const token = localStorage.getItem("token");
+        if (!token) {
+          throw new Error("Token not found");
         }
+        const response = await fetch("/delete", {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (response.ok) {
+          const responseData = await response.json();
+          setMessage(responseData.message);
+          navigate("/");
+        } else {
+          const errorMessage = await response.json();
+          setError(errorMessage.error || "An error occurred");
+        }
+      } catch (error) {
+        setError("An error occurred. Please try again later.");
+      }
     }
+  };
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!form.password){
-        setPasswordError(true);
-        return;
+    if (!form.password) {
+      setPasswordError(true);
+      return;
     }
     try {
-      const token = localStorage.getItem('token');
+      const token = localStorage.getItem("token");
       if (!token) {
-        throw new Error('Token not found');
+        throw new Error("Token not found");
       }
 
       // Create an object with only the fields that have values
       const updatedFields = {};
-      Object.keys(form).forEach(key => {
+      Object.keys(form).forEach((key) => {
         if (form[key]) {
           updatedFields[key] = form[key];
         }
       });
       const formData = new FormData();
       formData.append("image", image);
-      const imageResponse = await fetch('/update-image',{
-        method:"POST",
-        headers:{
+      const imageResponse = await fetch("/update-image", {
+        method: "POST",
+        headers: {
           Authorization: `Bearer ${token}`,
         },
         body: formData,
-      })
+      });
 
-      const response = await fetch('/update', {
-        method: 'PUT',
+      const response = await fetch("/update", {
+        method: "PUT",
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify(updatedFields)
+        body: JSON.stringify(updatedFields),
       });
 
       if (response.ok && imageResponse.ok) {
@@ -151,13 +157,16 @@ function Profile() {
         setShowUpdateForm(false);
       } else {
         const errorMessage = await response.json();
-        setError(errorMessage.error || 'An error occurred');
-        if (errorMessage.error === 'Either the current password or a new one is required') {
-            setPasswordError(true)
+        setError(errorMessage.error || "An error occurred");
+        if (
+          errorMessage.error ===
+          "Either the current password or a new one is required"
+        ) {
+          setPasswordError(true);
         }
       }
     } catch (error) {
-      setError('An error occurred. Please try again later.');
+      setError("An error occurred. Please try again later.");
     }
   };
 
@@ -169,55 +178,108 @@ function Profile() {
             <Avatar img={data.image} size="xl" />
             <div>
               <h3 className="text-l font-bold tracking-tight text-gray-900 dark:text-white">
-                Name: <p className="font-normal text-gray-700 dark:text-gray-400">{data.first_name} {data.middle_name} {data.last_name}</p>
+                Name:{" "}
+                <p className="font-normal text-gray-700 dark:text-gray-400">
+                  {data.first_name} {data.middle_name} {data.last_name}
+                </p>
               </h3>
               <h3 className="text-l font-bold tracking-tight text-gray-900 dark:text-white">
-                Email: <p className="font-normal text-gray-700 dark:text-gray-400">{data.email}</p>
+                Email:{" "}
+                <p className="font-normal text-gray-700 dark:text-gray-400">
+                  {data.email}
+                </p>
               </h3>
               <h3 className="text-l font-bold tracking-tight text-gray-900 dark:text-white">
-                Phone Number: <p className="font-normal text-gray-700 dark:text-gray-400">{data.phone_number}</p>
+                Phone Number:{" "}
+                <p className="font-normal text-gray-700 dark:text-gray-400">
+                  {data.phone_number}
+                </p>
               </h3>
               <h3 className="text-l font-bold tracking-tight text-gray-900 dark:text-white">
-                National Id: <p className="font-normal text-gray-700 dark:text-gray-400">{data.national_id}</p>
+                National Id:{" "}
+                <p className="font-normal text-gray-700 dark:text-gray-400">
+                  {data.national_id}
+                </p>
               </h3>
             </div>
           </div>
-          <Button className="mt-5" onClick={() => setShowUpdateForm(!showUpdateForm)}>Update</Button>
-          <Button className="mt-5" onClick={handleDelete} color="failure">Delete Account</Button>
+          <Button
+            className="mt-5"
+            onClick={() => setShowUpdateForm(!showUpdateForm)}
+          >
+            Update
+          </Button>
+          <Button className="mt-5" onClick={handleDelete} color="failure">
+            Delete Account
+          </Button>
         </Card>
         {showUpdateForm && (
           <Card className="max-w-sm ml-10">
             <form onSubmit={handleSubmit}>
               <div className="mb-4">
                 <Label htmlFor="first_name" value="First Name" />
-                <TextInput id="first_name" name="first_name" type="text" value={form.first_name} onChange={handleChange} />
+                <TextInput
+                  id="first_name"
+                  name="first_name"
+                  type="text"
+                  value={form.first_name}
+                  onChange={handleChange}
+                />
               </div>
               <div className="mb-4">
                 <Label htmlFor="middle_name" value="Middle Name" />
-                <TextInput id="middle_name" name="middle_name" type="text" value={form.middle_name} onChange={handleChange} />
+                <TextInput
+                  id="middle_name"
+                  name="middle_name"
+                  type="text"
+                  value={form.middle_name}
+                  onChange={handleChange}
+                />
               </div>
               <div className="mb-4">
                 <Label htmlFor="last_name" value="Last Name" />
-                <TextInput id="last_name" name="last_name" type="text" value={form.last_name} onChange={handleChange} />
+                <TextInput
+                  id="last_name"
+                  name="last_name"
+                  type="text"
+                  value={form.last_name}
+                  onChange={handleChange}
+                />
               </div>
               <div className="mb-4">
                 <Label htmlFor="national_id" value="National ID" />
-                <TextInput id="national_id" name="national_id" type="text" value={form.national_id} onChange={handleChange} />
+                <TextInput
+                  id="national_id"
+                  name="national_id"
+                  type="text"
+                  value={form.national_id}
+                  onChange={handleChange}
+                />
               </div>
               <div className="mb-4">
                 <Label htmlFor="phone_number" value="Phone Number" />
-                <TextInput id="phone_number" name="phone_number" type="text" value={form.phone_number} onChange={handleChange} />
+                <TextInput
+                  id="phone_number"
+                  name="phone_number"
+                  type="text"
+                  value={form.phone_number}
+                  onChange={handleChange}
+                />
               </div>
               <div className="mb-4">
                 <Label htmlFor="password" value="Password" />
                 <TextInput
                   id="password"
                   name="password"
-                  type={showPassword ? 'text' : 'password'}
+                  type={showPassword ? "text" : "password"}
                   value={form.password}
                   onChange={handleChange}
                 />
-                {passwordError && <p className="text-red-500">Enter either the current password or a new one</p>}
+                {passwordError && (
+                  <p className="text-red-500">
+                    Enter either the current password or a new one
+                  </p>
+                )}
                 <div className="flex items-center mt-2">
                   <Checkbox
                     id="show_password"
@@ -225,9 +287,19 @@ function Profile() {
                     checked={showPassword}
                     onChange={() => setShowPassword(!showPassword)}
                   />
-                  <Label htmlFor="show_password" className="ml-2">Show Password</Label>
+                  <Label htmlFor="show_password" className="ml-2">
+                    Show Password
+                  </Label>
                 </div>
               </div>
+              <div className="mb-2 block">
+                <Label htmlFor="file-upload" value={image ? image.name : ""} />
+              </div>
+              <input
+                id="file-upload"
+                type="file"
+                onChange={(e) => setImage(e.target.files[0])}
+              />
               <Button type="submit">Update</Button>
             </form>
           </Card>
