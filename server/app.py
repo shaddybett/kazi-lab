@@ -71,7 +71,6 @@ class Update(Resource):
                 existing_user.password = hashed_password
             db.session.commit()
             return {'message': 'Update Successful'}, 200
-
 class DeleteUser(Resource):
     @jwt_required()
     def delete (self):
@@ -201,7 +200,35 @@ class signup2(Resource):
                 return {'error':'Update failed'}
         except Exception as e:
             return {'error': 'An error occurred while processing the request'}, 500
-        
+
+
+class UpdateImage(Resource):
+    @jwt_required()
+    def post(self):
+        try:
+            user = get_jwt_identity()
+            existing_user = User.query.filter_by(email=user).first()
+            image_file = request.files.get('image')
+            if image_file is not None:
+                if not os.path.exists(UPLOAD_FOLDER):
+                    os.makedirs(UPLOAD_FOLDER)
+
+                if not allowed_file(image_file.filename):
+                    return {'error': 'Invalid file type'}, 400
+                image_filename = secure_filename(image_file.filename)
+                image_path = os.path.join(UPLOAD_FOLDER, image_filename)
+                image_file.save(image_path)
+                image_url = url_for('uploaded_file', filename=image_filename, _external=True)
+                existing_user = User.query.filter_by(email=user).first()
+                if existing_user:
+                    existing_user.image = image_url
+                    db.session.commit()
+                    return {'message':'user details updated successfully'}
+                else:
+                    return {'error':'Update failed'}
+        except Exception as e:
+            return {'error': 'An error occurred while processing the request'}, 500
+
 login_parse = reqparse.RequestParser()
 login_parse.add_argument('email', type=str, required=True, help='email is required'),
 login_parse.add_argument('password', type=str, required=True, help='Password is required')
@@ -244,34 +271,61 @@ class Dashboard(Resource):
         else:
             response = make_response({'error': 'Error fetching user details'}, 404)
             return response      
-
 class AddService(Resource):
     @jwt_required()
     def post(self):
-       current_user = get_jwt_identity() 
-       user = User.query.filter_by(email=current_user).first()
-       if not user:
-           return {'error':'user not found'},404
-       args = request.json
-       new_service_name = args.get('service_name')
+        current_user = get_jwt_identity()
+        user = User.query.filter_by(email=current_user).first()
+        if not user:
+            return {'error': 'User not found'}, 404
 
-       if not new_service_name:
-           return {'error':'Service name is required'}, 400
-       
-       existing_service = Service.query.filter(func.lower(Service.service_name) == func.lower(new_service_name)).first()
-       if existing_service:
-           return {'error': 'Service already exists check the list provided'},400
-       
-       new_service = Service(service_name=new_service_name, provider_id=user.id)
-       db.session.add(new_service)
-       db.session.flush()
+        args = request.json
+        existing_services = args.get('existing_services', [])
+        new_service_name = args.get('service_name')
 
-       provider_service = ProviderService(provider_id=user.id, service_id = new_service.id)
-       db.session.add(provider_service)
-       db.session.commit()
+        # Check if at least one service is provided
+        if not existing_services and not new_service_name:
+            return {'error': 'At least one service must be provided'}, 400
 
-       return {'message': 'Service added successfully', 'service_id': new_service.id}, 201
-    
+        # Initialize a list to hold service IDs
+        service_ids = []
+
+        # Handle existing services selected from the dropdown
+        for service_id in existing_services:
+            service = Service.query.get(service_id)
+            if service:
+                provider_service = ProviderService(
+                    provider_id=user.id,
+                    service_id=service_id
+                )
+                db.session.add(provider_service)
+                service_ids.append(service_id)
+
+        # Handle new service entered manually
+        if new_service_name:
+            existing_service = Service.query.filter(func.lower(Service.service_name) == func.lower(new_service_name)).first()
+            if existing_service:
+                return {'error': f'Service "{new_service_name}" already exists, kindly check the list provided'}, 401
+
+            new_service = Service(
+                service_name=new_service_name,
+                provider_id=user.id
+            )
+            db.session.add(new_service)
+            db.session.flush()
+            provider_service = ProviderService(
+                provider_id=user.id,
+                service_id=new_service.id
+            )
+            db.session.add(provider_service)
+            service_ids.append(new_service.id)
+
+        # Commit all changes to the database
+        db.session.commit()
+
+        return {'message': f'Services created and associated with {user.first_name} {user.last_name}', 'service_ids': service_ids}, 201
+
+
 class DeleteService(Resource):
     @jwt_required()
     def delete(self,service_id):
@@ -299,8 +353,8 @@ class Offers(Resource):
                 service_ids = [ps.service_id for ps in provider_services]
                 services = Service.query.filter(Service.id.in_(service_ids)).all()
                 service_list = [{'id': service.id, 'name': service.service_name} for service in services]
-                return {'services': service_list}, 
-        return {'message': 'No services found for the given provider ID'}, 404
+                return {'services': service_list}, 200
+        return {'error': 'No services found for the given provider ID'}, 404
 
 @app.route('/service', methods=['GET', 'POST'])
 @jwt_required()
@@ -433,6 +487,7 @@ api.add_resource(DeleteUser, '/delete')
 api.add_resource(Offers,'/offers')
 api.add_resource(AddService, '/add-service')
 api.add_resource(DeleteService, '/delete-service/<int:service_id>')
+api.add_resource(UpdateImage, '/update-image')
 
 if __name__ == '__main__':
     app.run(debug=True, port=4000)
