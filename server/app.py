@@ -209,22 +209,23 @@ class UpdateImage(Resource):
             user = get_jwt_identity()
             existing_user = User.query.filter_by(email=user).first()
             image_file = request.files.get('image')
-            if not os.path.exists(UPLOAD_FOLDER):
-                os.makedirs(UPLOAD_FOLDER)
+            if image_file is not None:
+                if not os.path.exists(UPLOAD_FOLDER):
+                    os.makedirs(UPLOAD_FOLDER)
 
-            if not allowed_file(image_file.filename):
-                return {'error': 'Invalid file type'}, 400
-            image_filename = secure_filename(image_file.filename)
-            image_path = os.path.join(UPLOAD_FOLDER, image_filename)
-            image_file.save(image_path)
-            image_url = url_for('uploaded_file', filename=image_filename, _external=True)
-            existing_user = User.query.filter_by(email=user).first()
-            if existing_user:
-                existing_user.image = image_url
-                db.session.commit()
-                return {'message':'user details updated successfully'}
-            else:
-                return {'error':'Update failed'}
+                if not allowed_file(image_file.filename):
+                    return {'error': 'Invalid file type'}, 400
+                image_filename = secure_filename(image_file.filename)
+                image_path = os.path.join(UPLOAD_FOLDER, image_filename)
+                image_file.save(image_path)
+                image_url = url_for('uploaded_file', filename=image_filename, _external=True)
+                existing_user = User.query.filter_by(email=user).first()
+                if existing_user:
+                    existing_user.image = image_url
+                    db.session.commit()
+                    return {'message':'user details updated successfully'}
+                else:
+                    return {'error':'Update failed'}
         except Exception as e:
             return {'error': 'An error occurred while processing the request'}, 500
 

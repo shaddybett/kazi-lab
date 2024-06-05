@@ -300,7 +300,7 @@ function Profile() {
                 type="file"
                 onChange={(e) => setImage(e.target.files[0])}
               />
-              <Button type="submit">Update</Button>
+              <Button className="mt-5" type="submit">Update</Button>
             </form>
           </Card>
         )}
