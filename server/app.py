@@ -223,7 +223,9 @@ class UpdateImage(Resource):
             if existing_user:
                 existing_user.image = image_url
                 db.session.commit()
-                
+                return {'message':'user details updated successfully'}
+            else:
+                return {'error':'Update failed'}
         except Exception as e:
             return {'error': 'An error occurred while processing the request'}, 500
 
