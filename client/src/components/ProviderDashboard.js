@@ -411,7 +411,7 @@ function ProviderDashboard() {
           const errorMessage = await response.json();
           if (
             errorMessage.error !==
-            "At least one service must be provided"
+            "At least one service must be provided" && errorMessage.error !== "At least one service must be provided"
           ) {
             setError(errorMessage.error);
             setNewService(""); // Clear the input field
