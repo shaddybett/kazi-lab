@@ -203,6 +203,7 @@ class signup2(Resource):
 
 
 class UpdateImage(Resource):
+    @jwt_required()
     def post(self):
         try:
             image_file = request.files.get('image')
