@@ -38,7 +38,7 @@ function ServiceProviders() {
 
   return (
     <div>
-      <h1>Providers</h1>
+      <h1>Service Providers</h1>
       <ul>
         {providers.map((provider, index) => (
           <li key={index}>
