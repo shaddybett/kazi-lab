@@ -206,6 +206,11 @@ class UpdateImage(Resource):
     def post(self):
         try:
             image_file = request.files.get('image')
+            if not os.path.exists(UPLOAD_FOLDER):
+                os.makedirs(UPLOAD_FOLDER)
+
+            if not allowed_file(image_file.filename):
+                return {'error': 'Invalid file type'}, 400
         except Exception as e:
             return {'error': 'An error occurred while processing the request'}, 500
 
