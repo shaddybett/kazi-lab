@@ -475,6 +475,8 @@ class ProviderIds(Resource):
             response = make_response({'error': 'No service providers available for this service'}, 404)
             return response
 
+class UserDetails(Resource):
+
 api.add_resource(ProviderList, '/provider-details')
 api.add_resource(ProviderIds,'/provider-ids/<int:service_id>')
 api.add_resource(ServiceProvider,'/service-provider')
