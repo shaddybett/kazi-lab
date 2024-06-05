@@ -326,8 +326,8 @@ class Offers(Resource):
                 service_ids = [ps.service_id for ps in provider_services]
                 services = Service.query.filter(Service.id.in_(service_ids)).all()
                 service_list = [{'id': service.id, 'name': service.service_name} for service in services]
-                return {'services': service_list}, 
-        return {'message': 'No services found for the given provider ID'}, 404
+                return {'services': service_list}, 200
+        return {'error': 'No services found for the given provider ID'}, 404
 
 @app.route('/service', methods=['GET', 'POST'])
 @jwt_required()
