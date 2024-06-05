@@ -273,7 +273,6 @@
 
 // export default ProviderDashboard;
 
-
 import React, { useState, useEffect } from "react";
 import { Avatar, Dropdown, Navbar } from "flowbite-react";
 import { useNavigate } from "react-router-dom";
@@ -410,8 +409,8 @@ function ProviderDashboard() {
         } else {
           const errorMessage = await response.json();
           if (
-            errorMessage.error !==
-            "At least one service must be provided" && errorMessage.error !== "At least one service must be provided"
+            errorMessage.error !== "At least one service must be provided" &&
+            errorMessage.error !== "At least one service must be provided"
           ) {
             setError(errorMessage.error);
             setNewService(""); // Clear the input field
@@ -501,26 +500,23 @@ function ProviderDashboard() {
         </Navbar.Collapse>
       </Navbar>
       <div>
-        {error &&
-          error !== "At least one service must be provided" && (
-            <Dropdown label="Services">
-              {allServices.map((service) => (
-                <Dropdown.Item key={service.id} className="text-black">
-                  <label>
-                    <input
-                      type="checkbox"
-                      value={service.id}
-                      onChange={() => handleCheckboxChange(service)}
-                      checked={selectedServices.some(
-                        (s) => s.id === service.id
-                      )}
-                    />
-                    {service.name}
-                  </label>
-                </Dropdown.Item>
-              ))}
-            </Dropdown>
-          )}
+        {error && error !== "At least one service must be provided" && (
+          <Dropdown label="Services">
+            {allServices.map((service) => (
+              <Dropdown.Item key={service.id} className="text-black">
+                <label>
+                  <input
+                    type="checkbox"
+                    value={service.id}
+                    onChange={() => handleCheckboxChange(service)}
+                    checked={selectedServices.some((s) => s.id === service.id)}
+                  />
+                  {service.name}
+                </label>
+              </Dropdown.Item>
+            ))}
+          </Dropdown>
+        )}
       </div>
       <div>
         <h2>Hello, {data.first_name} welcome </h2>
