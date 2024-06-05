@@ -413,8 +413,8 @@ function ProviderDashboard() {
             errorMessage.error !== "At least one service must be provided"
           ) {
             setError(errorMessage.error);
-            setNewService(""); // Clear the input field
-            fetchAllServices(); // Fetch all services to display the dropdown list
+            setNewService(""); 
+            fetchAllServices();
           } else {
             setError(errorMessage.error || "An error occurred");
           }
