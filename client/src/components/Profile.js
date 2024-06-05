@@ -125,6 +125,15 @@ function Profile() {
           updatedFields[key] = form[key];
         }
       });
+      const formData = new FormData();
+      formData.append("image", image);
+      const imageResponse = await fetch('/update-image',{
+        method:"POST",
+        headers:{
+          Authorization: `Bearer ${token}`,
+        },
+        body: formData,
+      })
 
       const response = await fetch('/update', {
         method: 'PUT',
