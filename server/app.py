@@ -222,6 +222,8 @@ class UpdateImage(Resource):
             existing_user = User.query.filter_by(email=user).first()
             if existing_user:
                 existing_user.image = image_url
+                db.session.commit()
+                
         except Exception as e:
             return {'error': 'An error occurred while processing the request'}, 500
 
