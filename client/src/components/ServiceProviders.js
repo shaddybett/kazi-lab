@@ -72,6 +72,7 @@ function ServiceProviders() {
           </li>
         ))}
       </ul>
+      {selectedUser && <UserDetailsPopup user={selectedUser} onClose={closePopup} />}
     </div>
   );
 }
