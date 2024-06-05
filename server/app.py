@@ -72,6 +72,9 @@ class Update(Resource):
             db.session.commit()
             return {'message': 'Update Successful'}, 200
 
+class UpdateImage(Resource):
+    
+
 class DeleteUser(Resource):
     @jwt_required()
     def delete (self):
