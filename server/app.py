@@ -220,6 +220,8 @@ class UpdateImage(Resource):
             
             image_url = url_for('uploaded_file', filename=image_filename, _external=True)
             existing_user = User.query.filter_by(email=user).first()
+            if existing_user:
+                existing_user.image = image_url
         except Exception as e:
             return {'error': 'An error occurred while processing the request'}, 500
 
