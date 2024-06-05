@@ -458,7 +458,7 @@ class ProviderList(Resource):
 
         if users:
             # Format the user data as a list of dictionaries
-            user_details = [{'first_name': user.first_name, 'last_name': user.last_name, 'email': user.email} for user in users]
+            user_details = [{'first_name': user.first_name, 'last_name': user.last_name, 'email': user.email, 'image': user.image} for user in users]
             return jsonify(user_details)
         else:
             return {'error': 'No users found for the given provider IDs'}, 404
