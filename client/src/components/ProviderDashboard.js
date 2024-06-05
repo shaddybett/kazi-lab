@@ -397,7 +397,10 @@ function ProviderDashboard() {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
-          body: JSON.stringify({ service_name: newService }),
+          body: JSON.stringify({
+            service_name: newService,
+            existing_services: selectedServices.map((service) => service.id),
+          }),
         });
         if (response.ok) {
           setNewService("");
