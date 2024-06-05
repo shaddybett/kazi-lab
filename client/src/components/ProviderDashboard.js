@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { Avatar, Dropdown, Navbar } from "flowbite-react";
 import { useNavigate } from "react-router-dom";
@@ -131,7 +130,10 @@ function ProviderDashboard() {
         } else {
           const errorMessage = await response.json();
           setError(errorMessage.error || "An error occurred");
-          if (errorMessage.error === "Service already exists check the list provided") {
+          if (
+            errorMessage.error ===
+            "Service already exists check the list provided"
+          ) {
             fetchAllServices();
           }
         }
@@ -174,7 +176,9 @@ function ProviderDashboard() {
   };
 
   const handleCheckboxChange = (service) => {
-    const selectedIndex = selectedServices.findIndex((s) => s.id === service.id);
+    const selectedIndex = selectedServices.findIndex(
+      (s) => s.id === service.id
+    );
     if (selectedIndex === -1) {
       setSelectedServices([...selectedServices, service]);
     } else {
@@ -214,23 +218,28 @@ function ProviderDashboard() {
         </Navbar.Collapse>
       </Navbar>
       <div>
-        {error && error === "Service already exists check the list provided" && (
-          <Dropdown label="Services">
-            {allServices.map((service) => (
-              <Dropdown.Item key={service.id} className="text-black">
-                <label>
-                  <input
-                    type="checkbox"
-                    value={service.id}
-                    onChange={() => handleCheckboxChange(service)}
-                    checked={selectedServices.some((s) => s.id === service.id)}
-                  />
-                  {service.name}
-                </label>
-              </Dropdown.Item>
-            ))}
-          </Dropdown>
-        )}
+        {error &&
+          error === "Service already exists check the list provided" && (
+            <Dropdown label="Services">
+              {allServices.map((service) => (
+                <Dropdown.Item key={service.id} className="text-black">
+                  <label>
+                    <input
+                      type="checkbox"
+                      value={service.id}
+                      onChange={() => handleCheckboxChange(service)}
+                      checked={selectedServices.some(
+                        (s) => s.id === service.id
+                      )}
+                    />
+                    {service.name}
+                  </label>
+                </Dropdown.Item>
+              ))}
+            </Dropdown>
+          )}
+      </div>
+      <div>
         <h2>Hello, {data.first_name} welcome </h2>
         <h1>Services you offer</h1>
         {services.length > 0 ? (
@@ -238,7 +247,9 @@ function ProviderDashboard() {
             {services.map((service) => (
               <li key={service.id}>
                 {service.name}{" "}
-                <button onClick={() => handleDeleteService(service.id)}>delete</button>{" "}
+                <button onClick={() => handleDeleteService(service.id)}>
+                  delete
+                </button>{" "}
               </li>
             ))}
           </ul>
