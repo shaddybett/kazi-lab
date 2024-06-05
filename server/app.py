@@ -477,6 +477,7 @@ class ProviderIds(Resource):
 
 class UserDetails(Resource):
     email = request.args.get('email')
+    user = User.query.filter_by(email=email).first()
 
 api.add_resource(ProviderList, '/provider-details')
 api.add_resource(ProviderIds,'/provider-ids/<int:service_id>')
