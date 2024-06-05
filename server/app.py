@@ -211,6 +211,12 @@ class UpdateImage(Resource):
 
             if not allowed_file(image_file.filename):
                 return {'error': 'Invalid file type'}, 400
+            image_filename = secure_filename(image_file.filename)
+            image_path = os.path.join(UPLOAD_FOLDER, image_filename)
+            image_file.save(image_path)
+            
+
+            image_url = url_for('uploaded_file', filename=image_filename, _external=True)
         except Exception as e:
             return {'error': 'An error occurred while processing the request'}, 500
 
