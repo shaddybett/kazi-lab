@@ -204,6 +204,10 @@ class signup2(Resource):
 
 class UpdateImage(Resource):
     def post(self):
+        try:
+            image_file = request.files.get('image')
+        except Exception as e:
+            return {'error': 'An error occurred while processing the request'}, 500
 
 login_parse = reqparse.RequestParser()
 login_parse.add_argument('email', type=str, required=True, help='email is required'),
