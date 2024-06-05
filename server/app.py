@@ -244,34 +244,6 @@ class Dashboard(Resource):
         else:
             response = make_response({'error': 'Error fetching user details'}, 404)
             return response      
-
-# class AddService(Resource):
-#     @jwt_required()
-#     def post(self):
-#        current_user = get_jwt_identity() 
-#        user = User.query.filter_by(email=current_user).first()
-#        if not user:
-#            return {'error':'user not found'},404
-#        args = request.json
-#        new_service_name = args.get('service_name')
-
-#        if not new_service_name:
-#            return {'error':'Service name is required'}, 400
-       
-#        existing_service = Service.query.filter(func.lower(Service.service_name) == func.lower(new_service_name)).first()
-#        if existing_service:
-#            return {'error': 'Service already exists check the list provided'},400
-       
-#        new_service = Service(service_name=new_service_name, provider_id=user.id)
-#        db.session.add(new_service)
-#        db.session.flush()
-
-#        provider_service = ProviderService(provider_id=user.id, service_id = new_service.id)
-#        db.session.add(provider_service)
-#        db.session.commit()
-
-#        return {'message': 'Service added successfully', 'service_id': new_service.id}, 201
-    
 class AddService(Resource):
     @jwt_required()
     def post(self):
