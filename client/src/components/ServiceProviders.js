@@ -67,7 +67,7 @@ function ServiceProviders() {
       <h1>Service Providers</h1>
       <ul>
         {providers.map((provider, index) => (
-          <li key={index}>
+          <li key={index} onClick={() => handleProviderClick(provider)}>
             {provider.first_name} {provider.last_name}
           </li>
         ))}
