@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 
 function ServiceProviders() {
   const [providers, setProviders] = useState([]);
+  const [selectedUser, setSelectedUser] = useState(null);
 
   useEffect(() => {
     const fetchProviderDetails = async () => {
