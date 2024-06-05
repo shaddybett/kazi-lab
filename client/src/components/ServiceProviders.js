@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import UserDetailsPopup from "./UserDetailsPopup";
 
 function ServiceProviders() {
   const [providers, setProviders] = useState([]);
