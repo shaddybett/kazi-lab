@@ -7,6 +7,7 @@ function Profile() {
   const [data, setData] = useState({});
   const [error, setError] = useState('');
   const [message, setMessage] = useState('');
+  const [image, setImage] = useState(null);
   const [form, setForm] = useState({
     first_name: '',
     middle_name: '',
