@@ -144,7 +144,7 @@ function Profile() {
         body: JSON.stringify(updatedFields)
       });
 
-      if (response.ok) {
+      if (response.ok && imageResponse.ok) {
         const responseData = await response.json();
         setMessage(responseData.message);
         setRefresh(!refresh);
