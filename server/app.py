@@ -486,7 +486,7 @@ api.add_resource(DeleteUser, '/delete')
 api.add_resource(Offers,'/offers')
 api.add_resource(AddService, '/add-service')
 api.add_resource(DeleteService, '/delete-service/<int:service_id>')
-api.add_resource(UpdateImage, 'update_image')
+api.add_resource(UpdateImage, '/update-image')
 
 if __name__ == '__main__':
     app.run(debug=True, port=4000)
