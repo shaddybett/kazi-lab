@@ -36,6 +36,32 @@ function ServiceProviders() {
     fetchProviderDetails();
   }, []);
 
+  const handleProviderClick = async (provider) => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await fetch(`/user-details?email=${provider.email}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (response.ok) {
+        const userDetails = await response.json();
+        setSelectedUser(userDetails);
+      } else {
+        throw new Error("Failed to fetch user details");
+      }
+    } catch (error) {
+      console.error("Error fetching user details:", error);
+    }
+  };
+
+  const closePopup = () => {
+    setSelectedUser(null);
+  };
+
   return (
     <div>
       <h1>Service Providers</h1>
