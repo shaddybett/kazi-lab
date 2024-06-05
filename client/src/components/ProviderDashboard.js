@@ -407,7 +407,7 @@ function ProviderDashboard() {
         } else {
           const errorMessage = await response.json();
           if (
-            errorMessage.error ===
+            errorMessage.error !==
             "Service already exists check the list provided"
           ) {
             setError(errorMessage.error);
@@ -499,7 +499,7 @@ function ProviderDashboard() {
       </Navbar>
       <div>
         {error &&
-          error === "Service already exists check the list provided" && (
+          error === "" && (
             <Dropdown label="Services">
               {allServices.map((service) => (
                 <Dropdown.Item key={service.id} className="text-black">
