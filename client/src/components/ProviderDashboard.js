@@ -408,7 +408,7 @@ function ProviderDashboard() {
           const errorMessage = await response.json();
           if (
             errorMessage.error !==
-            "Service already exists check the list provided"
+            "At least one service must be provided"
           ) {
             setError(errorMessage.error);
             setNewService(""); // Clear the input field
@@ -499,7 +499,7 @@ function ProviderDashboard() {
       </Navbar>
       <div>
         {error &&
-          error === "" && (
+          error !== "At least one service must be provided" && (
             <Dropdown label="Services">
               {allServices.map((service) => (
                 <Dropdown.Item key={service.id} className="text-black">
