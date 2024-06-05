@@ -218,7 +218,7 @@ class UpdateImage(Resource):
 
             image_url = url_for('uploaded_file', filename=image_filename, _external=True)
             update = User(
-                
+                image = image_url
             )
         except Exception as e:
             return {'error': 'An error occurred while processing the request'}, 500
