@@ -207,6 +207,7 @@ class UpdateImage(Resource):
     def post(self):
         try:
             user = get_jwt_identity()
+            existing_user = User.query.filter_by(email=user).first()
             image_file = request.files.get('image')
             if not os.path.exists(UPLOAD_FOLDER):
                 os.makedirs(UPLOAD_FOLDER)
