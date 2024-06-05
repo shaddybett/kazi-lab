@@ -71,10 +71,6 @@ class Update(Resource):
                 existing_user.password = hashed_password
             db.session.commit()
             return {'message': 'Update Successful'}, 200
-
-class UpdateImage(Resource):
-    
-
 class DeleteUser(Resource):
     @jwt_required()
     def delete (self):
@@ -204,7 +200,11 @@ class signup2(Resource):
                 return {'error':'Update failed'}
         except Exception as e:
             return {'error': 'An error occurred while processing the request'}, 500
-        
+
+
+class UpdateImage(Resource):
+    def post(self):
+
 login_parse = reqparse.RequestParser()
 login_parse.add_argument('email', type=str, required=True, help='email is required'),
 login_parse.add_argument('password', type=str, required=True, help='Password is required')
