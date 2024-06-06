@@ -1,5 +1,5 @@
 import React from "react";
-import { Card } from "flowbite-react";
+import { Card, Avatar } from "flowbite-react";
 
 function UserDetailsPopup({ user, onClose }) {
   if (!user) return null;
