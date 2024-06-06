@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Avatar, Dropdown, Navbar, Button, Card } from "flowbite-react";
+import { Avatar, Dropdown, Navbar, Button } from "flowbite-react";
 import Swal from 'sweetalert2'
 
 function ClientDashboard() {
@@ -159,7 +159,6 @@ function ClientDashboard() {
           <Navbar.Link href="/link5"></Navbar.Link>
         </Navbar.Collapse>
       </Navbar>
-      <Card className="max-w-sm">
         {services.map((service) => (
           <div key={service.id} className="mb-4">
             <Card className="max-w-sm">
@@ -172,7 +171,6 @@ function ClientDashboard() {
             </Card>
           </div>
         ))}
-      </Card>
       {error && <p className="text-red-500">{error}</p>}
     </div>
   );
