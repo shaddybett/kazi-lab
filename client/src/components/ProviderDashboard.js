@@ -270,7 +270,7 @@ function ProviderDashboard() {
         />
         <button onClick={handleAddService}>Add Service</button>
       </div>
-      {error && <p>{error}</p>}
+      {error && <p className="text-red-500">{error}</p>}
     </div>
   );
 }
