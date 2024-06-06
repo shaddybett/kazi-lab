@@ -9,7 +9,7 @@ function UserDetailsPopup({ user, onClose }) {
       <div className="flex justify-between w-full max-w-4xl mt-20">
         <Card className="max-w-l">
           <div className="flex items-center gap-5 mt-10 ml-5">
-            <h2>User Details</h2>
+            
             <p>
               <Avatar img={user.image} size="xl" />
             </p>
