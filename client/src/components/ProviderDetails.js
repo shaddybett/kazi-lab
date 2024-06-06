@@ -163,7 +163,7 @@ function ProviderDetails() {
         <button type="submit">Submit</button>
       </form>
 
-      {error && <p>{error}</p>}
+      {error && <p className="text-red-500">{error}</p>}
       {message && <p>{message}</p>}
     </div>
   );

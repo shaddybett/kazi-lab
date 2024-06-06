@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Avatar, Dropdown, Navbar } from "flowbite-react";
+import { Avatar, Dropdown, Navbar, Card } from "flowbite-react";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 

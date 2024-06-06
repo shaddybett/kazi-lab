@@ -136,7 +136,7 @@ function Signup() {
           Show password
         </label>
         <Button type="submit">Submit</Button>
-        {error && <p>{error}</p>}
+        {error && <p className="text-red-500">{error}</p>}
       </form>
       <p>
         Have an account? <Link to="/login">Login</Link>
