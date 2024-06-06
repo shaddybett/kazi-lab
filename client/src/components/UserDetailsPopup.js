@@ -8,32 +8,31 @@ function UserDetailsPopup({ user, onClose }) {
     <div className="flex flex-col items-center">
       <div className="flex justify-between w-full max-w-4xl mt-20">
         <Card className="max-w-l">
-          <div className="flex items-center gap-5 mt-10 ml-5">
-            
-            <p>
-              <Avatar img={user.image} size="xl" />
-            </p>
-            <p>
-              <strong>First Name:</strong> {user.first_name}
-            </p>
-            <p>
-              <strong>Last Name:</strong> {user.last_name}
-            </p>
-            <p>
-              <strong>Middle Name:</strong> {user.middle_name}
-            </p>
-            <p>
-              <strong>Email:</strong> {user.email}
-            </p>
-            <p>
-              <strong>Role ID:</strong> {user.role_id}
-            </p>
-            <p>
-              <strong>Phone Number:</strong> {user.phone_number}
-            </p>
-            <p>
-              <strong>National ID:</strong> {user.national_id}
-            </p>
+          <div className="grid items-center gap-5 mt-10 ml-5">
+            <Avatar img={user.image} size="xl" />
+            <div>
+              <p>
+                <strong>First Name:</strong> {user.first_name}
+              </p>
+              <p>
+                <strong>Last Name:</strong> {user.last_name}
+              </p>
+              <p>
+                <strong>Middle Name:</strong> {user.middle_name}
+              </p>
+              <p>
+                <strong>Email:</strong> {user.email}
+              </p>
+              <p>
+                <strong>Role ID:</strong> {user.role_id}
+              </p>
+              <p>
+                <strong>Phone Number:</strong> {user.phone_number}
+              </p>
+              <p>
+                <strong>National ID:</strong> {user.national_id}
+              </p>
+            </div>
             <button onClick={onClose}>Close</button>
           </div>
         </Card>
