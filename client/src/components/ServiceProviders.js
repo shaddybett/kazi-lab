@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Card, Avatar } from "flowbite-react"; // Importing the Card component from Flowbite
-import UserDetailsPopup from "./UserDetailsPopup"; // Assuming the popup component is in the same directory
+import { Card, Avatar } from "flowbite-react"; 
+import UserDetailsPopup from "./UserDetailsPopup"; 
 
 function ServiceProviders() {
   const [providers, setProviders] = useState([]);
