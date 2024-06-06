@@ -138,7 +138,7 @@ function ProviderDashboard() {
             errorMessage.error !== "At least one service must be provided"
           ) {
             setError(errorMessage.error);
-            setNewService(""); 
+            setNewService("");
             fetchAllServices();
           } else {
             setError(errorMessage.error || "An error occurred");
@@ -244,22 +244,24 @@ function ProviderDashboard() {
         )}
       </div>
       <div>
-        <h2>Hello, {data.first_name} welcome </h2>
-        <h1>Services you offer</h1>
-        {services.length > 0 ? (
-          <ul>
-            {services.map((service) => (
-              <li key={service.id}>
-                {service.name}{" "}
-                <button onClick={() => handleDeleteService(service.id)}>
-                  delete
-                </button>{" "}
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p>No services found</p>
-        )}
+        <Card>
+          <h2>Hello, {data.first_name} welcome </h2>
+          <h1>Services you offer</h1>
+          {services.length > 0 ? (
+            <ul>
+              {services.map((service) => (
+                <li key={service.id}>
+                  {service.name}{" "}
+                  <button onClick={() => handleDeleteService(service.id)}>
+                    delete
+                  </button>{" "}
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p>No services found</p>
+          )}
+        </Card>
       </div>
       <div>
         <input
