@@ -8,7 +8,6 @@ function ClientDashboard() {
   const [error, setError] = useState("");
   const [services, setServices] = useState([]);
   const [providers, setProviders] = useState([]);
-  const [providerIds, setProviderIds] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -174,7 +173,7 @@ function ClientDashboard() {
           </div>
         ))}
       </Card>
-      {error && <p>{error}</p>}
+      {error && <p className="text-red-500">{error}</p>}
     </div>
   );
 }

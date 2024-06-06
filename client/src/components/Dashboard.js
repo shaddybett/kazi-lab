@@ -42,7 +42,7 @@ function Dashboard() {
       {data && (
         <p>Hello {data.first_name} {data.last_name}, welcome!</p>
       )}
-      {error && <p>{error}</p>}
+      {error && <p className="text-red-500">{error}</p>}
       
     </div>
   )

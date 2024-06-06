@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Avatar, Dropdown, Navbar } from "flowbite-react";
+import { Avatar, Dropdown, Navbar, Card } from "flowbite-react";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 
@@ -138,7 +138,7 @@ function ProviderDashboard() {
             errorMessage.error !== "At least one service must be provided"
           ) {
             setError(errorMessage.error);
-            setNewService(""); 
+            setNewService("");
             fetchAllServices();
           } else {
             setError(errorMessage.error || "An error occurred");
@@ -244,33 +244,36 @@ function ProviderDashboard() {
         )}
       </div>
       <div>
-        <h2>Hello, {data.first_name} welcome </h2>
-        <h1>Services you offer</h1>
-        {services.length > 0 ? (
-          <ul>
-            {services.map((service) => (
-              <li key={service.id}>
-                {service.name}{" "}
-                <button onClick={() => handleDeleteService(service.id)}>
-                  delete
-                </button>{" "}
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p>No services found</p>
-        )}
+        <Card className="max-w-sm">
+          <h2>Hello, {data.first_name} welcome! </h2>
+          <h1 className="text-xl font-bold leading-none text-gray-900 dark:text-white">Services you offer</h1>
+          {services.length > 0 ? (
+            <ul  className="divide-y divide-gray-200 dark:divide-gray-700">
+              {services.map((service) => (
+                <li key={service.id}>
+                  {service.name}{" "}
+                  <button onClick={() => handleDeleteService(service.id)}>
+                    delete
+                  </button>{" "}
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p>No services found</p>
+          )}
+          <div>
+            <input
+            className="border-radius-10"
+              type="text"
+              value={newService}
+              onChange={(e) => setNewService(e.target.value)}
+              placeholder="Add new service"
+            />
+            <button className="ml-4" onClick={handleAddService}>Add</button>
+          </div>
+        </Card>
       </div>
-      <div>
-        <input
-          type="text"
-          value={newService}
-          onChange={(e) => setNewService(e.target.value)}
-          placeholder="Add new service"
-        />
-        <button onClick={handleAddService}>Add Service</button>
-      </div>
-      {error && <p>{error}</p>}
+      {error && <p className="text-red-500">{error}</p>}
     </div>
   );
 }
