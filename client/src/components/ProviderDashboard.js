@@ -244,9 +244,9 @@ function ProviderDashboard() {
         )}
       </div>
       <div>
-        <Card className="max-w-sm">
+        <Card className="max-w-sm mt-4 ml-4">
           <h2>Hello, {data.first_name} welcome </h2>
-          <h1>Services you offer</h1>
+          <h1 className="text-xl font-medium tracking-tight text-gray-900 dark:text-white">Services you offer</h1>
           {services.length > 0 ? (
             <ul>
               {services.map((service) => (
@@ -263,12 +263,13 @@ function ProviderDashboard() {
           )}
           <div>
             <input
+            className="border-radius-10"
               type="text"
               value={newService}
               onChange={(e) => setNewService(e.target.value)}
               placeholder="Add new service"
             />
-            <button onClick={handleAddService}>Add Service</button>
+            <button className="ml-4" onClick={handleAddService}>Add</button>
           </div>
         </Card>
       </div>
