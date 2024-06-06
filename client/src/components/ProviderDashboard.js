@@ -244,11 +244,11 @@ function ProviderDashboard() {
         )}
       </div>
       <div>
-        <Card className="max-w-sm mt-4 ml-4">
-          <h2>Hello, {data.first_name} welcome </h2>
-          <h1 className="text-xl font-medium tracking-tight text-gray-900 dark:text-white">Services you offer</h1>
+        <Card className="max-w-sm">
+          <h2>Hello, {data.first_name} welcome! </h2>
+          <h1 className="text-xl font-bold leading-none text-gray-900 dark:text-white">Services you offer</h1>
           {services.length > 0 ? (
-            <ul>
+            <ul  className="divide-y divide-gray-200 dark:divide-gray-700">
               {services.map((service) => (
                 <li key={service.id}>
                   {service.name}{" "}
