@@ -244,7 +244,7 @@ function ProviderDashboard() {
         )}
       </div>
       <div>
-        <Card>
+        <Card className="max-w-sm">
           <h2>Hello, {data.first_name} welcome </h2>
           <h1>Services you offer</h1>
           {services.length > 0 ? (
@@ -261,16 +261,16 @@ function ProviderDashboard() {
           ) : (
             <p>No services found</p>
           )}
+          <div>
+            <input
+              type="text"
+              value={newService}
+              onChange={(e) => setNewService(e.target.value)}
+              placeholder="Add new service"
+            />
+            <button onClick={handleAddService}>Add Service</button>
+          </div>
         </Card>
-      </div>
-      <div>
-        <input
-          type="text"
-          value={newService}
-          onChange={(e) => setNewService(e.target.value)}
-          placeholder="Add new service"
-        />
-        <button onClick={handleAddService}>Add Service</button>
       </div>
       {error && <p className="text-red-500">{error}</p>}
     </div>
