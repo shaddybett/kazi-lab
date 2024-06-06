@@ -31,7 +31,7 @@ function UserDetailsPopup({ user, onClose }) {
             <strong>National ID:</strong> {user.national_id}
           </p>
           <p>
-            <strong>Image:</strong> {user.image}
+            <Avatar img={user.image} size="xl" />
           </p>
           <button onClick={onClose}>Close</button>
         </div>
