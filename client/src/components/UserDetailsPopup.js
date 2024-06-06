@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import { Card, Avatar } from "flowbite-react";
+import { Avatar } from "flowbite-react";
 
 function UserDetailsPopup({ user, onClose }) {
   const popupRef = useRef();
