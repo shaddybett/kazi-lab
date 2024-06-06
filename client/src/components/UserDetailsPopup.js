@@ -10,6 +10,9 @@ function UserDetailsPopup({ user, onClose }) {
         <div className="popup-content">
           <h2>User Details</h2>
           <p>
+            <Avatar img={user.image} size="xl" />
+          </p>
+          <p>
             <strong>First Name:</strong> {user.first_name}
           </p>
           <p>
@@ -29,9 +32,6 @@ function UserDetailsPopup({ user, onClose }) {
           </p>
           <p>
             <strong>National ID:</strong> {user.national_id}
-          </p>
-          <p>
-            <Avatar img={user.image} size="xl" />
           </p>
           <button onClick={onClose}>Close</button>
         </div>
