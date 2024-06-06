@@ -5,9 +5,10 @@ function UserDetailsPopup({ user, onClose }) {
   if (!user) return null;
 
   return (
-    <div className="popup">
-      <Card className="max-w-sm ml-10">
-        <div className="popup-content">
+    <div className="flex flex-col items-center">
+        <div className="flex justify-between w-full max-w-4xl mt-20">
+        <Card className="max-w-l">
+        <div className="flex items-center gap-5 mt-10 ml-5">
           <h2>User Details</h2>
           <p>
             <Avatar img={user.image} size="xl" />
@@ -36,6 +37,7 @@ function UserDetailsPopup({ user, onClose }) {
           <button onClick={onClose}>Close</button>
         </div>
       </Card>
+        </div>
     </div>
   );
 }
