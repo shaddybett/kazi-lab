@@ -342,7 +342,7 @@ function ClientDashboard() {
         {services.map((service) => (
           <div key={service.id} className="mb-4">
             <Card className="max-w-sm mt-3 ml-5">
-              <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white break-words">
+              <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white ">
                 {service.name}
               </h5>
               <Button onClick={() => handleProviders(service)}>
