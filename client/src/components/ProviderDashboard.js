@@ -262,6 +262,7 @@ function ProviderDashboard() {
                           type="checkbox"
                           value={service.id}
                           onChange={() => handleCheckboxChange(service)}
+                          onClick={(e) => e.stopPropagation()}
                           checked={selectedServices.some(
                             (s) => s.id === service.id
                           )}
