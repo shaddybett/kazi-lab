@@ -110,7 +110,7 @@ function ProviderDetails() {
       const timer = setTimeout(() => {
         setError('');
       }, 5000);
-      return () => clearTimeout(timer); // Cleanup the timer on component unmount or error change
+      return () => clearTimeout(timer);
     }
   }, [error]);
   return (
