@@ -43,7 +43,7 @@ function ProviderDashboard() {
       });
       if (response.status === 422) {
         // Handle session expiration
-        throw new Error('Your session has expired. Please log in again.');
+        setError('Your session has expired. Please log in again.');
         // Optionally, you can redirect the user to the login page or log them out
         setTimeout(() => {
           window.location.href = '/login';
