@@ -365,6 +365,8 @@ class AddService(Resource):
         registered = Service.query.filter_by(service_name = new_service_name).first()
         if registered:
             pod_id = registered.provider_id
+            if pod_id == oid:
+                return {'error': 'Service already registered'}, 401
         if new_service_name:
             existing_service = Service.query.filter(func.lower(Service.service_name) == func.lower(new_service_name)).first()
             if existing_service:
