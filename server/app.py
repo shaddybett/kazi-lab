@@ -306,7 +306,7 @@ class AddService(Resource):
         if new_service_name:
             existing_service = Service.query.filter(func.lower(Service.service_name) == func.lower(new_service_name)).first()
             sid = existing_service.id
-            exists_for_provider = ProviderService.query.filter_by(provider_id=oid, service_id).first()
+            exists_for_provider = ProviderService.query.filter_by(provider_id=oid, service_id = sid).first()
             if exists_for_provider:
                 return {'error': 'Service is already registered'}, 401
             if existing_service:
