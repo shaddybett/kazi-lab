@@ -276,7 +276,7 @@ class AddService(Resource):
     def post(self):
         current_user = get_jwt_identity()
         user = User.query.filter_by(email=current_user).first()
-        id = user.id
+        oid = user.id
         if not user:
             return {'error': 'User not found'}, 404
 
@@ -305,7 +305,7 @@ class AddService(Resource):
         # Handle new service entered manually
         if new_service_name:
             existing_service = Service.query.filter(func.lower(Service.service_name) == func.lower(new_service_name)).first()
-            exists = Service.query.filter_by(provider_id=id).first()
+            exists = Service.query.filter_by(provider_id=oid).first()
             if exists.service_name == new_service_name:
                 return {'error': f'Service is already registered'}, 401
             if existing_service:
