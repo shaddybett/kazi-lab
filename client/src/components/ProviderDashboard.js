@@ -245,6 +245,10 @@ function ProviderDashboard() {
       </Navbar>
       <div>
         <Card className="max-w-sm">
+        <h2>Hello, {data.first_name} welcome! </h2>
+          <h1 className="text-xl font-bold leading-none text-gray-900 dark:text-white">
+            Services you offer
+          </h1>
           <div>
             {error &&
               error !== "At least one service must be provided" &&
@@ -269,10 +273,6 @@ function ProviderDashboard() {
                 </Dropdown>
               )}
           </div>
-          <h2>Hello, {data.first_name} welcome! </h2>
-          <h1 className="text-xl font-bold leading-none text-gray-900 dark:text-white">
-            Services you offer
-          </h1>
           {services.length > 0 ? (
             <ul className="divide-y divide-gray-200 dark:divide-gray-700">
               {services.map((service) => (
