@@ -276,7 +276,7 @@ class AddService(Resource):
     def post(self):
         current_user = get_jwt_identity()
         user = User.query.filter_by(email=current_user).first()
-        oid = user.id
+        
         if not user:
             return {'error': 'User not found'}, 404
 
@@ -284,17 +284,14 @@ class AddService(Resource):
         existing_services = args.get('existing_services', [])
         new_service_name = args.get('service_name')
 
-        # Check if at least one service is provided
         if not existing_services and not new_service_name:
             return {'error': 'At least one service must be provided'}, 400
 
-        # Initialize a list to hold service IDs
         service_ids = []
 
-        # Handle existing services selected from the dropdown
         for service_id in existing_services:
-            service = Service.query.get(service_id)
-            if service:
+            provider_service = ProviderService.query.filter_by(provider_id=user.id, service_id=service_id).first()
+            if not provider_service:
                 provider_service = ProviderService(
                     provider_id=user.id,
                     service_id=service_id
@@ -302,13 +299,13 @@ class AddService(Resource):
                 db.session.add(provider_service)
                 service_ids.append(service_id)
 
-        # Handle new service entered manually
         if new_service_name:
             existing_service = Service.query.filter(func.lower(Service.service_name) == func.lower(new_service_name)).first()
-            sid = existing_service.id
-            exists_for_provider = ProviderService.query.filter_by(provider_id=oid, service_id = sid).first()
-            if exists_for_provider:
-                return {'error': 'Service is already registered'}, 401
+            provider_existing_service = Service.query.filter_by(provider_id=user.id, service_name=new_service_name).first()
+            
+            if provider_existing_service:
+                return {'error': f'Service "{new_service_name}" is already registered by you'}, 401
+            
             if existing_service:
                 return {'error': f'Service "{new_service_name}" already exists, kindly check the list provided'}, 401
 
@@ -317,7 +314,8 @@ class AddService(Resource):
                 provider_id=user.id
             )
             db.session.add(new_service)
-            db.session.flush()
+            db.session.flush() 
+            
             provider_service = ProviderService(
                 provider_id=user.id,
                 service_id=new_service.id
@@ -325,11 +323,9 @@ class AddService(Resource):
             db.session.add(provider_service)
             service_ids.append(new_service.id)
 
-        # Commit all changes to the database
         db.session.commit()
 
         return {'message': f'Services created and associated with {user.first_name} {user.last_name}', 'service_ids': service_ids}, 201
-
 
 class DeleteService(Resource):
     @jwt_required()
