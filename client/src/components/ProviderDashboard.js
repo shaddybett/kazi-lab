@@ -151,8 +151,8 @@ function ProviderDashboard() {
             setNewService("");
             fetchAllServices();
             if (
-              errorMessage.error !== "At least one service must be provided" &&
-              errorMessage.error !== "Service is already registered"
+              errorMessage.error == "At least one service must be provided" &&
+              errorMessage.error == "Service is already registered"
             ) {
               const timer = setTimeout(() => {
                 setError("");
