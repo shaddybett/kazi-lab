@@ -1,361 +1,7 @@
-// import React, { useState, useEffect } from "react";
-// import { Avatar, Dropdown, Navbar, Card, Label, Select } from "flowbite-react";
-// import { useNavigate } from "react-router-dom";
-// import Swal from "sweetalert2";
-
-// const CustomDropdown = ({ allServices, selectedServices, handleCheckboxChange }) => {
-//   const [isOpen, setIsOpen] = useState(false);
-
-//   const toggleDropdown = () => setIsOpen(!isOpen);
-// function ProviderDashboard() {
-//   const [data, setData] = useState({});
-//   const [services, setServices] = useState([]);
-//   const [allServices, setAllServices] = useState([]);
-//   const [error, setError] = useState("");
-//   const [newService, setNewService] = useState("");
-//   const [selectedServices, setSelectedServices] = useState([]);
-//   const navigate = useNavigate();
-  
-//   const handleProfile = () => {
-//     navigate("/profile");
-//   };
-
-//   const handleLogout = async () => {
-//     const result = await Swal.fire({
-//       title: "Are you sure?",
-//       icon: "warning",
-//       showCancelButton: true,
-//       confirmButtonColor: "#3085d6",
-//       cancelButtonColor: "#d33",
-//       confirmButtonText: "Yes, Logout!",
-//     });
-//     if (result.isConfirmed) {
-//       localStorage.removeItem("token");
-//       navigate("/login");
-//     }
-//   };
-
-//   const fetchData = async () => {
-//     try {
-//       const token = localStorage.getItem("token");
-//       const response = await fetch("/offers", {
-//         method: "POST",
-//         headers: {
-//           "Content-Type": "application/json",
-//           Authorization: `Bearer ${token}`,
-//         },
-//       });
-//       if (response.ok) {
-//         const responseData = await response.json();
-//         setServices(responseData.services || []);
-//       } else {
-//         const errorMessage = await response.json();
-//         setError(errorMessage.error);
-//       }
-//     } catch (error) {
-//       setError("An error occurred. Please try again later.");
-//     }
-//   };
-
-//   const fetchAllServices = async () => {
-//     try {
-//       const token = localStorage.getItem("token");
-//       const response = await fetch("/service", {
-//         method: "GET",
-//         headers: {
-//           "Content-Type": "application/json",
-//           Authorization: `Bearer ${token}`,
-//         },
-//       });
-//       if (response.ok) {
-//         const responseData = await response.json();
-//         setAllServices(responseData.all_services || []);
-//       } else {
-//         const errorMessage = await response.json();
-//         setError(errorMessage.error);
-//       }
-//     } catch (error) {
-//       setError("An error occurred. Please try again later.");
-//     }
-//   };
-
-//   useEffect(() => {
-//     const handleEntry = async () => {
-//       const token = localStorage.getItem("token");
-//       try {
-//         const response = await fetch("/dashboard", {
-//           method: "GET",
-//           headers: {
-//             "Content-Type": "application/json",
-//             Authorization: `Bearer ${token}`,
-//           },
-//         });
-//         if (response.ok) {
-//           const responseData = await response.json();
-//           setData(responseData);
-//         } else {
-//           const errorMessage = await response.json();
-//           setError(errorMessage.error || "An error occurred");
-//         }
-//       } catch (error) {
-//         setError("An error occurred. Please try again later");
-//       }
-//     };
-
-//     fetchData();
-//     fetchAllServices();
-//     handleEntry();
-//   }, []);
-
-//   const handleAddService = async () => {
-//     const result = await Swal.fire({
-//       title: "Are you sure?",
-//       icon: "warning",
-//       showCancelButton: true,
-//       confirmButtonColor: "#3085d6",
-//       cancelButtonColor: "#d33",
-//       confirmButtonText: "Yes, Add Service!",
-//     });
-//     if (result.isConfirmed) {
-//       const token = localStorage.getItem("token");
-//       try {
-//         const response = await fetch("/add-service", {
-//           method: "POST",
-//           headers: {
-//             "Content-Type": "application/json",
-//             Authorization: `Bearer ${token}`,
-//           },
-//           body: JSON.stringify({
-//             service_name: newService,
-//             existing_services: selectedServices.map((service) => service.id),
-//           }),
-//         });
-//         if (response.ok) {
-//           setNewService("");
-//           setError("");
-//           Swal.fire("Success", "Service added successfully", "success");
-//           fetchData();
-//         } else {
-//           const errorMessage = await response.json();
-//           if (
-//             errorMessage.error !== "At least one service must be provided" &&
-//             errorMessage.error !== "At least one service must be provided"
-//           ) {
-//             setError(errorMessage.error);
-//             setNewService("");
-//             fetchAllServices();
-//           } else {
-//             setError(errorMessage.error || "An error occurred");
-//           }
-//         }
-//       } catch (error) {
-//         setError("An error occurred. Please try again later");
-//       }
-//     }
-//   };
-
-//   const handleDeleteService = async (serviceId) => {
-//     const result = await Swal.fire({
-//       title: "Are you sure?",
-//       icon: "warning",
-//       showCancelButton: true,
-//       confirmButtonColor: "#3085d6",
-//       cancelButtonColor: "#d33",
-//       confirmButtonText: "Yes, Delete!",
-//     });
-//     if (result.isConfirmed) {
-//       const token = localStorage.getItem("token");
-//       try {
-//         const response = await fetch(`/delete-service/${serviceId}`, {
-//           method: "DELETE",
-//           headers: {
-//             "Content-Type": "application/json",
-//             Authorization: `Bearer ${token}`,
-//           },
-//         });
-//         if (response.ok) {
-//           Swal.fire("Success", "Service deleted successfully", "success");
-//           fetchData();
-//         } else {
-//           const errorMessage = await response.json();
-//           setError(errorMessage.error || "An error occurred");
-//         }
-//       } catch (error) {
-//         setError("An error occurred. Please try again later");
-//       }
-//     }
-//   };
-
-//   const handleCheckboxChange = (service) => {
-//     const selectedIndex = selectedServices.findIndex(
-//       (s) => s.id === service.id
-//     );
-//     if (selectedIndex === -1) {
-//       setSelectedServices([...selectedServices, service]);
-//     } else {
-//       setSelectedServices(selectedServices.filter((s) => s.id !== service.id));
-//     }
-//   };
-
-//   return (
-//     <div>
-//       <Navbar fluid rounded className="bg-black">
-//         <div className="flex md:order-2">
-//           <Dropdown
-//             arrowIcon={false}
-//             inline
-//             label={<Avatar alt="User settings" img={data.image} rounded />}
-//           >
-//             <Dropdown.Header>
-//               <span className="block text-sm">
-//                 {data.first_name} {data.last_name}
-//               </span>
-//               <span className="block truncate text-sm font-medium">
-//                 {data.email}
-//               </span>
-//             </Dropdown.Header>
-//             <Dropdown.Item onClick={handleProfile}>Profile</Dropdown.Item>
-//             <Dropdown.Divider />
-//             <Dropdown.Item onClick={handleLogout}>Logout</Dropdown.Item>
-//           </Dropdown>
-//           <Navbar.Toggle />
-//         </div>
-//         <Navbar.Collapse>
-//           <Navbar.Link href="#" active></Navbar.Link>
-//           <Navbar.Link href="#"></Navbar.Link>
-//           <Navbar.Link href="#"></Navbar.Link>
-//           <Navbar.Link href="#"></Navbar.Link>
-//           <Navbar.Link href="#"></Navbar.Link>
-//         </Navbar.Collapse>
-//       </Navbar>
-//       <div>
-//         {error && error !== "At least one service must be provided" && (
-//           // <Dropdown label="Services">
-//           //   {allServices.map((service) => (
-//           //     <Dropdown.Item key={service.id} className="text-black">
-//           //       <label>
-//           //         <input
-//           //           type="checkbox"
-//           //           value={service.id}
-//           //           onChange={() => handleCheckboxChange(service)}
-//           //           checked={selectedServices.some((s) => s.id === service.id)}
-//           //         />
-//           //         {service.name}
-//           //       </label>
-//           //     </Dropdown.Item>
-//           //   ))}
-//           // </Dropdown>
-//           <div className="max-w-md">
-//             <div className="mb-2 block">
-//               <Label htmlFor="services" value="Select your service" />
-//             </div>
-//             <div className="relative">
-//               <button
-//                 onClick={toggleDropdown}
-//                 className="w-full bg-white border border-gray-300 rounded-md shadow-sm pl-3 pr-10 py-2 text-left cursor-default focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-//                 aria-haspopup="listbox"
-//                 aria-expanded={isOpen}
-//               >
-//                 Select Services
-//                 <span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
-//                   <svg
-//                     className="h-5 w-5 text-gray-400"
-//                     viewBox="0 0 20 20"
-//                     fill="currentColor"
-//                   >
-//                     <path
-//                       fillRule="evenodd"
-//                       d="M10 3a1 1 0 00-.707.293l-7 7a1 1 0 001.414 1.414L10 5.414l6.293 6.293a1 1 0 001.414-1.414l-7-7A1 1 0 0010 3z"
-//                       clipRule="evenodd"
-//                     />
-//                   </svg>
-//                 </span>
-//               </button>
-
-//               {isOpen && (
-//                 <ul
-//                   className="absolute z-10 mt-1 w-full bg-white shadow-lg max-h-60 rounded-md py-1 text-base ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm"
-//                   tabIndex="-1"
-//                   role="listbox"
-//                   aria-labelledby="listbox-label"
-//                   aria-activedescendant="listbox-item-3"
-//                 >
-//                   {allServices.map((service) => (
-//                     <li
-//                       key={service.id}
-//                       className="text-gray-900 cursor-default select-none relative py-2 pl-3 pr-9"
-//                       id="listbox-item-0"
-//                       role="option"
-//                     >
-//                       <div className="flex items-center">
-//                         <input
-//                           type="checkbox"
-//                           value={service.id}
-//                           onChange={() => handleCheckboxChange(service)}
-//                           checked={selectedServices.some(
-//                             (s) => s.id === service.id
-//                           )}
-//                           className="form-checkbox h-5 w-5 text-blue-600"
-//                         />
-//                         <span className="ml-3 block font-normal truncate">
-//                           {service.name}
-//                         </span>
-//                       </div>
-//                     </li>
-//                   ))}
-//                 </ul>
-//               )}
-//             </div>
-//           </div>
-          
-//         )}
-//       </div>
-//       <div>
-//         <Card className="max-w-sm">
-//           <h2>Hello, {data.first_name} welcome! </h2>
-//           <h1 className="text-xl font-bold leading-none text-gray-900 dark:text-white">
-//             Services you offer
-//           </h1>
-//           {services.length > 0 ? (
-//             <ul className="divide-y divide-gray-200 dark:divide-gray-700">
-//               {services.map((service) => (
-//                 <li key={service.id}>
-//                   {service.name}{" "}
-//                   <button onClick={() => handleDeleteService(service.id)}>
-//                     delete
-//                   </button>{" "}
-//                 </li>
-//               ))}
-//             </ul>
-//           ) : (
-//             <p>No services found</p>
-//           )}
-//           <div>
-//             <input
-//               className="border-radius-10"
-//               type="text"
-//               value={newService}
-//               onChange={(e) => setNewService(e.target.value)}
-//               placeholder="Add new service"
-//             />
-//             <button className="ml-4" onClick={handleAddService}>
-//               Add
-//             </button>
-//           </div>
-//         </Card>
-//       </div>
-//       {error && <p className="text-red-500">{error}</p>}
-//     </div>
-//   );
-// }
-
-// export default ProviderDashboard;
-
 import React, { useState, useEffect } from "react";
-import { Avatar, Navbar, Card, Label } from "flowbite-react";
+import { Avatar, Dropdown, Navbar, Card, Label, Select } from "flowbite-react";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
-import CustomDropdown from './CustomDropdown'; // Adjust the path as necessary
 
 function ProviderDashboard() {
   const [data, setData] = useState({});
@@ -365,7 +11,7 @@ function ProviderDashboard() {
   const [newService, setNewService] = useState("");
   const [selectedServices, setSelectedServices] = useState([]);
   const navigate = useNavigate();
-
+  
   const handleProfile = () => {
     navigate("/profile");
   };
@@ -487,9 +133,16 @@ function ProviderDashboard() {
           fetchData();
         } else {
           const errorMessage = await response.json();
-          setError(errorMessage.error || "An error occurred");
-          setNewService("");
-          fetchAllServices();
+          if (
+            errorMessage.error !== "At least one service must be provided" &&
+            errorMessage.error !== "At least one service must be provided"
+          ) {
+            setError(errorMessage.error);
+            setNewService("");
+            fetchAllServices();
+          } else {
+            setError(errorMessage.error || "An error occurred");
+          }
         }
       } catch (error) {
         setError("An error occurred. Please try again later");
@@ -547,4 +200,150 @@ function ProviderDashboard() {
           <Dropdown
             arrowIcon={false}
             inline
-            label={<Avatar alt="User settings
+            label={<Avatar alt="User settings" img={data.image} rounded />}
+          >
+            <Dropdown.Header>
+              <span className="block text-sm">
+                {data.first_name} {data.last_name}
+              </span>
+              <span className="block truncate text-sm font-medium">
+                {data.email}
+              </span>
+            </Dropdown.Header>
+            <Dropdown.Item onClick={handleProfile}>Profile</Dropdown.Item>
+            <Dropdown.Divider />
+            <Dropdown.Item onClick={handleLogout}>Logout</Dropdown.Item>
+          </Dropdown>
+          <Navbar.Toggle />
+        </div>
+        <Navbar.Collapse>
+          <Navbar.Link href="#" active></Navbar.Link>
+          <Navbar.Link href="#"></Navbar.Link>
+          <Navbar.Link href="#"></Navbar.Link>
+          <Navbar.Link href="#"></Navbar.Link>
+          <Navbar.Link href="#"></Navbar.Link>
+        </Navbar.Collapse>
+      </Navbar>
+      <div>
+        {error && error !== "At least one service must be provided" && (
+          // <Dropdown label="Services">
+          //   {allServices.map((service) => (
+          //     <Dropdown.Item key={service.id} className="text-black">
+          //       <label>
+          //         <input
+          //           type="checkbox"
+          //           value={service.id}
+          //           onChange={() => handleCheckboxChange(service)}
+          //           checked={selectedServices.some((s) => s.id === service.id)}
+          //         />
+          //         {service.name}
+          //       </label>
+          //     </Dropdown.Item>
+          //   ))}
+          // </Dropdown>
+          <div className="max-w-md">
+            <div className="mb-2 block">
+              <Label htmlFor="services" value="Select your service" />
+            </div>
+            <div className="relative">
+              <button
+                onClick={toggleDropdown}
+                className="w-full bg-white border border-gray-300 rounded-md shadow-sm pl-3 pr-10 py-2 text-left cursor-default focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                aria-haspopup="listbox"
+                aria-expanded={isOpen}
+              >
+                Select Services
+                <span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
+                  <svg
+                    className="h-5 w-5 text-gray-400"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M10 3a1 1 0 00-.707.293l-7 7a1 1 0 001.414 1.414L10 5.414l6.293 6.293a1 1 0 001.414-1.414l-7-7A1 1 0 0010 3z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                </span>
+              </button>
+
+              {isOpen && (
+                <ul
+                  className="absolute z-10 mt-1 w-full bg-white shadow-lg max-h-60 rounded-md py-1 text-base ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm"
+                  tabIndex="-1"
+                  role="listbox"
+                  aria-labelledby="listbox-label"
+                  aria-activedescendant="listbox-item-3"
+                >
+                  {allServices.map((service) => (
+                    <li
+                      key={service.id}
+                      className="text-gray-900 cursor-default select-none relative py-2 pl-3 pr-9"
+                      id="listbox-item-0"
+                      role="option"
+                    >
+                      <div className="flex items-center">
+                        <input
+                          type="checkbox"
+                          value={service.id}
+                          onChange={() => handleCheckboxChange(service)}
+                          checked={selectedServices.some(
+                            (s) => s.id === service.id
+                          )}
+                          className="form-checkbox h-5 w-5 text-blue-600"
+                        />
+                        <span className="ml-3 block font-normal truncate">
+                          {service.name}
+                        </span>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          </div>
+          
+        )}
+      </div>
+      <div>
+        <Card className="max-w-sm">
+          <h2>Hello, {data.first_name} welcome! </h2>
+          <h1 className="text-xl font-bold leading-none text-gray-900 dark:text-white">
+            Services you offer
+          </h1>
+          {services.length > 0 ? (
+            <ul className="divide-y divide-gray-200 dark:divide-gray-700">
+              {services.map((service) => (
+                <li key={service.id}>
+                  {service.name}{" "}
+                  <button onClick={() => handleDeleteService(service.id)}>
+                    delete
+                  </button>{" "}
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p>No services found</p>
+          )}
+          <div>
+            <input
+              className="border-radius-10"
+              type="text"
+              value={newService}
+              onChange={(e) => setNewService(e.target.value)}
+              placeholder="Add new service"
+            />
+            <button className="ml-4" onClick={handleAddService}>
+              Add
+            </button>
+          </div>
+        </Card>
+      </div>
+      {error && <p className="text-red-500">{error}</p>}
+    </div>
+  );
+}
+
+export default ProviderDashboard;
+
