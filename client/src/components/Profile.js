@@ -169,7 +169,14 @@ function Profile() {
       setError("An error occurred. Please try again later.");
     }
   };
-
+  useEffect(() => {
+    if (error) {
+      const timer = setTimeout(() => {
+        setError("");
+      }, 5000);
+      return () => clearTimeout(timer); // Cleanup the timer on component unmount or error change
+    }
+  }, [error]);
   return (
     <div className="flex flex-col items-center">
       <div className="flex justify-between w-full max-w-4xl mt-20">
@@ -300,7 +307,9 @@ function Profile() {
                 type="file"
                 onChange={(e) => setImage(e.target.files[0])}
               />
-              <Button className="mt-5" type="submit">Update</Button>
+              <Button className="mt-5" type="submit">
+                Update
+              </Button>
             </form>
           </Card>
         )}

@@ -138,6 +138,7 @@ function ProviderDashboard() {
             errorMessage.error !== "At least one service must be provided" &&
             errorMessage.error !== "Service is already registered"
           ) {
+            setError(errorMessage.error);
             setNewService("");
             fetchAllServices();
           } else {
@@ -192,6 +193,14 @@ function ProviderDashboard() {
       setSelectedServices(selectedServices.filter((s) => s.id !== service.id));
     }
   };
+  useEffect(() => {
+    if (error) {
+      const timer = setTimeout(() => {
+        setError('');
+      }, 5000);
+      return () => clearTimeout(timer); // Cleanup the timer on component unmount or error change
+    }
+  }, [error]);
 
   return (
     <div>
