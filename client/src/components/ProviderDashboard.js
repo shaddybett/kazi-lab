@@ -11,7 +11,7 @@ function ProviderDashboard() {
   const [newService, setNewService] = useState("");
   const [selectedServices, setSelectedServices] = useState([]);
   const navigate = useNavigate();
-  
+
   const handleProfile = () => {
     navigate("/profile");
   };
@@ -43,10 +43,10 @@ function ProviderDashboard() {
       });
       if (response.status === 422) {
         // Handle session expiration
-        setError('Your session has expired. Please log in again.');
+        setError("Your session has expired. Please log in again.");
         // Optionally, you can redirect the user to the login page or log them out
         setTimeout(() => {
-          window.location.href = '/login';
+          window.location.href = "/login";
         }, 5000);
         return;
       }
@@ -203,9 +203,12 @@ function ProviderDashboard() {
     }
   };
   useEffect(() => {
-    if (error) {
+    if (
+      errorMessage.error !== "At least one service must be provided" &&
+      errorMessage.error !== "Service is already registered"
+    ) {
       const timer = setTimeout(() => {
-        setError('');
+        setError("");
       }, 5000);
       return () => clearTimeout(timer); // Cleanup the timer on component unmount or error change
     }
@@ -243,23 +246,28 @@ function ProviderDashboard() {
         </Navbar.Collapse>
       </Navbar>
       <div>
-        {error && error !== "At least one service must be provided" && error !== "An error occurred. Please try again later" && error !== "Service is already registered" && (
-          <Dropdown label="Services">
-            {allServices.map((service) => (
-              <Dropdown.Item key={service.id} className="text-black">
-                <label>
-                  <input
-                    type="checkbox"
-                    value={service.id}
-                    onChange={() => handleCheckboxChange(service)}
-                    checked={selectedServices.some((s) => s.id === service.id)}
-                  />
-                  {service.name}
-                </label>
-              </Dropdown.Item>
-            ))}
-          </Dropdown>
-        )}
+        {error &&
+          error !== "At least one service must be provided" &&
+          error !== "An error occurred. Please try again later" &&
+          error !== "Service is already registered" && (
+            <Dropdown label="Services">
+              {allServices.map((service) => (
+                <Dropdown.Item key={service.id} className="text-black">
+                  <label>
+                    <input
+                      type="checkbox"
+                      value={service.id}
+                      onChange={() => handleCheckboxChange(service)}
+                      checked={selectedServices.some(
+                        (s) => s.id === service.id
+                      )}
+                    />
+                    {service.name}
+                  </label>
+                </Dropdown.Item>
+              ))}
+            </Dropdown>
+          )}
       </div>
       <div>
         <Card className="max-w-sm">
@@ -301,4 +309,3 @@ function ProviderDashboard() {
 }
 
 export default ProviderDashboard;
-
