@@ -165,7 +165,14 @@ function ServiceProviders() {
   const closePopup = () => {
     setSelectedUser(null);
   };
-
+  useEffect(() => {
+    if (error) {
+      const timer = setTimeout(() => {
+        setError('');
+      }, 5000);
+      return () => clearTimeout(timer); // Cleanup the timer on component unmount or error change
+    }
+  }, [error]);
   return (
     <div>
       <Card className="max-w-sm">
