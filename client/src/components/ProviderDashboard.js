@@ -245,6 +245,30 @@ function ProviderDashboard() {
       </Navbar>
       <div>
         <Card className="max-w-sm">
+          <div>
+            {error &&
+              error !== "At least one service must be provided" &&
+              error !== "An error occurred. Please try again later" &&
+              error !== "Service is already registered" && (
+                <Dropdown label="Services">
+                  {allServices.map((service) => (
+                    <Dropdown.Item key={service.id} className="text-black">
+                      <label>
+                        <input
+                          type="checkbox"
+                          value={service.id}
+                          onChange={() => handleCheckboxChange(service)}
+                          checked={selectedServices.some(
+                            (s) => s.id === service.id
+                          )}
+                        />
+                        {service.name}
+                      </label>
+                    </Dropdown.Item>
+                  ))}
+                </Dropdown>
+              )}
+          </div>
           <h2>Hello, {data.first_name} welcome! </h2>
           <h1 className="text-xl font-bold leading-none text-gray-900 dark:text-white">
             Services you offer
@@ -275,37 +299,12 @@ function ProviderDashboard() {
               Add
             </button>
           </div>
-          <div>
-            {error &&
-              error !== "At least one service must be provided" &&
-              error !== "An error occurred. Please try again later" &&
-              error !== "Service is already registered" && (
-                <Dropdown label="Services">
-                  {allServices.map((service) => (
-                    <Dropdown.Item key={service.id} className="text-black">
-                      <label>
-                        <input
-                          type="checkbox"
-                          value={service.id}
-                          onChange={() => handleCheckboxChange(service)}
-                          checked={selectedServices.some(
-                            (s) => s.id === service.id
-                          )}
-                        />
-                        {service.name}
-                      </label>
-                    </Dropdown.Item>
-                  ))}
-                </Dropdown>
-              )}
-          </div>
         </Card>
       </div>
+
       {error && <p className="text-red-500">{error}</p>}
     </div>
   );
 }
 
 export default ProviderDashboard;
-
-
