@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Label, Checkbox } from "flowbite-react";
 import { Button } from "flowbite-react";
-import { v4 as uuidv4} from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 
 function Signup() {
   const [email, setEmail] = useState("");
@@ -14,12 +14,12 @@ function Signup() {
   const [selectedRole, setSelectedRole] = useState("");
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
-  const uuid = uuidv4()
-  console.log('OOOOkay')
-  console.log(uuid)
-  console.log(uuid)
-  
-  localStorage.setItem('signupUUID', uuid);
+  const uuid = uuidv4();
+  console.log("OOOOkay");
+  console.log(uuid);
+  console.log(uuid);
+
+  localStorage.setItem("signupUUID", uuid);
 
   const handleRoleChange = (e) => {
     setSelectedRole(e.target.value);
@@ -41,8 +41,8 @@ function Signup() {
       setError("Passwords do not match");
       return;
     }
-    const iiid = localStorage.getItem('signupUUID')
-    console.log(first_name,last_name,email,password,iiid)
+    const iiid = localStorage.getItem("signupUUID");
+    console.log(first_name, last_name, email, password, iiid);
 
     try {
       const response = await fetch("/signup", {
@@ -56,7 +56,7 @@ function Signup() {
           email,
           password,
           selectedRole: mapRoleToId(selectedRole),
-          uuid: localStorage.getItem('signupUUID'),
+          uuid: localStorage.getItem("signupUUID"),
         }),
       });
       if (response.ok) {
@@ -78,7 +78,14 @@ function Signup() {
       setError("An error occurred please try again later!");
     }
   };
-
+  useEffect(() => {
+    if (error) {
+      const timer = setTimeout(() => {
+        setError("");
+      }, 5000);
+      return () => clearTimeout(timer); // Cleanup the timer on component unmount or error change
+    }
+  }, [error]);
   return (
     <div>
       <form onSubmit={handleSignup}>
@@ -146,4 +153,3 @@ function Signup() {
 }
 
 export default Signup;
-

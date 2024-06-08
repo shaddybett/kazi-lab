@@ -105,7 +105,14 @@ function ProviderDetails() {
       setSelectedServices(selectedServices.filter((s) => s.id !== service.id));
     }
   };
-
+  useEffect(() => {
+    if (error) {
+      const timer = setTimeout(() => {
+        setError('');
+      }, 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [error]);
   return (
     <div>
       <h1>Fill the forms below to complete your signup</h1>

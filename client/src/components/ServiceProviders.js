@@ -165,7 +165,6 @@ function ServiceProviders() {
   const closePopup = () => {
     setSelectedUser(null);
   };
-
   return (
     <div>
       <Card className="max-w-sm">

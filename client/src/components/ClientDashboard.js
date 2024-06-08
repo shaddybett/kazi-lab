@@ -305,7 +305,14 @@ function ClientDashboard() {
   const handleProfile = () => {
     navigate("/profile");
   };
-
+  useEffect(() => {
+    if (error) {
+      const timer = setTimeout(() => {
+        setError('');
+      }, 5000);
+      return () => clearTimeout(timer); // Cleanup the timer on component unmount or error change
+    }
+  }, [error]);
   return (
     <div className="p-4">
       <Navbar fluid rounded className="bg-black">

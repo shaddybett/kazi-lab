@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "flowbite-react";
 
@@ -49,6 +49,14 @@ function Login() {
       localStorage.removeItem("password");
     }
   };
+  useEffect(() => {
+    if (error) {
+      const timer = setTimeout(() => {
+        setError('');
+      }, 5000);
+      return () => clearTimeout(timer); // Cleanup the timer on component unmount or error change
+    }
+  }, [error]);
 
   return (
     <div>
