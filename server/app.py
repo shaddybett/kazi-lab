@@ -305,7 +305,7 @@ class AddService(Resource):
         # Handle new service entered manually
         if new_service_name:
             existing_service = Service.query.filter(func.lower(Service.service_name) == func.lower(new_service_name)).first()
-            exists = ProviderService.query.filter_by(provider_id=id).first()
+            exists = Service.query.filter_by(provider_id=id).first()
             if exists:
                 return {'error': f'Service is already registered'}, 401
             if existing_service:
