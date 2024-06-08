@@ -226,7 +226,7 @@ function ProviderDashboard() {
         </Navbar.Collapse>
       </Navbar>
       <div>
-        {error && error !== "At least one service must be provided" && error !== "Service is already registered" && (
+        {error && error !== "At least one service must be provided" && error !== "An error occurred. Please try again later" && error !== "Service is already registered" && (
           <Dropdown label="Services">
             {allServices.map((service) => (
               <Dropdown.Item key={service.id} className="text-black">
