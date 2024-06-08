@@ -41,15 +41,6 @@ function ProviderDashboard() {
           Authorization: `Bearer ${token}`,
         },
       });
-      if (response.status === 422 && response.status === 401) {
-        // Handle session expiration
-        setError("Your session has expired. Please log in again.");
-        // Optionally, you can redirect the user to the login page or log them out
-        setTimeout(() => {
-          window.location.href = "/login";
-        }, 5000);
-        return;
-      }
       if (response.ok) {
         const responseData = await response.json();
         setServices(responseData.services || []);
@@ -101,6 +92,15 @@ function ProviderDashboard() {
         } else {
           const errorMessage = await response.json();
           setError(errorMessage.error || "An error occurred");
+        }
+        if (response.status === 422 && response.status === 401) {
+          // Handle session expiration
+          setError("Your session has expired. Please log in again.");
+          // Optionally, you can redirect the user to the login page or log them out
+          setTimeout(() => {
+            window.location.href = "/login";
+          }, 5000);
+          return;
         }
       } catch (error) {
         setError("An error occurred. Please try again later");
@@ -307,10 +307,6 @@ function ProviderDashboard() {
 }
 
 export default ProviderDashboard;
-
-
-
-
 
 // import React, { useState, useEffect } from "react";
 // import { Avatar, Dropdown, Navbar, Card, Label } from "flowbite-react";
