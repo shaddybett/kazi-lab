@@ -295,6 +295,7 @@ function ProviderDashboard() {
   const [selectedServices, setSelectedServices] = useState([]);
   const navigate = useNavigate();
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const dropdownRef = useRef(null);
 
   const handleProfile = () => {
     navigate("/profile");
