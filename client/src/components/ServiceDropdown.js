@@ -1,36 +1,86 @@
+
+// import React, { useState, useEffect } from "react";
+// import { debounce } from "lodash";
+
+// const ServiceDropdown = ({
+//   services,
+//   selectedServices,
+//   handleCheckboxChange,
+// }) => {
+//   const [searchTerm, setSearchTerm] = useState("");
+//   const [filteredServices, setFilteredServices] = useState(services);
+
+//   useEffect(() => {
+//     const debounceFilter = debounce(() => {
+//       setFilteredServices(
+//         services.filter((service) =>
+//           service.name.toLowerCase().includes(searchTerm.toLowerCase())
+//         )
+//       );
+//     }, 300);
+    
+//     debounceFilter();
+
+//     return () => {
+//       debounceFilter.cancel();
+//     };
+//   }, [searchTerm, services]);
+
+//   return (
+//     <div className="relative max-h-40 overflow-y-auto">
+//       <input
+//         type="text"
+//         placeholder="Search services..."
+//         value={searchTerm}
+//         onChange={(e) => setSearchTerm(e.target.value)}
+//         className="w-full px-4 py-2 border border-gray-300 rounded-md mb-4 focus:outline-none focus:border-blue-500"
+//       />
+//       <div>
+//         {filteredServices.map((service) => (
+//           <label key={service.id} className="block mb-2">
+//             <input
+//               type="checkbox"
+//               value={service.id}
+//               onChange={() => handleCheckboxChange(service)}
+//               checked={selectedServices.some((s) => s.id === service.id)}
+//               className="mr-2"
+//             />
+//             {service.name}
+//           </label>
+//         ))}
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default ServiceDropdown;
+
+
 import React, { useState } from "react";
 
-const ServiceDropdown = ({
-  services,
-  selectedServices,
-  handleCheckboxChange,
-}) => {
+const ServiceDropdown = ({ services, selectedServices, handleCheckboxChange }) => {
   const [searchTerm, setSearchTerm] = useState("");
 
-  const filteredServices = services.filter((service) =>
+  const filteredServices = services.filter(service =>
     service.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
-    <div className="relative max-h-40 overflow-y-auto">
-      {" "}
-      {/* Apply max-h-40 here */}
+    <div className="service-dropdown">
       <input
         type="text"
         placeholder="Search services..."
         value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-        className="w-full px-4 py-2 border border-gray-300 rounded-md mb-4 focus:outline-none focus:border-blue-500 "
+        onChange={e => setSearchTerm(e.target.value)}
       />
-      <div>
-        {filteredServices.map((service) => (
-          <label key={service.id} className="block mb-2">
+      <div className="service-list">
+        {filteredServices.map(service => (
+          <label key={service.id}>
             <input
               type="checkbox"
               value={service.id}
               onChange={() => handleCheckboxChange(service)}
-              checked={selectedServices.some((s) => s.id === service.id)}
-              className="mr-2"
+              checked={selectedServices.some(s => s.id === service.id)}
             />
             {service.name}
           </label>
@@ -41,4 +91,3 @@ const ServiceDropdown = ({
 };
 
 export default ServiceDropdown;
-
