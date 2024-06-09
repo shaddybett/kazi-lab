@@ -294,6 +294,7 @@ function ProviderDashboard() {
   const [newService, setNewService] = useState("");
   const [selectedServices, setSelectedServices] = useState([]);
   const navigate = useNavigate();
+  const [dropdownOpen, setDropdownOpen] = useState(false);
 
   const handleProfile = () => {
     navigate("/profile");
@@ -495,6 +496,20 @@ function ProviderDashboard() {
     }
   };
 
+  useEffect(() => {
+    // Add event listener for clicks outside the dropdown when the dropdown is open
+    if (dropdownOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+
+    // Cleanup function to remove event listener
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [dropdownOpen]);
+
   return (
     <div>
       <Navbar fluid rounded className="bg-black">
@@ -532,17 +547,17 @@ function ProviderDashboard() {
           <h1 className="text-xl font-bold leading-none text-gray-900 dark:text-white">
             Services you offer
           </h1>
-          <div>
+          <div ref={dropdownRef}>
             {error &&
               error !== "At least one service must be provided" &&
               error !== "An error occurred. Please try again later" &&
               error !== "Service is already registered" && (
                 <div>
-                    <ServiceDropdown
-                      services={allServices}
-                      selectedServices={selectedServices}
-                      handleCheckboxChange={handleCheckboxChange}
-                    />
+                  <ServiceDropdown
+                    services={allServices}
+                    selectedServices={selectedServices}
+                    handleCheckboxChange={handleCheckboxChange}
+                  />
                 </div>
               )}
           </div>
@@ -575,10 +590,9 @@ function ProviderDashboard() {
               Add
             </button>
           </div>
+          {error && <p className="text-red-500">{error}</p>}
         </Card>
       </div>
-
-      {error && <p className="text-red-500">{error}</p>}
     </div>
   );
 }
