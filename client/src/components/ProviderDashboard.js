@@ -537,13 +537,13 @@ function ProviderDashboard() {
               error !== "At least one service must be provided" &&
               error !== "An error occurred. Please try again later" &&
               error !== "Service is already registered" && (
-                  <div>
+                <div>
                     <ServiceDropdown
                       services={allServices}
                       selectedServices={selectedServices}
                       handleCheckboxChange={handleCheckboxChange}
                     />
-                  </div>
+                </div>
               )}
           </div>
           {services.length > 0 ? (
@@ -551,7 +551,10 @@ function ProviderDashboard() {
               {services.map((service) => (
                 <li key={service.id}>
                   {service.name}{" "}
-                  <button className="text-red-500" onClick={() => handleDeleteService(service.id)}>
+                  <button
+                    className="text-red-500"
+                    onClick={() => handleDeleteService(service.id)}
+                  >
                     delete
                   </button>{" "}
                 </li>
