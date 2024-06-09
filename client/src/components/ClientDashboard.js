@@ -8,7 +8,7 @@ function ClientDashboard() {
   const [error, setError] = useState("");
   const [services, setServices] = useState([]);
   const [providers, setProviders] = useState([]);
-  const [searchQuery, setSearchQuery] = useState("")
+  const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -129,11 +129,14 @@ function ClientDashboard() {
   useEffect(() => {
     if (error) {
       const timer = setTimeout(() => {
-        setError('');
+        setError("");
       }, 5000);
       return () => clearTimeout(timer); // Cleanup the timer on component unmount or error change
     }
   }, [error]);
+  const filteredServices = services.filter((service) =>
+    service.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
   return (
     <div className="p-4">
       <Navbar fluid rounded className="bg-black">
@@ -165,6 +168,15 @@ function ClientDashboard() {
           <Navbar.Link href="/link5"></Navbar.Link>
         </Navbar.Collapse>
       </Navbar>
+      <div className="mt-4" >
+        <input
+        type="text"
+        placeholder="Search services..."
+        value={searchQuery}
+        onChange={(e)=> setSearchQuery(e.target.value)}
+        className="p-2 border rounded w-full mb-4"
+        />
+      </div>
 
       <div className="grid grid-cols-2 sm:grid-cols-4 mt-4 gap-2">
         {services.map((service) => (
