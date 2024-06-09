@@ -1,13 +1,14 @@
 // import React, { useState, useEffect } from "react";
 // import { useNavigate } from "react-router-dom";
 // import { Avatar, Dropdown, Navbar, Button, Card } from "flowbite-react";
-// import Swal from 'sweetalert2'
+// import Swal from "sweetalert2";
 
 // function ClientDashboard() {
 //   const [data, setData] = useState({});
 //   const [error, setError] = useState("");
 //   const [services, setServices] = useState([]);
 //   const [providers, setProviders] = useState([]);
+//   const [searchQuery, setSearchQuery] = useState("");
 //   const navigate = useNavigate();
 
 //   useEffect(() => {
@@ -71,15 +72,21 @@
 //       });
 //       if (response.ok) {
 //         const responseData = await response.json();
-//         localStorage.setItem("providerIds", JSON.stringify(responseData.provider_ids));
+//         localStorage.setItem(
+//           "providerIds",
+//           JSON.stringify(responseData.provider_ids)
+//         );
 //         const providerIds = responseData.provider_ids.join(",");
-//         const userResponse = await fetch(`/provider-details?provider_ids=${providerIds}`, {
-//           method: "GET",
-//           headers: {
-//             "Content-Type": "application/json",
-//             Authorization: `Bearer ${token}`,
-//           },
-//         });
+//         const userResponse = await fetch(
+//           `/provider-details?provider_ids=${providerIds}`,
+//           {
+//             method: "GET",
+//             headers: {
+//               "Content-Type": "application/json",
+//               Authorization: `Bearer ${token}`,
+//             },
+//           }
+//         );
 //         if (userResponse.ok) {
 //           const userData = await userResponse.json();
 
@@ -108,32 +115,36 @@
 //       showCancelButton: true,
 //       confirmButtonColor: "#3085d6",
 //       cancelButtonColor: "#d33",
-//       confirmButtonText: "Yes, Logout!"
-//   })
-//   if (result.isConfirmed){
-//     localStorage.removeItem("token");
-//     navigate("/login");
-//   }
+//       confirmButtonText: "Yes, Logout!",
+//     });
+//     if (result.isConfirmed) {
+//       localStorage.removeItem("token");
+//       navigate("/login");
+//     }
 //   };
 
 //   const handleProfile = () => {
 //     navigate("/profile");
 //   };
-
+//   useEffect(() => {
+//     if (error) {
+//       const timer = setTimeout(() => {
+//         setError("");
+//       }, 5000);
+//       return () => clearTimeout(timer); // Cleanup the timer on component unmount or error change
+//     }
+//   }, [error]);
+//   const filteredServices = services.filter((service) =>
+//     service.name.toLowerCase().includes(searchQuery.toLowerCase())
+//   );
 //   return (
-//     <div>
+//     <div className="p-4">
 //       <Navbar fluid rounded className="bg-black">
 //         <div className="flex md:order-2">
 //           <Dropdown
 //             arrowIcon={false}
 //             inline
-//             label={
-//               <Avatar
-//                 alt="User settings"
-//                 img={data.image}
-//                 rounded
-//               />
-//             }
+//             label={<Avatar alt="User settings" img={data.image} rounded />}
 //           >
 //             <Dropdown.Header>
 //               <span className="block text-sm">
@@ -150,28 +161,38 @@
 //           <Navbar.Toggle />
 //         </div>
 //         <Navbar.Collapse>
-//           <Navbar.Link href="/link1" active>
-
-//           </Navbar.Link>
+//           <Navbar.Link href="/link1" active></Navbar.Link>
 //           <Navbar.Link href="/link2"></Navbar.Link>
 //           <Navbar.Link href="/link3"></Navbar.Link>
 //           <Navbar.Link href="/link4"></Navbar.Link>
 //           <Navbar.Link href="/link5"></Navbar.Link>
 //         </Navbar.Collapse>
 //       </Navbar>
+//       <div className="mt-4" >
+//         <input
+//         type="text"
+//         placeholder="Search services..."
+//         value={searchQuery}
+//         onChange={(e)=> setSearchQuery(e.target.value)}
+//         className="p-2 border rounded w-full mb-4"
+//         />
+//       </div>
+
+//       <div className="grid grid-cols-2 sm:grid-cols-4 mt-4 gap-2">
 //         {services.map((service) => (
-// <div key={service.id} className="mb-4">
-//   <Card className="max-w-sm mt-5 ml-5">
-//     <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-//       {service.name}
-//     </h5>
-//     <Button onClick={() => handleProviders(service)}>
-//       Service Providers
-//     </Button>
-//   </Card>
-// </div>
+//           <div key={service.id} className="mb-4">
+//             <Card className="max-w-sm mt-3 ml-5">
+//               <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white ">
+//                 {service.name}
+//               </h5>
+//               <Button onClick={() => handleProviders(service)}>
+//                 Service Providers
+//               </Button>
+//             </Card>
+//           </div>
 //         ))}
-//       {error && <p className="text-red-500">{error}</p>}
+//       </div>
+//       {error && <p className="text-red-500 mt-4">{error}</p>}
 //     </div>
 //   );
 // }
@@ -188,6 +209,7 @@ function ClientDashboard() {
   const [error, setError] = useState("");
   const [services, setServices] = useState([]);
   const [providers, setProviders] = useState([]);
+  const [searchQuery, setSearchQuery] = useState(""); // Add state for search query
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -305,6 +327,7 @@ function ClientDashboard() {
   const handleProfile = () => {
     navigate("/profile");
   };
+
   useEffect(() => {
     if (error) {
       const timer = setTimeout(() => {
@@ -313,6 +336,12 @@ function ClientDashboard() {
       return () => clearTimeout(timer); // Cleanup the timer on component unmount or error change
     }
   }, [error]);
+
+  // Filter services based on search query
+  const filteredServices = services.filter((service) =>
+    service.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   return (
     <div className="p-4">
       <Navbar fluid rounded className="bg-black">
@@ -345,11 +374,21 @@ function ClientDashboard() {
         </Navbar.Collapse>
       </Navbar>
 
-      <div className="grid grid-cols-2 sm:grid-cols-4 mt-4 gap-2">
-        {services.map((service) => (
+      <div className="mt-4">
+        <input
+          type="text"
+          placeholder="Search services..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          className="p-2 border rounded w-full mb-4 max-w-80 ml-5 "
+        />
+      </div>
+
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+        {filteredServices.map((service) => (
           <div key={service.id} className="mb-4">
             <Card className="max-w-sm mt-3 ml-5">
-              <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white ">
+              <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
                 {service.name}
               </h5>
               <Button onClick={() => handleProviders(service)}>
@@ -359,6 +398,7 @@ function ClientDashboard() {
           </div>
         ))}
       </div>
+
       {error && <p className="text-red-500 mt-4">{error}</p>}
     </div>
   );
