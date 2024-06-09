@@ -20,7 +20,7 @@ const ServiceDropdown = ({
         placeholder="Search services..."
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
-        className="w-full px-4 py-2 border border-gray-300 rounded-md mb-4 focus:outline-none focus:border-blue-500"
+        className="w-full px-4 py-2 border border-gray-300 rounded-md mb-4 focus:outline-none focus:border-blue-500 "
       />
       <div>
         {filteredServices.map((service) => (
@@ -41,3 +41,4 @@ const ServiceDropdown = ({
 };
 
 export default ServiceDropdown;
+
