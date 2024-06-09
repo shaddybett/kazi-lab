@@ -285,6 +285,9 @@ import { Avatar, Dropdown, Navbar, Card } from "flowbite-react";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import ServiceDropdown from "./ServiceDropdown";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrash } from "@fortawesome/free-solid-svg-icons";
+
 
 function ProviderDashboard() {
   const [data, setData] = useState({});
