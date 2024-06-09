@@ -537,7 +537,6 @@ function ProviderDashboard() {
               error !== "At least one service must be provided" &&
               error !== "An error occurred. Please try again later" &&
               error !== "Service is already registered" && (
-                <Dropdown label="Services">
                   <div>
                     <ServiceDropdown
                       services={allServices}
@@ -545,7 +544,6 @@ function ProviderDashboard() {
                       handleCheckboxChange={handleCheckboxChange}
                     />
                   </div>
-                </Dropdown>
               )}
           </div>
           {services.length > 0 ? (

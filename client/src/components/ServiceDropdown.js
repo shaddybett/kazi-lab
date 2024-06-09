@@ -42,21 +42,30 @@
 // export default ServiceDropdown;
 
 
-import React from "react";
+import React, { useState } from "react";
 
 const ServiceDropdown = ({
   services,
   selectedServices,
   handleCheckboxChange,
 }) => {
+  const [searchQuery, setSearchQuery] = useState("");
 
+  // Filter services based on search query
   const filteredServices = services.filter((service) =>
-    service.name.toLowerCase()
+    service.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   return (
-    <div className="relative max-h-40 overflow-y-auto">
-      <div>
+    <div className="relative">
+      <input
+        type="text"
+        placeholder="Search services..."
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
+        className="mb-2 p-2 border border-gray-300 rounded"
+      />
+      <div className="max-h-40 overflow-y-auto">
         {filteredServices.map((service) => (
           <label key={service.id} className="block mb-2">
             <input
