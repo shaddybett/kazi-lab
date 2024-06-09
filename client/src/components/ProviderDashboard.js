@@ -246,7 +246,7 @@ function ProviderDashboard() {
       </Navbar>
       <div>
         <Card className="max-w-sm">
-        <h2>Hello, {data.first_name} welcome! </h2>
+          <h2>Hello, {data.first_name} welcome! </h2>
           <h1 className="text-xl font-bold leading-none text-gray-900 dark:text-white">
             Services you offer
           </h1>
@@ -256,27 +256,18 @@ function ProviderDashboard() {
               error !== "An error occurred. Please try again later" &&
               error !== "Service is already registered" && (
                 <Dropdown label="Services">
-                  {allServices.map((service) => (
-                    <Dropdown.Item key={service.id} className="text-black">
-                      <label>
-                        <input
-                          type="checkbox"
-                          value={service.id}
-                          onChange={() => handleCheckboxChange(service)}
-                          onClick={(e) => e.stopPropagation()}
-                          checked={selectedServices.some(
-                            (s) => s.id === service.id
-                          )}
-                        />
-                        {service.name}
-                      </label>
-                    </Dropdown.Item>
-                  ))}
+                  <div>
+                    <ServiceDropdown
+                      services={allServices}
+                      selectedServices={selectedServices}
+                      handleCheckboxChange={handleCheckboxChange}
+                    />
+                  </div>
                 </Dropdown>
               )}
           </div>
           {services.length > 0 ? (
-            <ul className="divide-y divide-gray-200 dark:divide-gray-700">
+            <ul className="divide-y divide-gray-200 dark:divide-gray-700 ">
               {services.map((service) => (
                 <li key={service.id}>
                   {service.name}{" "}
@@ -291,7 +282,7 @@ function ProviderDashboard() {
           )}
           <div>
             <input
-              className="border-radius-10"
+              className="rounded border border-blue-300"
               type="text"
               value={newService}
               onChange={(e) => setNewService(e.target.value)}
