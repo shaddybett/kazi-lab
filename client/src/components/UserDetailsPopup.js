@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import { Avatar } from "flowbite-react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPhone } from "@fortawesome/free-solid-svg-icons";
+import { faPhone, faEnvelope } from "@fortawesome/free-solid-svg-icons";
 
 function UserDetailsPopup({ user, onClose }) {
   const popupRef = useRef();
@@ -34,9 +34,13 @@ function UserDetailsPopup({ user, onClose }) {
               <strong>Name:</strong> {user.first_name} {user.middle_name}{" "}
               {user.last_name}
             </p>
-            <p className="mb-3">
-              <strong>Email:</strong> {user.email}
-            </p>
+            <div className="flex items-center mb-3">
+              <strong>Email:</strong>
+              <span className="ml-2">{user.email}</span>
+              <a href={`mailto:${user.email}`} className="ml-2 text-blue-500">
+                <FontAwesomeIcon icon={faEnvelope} className="ml-1" />
+              </a>
+            </div>
             <div className="flex items-center">
               <strong>Phone Number:</strong>
               <span className="ml-2">{user.phone_number}</span>
