@@ -38,7 +38,7 @@ function UserDetailsPopup({ user, onClose }) {
               <strong>Email:</strong>
               <span className="ml-2">{user.email}</span>
               <a href={`mailto:${user.email}`} className="ml-2 text-blue-500">
-                <FontAwesomeIcon icon={faEnvelope} className="ml-1" />
+                <FontAwesomeIcon icon={faEnvelope} className="ml-10" />
               </a>
             </div>
             <div className="flex items-center">
