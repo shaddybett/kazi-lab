@@ -1,5 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import { Avatar } from "flowbite-react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPhone } from "@fortawesome/free-solid-svg-icons";
 
 function UserDetailsPopup({ user, onClose }) {
   const popupRef = useRef();

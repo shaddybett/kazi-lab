@@ -380,7 +380,7 @@ function ClientDashboard() {
           placeholder="Search services..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          className="p-2 border rounded w-full mb-4 max-w-80 "
+          className="p-2 border rounded w-full mb-4 max-w-80 ml-5 "
         />
       </div>
 
