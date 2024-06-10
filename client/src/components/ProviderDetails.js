@@ -18,6 +18,18 @@ function ProviderDetails() {
   const [longitude,setLongitude] = useState(null);
   const [manualLocation, setManualLocation] = useState(false);
 
+  useEffect(()=>{
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        setLatitude(position.coords.latitude);
+        setLongitude(position.coords.longitude);
+      },
+      (error)=> {
+        console.error(error);
+        setManualLocation(true);
+      }
+    );
+  }, []);
   const handleServiceFormSubmit = async (e) => {
     e.preventDefault();
     try {
