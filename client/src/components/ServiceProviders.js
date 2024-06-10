@@ -157,17 +157,11 @@ function ServiceProviders() {
   const [clientLocation, setClientLocation] = useState({ latitude: null, longitude: null });
 
   useEffect(() => {
-    // Get client's location
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        setClientLocation({
-          latitude: position.coords.latitude,
-          longitude: position.coords.longitude,
-        });
-        console.log("Client location obtained:", position.coords.latitude, position.coords.longitude);
-      },
-      (error) => console.error("Error obtaining client location:", error)
-    );
+    // Get client's location from local storage
+    const storedLocation = JSON.parse(localStorage.getItem("clientLocation"));
+    if (storedLocation) {
+      setClientLocation(storedLocation);
+    }
   }, []);
 
   useEffect(() => {
@@ -177,14 +171,8 @@ function ServiceProviders() {
         const providerIds = JSON.parse(localStorage.getItem("providerIds"));
 
         if (!clientLocation.latitude || !clientLocation.longitude) {
-          console.log("Client location not available yet");
           return; // Wait until location is available
         }
-
-        console.log("Fetching provider details with:", {
-          providerIds,
-          clientLocation,
-        });
 
         const response = await fetch(
           `/provider-details?provider_ids=${providerIds.join(",")}&client_lat=${clientLocation.latitude}&client_lon=${clientLocation.longitude}`,
@@ -200,14 +188,16 @@ function ServiceProviders() {
           const providerDetails = await response.json();
           setProviders(providerDetails);
         } else {
-          throw new Error(`Failed to fetch provider details: ${response.statusText}`);
+          throw new Error("Failed to fetch provider details");
         }
       } catch (error) {
         console.error("Error fetching provider details:", error);
       }
     };
 
-    fetchProviderDetails();
+    if (clientLocation.latitude && clientLocation.longitude) {
+      fetchProviderDetails();
+    }
   }, [clientLocation]);
 
   useEffect(() => {
