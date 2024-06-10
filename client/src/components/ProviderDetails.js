@@ -59,7 +59,7 @@ function ProviderDetails() {
       formData.append("phone_number", phone_number);
       formData.append("uids", uuid);
       formData.append("latitude", latitude);
-      
+      formData.append("longitude", longitude);
       const userDetailsResponse = await fetch('/signup2',{
         method:"POST",
         headers:{
