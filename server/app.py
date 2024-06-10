@@ -195,6 +195,8 @@ class signup2(Resource):
                 existing_user.phone_number = phone_number
                 existing_user.image = image_url
                 existing_user.uids = uids
+                existing_user.latitude = float(latitude)
+                existing_user.longitude = float(longitude)
 
                 db.session.commit()
                 return {'message':'user details updated successfully'}
