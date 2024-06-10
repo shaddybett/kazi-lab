@@ -453,11 +453,20 @@ class ProviderList(Resource):
     @jwt_required()
     def get(self):
         provider_ids = request.args.get('provider_ids')
-        client_lat = float(request.args.get('client_lat'))
-        client_lon = float(request.args.get('client_lon'))
+        client_lat = request.args.get('client_lat')
+        client_lon = request.args.get('client_lon')
 
         if provider_ids is None:
             return {'error': 'No provider IDs provided'}, 400
+
+        if client_lat is None or client_lon is None:
+            return {'error': 'Client latitude and longitude are required'}, 400
+
+        try:
+            client_lat = float(client_lat)
+            client_lon = float(client_lon)
+        except ValueError:
+            return {'error': 'Invalid latitude or longitude values'}, 400
 
         provider_ids_list = provider_ids.split(',')
         provider_ids_list = [int(provider_id) for provider_id in provider_ids_list]
@@ -465,7 +474,6 @@ class ProviderList(Resource):
         users = User.query.filter(User.id.in_(provider_ids_list)).all()
 
         if users:
-            # Format the user data as a list of dictionaries
             user_details = []
             for user in users:
                 if user.latitude and user.longitude:
