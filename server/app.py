@@ -453,6 +453,8 @@ class ProviderList(Resource):
     @jwt_required()
     def get(self):
         provider_ids = request.args.get('provider_ids')
+        client_lat = float(request.args.get('client_lat'))
+        client_lon = float(request.args.get('client_lon'))
 
         if provider_ids is None:
             return {'error': 'No provider IDs provided'}, 400
