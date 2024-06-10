@@ -11,6 +11,7 @@ from flask_jwt_extended import JWTManager, create_access_token, jwt_required, ge
 from datetime import timedelta
 import os
 from sqlalchemy import func
+from geopy.distance import geodesic
 
 app = Flask(__name__)
 api = Api(app)
@@ -164,6 +165,8 @@ class signup2(Resource):
             phone_number = request.form.get('phone_number')
             uids = request.form.get('uids')
             image_file = request.files.get('image')
+            latitude = request.form.get('latitude')
+            longitude = request.form.get('longitude')
             if not middle_name or not national_id or not phone_number or not uids or not image_file:
                 return {'error': 'Missing required fields'}, 400
 
@@ -193,6 +196,8 @@ class signup2(Resource):
                 existing_user.phone_number = phone_number
                 existing_user.image = image_url
                 existing_user.uids = uids
+                existing_user.latitude = float(latitude)
+                existing_user.longitude = float(longitude)
 
                 db.session.commit()
                 return {'message':'user details updated successfully'}
@@ -444,13 +449,31 @@ class ServiceProvider(Resource):
             response = make_response({'error': 'No Service providers found for this service'}, 404)
             return response
 
+from flask import request, jsonify
+from flask_restful import Resource
+from flask_jwt_extended import jwt_required
+from geopy.distance import geodesic
+from models import User
+from app import db
+
 class ProviderList(Resource):
     @jwt_required()
     def get(self):
         provider_ids = request.args.get('provider_ids')
+        client_lat = request.args.get('client_lat')
+        client_lon = request.args.get('client_lon')
 
         if provider_ids is None:
             return {'error': 'No provider IDs provided'}, 400
+
+        if client_lat is None or client_lon is None:
+            return {'error': 'Client latitude and longitude are required'}, 400
+
+        try:
+            client_lat = float(client_lat)
+            client_lon = float(client_lon)
+        except ValueError:
+            return {'error': 'Invalid latitude or longitude values'}, 400
 
         provider_ids_list = provider_ids.split(',')
         provider_ids_list = [int(provider_id) for provider_id in provider_ids_list]
@@ -458,11 +481,49 @@ class ProviderList(Resource):
         users = User.query.filter(User.id.in_(provider_ids_list)).all()
 
         if users:
-            # Format the user data as a list of dictionaries
-            user_details = [{'first_name': user.first_name, 'last_name': user.last_name, 'email': user.email, 'image': user.image} for user in users]
+            user_details = []
+            for user in users:
+                if user.latitude and user.longitude:
+                    distance = geodesic((client_lat, client_lon), (user.latitude, user.longitude)).miles
+                else:
+                    distance = float('inf')
+                user_details.append({
+                    'first_name': user.first_name,
+                    'last_name': user.last_name,
+                    'email': user.email,
+                    'image': user.image,
+                    'latitude': user.latitude,
+                    'longitude': user.longitude,
+                    'distance': distance
+                })
+
+            user_details.sort(key=lambda x: x['distance'])
             return jsonify(user_details)
         else:
             return {'error': 'No users found for the given provider IDs'}, 404
+
+
+# class ProviderList(Resource):
+#     @jwt_required()
+#     def get(self):
+#         provider_ids = request.args.get('provider_ids')
+#         client_lat = float(request.args.get('client_lat'))
+#         client_lon = float(request.args.get('client_lon'))
+
+#         if provider_ids is None:
+#             return {'error': 'No provider IDs provided'}, 400
+
+#         provider_ids_list = provider_ids.split(',')
+#         provider_ids_list = [int(provider_id) for provider_id in provider_ids_list]
+
+#         users = User.query.filter(User.id.in_(provider_ids_list)).all()
+
+#         if users:
+#             # Format the user data as a list of dictionaries
+#             user_details = [{'first_name': user.first_name, 'last_name': user.last_name, 'email': user.email, 'image': user.image} for user in users]
+#             return jsonify(user_details)
+#         else:
+#             return {'error': 'No users found for the given provider IDs'}, 404
 
 
 class ProviderIds(Resource):
