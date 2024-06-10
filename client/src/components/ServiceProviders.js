@@ -7,6 +7,7 @@ import {getDistance} from "geolib";
 function ServiceProviders() {
   const [providers, setProviders] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
+  const [clientLocation, setClientLocation] = useState({latitude: null, longitude: null});
 
   useEffect(() => {
     const fetchProviderDetails = async () => {
