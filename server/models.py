@@ -18,6 +18,8 @@ class User(db.Model):
     uuid = db.Column(db.String(36),nullable=True,default='default_uuid_value')
     uids = db.Column(db.String(36),nullable=True,default='default_uuid_value')
     services = db.relationship('Service', secondary='provider_services', backref=db.backref('providers', lazy=True, cascade="all, delete"))
+    latitude = db.Column(db.Float, nullable=True)
+    
 
 class Service(db.Model):
     __tablename__ = 'services'
