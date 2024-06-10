@@ -449,6 +449,13 @@ class ServiceProvider(Resource):
             response = make_response({'error': 'No Service providers found for this service'}, 404)
             return response
 
+from flask import request, jsonify
+from flask_restful import Resource
+from flask_jwt_extended import jwt_required
+from geopy.distance import geodesic
+from models import User
+from app import db
+
 class ProviderList(Resource):
     @jwt_required()
     def get(self):
@@ -494,6 +501,7 @@ class ProviderList(Resource):
             return jsonify(user_details)
         else:
             return {'error': 'No users found for the given provider IDs'}, 404
+
 
 # class ProviderList(Resource):
 #     @jwt_required()

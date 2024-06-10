@@ -146,11 +146,10 @@
 // export default ServiceProviders;
 
 
-
 import React, { useEffect, useState } from "react";
 import { Card, Avatar } from "flowbite-react";
 import UserDetailsPopup from "./UserDetailsPopup";
-import { getDistance } from "geolib"; // Add this for calculating distances
+import { getDistance } from "geolib";
 
 function ServiceProviders() {
   const [providers, setProviders] = useState([]);
