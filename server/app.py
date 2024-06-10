@@ -11,6 +11,7 @@ from flask_jwt_extended import JWTManager, create_access_token, jwt_required, ge
 from datetime import timedelta
 import os
 from sqlalchemy import func
+from geopy.distance import geodesic
 
 app = Flask(__name__)
 api = Api(app)
