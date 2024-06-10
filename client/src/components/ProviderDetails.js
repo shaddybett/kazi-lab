@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import { Dropdown, Label } from "flowbite-react";
 import { useNavigate } from "react-router-dom";
@@ -14,17 +13,17 @@ function ProviderDetails() {
   const [message, setMessage] = useState("");
   const [image, setImage] = useState(null);
   const navigate = useNavigate();
-  const [latitude,setLatitude] = useState(null);
-  const [longitude,setLongitude] = useState(null);
+  const [latitude, setLatitude] = useState(null);
+  const [longitude, setLongitude] = useState(null);
   const [manualLocation, setManualLocation] = useState(false);
 
-  useEffect(()=>{
+  useEffect(() => {
     navigator.geolocation.getCurrentPosition(
       (position) => {
         setLatitude(position.coords.latitude);
         setLongitude(position.coords.longitude);
       },
-      (error)=> {
+      (error) => {
         console.error(error);
         setManualLocation(true);
       }
@@ -43,7 +42,7 @@ function ProviderDetails() {
         user_id: id,
         existing_services: selectedServices.map((service) => service.id),
         service_name: newServiceName.trim() !== "" ? newServiceName : null,
-      }; 
+      };
       const serviceResponse = await fetch("/service", {
         method: "POST",
         headers: {
@@ -60,24 +59,26 @@ function ProviderDetails() {
       formData.append("uids", uuid);
       formData.append("latitude", latitude);
       formData.append("longitude", longitude);
-      const userDetailsResponse = await fetch('/signup2',{
-        method:"POST",
-        headers:{
+      const userDetailsResponse = await fetch("/signup2", {
+        method: "POST",
+        headers: {
           Authorization: `Bearer ${token}`,
         },
         body: formData,
-      })
+      });
       console.log(middle_name, national_id, phone_number, uuid, image);
       if (serviceResponse.ok && userDetailsResponse.ok) {
         const serviceData = await serviceResponse.json();
         const userDetailsData = await userDetailsResponse.json();
-        localStorage.setItem("serviceData", JSON.stringify(serviceData))
-        console.log(serviceData)
-        localStorage.setItem("userDetailsData", JSON.stringify(userDetailsData))
+        localStorage.setItem("serviceData", JSON.stringify(serviceData));
+        console.log(serviceData);
+        localStorage.setItem(
+          "userDetailsData",
+          JSON.stringify(userDetailsData)
+        );
         setMessage("Services and user details added successfully");
         navigate("/providerPage");
-      }
-       else {
+      } else {
         // Handle errors if any request fails
         const serviceErrors = await serviceResponse.json();
         const userDetailsErrors = await userDetailsResponse.json();
@@ -125,7 +126,7 @@ function ProviderDetails() {
   useEffect(() => {
     if (error) {
       const timer = setTimeout(() => {
-        setError('');
+        setError("");
       }, 5000);
       return () => clearTimeout(timer);
     }
@@ -175,14 +176,40 @@ function ProviderDetails() {
           onChange={(e) => setNewServiceName(e.target.value)}
           placeholder="Enter new service name"
         />
-
-        <div className="mb-2 block">
-          <Label
-            htmlFor="file-upload"
-            value={image ? image.name : ""}
-          />
+        <div>
+          <label>
+            <input
+              type="checkbox"
+              checked={manualLocation}
+              onChange={() => setManualLocation(!manualLocation)}
+            />
+            Manually enter location
+          </label>
+          {manualLocation && (
+            <>
+              <input
+                type="text"
+                placeholder="Latitude"
+                value={latitude || ""}
+                onChange={(e) => setLatitude(e.target.value)}
+              />
+              <input
+                type="text"
+                placeholder="Longitude"
+                value={longitude || ""}
+                onChange={(e) => setLongitude(e.target.value)}
+              />
+            </>
+          )}
         </div>
-        <input id="file-upload" type="file" onChange={(e)=> setImage(e.target.files[0]) } />
+        <div className="mb-2 block">
+          <Label htmlFor="file-upload" value={image ? image.name : ""} />
+        </div>
+        <input
+          id="file-upload"
+          type="file"
+          onChange={(e) => setImage(e.target.files[0])}
+        />
 
         <button type="submit">Submit</button>
       </form>
