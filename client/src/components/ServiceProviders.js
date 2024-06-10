@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { Card, Avatar } from "flowbite-react";
 import UserDetailsPopup from "./UserDetailsPopup";
+import {getDistance} from "geolib";
 
 function ServiceProviders() {
   const [providers, setProviders] = useState([]);
