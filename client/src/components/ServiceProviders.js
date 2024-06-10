@@ -164,8 +164,9 @@ function ServiceProviders() {
           latitude: position.coords.latitude,
           longitude: position.coords.longitude,
         });
+        console.log("Client location obtained:", position.coords.latitude, position.coords.longitude);
       },
-      (error) => console.error(error)
+      (error) => console.error("Error obtaining client location:", error)
     );
   }, []);
 
@@ -176,8 +177,14 @@ function ServiceProviders() {
         const providerIds = JSON.parse(localStorage.getItem("providerIds"));
 
         if (!clientLocation.latitude || !clientLocation.longitude) {
+          console.log("Client location not available yet");
           return; // Wait until location is available
         }
+
+        console.log("Fetching provider details with:", {
+          providerIds,
+          clientLocation,
+        });
 
         const response = await fetch(
           `/provider-details?provider_ids=${providerIds.join(",")}&client_lat=${clientLocation.latitude}&client_lon=${clientLocation.longitude}`,
@@ -193,7 +200,7 @@ function ServiceProviders() {
           const providerDetails = await response.json();
           setProviders(providerDetails);
         } else {
-          throw new Error("Failed to fetch provider details");
+          throw new Error(`Failed to fetch provider details: ${response.statusText}`);
         }
       } catch (error) {
         console.error("Error fetching provider details:", error);
