@@ -14,6 +14,8 @@ function ProviderDetails() {
   const [message, setMessage] = useState("");
   const [image, setImage] = useState(null);
   const navigate = useNavigate();
+  const [latitude,setLatitude] = useState(null)
+  
 
   const handleServiceFormSubmit = async (e) => {
     e.preventDefault();
