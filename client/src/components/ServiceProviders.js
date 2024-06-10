@@ -10,6 +10,15 @@ function ServiceProviders() {
   const [clientLocation, setClientLocation] = useState({latitude: null, longitude: null});
 
   useEffect(() => {
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        setClientLocation({
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude,
+        });
+      },
+      (error) => console.error(error)
+    );
     const fetchProviderDetails = async () => {
       try {
         const token = localStorage.getItem("token");
