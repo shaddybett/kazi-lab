@@ -145,7 +145,6 @@
 
 // export default ServiceProviders;
 
-
 import React, { useEffect, useState } from "react";
 import { Card, Avatar } from "flowbite-react";
 import UserDetailsPopup from "./UserDetailsPopup";

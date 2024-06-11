@@ -216,8 +216,7 @@ function ClientDashboard() {
   const [data, setData] = useState({});
   const [error, setError] = useState("");
   const [services, setServices] = useState([]);
-  const [providers, setProviders] = useState([]);
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchQuery,setSearchQuery] = useState("")
   const [clientLocation, setClientLocation] = useState({ latitude: null, longitude: null });
   const navigate = useNavigate();
 
@@ -225,18 +224,30 @@ function ClientDashboard() {
     const fetchData = async () => {
       try {
         const token = localStorage.getItem("token");
-        const response = await fetch("/service", {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        if (response.ok) {
-          const responseData = await response.json();
-          setServices(responseData.all_services);
+        const [serviceResponse, userResponse] = await Promise.all([
+          fetch("/service", {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }),
+          fetch("/dashboard", {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }),
+        ]);
+
+        if (serviceResponse.ok && userResponse.ok) {
+          const serviceData = await serviceResponse.json();
+          const userData = await userResponse.json();
+          setServices(serviceData.all_services);
+          setData(userData);
         } else {
-          const errorMessage = await response.json();
+          const errorMessage = await serviceResponse.json();
           setError(errorMessage.error || "An error occurred");
         }
       } catch (error) {
@@ -244,44 +255,22 @@ function ClientDashboard() {
       }
     };
 
-    const handleUser = async () => {
-      try {
-        const token = localStorage.getItem("token");
-        const response = await fetch("/dashboard", {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        if (response.ok) {
-          const responseData = await response.json();
-          setData(responseData);
-        } else {
-          const errorMessage = await response.json();
-          setError(errorMessage.error || "An error occurred");
-        }
-      } catch (error) {
-        setError("An error occurred. Please try again later");
-      }
+    const fetchClientLocation = () => {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const location = {
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude,
+          };
+          setClientLocation(location);
+          localStorage.setItem("clientLocation", JSON.stringify(location));
+        },
+        (error) => console.error("Error obtaining client location:", error)
+      );
     };
 
     fetchData();
-    handleUser();
-
-    // Fetch client's location
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        const location = {
-          latitude: position.coords.latitude,
-          longitude: position.coords.longitude,
-        };
-        setClientLocation(location);
-        console.log("client location:", clientLocation )
-        localStorage.setItem("clientLocation", JSON.stringify(location));
-      },
-      (error) => console.error("Error obtaining client location:", error)
-    );
+    fetchClientLocation();
   }, []);
 
   const handleProviders = async (service) => {
@@ -296,36 +285,12 @@ function ClientDashboard() {
       });
       if (response.ok) {
         const responseData = await response.json();
-        localStorage.setItem(
-          "providerIds",
-          JSON.stringify(responseData.provider_ids)
-        );
+        localStorage.setItem("providerIds", JSON.stringify(responseData.provider_ids));
         const providerIds = responseData.provider_ids.join(",");
-        const userResponse = await fetch(
-          `/provider-details?provider_ids=${providerIds}`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-        if (userResponse.ok) {
-          const userData = await userResponse.json();
-
-          const providerNames = userData.first_names;
-          setProviders(providerNames);
-          navigate("/providers");
-        } else {
-          const errorMessage = await userResponse.json();
-          setError(errorMessage.error);
-        }
+        navigate(`/providers?provider_ids=${providerIds}`);
       } else {
         const errorMessage = await response.json();
-        setError(
-          errorMessage.error || "An error occurred while fetching provider IDs"
-        );
+        setError(errorMessage.error || "An error occurred while fetching provider IDs");
       }
     } catch (error) {
       setError("An error occurred please try again later");
