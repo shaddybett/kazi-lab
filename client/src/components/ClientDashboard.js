@@ -277,6 +277,7 @@ function ClientDashboard() {
           longitude: position.coords.longitude,
         };
         setClientLocation(location);
+        console.log("client location:", clientLocation )
         localStorage.setItem("clientLocation", JSON.stringify(location));
       },
       (error) => console.error("Error obtaining client location:", error)
