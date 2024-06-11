@@ -484,9 +484,17 @@ class ProviderList(Resource):
             user_details = []
             for user in users:
                 if user.latitude and user.longitude:
-                    distance = geodesic((client_lat, client_lon), (user.latitude, user.longitude)).miles
+                    distance = geodesic((client_lat, client_lon), (user.latitude, user.longitude)).meters
                 else:
-                    distance = float('inf')
+                    user_details.append({
+                        'first_name': user.first_name,
+                        'last_name': user.last_name,
+                        'email': user.email,
+                        'image': user.image,
+                        'latitude': user.latitude,
+                        'longitude': user.longitude,
+                        'distance': distance
+                    })
                 user_details.append({
                     'first_name': user.first_name,
                     'last_name': user.last_name,
@@ -507,8 +515,8 @@ class ProviderList(Resource):
 #     @jwt_required()
 #     def get(self):
 #         provider_ids = request.args.get('provider_ids')
-#         client_lat = float(request.args.get('client_lat'))
-#         client_lon = float(request.args.get('client_lon'))
+#         # client_lat = float(request.args.get('client_lat'))
+#         # client_lon = float(request.args.get('client_lon'))
 
 #         if provider_ids is None:
 #             return {'error': 'No provider IDs provided'}, 400

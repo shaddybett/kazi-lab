@@ -145,7 +145,6 @@
 
 // export default ServiceProviders;
 
-
 import React, { useEffect, useState } from "react";
 import { Card, Avatar } from "flowbite-react";
 import UserDetailsPopup from "./UserDetailsPopup";
@@ -157,16 +156,11 @@ function ServiceProviders() {
   const [clientLocation, setClientLocation] = useState({ latitude: null, longitude: null });
 
   useEffect(() => {
-    // Get client's location
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        setClientLocation({
-          latitude: position.coords.latitude,
-          longitude: position.coords.longitude,
-        });
-      },
-      (error) => console.error(error)
-    );
+    // Get client's location from local storage
+    const storedLocation = JSON.parse(localStorage.getItem("clientLocation"));
+    if (storedLocation) {
+      setClientLocation(storedLocation);
+    }
   }, []);
 
   useEffect(() => {
@@ -192,6 +186,7 @@ function ServiceProviders() {
         if (response.ok) {
           const providerDetails = await response.json();
           setProviders(providerDetails);
+          console.log("Provider Details:", providerDetails);
         } else {
           throw new Error("Failed to fetch provider details");
         }
@@ -200,7 +195,9 @@ function ServiceProviders() {
       }
     };
 
-    fetchProviderDetails();
+    if (clientLocation.latitude && clientLocation.longitude) {
+      fetchProviderDetails();
+    }
   }, [clientLocation]);
 
   useEffect(() => {
@@ -262,7 +259,7 @@ function ServiceProviders() {
                   </div>
                   <div className="min-w-0 flex-1">
                     <p className="truncate text-sm font-medium text-gray-900 dark:text-white">
-                      {provider.first_name} {provider.last_name}
+                      {provider.first_name} {provider.last_name} {provider.distance}
                     </p>
                     <p className="truncate text-sm text-gray-500 dark:text-gray-400">{provider.email}</p>
                   </div>
