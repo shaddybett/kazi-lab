@@ -486,7 +486,15 @@ class ProviderList(Resource):
                 if user.latitude and user.longitude:
                     distance = geodesic((client_lat, client_lon), (user.latitude, user.longitude)).miles
                 else:
-                    distance = float('inf')
+                    user_details.append({
+                        'first_name': user.first_name,
+                        'last_name': user.last_name,
+                        'email': user.email,
+                        'image': user.image,
+                        'latitude': user.latitude,
+                        'longitude': user.longitude,
+                        'distance': distance
+                    })
                 user_details.append({
                     'first_name': user.first_name,
                     'last_name': user.last_name,
