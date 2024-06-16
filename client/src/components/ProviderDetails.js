@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import {  Dropdown, Card,Label } from "flowbite-react";
+import { Card,Label } from "flowbite-react";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -303,7 +303,7 @@ function ProviderDetails() {
     <div>
       <h1>Fill the forms below to complete your signup</h1>
       <form onSubmit={handleServiceFormSubmit} enctype="multipart/form-data">
-        <Dropdown label="Services">
+        {/* <Dropdown label="Services">
           {data &&
             data.map((service) => (
               <Dropdown.Item key={service.id} className="text-black">
@@ -318,7 +318,7 @@ function ProviderDetails() {
                 </label>
               </Dropdown.Item>
             ))}
-        </Dropdown>
+        </Dropdown> */}
 
         <input
           type="text"
