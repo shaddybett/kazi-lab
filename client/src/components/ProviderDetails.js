@@ -347,7 +347,6 @@ function ProviderDetails() {
         <button type="submit">Submit</button>
       </form>
       <Card className="max-w-sm">
-        <h2>Hello, {data.first_name} welcome! </h2>
         <h1 className="text-xl font-bold leading-none text-gray-900 dark:text-white">
           Services you offer
         </h1>
@@ -355,6 +354,7 @@ function ProviderDetails() {
           {error &&
             error !== "At least one service must be provided" &&
             error !== "An error occurred. Please try again later" &&
+            error !== 'Service deleted successfully' &&
             error !== "Service is already registered" && (
               <div>
                 <ServiceDropdown
@@ -400,7 +400,6 @@ function ProviderDetails() {
             Add
           </button>
         </div>
-        {error && <p className="text-red-500 mt-2">{error}</p>}
       </Card>
       {error && <p className="text-red-500">{error}</p>}
       {message && <p>{message}</p>}
