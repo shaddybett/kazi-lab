@@ -201,24 +201,9 @@ function ProviderDetails() {
     e.preventDefault();
     try {
       const token = localStorage.getItem("token");
-      const id = localStorage.getItem("id");
       const uuid = localStorage.getItem("signupUUID");
       console.log(uuid);
 
-      // Send request to add services
-      const serviceRequestBody = {
-        user_id: id,
-        existing_services: selectedServices.map((service) => service.id),
-        service_name: newServiceName.trim() !== "" ? newServiceName : null,
-      };
-      const serviceResponse = await fetch("/service", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(serviceRequestBody),
-      });
       const formData = new FormData();
       formData.append("image", image);
       formData.append("middle_name", middle_name);
@@ -235,7 +220,7 @@ function ProviderDetails() {
         body: formData,
       });
       console.log(middle_name, national_id, phone_number, uuid, image);
-      if (serviceResponse.ok && userDetailsResponse.ok) {
+      if ( userDetailsResponse.ok) {
         const serviceData = await serviceResponse.json();
         const userDetailsData = await userDetailsResponse.json();
         localStorage.setItem("serviceData", JSON.stringify(serviceData));
@@ -257,30 +242,6 @@ function ProviderDetails() {
     }
   };
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const token = localStorage.getItem("token");
-        const response = await fetch("/service", {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        if (response.ok) {
-          const responseData = await response.json();
-          setData(responseData.all_services);
-        } else {
-          const errorMessage = await response.json();
-          setError(errorMessage.error);
-        }
-      } catch (error) {
-        setError("An error occurred. Please try again later.");
-      }
-    };
-    fetchData();
-  }, []);
   return (
     <div>
       <h1>Fill the forms below to complete your signup</h1>
