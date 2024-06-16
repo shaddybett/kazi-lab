@@ -29,9 +29,6 @@ function ProviderDetails() {
       }
     );
   }, []);
-  const fetchServices = async(e) =>{
-    
-  }
   const handleServiceFormSubmit = async (e) => {
     e.preventDefault();
     try {
