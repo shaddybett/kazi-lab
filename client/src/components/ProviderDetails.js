@@ -37,6 +37,27 @@ function ProviderDetails() {
       }
     );
   }, []);
+  const fetchData = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await fetch("/offers", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (response.ok) {
+        const responseData = await response.json();
+        setServices(responseData.services || []);
+      } else {
+        const errorMessage = await response.json();
+        setError(errorMessage.error);
+      }
+    } catch (error) {
+      setError("An error occurred. Please try again later.");
+    }
+  };
   const fetchAllServices = async () => {
     try {
       const token = localStorage.getItem("token");
