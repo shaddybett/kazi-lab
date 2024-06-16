@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Dropdown, Label } from "flowbite-react";
+import { Avatar, Dropdown, Navbar, Card } from "flowbite-react";
 import { useNavigate } from "react-router-dom";
 
 function ProviderDetails() {
