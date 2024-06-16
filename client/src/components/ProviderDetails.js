@@ -2,6 +2,9 @@ import React, { useEffect, useState } from "react";
 import { Avatar, Dropdown, Navbar, Card } from "flowbite-react";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrash } from "@fortawesome/free-solid-svg-icons";
+import ServiceDropdown from "./ServiceDropdown";
 
 function ProviderDetails() {
   const [data, setData] = useState([]);
