@@ -108,6 +108,37 @@ function ProviderDetails() {
       }
     }
   };
+  const handleDeleteService = async (serviceId) => {
+    const result = await Swal.fire({
+      title: "Are you sure?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, Delete!",
+    });
+    if (result.isConfirmed) {
+      const token = localStorage.getItem("token");
+      try {
+        const response = await fetch(`/delete-service/${serviceId}`, {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        if (response.ok) {
+          Swal.fire("Success", "Service deleted successfully", "success");
+          fetchData();
+        } else {
+          const errorMessage = await response.json();
+          setError(errorMessage.error || "An error occurred");
+        }
+      } catch (error) {
+        setError("An error occurred. Please try again later");
+      }
+    }
+  };
 
   const handleServiceFormSubmit = async (e) => {
     e.preventDefault();
