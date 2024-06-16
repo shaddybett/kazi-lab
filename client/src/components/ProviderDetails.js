@@ -7,9 +7,7 @@ import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import ServiceDropdown from "./ServiceDropdown";
 
 function ProviderDetails() {
-  const [data, setData] = useState([]);
   const [selectedServices, setSelectedServices] = useState([]);
-  const [newServiceName, setNewServiceName] = useState("");
   const [error, setError] = useState("");
   const [middle_name, setMiddle] = useState("");
   const [phone_number, setNumber] = useState("");
@@ -221,10 +219,7 @@ function ProviderDetails() {
       });
       console.log(middle_name, national_id, phone_number, uuid, image);
       if ( userDetailsResponse.ok) {
-        const serviceData = await serviceResponse.json();
         const userDetailsData = await userDetailsResponse.json();
-        localStorage.setItem("serviceData", JSON.stringify(serviceData));
-        console.log(serviceData);
         localStorage.setItem(
           "userDetailsData",
           JSON.stringify(userDetailsData)
@@ -232,10 +227,8 @@ function ProviderDetails() {
         setMessage("Services and user details added successfully");
         navigate("/providerPage");
       } else {
-        // Handle errors if any request fails
-        const serviceErrors = await serviceResponse.json();
         const userDetailsErrors = await userDetailsResponse.json();
-        setError(serviceErrors.error || userDetailsErrors.error);
+        setError(userDetailsErrors.error);
       }
     } catch (error) {
       setError(error.message || "An error occurred. Please try again later.");
