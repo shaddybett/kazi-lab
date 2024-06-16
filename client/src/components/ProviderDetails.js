@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import { Card,Label } from "flowbite-react";
+import { Card, Label } from "flowbite-react";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -24,7 +24,7 @@ function ProviderDetails() {
   const [newService, setNewService] = useState("");
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
-  const [services,setServices] = useState([])
+  const [services, setServices] = useState([]);
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(
@@ -80,7 +80,6 @@ function ProviderDetails() {
       setError("An error occurred. Please try again later.");
     }
   };
-
   const handleAddService = async () => {
     const result = await Swal.fire({
       title: "Are you sure?",
@@ -90,6 +89,7 @@ function ProviderDetails() {
       cancelButtonColor: "#d33",
       confirmButtonText: "Yes, Add Service!",
     });
+
     if (result.isConfirmed) {
       const token = localStorage.getItem("token");
       try {
@@ -104,6 +104,7 @@ function ProviderDetails() {
             existing_services: selectedServices.map((service) => service.id),
           }),
         });
+
         if (response.ok) {
           setNewService("");
           setError("");
@@ -111,23 +112,28 @@ function ProviderDetails() {
           fetchData();
         } else {
           const errorMessage = await response.json();
-          if (
-            errorMessage.error !== "At least one service must be provided" &&
-            errorMessage.error !== "At least one service must be provided" &&
-            errorMessage.error !== "Service is already registered"
-          ) {
-            setError(errorMessage.error);
-            setNewService("");
-            fetchAllServices();
-          } else {
-            setError(errorMessage.error || "An error occurred");
+          const specificErrors = [
+            "At least one service must be provided",
+            "Service is already registered",
+          ];
+
+          setError(errorMessage.error || "An error occurred");
+
+          if (specificErrors.includes(errorMessage.error)) {
+            const timer = setTimeout(() => {
+              setError("");
+            }, 5000);
+            return () => clearTimeout(timer); // Cleanup the timer on component unmount or error change
           }
+
+          fetchAllServices();
         }
       } catch (error) {
         setError("An error occurred. Please try again later");
       }
     }
   };
+
   const handleDeleteService = async (serviceId) => {
     const result = await Swal.fire({
       title: "Are you sure?",
