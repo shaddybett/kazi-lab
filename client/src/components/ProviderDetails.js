@@ -89,7 +89,6 @@ function ProviderDetails() {
       cancelButtonColor: "#d33",
       confirmButtonText: "Yes, Add Service!",
     });
-
     if (result.isConfirmed) {
       const token = localStorage.getItem("token");
       try {
@@ -104,7 +103,6 @@ function ProviderDetails() {
             existing_services: selectedServices.map((service) => service.id),
           }),
         });
-
         if (response.ok) {
           setNewService("");
           setError("");
@@ -112,21 +110,26 @@ function ProviderDetails() {
           fetchData();
         } else {
           const errorMessage = await response.json();
-          const specificErrors = [
-            "At least one service must be provided",
-            "Service is already registered",
-          ];
-
-          setError(errorMessage.error || "An error occurred");
-
-          if (specificErrors.includes(errorMessage.error)) {
-            const timer = setTimeout(() => {
-              setError("");
-            }, 5000);
-            return () => clearTimeout(timer); // Cleanup the timer on component unmount or error change
+          if (
+            errorMessage.error !== "At least one service must be provided" &&
+            errorMessage.error !== "At least one service must be provided" &&
+            errorMessage.error !== "Service is already registered"
+          ) {
+            setError(errorMessage.error);
+            setNewService("");
+            fetchAllServices();
+            if (
+              errorMessage.error === "At least one service must be provided" &&
+              errorMessage.error === "Service is already registered"
+            ) {
+              const timer = setTimeout(() => {
+                setError("");
+              }, 5000);
+              return () => clearTimeout(timer); // Cleanup the timer on component unmount or error change
+            }
+          } else {
+            setError(errorMessage.error || "An error occurred");
           }
-
-          fetchAllServices();
         }
       } catch (error) {
         setError("An error occurred. Please try again later");
@@ -278,16 +281,6 @@ function ProviderDetails() {
     };
     fetchData();
   }, []);
-  // const handleCheckboxChange = (service) => {
-  //   const selectedIndex = selectedServices.findIndex(
-  //     (s) => s.id === service.id
-  //   );
-  //   if (selectedIndex === -1) {
-  //     setSelectedServices([...selectedServices, service]);
-  //   } else {
-  //     setSelectedServices(selectedServices.filter((s) => s.id !== service.id));
-  //   }
-  // };
   return (
     <div>
       <h1>Fill the forms below to complete your signup</h1>
