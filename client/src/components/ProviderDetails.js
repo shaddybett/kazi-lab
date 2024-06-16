@@ -17,7 +17,7 @@ function ProviderDetails() {
   const [longitude, setLongitude] = useState(null);
   const [manualLocation, setManualLocation] = useState(false);
   const [allServices, setAllServices] = useState([]);
-  const [newService,setNewService] =  useState("")
+  const [newService, setNewService] = useState("");
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(
@@ -140,7 +140,16 @@ function ProviderDetails() {
       }
     }
   };
-
+  const handleCheckboxChange = (service) => {
+    const selectedIndex = selectedServices.findIndex(
+      (s) => s.id === service.id
+    );
+    if (selectedIndex === -1) {
+      setSelectedServices([...selectedServices, service]);
+    } else {
+      setSelectedServices(selectedServices.filter((s) => s.id !== service.id));
+    }
+  };
   const handleServiceFormSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -225,16 +234,16 @@ function ProviderDetails() {
     };
     fetchData();
   }, []);
-  const handleCheckboxChange = (service) => {
-    const selectedIndex = selectedServices.findIndex(
-      (s) => s.id === service.id
-    );
-    if (selectedIndex === -1) {
-      setSelectedServices([...selectedServices, service]);
-    } else {
-      setSelectedServices(selectedServices.filter((s) => s.id !== service.id));
-    }
-  };
+  // const handleCheckboxChange = (service) => {
+  //   const selectedIndex = selectedServices.findIndex(
+  //     (s) => s.id === service.id
+  //   );
+  //   if (selectedIndex === -1) {
+  //     setSelectedServices([...selectedServices, service]);
+  //   } else {
+  //     setSelectedServices(selectedServices.filter((s) => s.id !== service.id));
+  //   }
+  // };
   useEffect(() => {
     if (error) {
       const timer = setTimeout(() => {
