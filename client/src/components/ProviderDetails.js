@@ -17,6 +17,7 @@ function ProviderDetails() {
   const [longitude, setLongitude] = useState(null);
   const [manualLocation, setManualLocation] = useState(false);
   const [allServices, setAllServices] = useState([]);
+  const [newService,setNewService] =  useState("")
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(
