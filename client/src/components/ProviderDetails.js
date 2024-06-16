@@ -303,12 +303,6 @@ function ProviderDetails() {
           value={national_id}
           onChange={(e) => setN_id(e.target.value)}
         />
-        <input
-          type="text"
-          value={newServiceName}
-          onChange={(e) => setNewServiceName(e.target.value)}
-          placeholder="Enter new service name"
-        />
         <div>
           <label>
             <input
