@@ -16,6 +16,7 @@ function ProviderDetails() {
   const [latitude, setLatitude] = useState(null);
   const [longitude, setLongitude] = useState(null);
   const [manualLocation, setManualLocation] = useState(false);
+  const [allServices,setAllServices] = useState([])
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(
@@ -29,6 +30,27 @@ function ProviderDetails() {
       }
     );
   }, []);
+  const fetchAllServices = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await fetch("/service", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (response.ok) {
+        const responseData = await response.json();
+        setAllServices(responseData.all_services || []);
+      } else {
+        const errorMessage = await response.json();
+        setError(errorMessage.error);
+      }
+    } catch (error) {
+      setError("An error occurred. Please try again later.");
+    }
+  };
   const handleServiceFormSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -221,5 +243,3 @@ function ProviderDetails() {
 }
 
 export default ProviderDetails;
-
-
