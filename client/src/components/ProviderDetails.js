@@ -359,7 +359,62 @@ function ProviderDetails() {
 
         <button type="submit">Submit</button>
       </form>
-
+      <Card className="max-w-sm">
+        <h2>Hello, {data.first_name} welcome! </h2>
+        <h1 className="text-xl font-bold leading-none text-gray-900 dark:text-white">
+          Services you offer
+        </h1>
+        <div ref={dropdownRef}>
+          {error &&
+            error !== "At least one service must be provided" &&
+            error !== "An error occurred. Please try again later" &&
+            error !== "Service is already registered" && (
+              <div>
+                <ServiceDropdown
+                  services={allServices}
+                  selectedServices={selectedServices}
+                  handleCheckboxChange={handleCheckboxChange}
+                />
+              </div>
+            )}
+        </div>
+        {services.length > 0 ? (
+          <ul className="divide-y divide-gray-200 dark:divide-gray-700 ">
+            {services.map((service) => (
+              <li
+                key={service.id}
+                className="flex justify-between items-center"
+              >
+                <span>{service.name}</span>
+                <button
+                  className="text-red-500"
+                  onClick={() => handleDeleteService(service.id)}
+                >
+                  <FontAwesomeIcon icon={faTrash} />
+                </button>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p>No services found</p>
+        )}
+        <div className="mt-4">
+          <input
+            className="rounded border border-blue-300 p-2"
+            type="text"
+            value={newService}
+            onChange={(e) => setNewService(e.target.value)}
+            placeholder="Add new service"
+          />
+          <button
+            className="ml-4 p-2 bg-blue-500 text-white rounded"
+            onClick={handleAddService}
+          >
+            Add
+          </button>
+        </div>
+        {error && <p className="text-red-500 mt-2">{error}</p>}
+      </Card>
       {error && <p className="text-red-500">{error}</p>}
       {message && <p>{message}</p>}
     </div>
