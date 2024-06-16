@@ -14,6 +14,7 @@ function ProviderDashboard() {
   const [newService, setNewService] = useState("");
   const [selectedServices, setSelectedServices] = useState([]);
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [initialState,setInitialState] = useState([])
   const dropdownRef = useRef(null);
   const navigate = useNavigate();
 
