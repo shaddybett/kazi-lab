@@ -150,6 +150,25 @@ function ProviderDetails() {
       setSelectedServices(selectedServices.filter((s) => s.id !== service.id));
     }
   };
+  useEffect(() => {
+    // Add event listener for clicks outside the dropdown when the dropdown is open
+    if (dropdownOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+
+    // Cleanup function to remove event listener
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [dropdownOpen]);
+
+  const handleClickOutside = (event) => {
+    if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+      setDropdownOpen(false);
+    }
+  };
   const handleServiceFormSubmit = async (e) => {
     e.preventDefault();
     try {
