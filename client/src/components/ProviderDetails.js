@@ -285,23 +285,6 @@ function ProviderDetails() {
     <div>
       <h1>Fill the forms below to complete your signup</h1>
       <form onSubmit={handleServiceFormSubmit} enctype="multipart/form-data">
-        {/* <Dropdown label="Services">
-          {data &&
-            data.map((service) => (
-              <Dropdown.Item key={service.id} className="text-black">
-                <label>
-                  <input
-                    type="checkbox"
-                    value={service.id}
-                    onChange={() => handleCheckboxChange(service)}
-                    checked={selectedServices.some((s) => s.id === service.id)}
-                  />
-                  {service.name}
-                </label>
-              </Dropdown.Item>
-            ))}
-        </Dropdown> */}
-
         <input
           type="text"
           placeholder="mama Junior"
