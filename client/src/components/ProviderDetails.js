@@ -22,6 +22,8 @@ function ProviderDetails() {
   const [manualLocation, setManualLocation] = useState(false);
   const [allServices, setAllServices] = useState([]);
   const [newService, setNewService] = useState("");
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const dropdownRef = useRef(null);
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(
