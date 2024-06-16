@@ -16,7 +16,7 @@ function ProviderDetails() {
   const [latitude, setLatitude] = useState(null);
   const [longitude, setLongitude] = useState(null);
   const [manualLocation, setManualLocation] = useState(false);
-  const [allServices,setAllServices] = useState([])
+  const [allServices, setAllServices] = useState([]);
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(
@@ -51,6 +51,64 @@ function ProviderDetails() {
       setError("An error occurred. Please try again later.");
     }
   };
+
+  const handleAddService = async () => {
+    const result = await Swal.fire({
+      title: "Are you sure?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, Add Service!",
+    });
+    if (result.isConfirmed) {
+      const token = localStorage.getItem("token");
+      try {
+        const response = await fetch("/add-service", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            service_name: newService,
+            existing_services: selectedServices.map((service) => service.id),
+          }),
+        });
+        if (response.ok) {
+          setNewService("");
+          setError("");
+          Swal.fire("Success", "Service added successfully", "success");
+          fetchData();
+        } else {
+          const errorMessage = await response.json();
+          if (
+            errorMessage.error !== "At least one service must be provided" &&
+            errorMessage.error !== "At least one service must be provided" &&
+            errorMessage.error !== "Service is already registered"
+          ) {
+            setError(errorMessage.error);
+            setNewService("");
+            fetchAllServices();
+            if (
+              errorMessage.error === "At least one service must be provided" &&
+              errorMessage.error === "Service is already registered"
+            ) {
+              const timer = setTimeout(() => {
+                setError("");
+              }, 5000);
+              return () => clearTimeout(timer); // Cleanup the timer on component unmount or error change
+            }
+          } else {
+            setError(errorMessage.error || "An error occurred");
+          }
+        }
+      } catch (error) {
+        setError("An error occurred. Please try again later");
+      }
+    }
+  };
+
   const handleServiceFormSubmit = async (e) => {
     e.preventDefault();
     try {
