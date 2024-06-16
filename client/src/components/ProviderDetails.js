@@ -119,15 +119,6 @@ function ProviderDetails() {
             setError(errorMessage.error);
             setNewService("");
             fetchAllServices();
-            if (
-              errorMessage.error === "At least one service must be provided" &&
-              errorMessage.error === "Service is already registered"
-            ) {
-              const timer = setTimeout(() => {
-                setError("");
-              }, 5000);
-              return () => clearTimeout(timer); // Cleanup the timer on component unmount or error change
-            }
           } else {
             setError(errorMessage.error || "An error occurred");
           }
