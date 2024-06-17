@@ -202,11 +202,12 @@ function ServiceProviders() {
 
   useEffect(() => {
     if (clientLocation.latitude && clientLocation.longitude && providers.length > 0) {
-      const sortedProviders = [...providers].sort((a, b) => {
-        const distanceA = getDistance(clientLocation, { latitude: a.latitude, longitude: a.longitude });
-        const distanceB = getDistance(clientLocation, { latitude: b.latitude, longitude: b.longitude });
-        return distanceA - distanceB;
-      });
+      const sortedProviders = [...providers].filter(provider => provider.latitude && provider.longitude)
+        .sort((a, b) => {
+          const distanceA = getDistance(clientLocation, { latitude: a.latitude, longitude: a.longitude });
+          const distanceB = getDistance(clientLocation, { latitude: b.latitude, longitude: b.longitude });
+          return distanceA - distanceB;
+        });
       setProviders(sortedProviders);
     }
   }, [clientLocation, providers]);

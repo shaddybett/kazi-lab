@@ -303,6 +303,7 @@ function ProviderDetails() {
             error !== "At least one service must be provided" &&
             error !== "An error occurred. Please try again later" &&
             error !== 'Service deleted successfully' &&
+            error !== 'No services found for the given provider ID' &&
             error !== "Service is already registered" && (
               <div>
                 <ServiceDropdown
