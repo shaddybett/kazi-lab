@@ -7,9 +7,7 @@ import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import ServiceDropdown from "./ServiceDropdown";
 
 function ProviderDetails() {
-  const [data, setData] = useState([]);
   const [selectedServices, setSelectedServices] = useState([]);
-  const [newServiceName, setNewServiceName] = useState("");
   const [error, setError] = useState("");
   const [middle_name, setMiddle] = useState("");
   const [phone_number, setNumber] = useState("");
@@ -89,7 +87,6 @@ function ProviderDetails() {
       cancelButtonColor: "#d33",
       confirmButtonText: "Yes, Add Service!",
     });
-
     if (result.isConfirmed) {
       const token = localStorage.getItem("token");
       try {
@@ -104,7 +101,6 @@ function ProviderDetails() {
             existing_services: selectedServices.map((service) => service.id),
           }),
         });
-
         if (response.ok) {
           setNewService("");
           setError("");
@@ -112,21 +108,26 @@ function ProviderDetails() {
           fetchData();
         } else {
           const errorMessage = await response.json();
-          const specificErrors = [
-            "At least one service must be provided",
-            "Service is already registered",
-          ];
-
-          setError(errorMessage.error || "An error occurred");
-
-          if (specificErrors.includes(errorMessage.error)) {
-            const timer = setTimeout(() => {
-              setError("");
-            }, 5000);
-            return () => clearTimeout(timer); // Cleanup the timer on component unmount or error change
+          if (
+            errorMessage.error !== "At least one service must be provided" &&
+            errorMessage.error !== "At least one service must be provided" &&
+            errorMessage.error !== "Service is already registered"
+          ) {
+            setError(errorMessage.error);
+            setNewService("");
+            fetchAllServices();
+            if (
+              errorMessage.error === "At least one service must be provided" &&
+              errorMessage.error === "Service is already registered"
+            ) {
+              const timer = setTimeout(() => {
+                setError("");
+              }, 5000);
+              return () => clearTimeout(timer); // Cleanup the timer on component unmount or error change
+            }
+          } else {
+            setError(errorMessage.error || "An error occurred");
           }
-
-          fetchAllServices();
         }
       } catch (error) {
         setError("An error occurred. Please try again later");
@@ -198,24 +199,9 @@ function ProviderDetails() {
     e.preventDefault();
     try {
       const token = localStorage.getItem("token");
-      const id = localStorage.getItem("id");
       const uuid = localStorage.getItem("signupUUID");
       console.log(uuid);
 
-      // Send request to add services
-      const serviceRequestBody = {
-        user_id: id,
-        existing_services: selectedServices.map((service) => service.id),
-        service_name: newServiceName.trim() !== "" ? newServiceName : null,
-      };
-      const serviceResponse = await fetch("/service", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(serviceRequestBody),
-      });
       const formData = new FormData();
       formData.append("image", image);
       formData.append("middle_name", middle_name);
@@ -232,11 +218,8 @@ function ProviderDetails() {
         body: formData,
       });
       console.log(middle_name, national_id, phone_number, uuid, image);
-      if (serviceResponse.ok && userDetailsResponse.ok) {
-        const serviceData = await serviceResponse.json();
+      if ( userDetailsResponse.ok) {
         const userDetailsData = await userDetailsResponse.json();
-        localStorage.setItem("serviceData", JSON.stringify(serviceData));
-        console.log(serviceData);
         localStorage.setItem(
           "userDetailsData",
           JSON.stringify(userDetailsData)
@@ -244,79 +227,18 @@ function ProviderDetails() {
         setMessage("Services and user details added successfully");
         navigate("/providerPage");
       } else {
-        // Handle errors if any request fails
-        const serviceErrors = await serviceResponse.json();
         const userDetailsErrors = await userDetailsResponse.json();
-        setError(serviceErrors.error || userDetailsErrors.error);
+        setError(userDetailsErrors.error);
       }
     } catch (error) {
       setError(error.message || "An error occurred. Please try again later.");
     }
   };
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const token = localStorage.getItem("token");
-        const response = await fetch("/service", {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        if (response.ok) {
-          const responseData = await response.json();
-          setData(responseData.all_services);
-        } else {
-          const errorMessage = await response.json();
-          setError(errorMessage.error);
-        }
-      } catch (error) {
-        setError("An error occurred. Please try again later.");
-      }
-    };
-    fetchData();
-  }, []);
-  // const handleCheckboxChange = (service) => {
-  //   const selectedIndex = selectedServices.findIndex(
-  //     (s) => s.id === service.id
-  //   );
-  //   if (selectedIndex === -1) {
-  //     setSelectedServices([...selectedServices, service]);
-  //   } else {
-  //     setSelectedServices(selectedServices.filter((s) => s.id !== service.id));
-  //   }
-  // };
-  useEffect(() => {
-    if (error) {
-      const timer = setTimeout(() => {
-        setError("");
-      }, 5000);
-      return () => clearTimeout(timer);
-    }
-  }, [error]);
   return (
     <div>
       <h1>Fill the forms below to complete your signup</h1>
       <form onSubmit={handleServiceFormSubmit} enctype="multipart/form-data">
-        {/* <Dropdown label="Services">
-          {data &&
-            data.map((service) => (
-              <Dropdown.Item key={service.id} className="text-black">
-                <label>
-                  <input
-                    type="checkbox"
-                    value={service.id}
-                    onChange={() => handleCheckboxChange(service)}
-                    checked={selectedServices.some((s) => s.id === service.id)}
-                  />
-                  {service.name}
-                </label>
-              </Dropdown.Item>
-            ))}
-        </Dropdown> */}
-
         <input
           type="text"
           placeholder="mama Junior"
@@ -334,12 +256,6 @@ function ProviderDetails() {
           placeholder="12345678"
           value={national_id}
           onChange={(e) => setN_id(e.target.value)}
-        />
-        <input
-          type="text"
-          value={newServiceName}
-          onChange={(e) => setNewServiceName(e.target.value)}
-          placeholder="Enter new service name"
         />
         <div>
           <label>
@@ -379,7 +295,6 @@ function ProviderDetails() {
         <button type="submit">Submit</button>
       </form>
       <Card className="max-w-sm">
-        <h2>Hello, {data.first_name} welcome! </h2>
         <h1 className="text-xl font-bold leading-none text-gray-900 dark:text-white">
           Services you offer
         </h1>
@@ -387,6 +302,8 @@ function ProviderDetails() {
           {error &&
             error !== "At least one service must be provided" &&
             error !== "An error occurred. Please try again later" &&
+            error !== 'Service deleted successfully' &&
+            error !== 'No services found for the given provider ID' &&
             error !== "Service is already registered" && (
               <div>
                 <ServiceDropdown
@@ -432,7 +349,6 @@ function ProviderDetails() {
             Add
           </button>
         </div>
-        {error && <p className="text-red-500 mt-2">{error}</p>}
       </Card>
       {error && <p className="text-red-500">{error}</p>}
       {message && <p>{message}</p>}
