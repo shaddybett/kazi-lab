@@ -116,7 +116,8 @@ function ProviderDetails() {
             fetchAllServices();
             if (
               errorMessage.error === "At least one service must be provided" &&
-              errorMessage.error === "Service is already registered"
+              errorMessage.error === "Service is already registered" &&
+              errorMessage.error === "Missing required fields"
             ) {
               const timer = setTimeout(() => {
                 setError("");
