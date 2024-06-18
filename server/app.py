@@ -312,7 +312,7 @@ class AddService(Resource):
                 return {'error': f'Service "{new_service_name}" is already registered by you'}, 401
             
             if existing_service:
-                return {'error': f'Service "{new_service_name}" already exists,please check the list provided'}, 401
+                return {'error': f'Service entered already exists,please mark from the list provided'}, 401
 
             new_service = Service(
                 service_name=new_service_name,
