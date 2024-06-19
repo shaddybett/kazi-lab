@@ -1,4 +1,4 @@
-from models import User,db,Role,Service
+from models import User,db,Role,Service, County
 from app import app
 
 with app.app_context():
@@ -17,5 +17,6 @@ with app.app_context():
         # db.session.add_all(roles)
         # db.session.commit()
 
-
+    counties = []
+    
         
