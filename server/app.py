@@ -169,7 +169,7 @@ class signup2(Resource):
             longitude = request.form.get('longitude')
             county = request.form.get('county')
             
-            if not middle_name or not national_id or not phone_number or not uids or not image_file:
+            if not middle_name or not national_id or not phone_number or not uids or not image_file or not county:
                 return {'error': 'Missing required fields'}, 400
 
             if not os.path.exists(UPLOAD_FOLDER):
@@ -369,7 +369,7 @@ class Offers(Resource):
 class Counties(Resource):
     def get(self):
         all_counties = County.query.all()
-        all_counties_data = [{'id': county.id, 'name': county.name} for county in all_counties ]
+        all_counties_data = [{'id': county.id, 'name': county.county_name} for county in all_counties ]
 
         return {'all_counties': all_counties_data },200
 
