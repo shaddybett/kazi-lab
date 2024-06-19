@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import { Card, Label } from "flowbite-react";
+import { Card, Label, Select } from "flowbite-react";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -22,7 +22,7 @@ function ProviderDetails() {
   const [newService, setNewService] = useState("");
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
-  const [counties,setCounties] = useState([])
+  const [counties, setCounties] = useState([]);
   const [services, setServices] = useState([]);
 
   useEffect(() => {
@@ -80,19 +80,21 @@ function ProviderDetails() {
     }
   };
 
-  const fetchAllCounties = async(e) => {
-    e.preventDefault()
-    const response = await fetch('/county',{
-      method:'GET',
+  const fetchAllCounties = async (e) => {
+    e.preventDefault();
+    const response = await fetch("/county", {
+      method: "GET",
       headers: {
-        "Content-Type":"application/json",
-      } 
-    })
-    if (response.ok){
+        "Content-Type": "application/json",
+      },
+    });
+    if (response.ok) {
       const responseData = await response.json();
-
+      setCounties(responseData);
+    } else {
+      setError("Error fetching all counties");
     }
-  }
+  };
 
   const handleAddService = async () => {
     const result = await Swal.fire({
@@ -125,7 +127,8 @@ function ProviderDetails() {
         } else {
           const errorMessage = await response.json();
           if (
-            errorMessage.error === 'Service entered already exists,please mark from the list provided'
+            errorMessage.error ===
+            "Service entered already exists,please mark from the list provided"
           ) {
             setError(errorMessage.error);
             setNewService("");
@@ -233,7 +236,7 @@ function ProviderDetails() {
         body: formData,
       });
       console.log(middle_name, national_id, phone_number, uuid, image);
-      if ( userDetailsResponse.ok) {
+      if (userDetailsResponse.ok) {
         const userDetailsData = await userDetailsResponse.json();
         localStorage.setItem(
           "userDetailsData",
@@ -315,7 +318,8 @@ function ProviderDetails() {
         </h1>
         <div ref={dropdownRef}>
           {error &&
-            error === 'Service entered already exists,please mark from the list provided' &&(
+            error ===
+              "Service entered already exists,please mark from the list provided" && (
               <div>
                 <ServiceDropdown
                   services={allServices}
@@ -359,6 +363,14 @@ function ProviderDetails() {
           >
             Add
           </button>
+        </div>
+        <div className="max-w-md">
+          <div className="mb-2 block">
+            <Label htmlFor="countries" value="Select your country" />
+          </div>
+          <Select id="countries" required>
+            <option>{counties}</option>
+          </Select>
         </div>
       </Card>
       {error && <p className="text-red-500">{error}</p>}

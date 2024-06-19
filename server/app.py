@@ -167,6 +167,7 @@ class signup2(Resource):
             image_file = request.files.get('image')
             latitude = request.form.get('latitude')
             longitude = request.form.get('longitude')
+            
             if not middle_name or not national_id or not phone_number or not uids or not image_file:
                 return {'error': 'Missing required fields'}, 400
 

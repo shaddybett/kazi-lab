@@ -20,7 +20,7 @@ class User(db.Model):
     services = db.relationship('Service', secondary='provider_services', backref=db.backref('providers', lazy=True, cascade="all, delete"))
     latitude = db.Column(db.Float, nullable=True)
     longitude = db.Column(db.Float, nullable=True)
-    location = db.Column(db.String,nullable=True)
+    county = db.Column(db.String,nullable=True)
 
 class Service(db.Model):
     __tablename__ = 'services'
