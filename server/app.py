@@ -2,7 +2,7 @@ from flask import Flask, make_response, abort, request,jsonify,session,send_from
 from werkzeug.utils import secure_filename
 from werkzeug.datastructures import FileStorage
 from flask_restful import Api, Resource, reqparse
-from models import db, User, Service, ProviderService
+from models import db, User, Service, ProviderService, County
 from flask_bcrypt import Bcrypt
 import re
 from flask_cors import CORS
@@ -207,6 +207,7 @@ class signup2(Resource):
             return {'error': 'An error occurred while processing the request'}, 500
 
 
+
 class UpdateImage(Resource):
     @jwt_required()
     def post(self):
@@ -361,6 +362,13 @@ class Offers(Resource):
                 service_list = [{'id': service.id, 'name': service.service_name} for service in services]
                 return {'services': service_list}, 200
         return {'error': 'No services found for the given provider ID'}, 404
+
+class Counties(Resource):
+    def get(self):
+        all_counties = County.query.all()
+        all_counties_data = [{'id': county.id, 'name': county.name} for county in all_counties ]
+
+        return {'all_counties': all_counties_data },200
 
 @app.route('/service', methods=['GET', 'POST'])
 @jwt_required()
