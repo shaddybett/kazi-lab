@@ -18,5 +18,7 @@ with app.app_context():
         # db.session.commit()
 
     counties = []
-    
+    for county_name in ['']:
+        county = County(county_name=county_name)
+        counties.append(county)
         
