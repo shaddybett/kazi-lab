@@ -70,6 +70,6 @@ with app.app_context():
         county = County(county_name=county_name)
         counties.append(county)
 
-        db.session.add_all(counties)
-        db.session.commit()
+        # db.session.add_all(counties)
+        # db.session.commit()
         
