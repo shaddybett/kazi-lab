@@ -18,10 +18,58 @@ with app.app_context():
         # db.session.commit()
 
     counties = []
-    for county_name in ['']:
+    for county_name in [
+'Mombasa',
+'Kwale',
+'Kilifi',
+'Tana River',
+'Lamu',
+'Taita/Taveta',
+'Garissa',
+'Wajir',
+'Mandera',
+'Marsabit',
+'Isiolo',
+'Meru',
+'Tharaka-Nithi',
+'Embu',
+'Kitui',
+'Machakos',
+'Makueni',
+'Nyandarua',
+'Nyeri',
+'Kirinyaga',
+'Muranga',
+'Kiambu',
+'Turkana',
+'West Pokot',
+'Samburu',
+'Trans Nzoia',
+'Uasin Gishu',
+'Elgeyo/Marakwet',
+'Nandi',
+'Baringo',
+'Laikipia',
+'Nakuru',
+'Narok',
+'Kajiado',
+'Kericho',
+'Bomet',
+'Kakamega',
+'Vihiga',
+'Bungoma',
+'Busia',
+'Siaya',
+'Kisumu',
+'Homa Bay',
+'Migori',
+'Kisii',
+'Nyamira',
+'Nairobi'
+    ]:
         county = County(county_name=county_name)
         counties.append(county)
 
-        # db.session.add_all(counties)
-        # db.session.commit()
+        db.session.add_all(counties)
+        db.session.commit()
         

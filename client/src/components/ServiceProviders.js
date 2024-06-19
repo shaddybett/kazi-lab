@@ -144,6 +144,9 @@
 // }
 
 // export default ServiceProviders;
+
+
+
 import React, { useEffect, useState } from "react";
 import { Card, Avatar } from "flowbite-react";
 import UserDetailsPopup from "./UserDetailsPopup";
@@ -156,11 +159,24 @@ function ServiceProviders() {
   const [locationEnabled, setLocationEnabled] = useState(false);
 
   useEffect(() => {
-    // Get client's location from local storage
-    const storedLocation = JSON.parse(localStorage.getItem("clientLocation"));
-    if (storedLocation) {
-      setClientLocation(storedLocation);
-      setLocationEnabled(true);
+    // Request client's location using Geolocation API
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          setClientLocation({
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude,
+          });
+          setLocationEnabled(true);
+        },
+        (error) => {
+          console.error("Error getting location:", error);
+          setLocationEnabled(false);
+        }
+      );
+    } else {
+      console.error("Geolocation is not supported by this browser.");
+      setLocationEnabled(false);
     }
   }, []);
 
@@ -192,7 +208,9 @@ function ServiceProviders() {
       }
     };
 
-    fetchProviderDetails();
+    if (locationEnabled || !locationEnabled) {
+      fetchProviderDetails();
+    }
   }, [clientLocation, locationEnabled]);
 
   useEffect(() => {
