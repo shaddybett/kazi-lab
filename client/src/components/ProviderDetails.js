@@ -22,6 +22,7 @@ function ProviderDetails() {
   const [newService, setNewService] = useState("");
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
+  const [counties,setCounties] = useState([])
   const [services, setServices] = useState([]);
 
   useEffect(() => {
@@ -78,6 +79,21 @@ function ProviderDetails() {
       setError("An error occurred. Please try again later.");
     }
   };
+
+  const fetchAllCounties = async(e) => {
+    e.preventDefault()
+    const response = await fetch('/county',{
+      method:'GET',
+      headers: {
+        "Content-Type":"application/json",
+      } 
+    })
+    if (response.ok){
+      const responseData = await response.json();
+
+    }
+  }
+
   const handleAddService = async () => {
     const result = await Swal.fire({
       title: "Are you sure?",
