@@ -556,6 +556,22 @@ class ProviderIds(Resource):
             response = make_response({'error': 'No service providers available for this service'}, 404)
             return response
 
+@app.route('/services-by-county/<county_name>', methods=['GET'])
+@jwt_required()
+def get_services_by_county(county_name):
+    try:
+        county = County.query.filter_by(name=county_name).first()
+        if not county:
+            return jsonify({'error': 'County not found'}), 404
+
+        services = Service.query.filter(Service.provider.has(County=county)).all()
+        services_data = [{'id': service.id, 'name': service.service_name} for service in services]
+
+        return {'services': services_data}, 200
+
+    except Exception as e:
+        return {'error': 'An error occurred while processing the request'}, 500
+
 class UserDetails(Resource):
     def get(self):
         email = request.args.get('email')
