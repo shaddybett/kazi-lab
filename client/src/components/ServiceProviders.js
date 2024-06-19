@@ -145,6 +145,8 @@
 
 // export default ServiceProviders;
 
+
+
 import React, { useEffect, useState } from "react";
 import { Card, Avatar } from "flowbite-react";
 import UserDetailsPopup from "./UserDetailsPopup";
@@ -154,12 +156,27 @@ function ServiceProviders() {
   const [providers, setProviders] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
   const [clientLocation, setClientLocation] = useState({ latitude: null, longitude: null });
+  const [locationEnabled, setLocationEnabled] = useState(false);
 
   useEffect(() => {
-    // Get client's location from local storage
-    const storedLocation = JSON.parse(localStorage.getItem("clientLocation"));
-    if (storedLocation) {
-      setClientLocation(storedLocation);
+    // Request client's location using Geolocation API
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          setClientLocation({
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude,
+          });
+          setLocationEnabled(true);
+        },
+        (error) => {
+          console.error("Error getting location:", error);
+          setLocationEnabled(false);
+        }
+      );
+    } else {
+      console.error("Geolocation is not supported by this browser.");
+      setLocationEnabled(false);
     }
   }, []);
 
@@ -169,12 +186,8 @@ function ServiceProviders() {
         const token = localStorage.getItem("token");
         const providerIds = JSON.parse(localStorage.getItem("providerIds"));
 
-        if (!clientLocation.latitude || !clientLocation.longitude) {
-          return; // Wait until location is available
-        }
-
         const response = await fetch(
-          `/provider-details?provider_ids=${providerIds.join(",")}&client_lat=${clientLocation.latitude}&client_lon=${clientLocation.longitude}`,
+          `/provider-details?provider_ids=${providerIds.join(",")}${locationEnabled ? `&client_lat=${clientLocation.latitude}&client_lon=${clientLocation.longitude}` : ''}`,
           {
             method: "GET",
             headers: {
@@ -195,13 +208,13 @@ function ServiceProviders() {
       }
     };
 
-    if (clientLocation.latitude && clientLocation.longitude) {
+    if (locationEnabled || !locationEnabled) {
       fetchProviderDetails();
     }
-  }, [clientLocation]);
+  }, [clientLocation, locationEnabled]);
 
   useEffect(() => {
-    if (clientLocation.latitude && clientLocation.longitude && providers.length > 0) {
+    if (locationEnabled && providers.length > 0) {
       const sortedProviders = [...providers].filter(provider => provider.latitude && provider.longitude)
         .sort((a, b) => {
           const distanceA = getDistance(clientLocation, { latitude: a.latitude, longitude: a.longitude });
@@ -210,7 +223,7 @@ function ServiceProviders() {
         });
       setProviders(sortedProviders);
     }
-  }, [clientLocation, providers]);
+  }, [clientLocation, providers, locationEnabled]);
 
   const handleProviderClick = async (provider) => {
     try {
@@ -245,6 +258,11 @@ function ServiceProviders() {
           <h5 className="text-xl font-bold leading-none text-gray-900 dark:text-white">Service Providers</h5>
         </div>
         <div className="flow-root">
+          {!locationEnabled && (
+            <div className="mb-4 p-4 text-sm text-yellow-700 bg-yellow-100 rounded-lg dark:bg-yellow-200 dark:text-yellow-800" role="alert">
+              To see the closest service providers near you, please enable location services.
+            </div>
+          )}
           <ul className="divide-y divide-gray-200 dark:divide-gray-700">
             {providers.map((provider, index) => (
               <li key={index} className="py-3 sm:py-4 cursor-pointer" onClick={() => handleProviderClick(provider)}>
@@ -260,7 +278,7 @@ function ServiceProviders() {
                   </div>
                   <div className="min-w-0 flex-1">
                     <p className="truncate text-sm font-medium text-gray-900 dark:text-white">
-                      {provider.first_name} {provider.last_name} {provider.distance} miles
+                      {provider.first_name} {provider.last_name} {locationEnabled && provider.distance ? `${provider.distance} miles` : ''}
                     </p>
                     <p className="truncate text-sm text-gray-500 dark:text-gray-400">{provider.email}</p>
                   </div>

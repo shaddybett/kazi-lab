@@ -20,20 +20,25 @@ class User(db.Model):
     services = db.relationship('Service', secondary='provider_services', backref=db.backref('providers', lazy=True, cascade="all, delete"))
     latitude = db.Column(db.Float, nullable=True)
     longitude = db.Column(db.Float, nullable=True)
-    location = db.Column(db.String,nullable=True)
+    county = db.Column(db.String,nullable=True)
 
 class Service(db.Model):
     __tablename__ = 'services'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     service_name = db.Column(db.String(100), nullable=False)
     provider_id = db.Column(db.Integer, db.ForeignKey('users.id',ondelete='CASCADE'))
-
+    
 class ProviderService(db.Model):
     __tablename__ = 'provider_services'
     service_id = db.Column(db.Integer, db.ForeignKey('services.id',ondelete='CASCADE'), primary_key=True)
     provider_id = db.Column(db.Integer, db.ForeignKey('users.id',ondelete='CASCADE'), primary_key=True)    
-
+    county_id = db.Column(db.Integer)
 class Role(db.Model):
     __tablename__ = 'roles'    
     id = db.Column(db.Integer, primary_key=True)
     role_name = db.Column(db.String(100), nullable=False)
+class County(db.Model):
+    __tablename__='counties'
+    id = db.Column(db.Integer, primary_key=True)
+    county_name = db.Column(db.String(100), nullable=False)
+    # services = db.relationship('ProviderService', backref='county', lazy=True)

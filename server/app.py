@@ -2,7 +2,7 @@ from flask import Flask, make_response, abort, request,jsonify,session,send_from
 from werkzeug.utils import secure_filename
 from werkzeug.datastructures import FileStorage
 from flask_restful import Api, Resource, reqparse
-from models import db, User, Service, ProviderService
+from models import db, User, Service, ProviderService, County
 from flask_bcrypt import Bcrypt
 import re
 from flask_cors import CORS
@@ -157,9 +157,69 @@ def uploaded_file(filename):
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'webp' }
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+# class signup2(Resource):
+#     def post(self):
+#         try:            
+#             middle_name = request.form.get('middle_name')
+#             national_id = request.form.get('national_id')
+#             phone_number = request.form.get('phone_number')
+#             uids = request.form.get('uids')
+#             image_file = request.files.get('image')
+#             latitude = request.form.get('latitude')
+#             longitude = request.form.get('longitude')
+#             county = request.form.get('county')
+            
+#             if not middle_name or not national_id or not phone_number or not uids or not image_file or not county:
+#                 return {'error': 'Missing required fields'}, 400
+
+#             if not os.path.exists(UPLOAD_FOLDER):
+#                 os.makedirs(UPLOAD_FOLDER)
+
+#             if not allowed_file(image_file.filename):
+#                 return {'error': 'Invalid file type'}, 400
+
+#             image_filename = secure_filename(image_file.filename)
+#             image_path = os.path.join(UPLOAD_FOLDER, image_filename)
+#             image_file.save(image_path)
+            
+
+#             image_url = url_for('uploaded_file', filename=image_filename, _external=True)
+            
+#             if len(str(national_id)) != 8:
+#                 return {'error':'Enter a valid national id'}, 400
+
+#             if len(str(phone_number)) != 10:
+#                 return {'error':'Enter a valid phone number'}, 400
+
+#             existing_user = User.query.filter_by(uuid = uids).first()
+#             if existing_user:
+#                 existing_user.middle_name = middle_name
+#                 existing_user.national_id = national_id
+#                 existing_user.phone_number = phone_number
+#                 existing_user.image = image_url
+#                 existing_user.uids = uids
+#                 existing_user.latitude = float(latitude)
+#                 existing_user.longitude = float(longitude)
+#                 existing_user.county = county
+
+#                 db.session.commit()
+#                 return {'message':'user details updated successfully'}
+#             exi_county = County.query.filter_by(county_name=county).first()
+#             if exi_county:
+#                 county_id = exi_county.id 
+#             idd = existing_user.id
+#             provider = ProviderService.query.filter_by(provider_id=idd).first()
+#             if provider:
+#                 provider.county_id = county_id
+#                 db.session.commit()
+#             else:
+#                 return {'error':'Update failed'}
+#         except Exception as e:
+#             return {'error': 'An error occurred while processing the request'}, 500
+
 class signup2(Resource):
     def post(self):
-        try:            
+        try:
             middle_name = request.form.get('middle_name')
             national_id = request.form.get('national_id')
             phone_number = request.form.get('phone_number')
@@ -167,7 +227,9 @@ class signup2(Resource):
             image_file = request.files.get('image')
             latitude = request.form.get('latitude')
             longitude = request.form.get('longitude')
-            if not middle_name or not national_id or not phone_number or not uids or not image_file:
+            county_name = request.form.get('county')
+            
+            if not middle_name or not national_id or not phone_number or not uids or not image_file or not county_name:
                 return {'error': 'Missing required fields'}, 400
 
             if not os.path.exists(UPLOAD_FOLDER):
@@ -180,7 +242,6 @@ class signup2(Resource):
             image_path = os.path.join(UPLOAD_FOLDER, image_filename)
             image_file.save(image_path)
             
-
             image_url = url_for('uploaded_file', filename=image_filename, _external=True)
             
             if len(str(national_id)) != 8:
@@ -198,11 +259,30 @@ class signup2(Resource):
                 existing_user.uids = uids
                 existing_user.latitude = float(latitude)
                 existing_user.longitude = float(longitude)
+                existing_user.county = county_name
 
                 db.session.commit()
-                return {'message':'user details updated successfully'}
+
+                # Fetch the county_id based on county_name
+                exi_county = County.query.filter_by(county_name=county_name).first()
+                if not exi_county:
+                    return {'error': 'County not found'}, 404
+
+                county_id = exi_county.id 
+                idd = existing_user.id
+
+                provider_service = ProviderService.query.filter_by(provider_id=idd).first()
+                if provider_service:
+                    provider_service.county_id = county_id
+                else:
+                    # If no existing provider service, create a new one
+                    provider_service = ProviderService(provider_id=idd, county_id=county_id)
+                    db.session.add(provider_service)
+
+                db.session.commit()
+                return {'message': 'User details updated successfully'}
             else:
-                return {'error':'Update failed'}
+                return {'error': 'User not found'}, 404
         except Exception as e:
             return {'error': 'An error occurred while processing the request'}, 500
 
@@ -320,16 +400,22 @@ class AddService(Resource):
             )
             db.session.add(new_service)
             db.session.flush() 
+            county = user.county
+            exi_county = County.query.filter_by(county_name=county).first()
+            county_idd = None
+            if exi_county:
+                county_idd = exi_county.id
+            print ("county_id:",county_idd)
             
             provider_service = ProviderService(
                 provider_id=user.id,
-                service_id=new_service.id
+                service_id=new_service.id,
+                county_id = county_idd
             )
             db.session.add(provider_service)
             service_ids.append(new_service.id)
 
         db.session.commit()
-
         return {'message': f'Services created and associated with {user.first_name} {user.last_name}', 'service_ids': service_ids}, 201
 
 class DeleteService(Resource):
@@ -362,6 +448,13 @@ class Offers(Resource):
                 return {'services': service_list}, 200
         return {'error': 'No services found for the given provider ID'}, 404
 
+class Counties(Resource):
+    def get(self):
+        all_counties = County.query.all()
+        all_counties_data = [{'id': county.id, 'name': county.county_name} for county in all_counties ]
+
+        return {'all_counties': all_counties_data },200
+
 @app.route('/service', methods=['GET', 'POST'])
 @jwt_required()
 def handle_service_request():
@@ -383,6 +476,11 @@ def handle_service_request():
             args = request.json
             existing_services = args.get('existing_services', [])
             new_service_name = args.get('service_name')
+            idd = user.id
+            county_name = user.county
+            county = County.query.filter_by(county_name=county_name).first()
+            if county:
+                county_id = county.id
 
             # Check if at least one service is provided
             if not existing_services and not new_service_name:
@@ -397,7 +495,8 @@ def handle_service_request():
                 if service:
                     provider_service = ProviderService(
                         provider_id=user.id,
-                        service_id=service_id
+                        service_id=service_id,
+                        county_id = county_id
                     )
                     db.session.add(provider_service)
                     service_ids.append(service_id)
@@ -545,6 +644,22 @@ class ProviderIds(Resource):
             response = make_response({'error': 'No service providers available for this service'}, 404)
             return response
 
+@app.route('/services-by-county/<county_name>', methods=['GET'])
+@jwt_required()
+def get_services_by_county(county_name):
+    try:
+        county = County.query.filter_by(county_name=county_name).first()
+        if not county:
+            return jsonify({'error': 'County not found'}), 404
+
+        services = ProviderService.query.filter_by(county_id=county.id).all()
+        services_data = [{'service_id': service.service_id, 'provider_id': service.provider_id} for service in services]
+
+        return {'services': services_data}, 200
+
+    except Exception as e:
+        return {'error': 'An error occurred while processing the request'}, 500
+
 class UserDetails(Resource):
     def get(self):
         email = request.args.get('email')
@@ -572,6 +687,7 @@ api.add_resource(AddService, '/add-service')
 api.add_resource(DeleteService, '/delete-service/<int:service_id>')
 api.add_resource(UpdateImage, '/update-image')
 api.add_resource(UserDetails, '/user-details')
+api.add_resource(Counties, '/county')
 
 if __name__ == '__main__':
     app.run(debug=True, port=4000)
