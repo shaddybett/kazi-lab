@@ -217,7 +217,6 @@ function ClientDashboard() {
   const [error, setError] = useState("");
   const [services, setServices] = useState([]);
   const [searchQuery,setSearchQuery] = useState("")
-  const [clientLocation, setClientLocation] = useState({ latitude: null, longitude: null });
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -255,22 +254,7 @@ function ClientDashboard() {
       }
     };
 
-    const fetchClientLocation = () => {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const location = {
-            latitude: position.coords.latitude,
-            longitude: position.coords.longitude,
-          };
-          setClientLocation(location);
-          localStorage.setItem("clientLocation", JSON.stringify(location));
-        },
-        (error) => console.error("Error obtaining client location:", error)
-      );
-    };
-
     fetchData();
-    fetchClientLocation();
   }, []);
 
   const handleProviders = async (service) => {
