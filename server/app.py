@@ -580,6 +580,7 @@ api.add_resource(AddService, '/add-service')
 api.add_resource(DeleteService, '/delete-service/<int:service_id>')
 api.add_resource(UpdateImage, '/update-image')
 api.add_resource(UserDetails, '/user-details')
+api.add_resource(Counties, '/county')
 
 if __name__ == '__main__':
     app.run(debug=True, port=4000)
