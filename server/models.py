@@ -27,13 +27,12 @@ class Service(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     service_name = db.Column(db.String(100), nullable=False)
     provider_id = db.Column(db.Integer, db.ForeignKey('users.id',ondelete='CASCADE'))
-    county_id = db.Column(db.Integer, db.ForeignKey('counties.id'))
-
+    
 class ProviderService(db.Model):
     __tablename__ = 'provider_services'
     service_id = db.Column(db.Integer, db.ForeignKey('services.id',ondelete='CASCADE'), primary_key=True)
     provider_id = db.Column(db.Integer, db.ForeignKey('users.id',ondelete='CASCADE'), primary_key=True)    
-
+    county_id = db.Column(db.Integer, db.ForeignKey('counties.id'))
 class Role(db.Model):
     __tablename__ = 'roles'    
     id = db.Column(db.Integer, primary_key=True)
@@ -42,4 +41,4 @@ class County(db.Model):
     __tablename__='counties'
     id = db.Column(db.Integer, primary_key=True)
     county_name = db.Column(db.String(100), nullable=False)
-    services = db.relationship('Service', backref='county', lazy=True)
+    services = db.relationship('ProviderService', backref='county', lazy=True)

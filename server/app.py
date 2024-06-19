@@ -204,12 +204,18 @@ class signup2(Resource):
 
                 db.session.commit()
                 return {'message':'user details updated successfully'}
+            exi_county = County.query.filter_by(county_name=county).first()
+            if exi_county:
+                county_id = exi_county.id 
+            idd = existing_user.id
+            provider = ProviderService.query.filter_by(provider_id=idd).first()
+            if provider:
+                provider.county_id = county_id
+                db.session.commit()
             else:
                 return {'error':'Update failed'}
         except Exception as e:
             return {'error': 'An error occurred while processing the request'}, 500
-
-
 
 class UpdateImage(Resource):
     @jwt_required()
@@ -560,12 +566,12 @@ class ProviderIds(Resource):
 @jwt_required()
 def get_services_by_county(county_name):
     try:
-        county = County.query.filter_by(name=county_name).first()
+        county = County.query.filter_by(county_name=county_name).first()
         if not county:
             return jsonify({'error': 'County not found'}), 404
 
-        services = Service.query.filter(Service.provider.has(County=county)).all()
-        services_data = [{'id': service.id, 'name': service.service_name} for service in services]
+        services = ProviderService.query.filter_by(county_id=county.id).all()
+        services_data = [{'service_id': service.service_id, 'provider_id': service.provider_id} for service in services]
 
         return {'services': services_data}, 200
 
