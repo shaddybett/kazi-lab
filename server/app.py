@@ -167,6 +167,7 @@ class signup2(Resource):
             image_file = request.files.get('image')
             latitude = request.form.get('latitude')
             longitude = request.form.get('longitude')
+            county = request.form.get('county')
             
             if not middle_name or not national_id or not phone_number or not uids or not image_file:
                 return {'error': 'Missing required fields'}, 400
@@ -199,6 +200,7 @@ class signup2(Resource):
                 existing_user.uids = uids
                 existing_user.latitude = float(latitude)
                 existing_user.longitude = float(longitude)
+                existing_user.county = county
 
                 db.session.commit()
                 return {'message':'user details updated successfully'}
