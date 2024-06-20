@@ -157,66 +157,6 @@ def uploaded_file(filename):
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'webp' }
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
-# class signup2(Resource):
-#     def post(self):
-#         try:            
-#             middle_name = request.form.get('middle_name')
-#             national_id = request.form.get('national_id')
-#             phone_number = request.form.get('phone_number')
-#             uids = request.form.get('uids')
-#             image_file = request.files.get('image')
-#             latitude = request.form.get('latitude')
-#             longitude = request.form.get('longitude')
-#             county = request.form.get('county')
-            
-#             if not middle_name or not national_id or not phone_number or not uids or not image_file or not county:
-#                 return {'error': 'Missing required fields'}, 400
-
-#             if not os.path.exists(UPLOAD_FOLDER):
-#                 os.makedirs(UPLOAD_FOLDER)
-
-#             if not allowed_file(image_file.filename):
-#                 return {'error': 'Invalid file type'}, 400
-
-#             image_filename = secure_filename(image_file.filename)
-#             image_path = os.path.join(UPLOAD_FOLDER, image_filename)
-#             image_file.save(image_path)
-            
-
-#             image_url = url_for('uploaded_file', filename=image_filename, _external=True)
-            
-#             if len(str(national_id)) != 8:
-#                 return {'error':'Enter a valid national id'}, 400
-
-#             if len(str(phone_number)) != 10:
-#                 return {'error':'Enter a valid phone number'}, 400
-
-#             existing_user = User.query.filter_by(uuid = uids).first()
-#             if existing_user:
-#                 existing_user.middle_name = middle_name
-#                 existing_user.national_id = national_id
-#                 existing_user.phone_number = phone_number
-#                 existing_user.image = image_url
-#                 existing_user.uids = uids
-#                 existing_user.latitude = float(latitude)
-#                 existing_user.longitude = float(longitude)
-#                 existing_user.county = county
-
-#                 db.session.commit()
-#                 return {'message':'user details updated successfully'}
-#             exi_county = County.query.filter_by(county_name=county).first()
-#             if exi_county:
-#                 county_id = exi_county.id 
-#             idd = existing_user.id
-#             provider = ProviderService.query.filter_by(provider_id=idd).first()
-#             if provider:
-#                 provider.county_id = county_id
-#                 db.session.commit()
-#             else:
-#                 return {'error':'Update failed'}
-#         except Exception as e:
-#             return {'error': 'An error occurred while processing the request'}, 500
-
 class signup2(Resource):
     def post(self):
         try:
@@ -285,7 +225,6 @@ class signup2(Resource):
                 return {'error': 'User not found'}, 404
         except Exception as e:
             return {'error': 'An error occurred while processing the request'}, 500
-
 
 class UpdateImage(Resource):
     @jwt_required()

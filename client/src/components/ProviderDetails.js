@@ -22,9 +22,9 @@
 //   const [newService, setNewService] = useState("");
 //   const [dropdownOpen, setDropdownOpen] = useState(false);
 //   const dropdownRef = useRef(null);
-//   const [counties, setCounties] = useState([]);
+//   const [counties, setCounties] = useState([]); // Initialize as empty array
 //   const [services, setServices] = useState([]);
-//   const [county, setCounty] = useState("");
+//   const [county, setCounty] = useState(""); // New state for county
 
 //   useEffect(() => {
 //     navigator.geolocation.getCurrentPosition(
@@ -93,7 +93,8 @@
 //       });
 //       if (response.ok) {
 //         const responseData = await response.json();
-//         setCounties(responseData);
+//         console.log("Counties data:", responseData); // Debugging line
+//         setCounties(responseData.all_counties || []);
 //       } else {
 //         setError("Error fetching all counties");
 //       }
@@ -192,7 +193,9 @@
 //   };
 
 //   const handleCheckboxChange = (service) => {
-//     const selectedIndex = selectedServices.findIndex((s) => s.id === service.id);
+//     const selectedIndex = selectedServices.findIndex(
+//       (s) => s.id === service.id
+//     );
 //     if (selectedIndex === -1) {
 //       setSelectedServices([...selectedServices, service]);
 //     } else {
@@ -239,7 +242,7 @@
 //       formData.append("uids", uuid);
 //       formData.append("latitude", latitude);
 //       formData.append("longitude", longitude);
-//       formData.append("county", county); // Append county to form data
+//       formData.append("county", county);
 
 //       const userDetailsResponse = await fetch("/signup2", {
 //         method: "POST",
@@ -251,7 +254,10 @@
 
 //       if (userDetailsResponse.ok) {
 //         const userDetailsData = await userDetailsResponse.json();
-//         localStorage.setItem("userDetailsData", JSON.stringify(userDetailsData));
+//         localStorage.setItem(
+//           "userDetailsData",
+//           JSON.stringify(userDetailsData)
+//         );
 //         setMessage("Services and user details added successfully");
 //         navigate("/providerPage");
 //       } else {
@@ -266,7 +272,7 @@
 //   return (
 //     <div>
 //       <h1>Fill the forms below to complete your signup</h1>
-//       <form onSubmit={handleServiceFormSubmit} encType="multipart/form-data">
+//       <form onSubmit={handleServiceFormSubmit}>
 //         <input
 //           type="text"
 //           placeholder="mama Junior"
@@ -342,7 +348,10 @@
 //         {services.length > 0 ? (
 //           <ul className="divide-y divide-gray-200 dark:divide-gray-700">
 //             {services.map((service) => (
-//               <li key={service.id} className="flex justify-between items-center">
+//               <li
+//                 key={service.id}
+//                 className="flex justify-between items-center"
+//               >
 //                 <span>{service.name}</span>
 //                 <button
 //                   className="text-red-500"
@@ -371,25 +380,35 @@
 //             Add
 //           </button>
 //         </div>
-//       </Card>
-//       <div className="max-w-md">
+//         <div className="max-w-md">
 //           <div className="mb-2 block">
-//             <Label htmlFor="countries" value="Select your county" />
+//             <Label
+//               htmlFor="counties"
+//               value="Select your county"
+//             />
 //           </div>
 //           <Select
-//             id="countries"
+//             id="counties"
 //             required
 //             value={county}
 //             onChange={(e) => setCounty(e.target.value)} // Update state on change
+//             className="text-black" // Ensure the text is visible
 //           >
-//             <option value="" disabled>Select your county</option>
+//             <option value="" disabled>
+//               Select your county
+//             </option>
 //             {counties.map((county) => (
-//               <option key={county.id} value={county.name}>
+//               <option
+//                 key={county.id}
+//                 value={county.name}
+//                 className="text-black"
+//               >
 //                 {county.name}
 //               </option>
 //             ))}
 //           </Select>
 //         </div>
+//       </Card>
 //       {error && <p className="text-red-500">{error}</p>}
 //       {message && <p>{message}</p>}
 //     </div>
@@ -397,6 +416,8 @@
 // }
 
 // export default ProviderDetails;
+
+
 
 import React, { useEffect, useState, useRef } from "react";
 import { Card, Label, Select } from "flowbite-react";
@@ -425,6 +446,7 @@ function ProviderDetails() {
   const [counties, setCounties] = useState([]); // Initialize as empty array
   const [services, setServices] = useState([]);
   const [county, setCounty] = useState(""); // New state for county
+  const [countySaved, setCountySaved] = useState(false); // New state for tracking county save
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(
@@ -658,8 +680,8 @@ function ProviderDetails() {
           "userDetailsData",
           JSON.stringify(userDetailsData)
         );
-        setMessage("Services and user details added successfully");
-        navigate("/providerPage");
+        setMessage("User details added successfully");
+        setCountySaved(true); // Update state to indicate county is saved
       } else {
         const userDetailsErrors = await userDetailsResponse.json();
         setError(userDetailsErrors.error);
@@ -726,66 +748,9 @@ function ProviderDetails() {
           onChange={(e) => setImage(e.target.files[0])}
         />
 
-        <button type="submit">Submit</button>
-      </form>
-      <Card className="max-w-sm">
-        <h1 className="text-xl font-bold leading-none text-gray-900 dark:text-white">
-          Services you offer
-        </h1>
-        <div ref={dropdownRef}>
-          {error &&
-            error ===
-              "Service entered already exists,please mark from the list provided" && (
-              <div>
-                <ServiceDropdown
-                  services={allServices}
-                  selectedServices={selectedServices}
-                  handleCheckboxChange={handleCheckboxChange}
-                />
-              </div>
-            )}
-        </div>
-        {services.length > 0 ? (
-          <ul className="divide-y divide-gray-200 dark:divide-gray-700">
-            {services.map((service) => (
-              <li
-                key={service.id}
-                className="flex justify-between items-center"
-              >
-                <span>{service.name}</span>
-                <button
-                  className="text-red-500"
-                  onClick={() => handleDeleteService(service.id)}
-                >
-                  <FontAwesomeIcon icon={faTrash} />
-                </button>
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p>No services found</p>
-        )}
-        <div className="mt-4">
-          <input
-            className="rounded border border-blue-300 p-2"
-            type="text"
-            value={newService}
-            onChange={(e) => setNewService(e.target.value)}
-            placeholder="Add new service"
-          />
-          <button
-            className="ml-4 p-2 bg-blue-500 text-white rounded"
-            onClick={handleAddService}
-          >
-            Add
-          </button>
-        </div>
         <div className="max-w-md">
           <div className="mb-2 block">
-            <Label
-              htmlFor="counties"
-              value="Select your county"
-            />
+            <Label htmlFor="counties" value="Select your county" />
           </div>
           <Select
             id="counties"
@@ -798,17 +763,72 @@ function ProviderDetails() {
               Select your county
             </option>
             {counties.map((county) => (
-              <option
-                key={county.id}
-                value={county.name}
-                className="text-black"
-              >
+              <option key={county.id} value={county.name} className="text-black">
                 {county.name}
               </option>
             ))}
           </Select>
         </div>
-      </Card>
+
+        <button type="submit">Submit</button>
+      </form>
+
+      {countySaved && ( // Display the service card only if county has been saved
+        <Card className="max-w-sm">
+          <h1 className="text-xl font-bold leading-none text-gray-900 dark:text-white">
+            Services you offer
+          </h1>
+          <div ref={dropdownRef}>
+            {error &&
+              error ===
+                "Service entered already exists,please mark from the list provided" && (
+                <div>
+                  <ServiceDropdown
+                    services={allServices}
+                    selectedServices={selectedServices}
+                    handleCheckboxChange={handleCheckboxChange}
+                  />
+                </div>
+              )}
+          </div>
+          {services.length > 0 ? (
+            <ul className="divide-y divide-gray-200 dark:divide-gray-700">
+              {services.map((service) => (
+                <li
+                  key={service.id}
+                  className="flex justify-between items-center"
+                >
+                  <span>{service.name}</span>
+                  <button
+                    className="text-red-500"
+                    onClick={() => handleDeleteService(service.id)}
+                  >
+                    <FontAwesomeIcon icon={faTrash} />
+                  </button>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p>No services found</p>
+          )}
+          <div className="mt-4">
+            <input
+              className="rounded border border-blue-300 p-2"
+              type="text"
+              value={newService}
+              onChange={(e) => setNewService(e.target.value)}
+              placeholder="Add new service"
+            />
+            <button
+              className="ml-4 p-2 bg-blue-500 text-white rounded"
+              onClick={handleAddService}
+            >
+              Add
+            </button>
+          </div>
+        </Card>
+      )}
+
       {error && <p className="text-red-500">{error}</p>}
       {message && <p>{message}</p>}
     </div>
