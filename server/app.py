@@ -609,31 +609,6 @@ class ProviderList(Resource):
             return jsonify(user_details)
         else:
             return {'error': 'No users found for the given provider IDs'}, 404
-
-
-# class ProviderList(Resource):
-#     @jwt_required()
-#     def get(self):
-#         provider_ids = request.args.get('provider_ids')
-#         # client_lat = float(request.args.get('client_lat'))
-#         # client_lon = float(request.args.get('client_lon'))
-
-#         if provider_ids is None:
-#             return {'error': 'No provider IDs provided'}, 400
-
-#         provider_ids_list = provider_ids.split(',')
-#         provider_ids_list = [int(provider_id) for provider_id in provider_ids_list]
-
-#         users = User.query.filter(User.id.in_(provider_ids_list)).all()
-
-#         if users:
-#             # Format the user data as a list of dictionaries
-#             user_details = [{'first_name': user.first_name, 'last_name': user.last_name, 'email': user.email, 'image': user.image} for user in users]
-#             return jsonify(user_details)
-#         else:
-#             return {'error': 'No users found for the given provider IDs'}, 404
-
-
 class ProviderIds(Resource):
     def get(self, service_id):
         provider_ids = ProviderService.query.filter_by(service_id=service_id).all()
