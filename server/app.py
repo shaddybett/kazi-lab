@@ -361,6 +361,10 @@ class AddService(Resource):
     def post(self):
         current_user = get_jwt_identity()
         user = User.query.filter_by(email=current_user).first()
+        reg_county = user.county
+        exist_county = County.query.filter_by(county_name = reg_county).first()
+        if exist_county:
+            county_id = exist_county.id
         
         if not user:
             return {'error': 'User not found'}, 404
@@ -379,7 +383,8 @@ class AddService(Resource):
             if not provider_service:
                 provider_service = ProviderService(
                     provider_id=user.id,
-                    service_id=service_id
+                    service_id=service_id,
+                    county_id = county_id
                 )
                 db.session.add(provider_service)
                 service_ids.append(service_id)
