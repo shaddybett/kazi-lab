@@ -148,9 +148,7 @@ function ProviderDashboard() {
         } else {
           const errorMessage = await response.json();
           if (
-            errorMessage.error !== "At least one service must be provided" &&
-            errorMessage.error !== "At least one service must be provided" &&
-            errorMessage.error !== "Service is already registered"
+            errorMessage.error ===  "Service entered already exists,please mark from the list provided"
           ) {
             setError(errorMessage.error);
             setNewService("");
@@ -276,9 +274,7 @@ function ProviderDashboard() {
           </h1>
           <div ref={dropdownRef}>
             {error &&
-              error !== "At least one service must be provided" &&
-              error !== "An error occurred. Please try again later" &&
-              error !== "Service is already registered" && (
+              error ===  "Service entered already exists,please mark from the list provided" && (
                 <div>
                   <ServiceDropdown
                     services={allServices}

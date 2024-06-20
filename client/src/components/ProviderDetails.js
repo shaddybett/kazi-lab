@@ -1,13 +1,13 @@
 import React, { useEffect, useState, useRef } from "react";
 import { Card, Label, Select } from "flowbite-react";
 import { useNavigate } from "react-router-dom";
-import Swal from "sweetalert2";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrash } from "@fortawesome/free-solid-svg-icons";
-import ServiceDropdown from "./ServiceDropdown";
+// import Swal from "sweetalert2";
+// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+// import { faTrash } from "@fortawesome/free-solid-svg-icons";
+// import ServiceDropdown from "./ServiceDropdown";
 
 function ProviderDetails() {
-  const [selectedServices, setSelectedServices] = useState([]);
+  // const [selectedServices, setSelectedServices] = useState([]);
   const [error, setError] = useState("");
   const [middle_name, setMiddle] = useState("");
   const [phone_number, setNumber] = useState("");
@@ -18,12 +18,12 @@ function ProviderDetails() {
   const [latitude, setLatitude] = useState(null);
   const [longitude, setLongitude] = useState(null);
   const [manualLocation, setManualLocation] = useState(false);
-  const [allServices, setAllServices] = useState([]);
-  const [newService, setNewService] = useState("");
+  // const [allServices, setAllServices] = useState([]);
+  // const [newService, setNewService] = useState("");
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
   const [counties, setCounties] = useState([]); // Initialize as empty array
-  const [services, setServices] = useState([]);
+  // const [services, setServices] = useState([]);
   const [county, setCounty] = useState(""); // New state for county
 
   useEffect(() => {
@@ -39,49 +39,49 @@ function ProviderDetails() {
     );
   }, []);
 
-  const fetchData = async () => {
-    try {
-      const token = localStorage.getItem("token");
-      const response = await fetch("/offers", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      if (response.ok) {
-        const responseData = await response.json();
-        setServices(responseData.services || []);
-      } else {
-        const errorMessage = await response.json();
-        setError(errorMessage.error);
-      }
-    } catch (error) {
-      setError("An error occurred. Please try again later.");
-    }
-  };
+  // const fetchData = async () => {
+  //   try {
+  //     const token = localStorage.getItem("token");
+  //     const response = await fetch("/offers", {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //         Authorization: `Bearer ${token}`,
+  //       },
+  //     });
+  //     if (response.ok) {
+  //       const responseData = await response.json();
+  //       setServices(responseData.services || []);
+  //     } else {
+  //       const errorMessage = await response.json();
+  //       setError(errorMessage.error);
+  //     }
+  //   } catch (error) {
+  //     setError("An error occurred. Please try again later.");
+  //   }
+  // };
 
-  const fetchAllServices = async () => {
-    try {
-      const token = localStorage.getItem("token");
-      const response = await fetch("/service", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      if (response.ok) {
-        const responseData = await response.json();
-        setAllServices(responseData.all_services || []);
-      } else {
-        const errorMessage = await response.json();
-        setError(errorMessage.error);
-      }
-    } catch (error) {
-      setError("An error occurred. Please try again later.");
-    }
-  };
+  // const fetchAllServices = async () => {
+  //   try {
+  //     const token = localStorage.getItem("token");
+  //     const response = await fetch("/service", {
+  //       method: "GET",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //         Authorization: `Bearer ${token}`,
+  //       },
+  //     });
+  //     if (response.ok) {
+  //       const responseData = await response.json();
+  //       setAllServices(responseData.all_services || []);
+  //     } else {
+  //       const errorMessage = await response.json();
+  //       setError(errorMessage.error);
+  //     }
+  //   } catch (error) {
+  //     setError("An error occurred. Please try again later.");
+  //   }
+  // };
 
   const fetchAllCounties = async () => {
     try {
@@ -103,105 +103,105 @@ function ProviderDetails() {
     }
   };
 
-  const handleAddService = async () => {
-    const result = await Swal.fire({
-      title: "Are you sure?",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, Add Service!",
-    });
-    if (result.isConfirmed) {
-      const token = localStorage.getItem("token");
-      try {
-        const response = await fetch("/add-service", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({
-            service_name: newService,
-            existing_services: selectedServices.map((service) => service.id),
-          }),
-        });
-        if (response.ok) {
-          setNewService("");
-          setError("");
-          Swal.fire("Success", "Service added successfully", "success");
-          fetchData();
-        } else {
-          const errorMessage = await response.json();
-          if (
-            errorMessage.error ===
-            "Service entered already exists,please mark from the list provided"
-          ) {
-            setError(errorMessage.error);
-            setNewService("");
-            fetchAllServices();
-            if (
-              errorMessage.error === "At least one service must be provided" &&
-              errorMessage.error === "Service is already registered" &&
-              errorMessage.error === "Missing required fields"
-            ) {
-              const timer = setTimeout(() => {
-                setError("");
-              }, 5000);
-              return () => clearTimeout(timer); // Cleanup the timer on component unmount or error change
-            }
-          } else {
-            setError(errorMessage.error || "An error occurred");
-          }
-        }
-      } catch (error) {
-        setError("An error occurred. Please try again later");
-      }
-    }
-  };
+  // const handleAddService = async () => {
+  //   const result = await Swal.fire({
+  //     title: "Are you sure?",
+  //     icon: "warning",
+  //     showCancelButton: true,
+  //     confirmButtonColor: "#3085d6",
+  //     cancelButtonColor: "#d33",
+  //     confirmButtonText: "Yes, Add Service!",
+  //   });
+  //   if (result.isConfirmed) {
+  //     const token = localStorage.getItem("token");
+  //     try {
+  //       const response = await fetch("/add-service", {
+  //         method: "POST",
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //           Authorization: `Bearer ${token}`,
+  //         },
+  //         body: JSON.stringify({
+  //           service_name: newService,
+  //           existing_services: selectedServices.map((service) => service.id),
+  //         }),
+  //       });
+  //       if (response.ok) {
+  //         setNewService("");
+  //         setError("");
+  //         Swal.fire("Success", "Service added successfully", "success");
+  //         fetchData();
+  //       } else {
+  //         const errorMessage = await response.json();
+  //         if (
+  //           errorMessage.error ===
+  //           "Service entered already exists,please mark from the list provided"
+  //         ) {
+  //           setError(errorMessage.error);
+  //           setNewService("");
+  //           fetchAllServices();
+  //           if (
+  //             errorMessage.error === "At least one service must be provided" &&
+  //             errorMessage.error === "Service is already registered" &&
+  //             errorMessage.error === "Missing required fields"
+  //           ) {
+  //             const timer = setTimeout(() => {
+  //               setError("");
+  //             }, 5000);
+  //             return () => clearTimeout(timer); // Cleanup the timer on component unmount or error change
+  //           }
+  //         } else {
+  //           setError(errorMessage.error || "An error occurred");
+  //         }
+  //       }
+  //     } catch (error) {
+  //       setError("An error occurred. Please try again later");
+  //     }
+  //   }
+  // };
 
-  const handleDeleteService = async (serviceId) => {
-    const result = await Swal.fire({
-      title: "Are you sure?",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, Delete!",
-    });
-    if (result.isConfirmed) {
-      const token = localStorage.getItem("token");
-      try {
-        const response = await fetch(`/delete-service/${serviceId}`, {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        if (response.ok) {
-          Swal.fire("Success", "Service deleted successfully", "success");
-          fetchData();
-        } else {
-          const errorMessage = await response.json();
-          setError(errorMessage.error || "An error occurred");
-        }
-      } catch (error) {
-        setError("An error occurred. Please try again later");
-      }
-    }
-  };
+  // const handleDeleteService = async (serviceId) => {
+  //   const result = await Swal.fire({
+  //     title: "Are you sure?",
+  //     icon: "warning",
+  //     showCancelButton: true,
+  //     confirmButtonColor: "#3085d6",
+  //     cancelButtonColor: "#d33",
+  //     confirmButtonText: "Yes, Delete!",
+  //   });
+  //   if (result.isConfirmed) {
+  //     const token = localStorage.getItem("token");
+  //     try {
+  //       const response = await fetch(`/delete-service/${serviceId}`, {
+  //         method: "DELETE",
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //           Authorization: `Bearer ${token}`,
+  //         },
+  //       });
+  //       if (response.ok) {
+  //         Swal.fire("Success", "Service deleted successfully", "success");
+  //         fetchData();
+  //       } else {
+  //         const errorMessage = await response.json();
+  //         setError(errorMessage.error || "An error occurred");
+  //       }
+  //     } catch (error) {
+  //       setError("An error occurred. Please try again later");
+  //     }
+  //   }
+  // };
 
-  const handleCheckboxChange = (service) => {
-    const selectedIndex = selectedServices.findIndex(
-      (s) => s.id === service.id
-    );
-    if (selectedIndex === -1) {
-      setSelectedServices([...selectedServices, service]);
-    } else {
-      setSelectedServices(selectedServices.filter((s) => s.id !== service.id));
-    }
-  };
+  // const handleCheckboxChange = (service) => {
+  //   const selectedIndex = selectedServices.findIndex(
+  //     (s) => s.id === service.id
+  //   );
+  //   if (selectedIndex === -1) {
+  //     setSelectedServices([...selectedServices, service]);
+  //   } else {
+  //     setSelectedServices(selectedServices.filter((s) => s.id !== service.id));
+  //   }
+  // };
 
   useEffect(() => {
     // Fetch counties when the component mounts
