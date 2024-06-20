@@ -401,6 +401,7 @@ class AddService(Resource):
             db.session.add(new_service)
             db.session.flush() 
             county = user.county
+            print("county:",county)
             exi_county = County.query.filter_by(county_name=county).first()
             county_idd = None
             if exi_county:
