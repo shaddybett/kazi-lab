@@ -1,3 +1,4 @@
+
 // import React, { useEffect, useState } from "react";
 // import { Card, Avatar } from "flowbite-react";
 // import UserDetailsPopup from "./UserDetailsPopup";
@@ -66,12 +67,17 @@
 
 //   useEffect(() => {
 //     if (locationEnabled && providers.length > 0) {
-//       const sortedProviders = [...providers].filter(provider => provider.latitude && provider.longitude)
+//       const sortedProviders = [...providers]
+//         .filter(provider => provider.latitude && provider.longitude)
 //         .sort((a, b) => {
 //           const distanceA = getDistance(clientLocation, { latitude: a.latitude, longitude: a.longitude });
 //           const distanceB = getDistance(clientLocation, { latitude: b.latitude, longitude: b.longitude });
 //           return distanceA - distanceB;
-//         });
+//         })
+//         .map(provider => ({
+//           ...provider,
+//           distance: (getDistance(clientLocation, { latitude: provider.latitude, longitude: provider.longitude }) / 1609.34).toFixed(2),
+//         }));
 //       setProviders(sortedProviders);
 //     }
 //   }, [clientLocation, providers, locationEnabled]);
@@ -146,7 +152,6 @@
 // }
 
 // export default ServiceProviders;
-
 
 
 import React, { useEffect, useState } from "react";
@@ -226,7 +231,7 @@ function ServiceProviders() {
         })
         .map(provider => ({
           ...provider,
-          distance: (getDistance(clientLocation, { latitude: provider.latitude, longitude: provider.longitude }) / 1609.34).toFixed(2),
+          distance: (getDistance(clientLocation, { latitude: provider.latitude, longitude: provider.longitude }) / 1000).toFixed(2),
         }));
       setProviders(sortedProviders);
     }
@@ -285,10 +290,9 @@ function ServiceProviders() {
                   </div>
                   <div className="min-w-0 flex-1">
                     <p className="truncate text-sm font-medium text-gray-900 dark:text-white">
-                      {provider.first_name} {provider.last_name} {locationEnabled && provider.distance ? `${provider.distance} miles` : ''}
+                      {provider.first_name} {provider.last_name} {locationEnabled && provider.distance ? `${provider.distance} km` : ''}
                     </p>
-                    <p>{provider.county}</p>
-                    <p className="truncate text-sm text-gray-500 dark:text-gray-400">{provider.email}</p>
+                    <p className="truncate text-sm text-gray-500 dark:text-gray-400">{provider.county} county</p>
                   </div>
                 </div>
               </li>
