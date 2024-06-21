@@ -6,28 +6,39 @@
 // function ServiceProviders() {
 //   const [providers, setProviders] = useState([]);
 //   const [selectedUser, setSelectedUser] = useState(null);
-//   const [clientLocation, setClientLocation] = useState({
-//     latitude: null,
-//     longitude: null,
-//   });
+//   const [clientLocation, setClientLocation] = useState({ latitude: null, longitude: null });
+//   const [locationEnabled, setLocationEnabled] = useState(false);
 
 //   useEffect(() => {
-//     navigator.geolocation.getCurrentPosition(
-//       (position) => {
-//         setClientLocation({
-//           latitude: position.coords.latitude,
-//           longitude: position.coords.longitude,
-//         });
-//       },
-//       (error) => console.error(error)
-//     );
+//     // Request client's location using Geolocation API
+//     if (navigator.geolocation) {
+//       navigator.geolocation.getCurrentPosition(
+//         (position) => {
+//           setClientLocation({
+//             latitude: position.coords.latitude,
+//             longitude: position.coords.longitude,
+//           });
+//           setLocationEnabled(true);
+//         },
+//         (error) => {
+//           console.error("Error getting location:", error);
+//           setLocationEnabled(false);
+//         }
+//       );
+//     } else {
+//       console.error("Geolocation is not supported by this browser.");
+//       setLocationEnabled(false);
+//     }
+//   }, []);
+
+//   useEffect(() => {
 //     const fetchProviderDetails = async () => {
 //       try {
 //         const token = localStorage.getItem("token");
 //         const providerIds = JSON.parse(localStorage.getItem("providerIds"));
 
 //         const response = await fetch(
-//           `/provider-details?provider_ids=${providerIds.join(",")}`,
+//           `/provider-details?provider_ids=${providerIds.join(",")}${locationEnabled ? `&client_lat=${clientLocation.latitude}&client_lon=${clientLocation.longitude}` : ''}`,
 //           {
 //             method: "GET",
 //             headers: {
@@ -39,6 +50,7 @@
 //         if (response.ok) {
 //           const providerDetails = await response.json();
 //           setProviders(providerDetails);
+//           console.log("Provider Details:", providerDetails);
 //         } else {
 //           throw new Error("Failed to fetch provider details");
 //         }
@@ -47,29 +59,22 @@
 //       }
 //     };
 
-//     fetchProviderDetails();
-//   }, []);
+//     if (locationEnabled || !locationEnabled) {
+//       fetchProviderDetails();
+//     }
+//   }, [clientLocation, locationEnabled]);
 
 //   useEffect(() => {
-//     if (
-//       clientLocation.latitude &&
-//       clientLocation.longitude &&
-//       providers.length > 0
-//     ) {
-//       const sortedProviders = [...providers].sort((a, b) => {
-//         const distanceA = getDistance(clientLocation, {
-//           latitude: a.latitude,
-//           longitude: a.longitude,
+//     if (locationEnabled && providers.length > 0) {
+//       const sortedProviders = [...providers].filter(provider => provider.latitude && provider.longitude)
+//         .sort((a, b) => {
+//           const distanceA = getDistance(clientLocation, { latitude: a.latitude, longitude: a.longitude });
+//           const distanceB = getDistance(clientLocation, { latitude: b.latitude, longitude: b.longitude });
+//           return distanceA - distanceB;
 //         });
-//         const distanceB = getDistance(clientLocation, {
-//           latitude: b.latitude,
-//           longitude: b.longitude,
-//         });
-//         return distanceA - distanceB;
-//       });
 //       setProviders(sortedProviders);
 //     }
-//   }, [clientLocation, providers]);
+//   }, [clientLocation, providers, locationEnabled]);
 
 //   const handleProviderClick = async (provider) => {
 //     try {
@@ -96,22 +101,22 @@
 //   const closePopup = () => {
 //     setSelectedUser(null);
 //   };
+
 //   return (
 //     <div>
 //       <Card className="max-w-sm">
 //         <div className="mb-4 flex items-center justify-between">
-//           <h5 className="text-xl font-bold leading-none text-gray-900 dark:text-white">
-//             Service Providers
-//           </h5>
+//           <h5 className="text-xl font-bold leading-none text-gray-900 dark:text-white">Service Providers</h5>
 //         </div>
 //         <div className="flow-root">
+//           {!locationEnabled && (
+//             <div className="mb-4 p-4 text-sm text-yellow-700 bg-yellow-100 rounded-lg dark:bg-yellow-200 dark:text-yellow-800" role="alert">
+//               To see the closest service providers near you, please enable location services.
+//             </div>
+//           )}
 //           <ul className="divide-y divide-gray-200 dark:divide-gray-700">
 //             {providers.map((provider, index) => (
-//               <li
-//                 key={index}
-//                 className="py-3 sm:py-4 cursor-pointer"
-//                 onClick={() => handleProviderClick(provider)}
-//               >
+//               <li key={index} className="py-3 sm:py-4 cursor-pointer" onClick={() => handleProviderClick(provider)}>
 //                 <div className="flex items-center space-x-4">
 //                   <div className="shrink-0">
 //                     <img
@@ -124,11 +129,10 @@
 //                   </div>
 //                   <div className="min-w-0 flex-1">
 //                     <p className="truncate text-sm font-medium text-gray-900 dark:text-white">
-//                       {provider.first_name} {provider.last_name}
+//                       {provider.first_name} {provider.last_name} {locationEnabled && provider.distance ? `${provider.distance} miles` : ''}
 //                     </p>
-//                     <p className="truncate text-sm text-gray-500 dark:text-gray-400">
-//                       {provider.email}
-//                     </p>
+//                     <p>{provider.county}</p>
+//                     <p className="truncate text-sm text-gray-500 dark:text-gray-400">{provider.email}</p>
 //                   </div>
 //                 </div>
 //               </li>
@@ -136,15 +140,12 @@
 //           </ul>
 //         </div>
 //       </Card>
-//       {selectedUser && (
-//         <UserDetailsPopup user={selectedUser} onClose={closePopup} />
-//       )}
+//       {selectedUser && <UserDetailsPopup user={selectedUser} onClose={closePopup} />}
 //     </div>
 //   );
 // }
 
 // export default ServiceProviders;
-
 
 
 import React, { useEffect, useState } from "react";
@@ -157,9 +158,9 @@ function ServiceProviders() {
   const [selectedUser, setSelectedUser] = useState(null);
   const [clientLocation, setClientLocation] = useState({ latitude: null, longitude: null });
   const [locationEnabled, setLocationEnabled] = useState(false);
+  const [fetchError, setFetchError] = useState(null);
 
   useEffect(() => {
-    // Request client's location using Geolocation API
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
@@ -172,11 +173,13 @@ function ServiceProviders() {
         (error) => {
           console.error("Error getting location:", error);
           setLocationEnabled(false);
+          setFetchError("Location access is disabled. Some features may not be available.");
         }
       );
     } else {
       console.error("Geolocation is not supported by this browser.");
       setLocationEnabled(false);
+      setFetchError("Geolocation is not supported by this browser.");
     }
   }, []);
 
@@ -187,7 +190,9 @@ function ServiceProviders() {
         const providerIds = JSON.parse(localStorage.getItem("providerIds"));
 
         const response = await fetch(
-          `/provider-details?provider_ids=${providerIds.join(",")}${locationEnabled ? `&client_lat=${clientLocation.latitude}&client_lon=${clientLocation.longitude}` : ''}`,
+          `/provider-details?provider_ids=${providerIds.join(",")}${
+            locationEnabled ? `&client_lat=${clientLocation.latitude}&client_lon=${clientLocation.longitude}` : ""
+          }`,
           {
             method: "GET",
             headers: {
@@ -205,22 +210,26 @@ function ServiceProviders() {
         }
       } catch (error) {
         console.error("Error fetching provider details:", error);
+        setFetchError("Failed to fetch provider details. Please try again later.");
       }
     };
 
-    if (locationEnabled || !locationEnabled) {
-      fetchProviderDetails();
-    }
+    fetchProviderDetails();
   }, [clientLocation, locationEnabled]);
 
   useEffect(() => {
     if (locationEnabled && providers.length > 0) {
-      const sortedProviders = [...providers].filter(provider => provider.latitude && provider.longitude)
+      const sortedProviders = [...providers]
+        .filter((provider) => provider.latitude && provider.longitude)
         .sort((a, b) => {
           const distanceA = getDistance(clientLocation, { latitude: a.latitude, longitude: a.longitude });
           const distanceB = getDistance(clientLocation, { latitude: b.latitude, longitude: b.longitude });
           return distanceA - distanceB;
-        });
+        })
+        .map((provider) => ({
+          ...provider,
+          distance: (getDistance(clientLocation, { latitude: provider.latitude, longitude: provider.longitude }) / 1609.34).toFixed(2),
+        }));
       setProviders(sortedProviders);
     }
   }, [clientLocation, providers, locationEnabled]);
@@ -258,9 +267,9 @@ function ServiceProviders() {
           <h5 className="text-xl font-bold leading-none text-gray-900 dark:text-white">Service Providers</h5>
         </div>
         <div className="flow-root">
-          {!locationEnabled && (
+          {fetchError && (
             <div className="mb-4 p-4 text-sm text-yellow-700 bg-yellow-100 rounded-lg dark:bg-yellow-200 dark:text-yellow-800" role="alert">
-              To see the closest service providers near you, please enable location services.
+              {fetchError}
             </div>
           )}
           <ul className="divide-y divide-gray-200 dark:divide-gray-700">
@@ -278,7 +287,7 @@ function ServiceProviders() {
                   </div>
                   <div className="min-w-0 flex-1">
                     <p className="truncate text-sm font-medium text-gray-900 dark:text-white">
-                      {provider.first_name} {provider.last_name} {locationEnabled && provider.distance ? `${provider.distance} miles` : ''}
+                      {provider.first_name} {provider.last_name} {locationEnabled && provider.distance ? `${provider.distance} miles` : ""}
                     </p>
                     <p>{provider.county}</p>
                     <p className="truncate text-sm text-gray-500 dark:text-gray-400">{provider.email}</p>
