@@ -60,6 +60,34 @@
 //     fetchData();
 //   }, []);
 
+//   useEffect(() => {
+//     const fetchServicesByCounty = async () => {
+//       if (selectedCounty) {
+//         try {
+//           const token = localStorage.getItem("token");
+//           const response = await fetch(`/services-by-county/${selectedCounty}`, {
+//             method: "GET",
+//             headers: {
+//               "Content-Type": "application/json",
+//               Authorization: `Bearer ${token}`,
+//             },
+//           });
+//           if (response.ok) {
+//             const responseData = await response.json();
+//             setServices(responseData.services);
+//           } else {
+//             const errorMessage = await response.json();
+//             setError(errorMessage.error || "An error occurred while fetching services by county");
+//           }
+//         } catch (error) {
+//           setError("An error occurred please try again later");
+//         }
+//       }
+//     };
+
+//     fetchServicesByCounty();
+//   }, [selectedCounty]);
+
 //   const handleProviders = async (service) => {
 //     try {
 //       const token = localStorage.getItem("token");
@@ -116,30 +144,6 @@
 //     service.name.toLowerCase().includes(searchQuery.toLowerCase())
 //   );
 
-//   const handleCountyChange = async (e) => {
-//     const selectedCounty = e.target.value;
-//     setSelectedCounty(selectedCounty);
-//     try {
-//       const token = localStorage.getItem("token");
-//       const response = await fetch(`/services-by-county/${selectedCounty}`, {
-//         method: "GET",
-//         headers: {
-//           "Content-Type": "application/json",
-//           Authorization: `Bearer ${token}`,
-//         },
-//       });
-//       if (response.ok) {
-//         const responseData = await response.json();
-//         setServices(responseData.services);
-//       } else {
-//         const errorMessage = await response.json();
-//         setError(errorMessage.error || "An error occurred while fetching services by county");
-//       }
-//     } catch (error) {
-//       setError("An error occurred please try again later");
-//     }
-//   };
-
 //   return (
 //     <div className="p-4">
 //       <Navbar fluid rounded className="bg-black">
@@ -186,7 +190,7 @@
 //         <Select
 //           id="counties"
 //           value={selectedCounty}
-//           onChange={handleCountyChange}
+//           onChange={(e) => setSelectedCounty(e.target.value)}
 //           className="p-2 border rounded w-48"
 //         >
 //           <option value="">Select county...</option>
@@ -265,11 +269,11 @@ function ClientDashboard() {
         if (serviceResponse.ok && userResponse.ok && countyResponse.ok) {
           const serviceData = await serviceResponse.json();
           const userData = await userResponse.json();
-          const countyData = await countyResponse.json(); // Assuming county data is an array of objects with id and name
+          const countyData = await countyResponse.json();
 
           setServices(serviceData.all_services);
           setData(userData);
-          setCounties(countyData.all_counties); // Set counties in state
+          setCounties(countyData.all_counties);
         } else {
           const errorMessage = await serviceResponse.json();
           setError(errorMessage.error || "An error occurred");
