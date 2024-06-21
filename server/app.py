@@ -295,18 +295,84 @@ class Dashboard(Resource):
         else:
             response = make_response({'error': 'Error fetching user details'}, 404)
             return response      
+# class AddService(Resource):
+#     @jwt_required()
+#     def post(self):
+#         current_user = get_jwt_identity()
+#         user = User.query.filter_by(email=current_user).first()
+#         reg_county = user.county
+#         exist_county = County.query.filter_by(county_name = reg_county).first()
+#         if exist_county:
+#             county_id = exist_county.id
+        
+#         if not user:
+#             return {'error': 'User not found'}, 404
+
+#         args = request.json
+#         existing_services = args.get('existing_services', [])
+#         new_service_name = args.get('service_name')
+
+#         if not existing_services and not new_service_name:
+#             return {'error': 'At least one service must be provided'}, 400
+
+#         service_ids = []
+
+#         for service_id in existing_services:
+#             provider_service = ProviderService.query.filter_by(provider_id=user.id, service_id=service_id).first()
+#             if not provider_service:
+#                 provider_service = ProviderService(
+#                     provider_id=user.id,
+#                     service_id=service_id,
+#                     county_id = county_id
+#                 )
+#                 db.session.add(provider_service)
+#                 service_ids.append(service_id)
+
+#         if new_service_name:
+#             existing_service = Service.query.filter(func.lower(Service.service_name) == func.lower(new_service_name)).first()
+#             provider_existing_service = Service.query.filter_by(service_name=new_service_name).first()
+            
+#             if provider_existing_service:
+#                 return {'error': f'Service "{new_service_name}" is already registered by you'}, 401
+            
+#             if existing_service:
+#                 return {'error': f'Service entered already exists,please mark from the list provided'}, 401
+
+#             new_service = Service(
+#                 service_name=new_service_name
+#                 # provider_id=user.id
+#             )
+#             db.session.add(new_service)
+#             db.session.flush() 
+#             county = user.county
+#             exi_county = County.query.filter_by(county_name=county).first()
+#             county_idd = None
+#             if exi_county:
+#                 county_idd = exi_county.id
+   
+#             provider_service = ProviderService(
+#                 provider_id=user.id,
+#                 service_id=new_service.id,
+#                 county_id = county_idd
+#             )
+#             db.session.add(provider_service)
+#             service_ids.append(new_service.id)
+
+#         db.session.commit()
+#         return {'message': f'Services created and associated with {user.first_name} {user.last_name}', 'service_ids': service_ids}, 201
 class AddService(Resource):
     @jwt_required()
     def post(self):
         current_user = get_jwt_identity()
         user = User.query.filter_by(email=current_user).first()
-        reg_county = user.county
-        exist_county = County.query.filter_by(county_name = reg_county).first()
-        if exist_county:
-            county_id = exist_county.id
-        
         if not user:
             return {'error': 'User not found'}, 404
+        
+        reg_county = user.county
+        exist_county = County.query.filter_by(county_name=reg_county).first()
+        if not exist_county:
+            return {'error': 'County not found'}, 404
+        county_id = exist_county.id
 
         args = request.json
         existing_services = args.get('existing_services', [])
@@ -323,40 +389,40 @@ class AddService(Resource):
                 provider_service = ProviderService(
                     provider_id=user.id,
                     service_id=service_id,
-                    county_id = county_id
+                    county_id=county_id
                 )
                 db.session.add(provider_service)
                 service_ids.append(service_id)
 
         if new_service_name:
             existing_service = Service.query.filter(func.lower(Service.service_name) == func.lower(new_service_name)).first()
-            provider_existing_service = Service.query.filter_by(provider_id=user.id, service_name=new_service_name).first()
-            
-            if provider_existing_service:
-                return {'error': f'Service "{new_service_name}" is already registered by you'}, 401
-            
             if existing_service:
-                return {'error': f'Service entered already exists,please mark from the list provided'}, 401
+                # Check if this service is already registered by this provider
+                provider_existing_service = ProviderService.query.filter_by(provider_id=user.id, service_id=existing_service.id).first()
+                if provider_existing_service:
+                    return {'error': f'Service "{new_service_name}" is already registered by you'}, 401
+                else:
+                    # If the service exists but not registered by this provider, register it now
+                    provider_service = ProviderService(
+                        provider_id=user.id,
+                        service_id=existing_service.id,
+                        county_id=county_id
+                    )
+                    db.session.add(provider_service)
+                    service_ids.append(existing_service.id)
+            else:
+                # Create a new service and associate it with the provider
+                new_service = Service(service_name=new_service_name)
+                db.session.add(new_service)
+                db.session.flush()  # Ensure new_service.id is available
 
-            new_service = Service(
-                service_name=new_service_name,
-                provider_id=user.id
-            )
-            db.session.add(new_service)
-            db.session.flush() 
-            county = user.county
-            exi_county = County.query.filter_by(county_name=county).first()
-            county_idd = None
-            if exi_county:
-                county_idd = exi_county.id
-   
-            provider_service = ProviderService(
-                provider_id=user.id,
-                service_id=new_service.id,
-                county_id = county_idd
-            )
-            db.session.add(provider_service)
-            service_ids.append(new_service.id)
+                provider_service = ProviderService(
+                    provider_id=user.id,
+                    service_id=new_service.id,
+                    county_id=county_id
+                )
+                db.session.add(provider_service)
+                service_ids.append(new_service.id)
 
         db.session.commit()
         return {'message': f'Services created and associated with {user.first_name} {user.last_name}', 'service_ids': service_ids}, 201
@@ -450,8 +516,8 @@ def handle_service_request():
                     return {'error': f'Service "{new_service_name}" already exists, kindly check the list provided'}, 401
 
                 new_service = Service(
-                    service_name=new_service_name,
-                    provider_id=user.id
+                    service_name=new_service_name
+                    # provider_id=user.id
                 )
                 db.session.add(new_service)
                 db.session.flush()
