@@ -637,10 +637,14 @@ def get_services_by_county(county_name):
             return jsonify({'error': 'County not found'}), 404
 
         services = db.session.query(Service).join(ProviderService).filter(ProviderService.county_id == county.id).all()
-
-        service_names = [{'id': service.id, 'name': service.service_name}for service in services]
-        print("service names:",service_names)
-        return jsonify({'services': service_names}), 200
+        print("serviceshdh:",services)
+        if services:
+            providers = ProviderService.query.filter_by()
+            service_names = [{'id': service.id, 'name': service.service_name}for service in services]
+            print("service names:",service_names)
+            return jsonify({'services': service_names}), 200
+        else:
+            return jsonify({'error': 'Sorry, no registered services for the selected county'}), 500
 
     except Exception as e:
         return jsonify({'error': 'An error occurred while processing the request'}), 500
