@@ -570,13 +570,13 @@ def get_services_by_county(county_name):
         if not county:
             return jsonify({'error': 'County not found'}), 404
 
-        services = ProviderService.query.filter_by(county_id=county.id).all()
-        services_data = [{'service_id': service.service_id, 'provider_id': service.provider_id} for service in services]
+        services = db.session.query(Service).join(ProviderService).filter(ProviderService.county_id == county.id).all()
 
-        return {'services': services_data}, 200
+        service_names = [service.service_name for service in services]
+        return jsonify({'services': service_names}), 200
 
     except Exception as e:
-        return {'error': 'An error occurred while processing the request'}, 500
+        return jsonify({'error': 'An error occurred while processing the request'}), 500
 
 class UserDetails(Resource):
     def get(self):
