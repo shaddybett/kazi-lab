@@ -405,6 +405,7 @@ def handle_service_request():
         try:
             all_services = Service.query.all()
             all_services_data = [{'id': service.id, 'name': service.service_name} for service in all_services]
+            print("all services:",all_services_data)
 
             return {'all_services': all_services_data}, 200
 
@@ -572,7 +573,8 @@ def get_services_by_county(county_name):
 
         services = db.session.query(Service).join(ProviderService).filter(ProviderService.county_id == county.id).all()
 
-        service_names = [service.service_name for service in services]
+        service_names = [{'id': service.id, 'name': service.service_name}for service in services]
+        print("service names:",service_names)
         return jsonify({'services': service_names}), 200
 
     except Exception as e:
