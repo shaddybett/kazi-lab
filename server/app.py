@@ -636,18 +636,39 @@ def get_services_by_county(county_name):
         if not county:
             return jsonify({'error': 'County not found'}), 404
 
-        services = db.session.query(Service).join(ProviderService).filter(ProviderService.county_id == county.id).all()
-        print("serviceshdh:",services)
+        # Query services provided in the selected county
+        services = db.session.query(Service).join(ProviderService).join(User).filter(
+            ProviderService.county_id == county.id,
+            User.county == county_name
+        ).all()
+
         if services:
-            providers = ProviderService.query.filter_by()
-            service_names = [{'id': service.id, 'name': service.service_name}for service in services]
-            print("service names:",service_names)
+            service_names = [{'id': service.id, 'name': service.service_name} for service in services]
             return jsonify({'services': service_names}), 200
         else:
-            return jsonify({'error': 'Sorry, no registered services for the selected county'}), 500
+            return jsonify({'error': 'Sorry, no registered services for the selected county'}), 404
 
     except Exception as e:
         return jsonify({'error': 'An error occurred while processing the request'}), 500
+
+
+# @app.route('/services-by-county/<county_name>', methods=['GET'])
+# @jwt_required()
+# def get_services_by_county(county_name):
+#     try:
+#         county = County.query.filter_by(county_name=county_name).first()
+#         if not county:
+#             return jsonify({'error': 'County not found'}), 404
+
+#         services = db.session.query(Service).join(ProviderService).filter(ProviderService.county_id == county.id).all()
+#         if services:
+#             service_names = [{'id': service.id, 'name': service.service_name}for service in services]
+#             return jsonify({'services': service_names}), 200
+#         else:
+#             return jsonify({'error': 'Sorry, no registered services for the selected county'}), 500
+
+#     except Exception as e:
+#         return jsonify({'error': 'An error occurred while processing the request'}), 500
 
 class UserDetails(Resource):
     def get(self):
