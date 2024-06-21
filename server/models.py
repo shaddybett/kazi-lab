@@ -64,7 +64,7 @@ class User(db.Model):
     uids = db.Column(db.String(36),nullable=True,default='default_uuid_value')
     latitude = db.Column(db.Float, nullable=True)
     longitude = db.Column(db.Float, nullable=True)
-    county_id = db.Column(db.Integer, db.ForeignKey('counties.id'), nullable=True)
+    county = db.Column(db.String,nullable=True)
     services = db.relationship('Service', secondary='provider_services', backref=db.backref('providers', lazy=True, cascade="all, delete"))
 
 class Service(db.Model):

@@ -405,8 +405,6 @@ def handle_service_request():
         try:
             all_services = Service.query.all()
             all_services_data = [{'id': service.id, 'name': service.service_name} for service in all_services]
-            print("all services:",all_services_data)
-
             return {'all_services': all_services_data}, 200
 
         except Exception as e:
@@ -545,7 +543,8 @@ class ProviderList(Resource):
                     'image': user.image,
                     'latitude': user.latitude,
                     'longitude': user.longitude,
-                    'distance': distance
+                    'distance': distance,
+                    'county': user.county
                 })
 
             user_details.sort(key=lambda x: x['distance'])
