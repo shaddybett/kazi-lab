@@ -629,6 +629,9 @@ class ProviderDetails2(Resource):
         client_lat = request.args.get('client_lat')
         client_lon = request.args.get('client_lon')
 
+        county = County.query.filter_by(county_id = id).first()
+        if county:
+            county_name = county.county_name
         if provider_ids is None:
             return {'error': 'No provider IDs provided'}, 400
 
@@ -671,7 +674,6 @@ class ProviderDetails2(Resource):
                     'distance': distance,
                     'county': user.county
                 })
-
             user_details.sort(key=lambda x: x['distance'])
             return jsonify(user_details)
         else:
