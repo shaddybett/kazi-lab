@@ -124,7 +124,6 @@ function Profile() {
         throw new Error("Token not found");
       }
 
-      // Create an object with only the fields that have values
       const updatedFields = {};
       Object.keys(form).forEach((key) => {
         if (form[key]) {
@@ -174,7 +173,7 @@ function Profile() {
       const timer = setTimeout(() => {
         setError("");
       }, 5000);
-      return () => clearTimeout(timer); // Cleanup the timer on component unmount or error change
+      return () => clearTimeout(timer);
     }
   }, [error]);
   return (
