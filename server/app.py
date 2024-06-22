@@ -702,7 +702,7 @@ def get_services_by_county(county_name):
 
         if services:
             service_names = [{'id': service.id, 'name': service.service_name} for service in services]
-            return jsonify({'services': service_names}), 200
+            return jsonify({'services': service_names,'county_name':county_name}), 200
         else:
             return jsonify({'error': 'Sorry, no registered services for the selected county'}), 404
 

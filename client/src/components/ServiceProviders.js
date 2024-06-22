@@ -193,7 +193,7 @@ function ServiceProviders() {
       try {
         const token = localStorage.getItem("token");
         const providerIds = JSON.parse(localStorage.getItem("providerIds"));
-        const countyPodIds = Json.parse(
+        const countyPodIds = JSON.parse(
           localStorage.getItem("countyProviderIds")
         );
 
@@ -232,8 +232,8 @@ function ServiceProviders() {
             },
           }
         );
-        if (response.ok) {
-          const providerDetails = await response.json();
+        if (responses.ok) {
+          const providerDetails = await responses.json();
           setProviders(providerDetails);
           console.log("Provider Details:", providerDetails);
         } else {
