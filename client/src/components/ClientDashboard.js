@@ -313,6 +313,7 @@ function ClientDashboard() {
             // Store provider IDs in a different local storage key
             const providerIds = responseData.services.map(service => service.id);
             localStorage.setItem("countyProviderIds", JSON.stringify(providerIds));
+            localStorage.setItem("countyId",countyId)
           } else {
             const errorMessage = await response.json();
             setError(errorMessage.error || "An error occurred while fetching services by county");

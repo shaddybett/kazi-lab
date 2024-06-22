@@ -192,6 +192,7 @@ function ServiceProviders() {
     const fetchProviderDetails = async () => {
       try {
         const token = localStorage.getItem("token");
+        const countyId = localStorage.getItem("countyId")
         const providerIds = JSON.parse(localStorage.getItem("providerIds"));
         const countyPodIds = JSON.parse(
           localStorage.getItem("countyProviderIds")
