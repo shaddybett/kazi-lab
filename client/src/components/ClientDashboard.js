@@ -306,6 +306,7 @@ function ClientDashboard() {
           if (response.ok) {
             const responseData = await response.json();
             setServices(responseData.services);
+            setCountyId(responseData.county_id)
 
             setSortedByCounty(true); // Update state to indicate services are sorted by county
 
