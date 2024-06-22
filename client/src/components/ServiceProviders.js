@@ -192,6 +192,8 @@ function ServiceProviders() {
       try {
         const token = localStorage.getItem("token");
         const providerIds = JSON.parse(localStorage.getItem("providerIds"));
+        const countyPodIds = Json.parse(localStorage.getItem("countyProviderIds"))
+
 
         const response = await fetch(
           `/provider-details?provider_ids=${providerIds.join(",")}${locationEnabled ? `&client_lat=${clientLocation.latitude}&client_lon=${clientLocation.longitude}` : ''}`,
