@@ -220,7 +220,7 @@ function ServiceProviders() {
           throw new Error("Failed to fetch provider details");
         }
         const responses = await fetch(
-          `/provider-delta?provider_ids=${countyPodIds.join(",")}${
+          `/provider-delta?countyId = ${countyId} ? provider_ids=${countyPodIds.join(",")}${
             locationEnabled
               ? `&client_lat=${clientLocation.latitude}&client_lon=${clientLocation.longitude}`
               : ""

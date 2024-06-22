@@ -600,7 +600,8 @@ class ProviderList(Resource):
                         'image': user.image,
                         'latitude': user.latitude,
                         'longitude': user.longitude,
-                        'distance': distance
+                        'distance': distance,
+                        'county': user.county
                     })
                 user_details.append({
                     'first_name': user.first_name,
@@ -624,6 +625,7 @@ class ProviderDetails2(Resource):
     @jwt_required()
     def get(self):
         provider_ids = request.args.get('provider_ids')
+        county_id = request.args.get('countyId')
         client_lat = request.args.get('client_lat')
         client_lon = request.args.get('client_lon')
 
