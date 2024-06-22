@@ -692,6 +692,8 @@ class ProviderDetails2(Resource):
         client_lon = request.args.get('client_lon')
 
         name_county = County.query.filter_by(id=county_id).first()
+        if county_id is None:
+            return {'error': 'No county id no service'}, 400
         if name_county:
             exi_county = name_county.county_name
 
