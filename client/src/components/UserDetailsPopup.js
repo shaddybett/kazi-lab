@@ -34,7 +34,6 @@ function UserDetailsPopup({ user, onClose }) {
               <strong>Name:</strong> {user.first_name} {user.middle_name}{" "}
               {user.last_name}
             </p>
-            <p className="mb-3 text-black-500 "><strong>County:</strong> {user.county} </p>
             <div className="flex items-center mb-3">
               <strong>Email:</strong>
               <span className="ml-2">{user.email}</span>

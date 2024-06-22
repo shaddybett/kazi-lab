@@ -563,12 +563,174 @@ from geopy.distance import geodesic
 from models import User
 from app import db
 
+# class ProviderList(Resource):
+#     @jwt_required()
+#     def get(self):
+#         provider_ids = request.args.get('provider_ids')
+#         county_id = request.args.get('countyId')
+#         client_lat = request.args.get('client_lat')
+#         client_lon = request.args.get('client_lon')
+
+#         if county_id is None:
+#             if provider_ids is None:
+#                 return {'error': 'No provider IDs provided'}, 400
+
+#             if client_lat is None or client_lon is None:
+#                 return {'error': 'Client latitude and longitude are required'}, 400
+
+#             try:
+#                 client_lat = float(client_lat)
+#                 client_lon = float(client_lon)
+#             except ValueError:
+#                 return {'error': 'Invalid latitude or longitude values'}, 400
+
+#             provider_ids_list = provider_ids.split(',')
+#             provider_ids_list = [int(provider_id) for provider_id in provider_ids_list]
+
+#             users = User.query.filter(User.id.in_(provider_ids_list)).all()
+
+#             if users:
+#                 user_details = []
+#                 for user in users:
+#                     if user.latitude and user.longitude:
+#                         distance = geodesic((client_lat, client_lon), (user.latitude, user.longitude)).miles
+#                     else:
+#                         user_details.append({
+#                             'first_name': user.first_name,
+#                             'last_name': user.last_name,
+#                             'email': user.email,
+#                             'image': user.image,
+#                             'latitude': user.latitude,
+#                             'longitude': user.longitude,
+#                             'distance': distance,
+#                             'county': user.county
+#                         })
+#                     user_details.append({
+#                         'first_name': user.first_name,
+#                         'last_name': user.last_name,
+#                         'email': user.email,
+#                         'image': user.image,
+#                         'latitude': user.latitude,
+#                         'longitude': user.longitude,
+#                         'distance': distance,
+#                         'county': user.county
+#                     })
+
+#                 user_details.sort(key=lambda x: x['distance'])
+#                 return jsonify(user_details)
+#             else:
+#                 return {'error': 'No users found for the given provider IDs'}, 404
+
 class ProviderList(Resource):
     @jwt_required()
     def get(self):
         provider_ids = request.args.get('provider_ids')
+        county_id = request.args.get('countyId')
         client_lat = request.args.get('client_lat')
         client_lon = request.args.get('client_lon')
+
+        if county_id is not None:
+            return {'error':'I am built different'}
+
+        if provider_ids is None:
+            return {'error': 'No provider IDs provided'}, 400
+
+        try:
+            client_lat = float(client_lat)
+            client_lon = float(client_lon)
+        except (ValueError, TypeError):
+            return {'error': 'Invalid latitude or longitude values'}, 400
+
+        provider_ids_list = provider_ids.split(',')
+        provider_ids_list = [int(provider_id) for provider_id in provider_ids_list]
+
+        users = User.query.filter(User.id.in_(provider_ids_list)).all()
+
+        if not users:
+            return {'error': 'No users found for the given provider IDs'}, 404
+
+        user_details = []
+        for user in users:
+            distance = geodesic((client_lat, client_lon), (user.latitude, user.longitude)).miles if user.latitude and user.longitude else None
+            user_details.append({
+                'first_name': user.first_name,
+                'last_name': user.last_name,
+                'email': user.email,
+                'image': user.image,
+                'latitude': user.latitude,
+                'longitude': user.longitude,
+                'distance': distance,
+                'county': user.county
+            })
+
+        user_details.sort(key=lambda x: x['distance'] if x['distance'] is not None else float('inf'))
+        return jsonify(user_details)
+
+
+
+class ProviderDetails2(Resource):
+    @jwt_required()
+    def get(self):
+        provider_ids = request.args.get('provider_ids')
+        county_id = request.args.get('countyId')
+        client_lat = request.args.get('client_lat')
+        client_lon = request.args.get('client_lon')
+
+        if provider_ids is None or county_id is None:
+            return {'error': 'provider_ids and countyId are required parameters'}, 400
+
+        try:
+            county_id = int(county_id)
+        except ValueError:
+            return {'error': 'Invalid countyId value'}, 400
+
+        try:
+            client_lat = float(client_lat)
+            client_lon = float(client_lon)
+        except (ValueError, TypeError):
+            return {'error': 'Invalid latitude or longitude values'}, 400
+
+        provider_ids_list = provider_ids.split(',')
+        provider_ids_list = [int(provider_id) for provider_id in provider_ids_list]
+
+        users = User.query.filter(User.id.in_(provider_ids_list)).all()
+
+        if not users:
+            return {'error': 'No users found for the given provider IDs'}, 404
+
+        user_details = []
+        for user in users:
+            if user.county_id == county_id:
+                distance = geodesic((client_lat, client_lon), (user.latitude, user.longitude)).miles if user.latitude and user.longitude else None
+                user_details.append({
+                    'first_name': user.first_name,
+                    'last_name': user.last_name,
+                    'email': user.email,
+                    'image': user.image,
+                    'latitude': user.latitude,
+                    'longitude': user.longitude,
+                    'distance': distance,
+                    'county': user.county
+                })
+
+        user_details.sort(key=lambda x: x['distance'] if x['distance'] is not None else float('inf'))
+        return jsonify(user_details)
+
+
+
+class ProviderDetails2(Resource):
+    @jwt_required()
+    def get(self):
+        provider_ids = request.args.get('provider_ids')
+        county_id = request.args.get('countyId')
+        client_lat = request.args.get('client_lat')
+        client_lon = request.args.get('client_lon')
+
+        name_county = County.query.filter_by(id=county_id).first()
+        if county_id is None:
+            return {'error': 'No county id no service'}, 400
+        if name_county:
+            exi_county = name_county.county_name
 
         if provider_ids is None:
             return {'error': 'No provider IDs provided'}, 400
@@ -587,36 +749,36 @@ class ProviderList(Resource):
 
         users = User.query.filter(User.id.in_(provider_ids_list)).all()
 
-        if users:
-            user_details = []
-            for user in users:
-                if user.latitude and user.longitude:
-                    distance = geodesic((client_lat, client_lon), (user.latitude, user.longitude)).miles
-                else:
-                    user_details.append({
-                        'first_name': user.first_name,
-                        'last_name': user.last_name,
-                        'email': user.email,
-                        'image': user.image,
-                        'latitude': user.latitude,
-                        'longitude': user.longitude,
-                        'distance': distance
-                    })
-                user_details.append({
-                    'first_name': user.first_name,
-                    'last_name': user.last_name,
-                    'email': user.email,
-                    'image': user.image,
-                    'latitude': user.latitude,
-                    'longitude': user.longitude,
-                    'distance': distance,
-                    'county': user.county
-                })
-
-            user_details.sort(key=lambda x: x['distance'])
-            return jsonify(user_details)
-        else:
+        if not users:
             return {'error': 'No users found for the given provider IDs'}, 404
+
+        user_details = []
+        for user in users:
+            if user.latitude and user.longitude:
+                distance = geodesic((client_lat, client_lon), (user.latitude, user.longitude)).miles
+            else:
+                distance = None
+
+            user_detail = {
+                'first_name': user.first_name,
+                'last_name': user.last_name,
+                'email': user.email,
+                'image': user.image,
+                'latitude': user.latitude,
+                'longitude': user.longitude,
+                'distance': distance,
+                'county': user.county
+            }
+            
+            if user.county == exi_county:
+                user_details.append(user_detail)
+            else:
+                return {'error': 'oops'}, 404
+
+        user_details.sort(key=lambda x: x['distance'] if x['distance'] is not None else float('inf'))
+
+        return jsonify(user_details)
+
 class ProviderIds(Resource):
     def get(self, service_id):
         provider_ids = ProviderService.query.filter_by(service_id=service_id).all()
@@ -635,6 +797,7 @@ def get_services_by_county(county_name):
         county = County.query.filter_by(county_name=county_name).first()
         if not county:
             return jsonify({'error': 'County not found'}), 404
+        county_id = county.id
 
         # Query services provided in the selected county
         services = db.session.query(Service).join(ProviderService).join(User).filter(
@@ -644,7 +807,7 @@ def get_services_by_county(county_name):
 
         if services:
             service_names = [{'id': service.id, 'name': service.service_name} for service in services]
-            return jsonify({'services': service_names}), 200
+            return jsonify({'services': service_names,'county_id':county_id}), 200
         else:
             return jsonify({'error': 'Sorry, no registered services for the selected county'}), 404
 
@@ -698,6 +861,7 @@ api.add_resource(DeleteService, '/delete-service/<int:service_id>')
 api.add_resource(UpdateImage, '/update-image')
 api.add_resource(UserDetails, '/user-details')
 api.add_resource(Counties, '/county')
+api.add_resource(ProviderDetails2, '/provider-delta')
 
 if __name__ == '__main__':
     app.run(debug=True, port=4000)
