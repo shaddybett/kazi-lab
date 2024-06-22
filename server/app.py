@@ -693,6 +693,7 @@ def get_services_by_county(county_name):
         county = County.query.filter_by(county_name=county_name).first()
         if not county:
             return jsonify({'error': 'County not found'}), 404
+        county_id = county.id
 
         # Query services provided in the selected county
         services = db.session.query(Service).join(ProviderService).join(User).filter(
@@ -702,7 +703,7 @@ def get_services_by_county(county_name):
 
         if services:
             service_names = [{'id': service.id, 'name': service.service_name} for service in services]
-            return jsonify({'services': service_names,'county_name':county_name}), 200
+            return jsonify({'services': service_names,'county_id':county_id}), 200
         else:
             return jsonify({'error': 'Sorry, no registered services for the selected county'}), 404
 
