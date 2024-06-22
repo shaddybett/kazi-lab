@@ -630,7 +630,7 @@ class ProviderList(Resource):
         client_lon = request.args.get('client_lon')
 
         if county_id is not None:
-            return ({'error':'I am built different'})
+            return {'error':'I am built different'}
 
         if provider_ids is None:
             return {'error': 'No provider IDs provided'}, 400

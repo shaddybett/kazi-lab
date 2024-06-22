@@ -79,16 +79,16 @@
 //           fetchCountyProviders,
 //         ]);
 
-//         if (!generalResponse.ok) {
-//           const errorMessage = await countyResponse.json();
-//           setError(errorMessage.error);
-//           // throw new Error("Failed to fetch general provider details");
-//         }
-//         if (!countyResponse.ok) {
-//           const errorMessage = await countyResponse.json();
-//           setError(errorMessage.error);
-//           throw new Error("Failed to fetch county provider details");
-//         }
+        // if (!generalResponse.ok) {
+        //   const errorMessage = await countyResponse.json();
+        //   setError(errorMessage.error);
+        //   // throw new Error("Failed to fetch general provider details");
+        // }
+        // if (!countyResponse.ok) {
+        //   const errorMessage = await countyResponse.json();
+        //   setError(errorMessage.error);
+        //   throw new Error("Failed to fetch county provider details");
+        // }
 
 //         const generalProviderDetails = await generalResponse.json();
 //         const countyProviderDetails = await countyResponse.json();
@@ -257,6 +257,71 @@ function ServiceProviders() {
     }
   }, []);
 
+  // useEffect(() => {
+  //   const fetchProviderDetails = async () => {
+  //     try {
+  //       const token = localStorage.getItem("token");
+  //       const providerIds = JSON.parse(localStorage.getItem("providerIds"));
+  //       const countyId = localStorage.getItem("countyId");
+  //       const countyProviderIds = JSON.parse(localStorage.getItem("countyProviderIds"));
+
+  //       const fetchGeneralProviders = providerIds
+  //         ? fetch(
+  //             `/provider-details?provider_ids=${providerIds.join(",")}${
+  //               locationEnabled
+  //                 ? `&client_lat=${clientLocation.latitude}&client_lon=${clientLocation.longitude}`
+  //                 : ""
+  //             }`,
+  //             {
+  //               method: "GET",
+  //               headers: {
+  //                 "Content-Type": "application/json",
+  //                 Authorization: `Bearer ${token}`,
+  //               },
+  //             }
+  //           )
+  //         : null;
+
+  //       const fetchCountyProviders = countyProviderIds
+  //         ? fetch(
+  //             `/provider-details?countyId=${countyId}&provider_ids=${countyProviderIds.join(",")}${
+  //               locationEnabled
+  //                 ? `&client_lat=${clientLocation.latitude}&client_lon=${clientLocation.longitude}`
+  //                 : ""
+  //             }`,
+  //             {
+  //               method: "GET",
+  //               headers: {
+  //                 "Content-Type": "application/json",
+  //                 Authorization: `Bearer ${token}`,
+  //               },
+  //             }
+  //           )
+  //         : null;
+
+  //       const [generalResponse, countyResponse] = await Promise.all([
+  //         fetchGeneralProviders,
+  //         fetchCountyProviders,
+  //       ]);
+
+  //       const generalProviderDetails = generalResponse
+  //         ? await generalResponse.json()
+  //         : [];
+  //       const countyProviderDetails = countyResponse
+  //         ? await countyResponse.json()
+  //         : [];
+
+  //       const allProviders = [...generalProviderDetails, ...countyProviderDetails];
+  //       setProviders(allProviders);
+  //       console.log("Provider Details:", allProviders);
+  //     } catch (error) {
+  //       console.error("Error fetching provider details:", error);
+  //     }
+  //   };
+
+  //   fetchProviderDetails();
+  // }, [clientLocation, locationEnabled]);
+
   useEffect(() => {
     const fetchProviderDetails = async () => {
       try {
@@ -264,7 +329,7 @@ function ServiceProviders() {
         const providerIds = JSON.parse(localStorage.getItem("providerIds"));
         const countyId = localStorage.getItem("countyId");
         const countyProviderIds = JSON.parse(localStorage.getItem("countyProviderIds"));
-
+  
         const fetchGeneralProviders = providerIds
           ? fetch(
               `/provider-details?provider_ids=${providerIds.join(",")}${
@@ -281,7 +346,7 @@ function ServiceProviders() {
               }
             )
           : null;
-
+  
         const fetchCountyProviders = countyProviderIds
           ? fetch(
               `/provider-details?countyId=${countyId}&provider_ids=${countyProviderIds.join(",")}${
@@ -298,19 +363,31 @@ function ServiceProviders() {
               }
             )
           : null;
-
+  
         const [generalResponse, countyResponse] = await Promise.all([
           fetchGeneralProviders,
           fetchCountyProviders,
         ]);
-
+  
+        if (generalResponse && !generalResponse.ok) {
+          const errorMessage = await generalResponse.json();
+          setError(errorMessage.error);
+          throw new Error("Failed to fetch general provider details");
+        }
+  
+        if (countyResponse && !countyResponse.ok) {
+          const errorMessage = await countyResponse.json();
+          setError(errorMessage.error);
+          throw new Error("Failed to fetch county provider details");
+        }
+  
         const generalProviderDetails = generalResponse
           ? await generalResponse.json()
           : [];
         const countyProviderDetails = countyResponse
           ? await countyResponse.json()
           : [];
-
+  
         const allProviders = [...generalProviderDetails, ...countyProviderDetails];
         setProviders(allProviders);
         console.log("Provider Details:", allProviders);
@@ -318,9 +395,10 @@ function ServiceProviders() {
         console.error("Error fetching provider details:", error);
       }
     };
-
+  
     fetchProviderDetails();
   }, [clientLocation, locationEnabled]);
+  
 
   useEffect(() => {
     if (locationEnabled && providers.length > 0) {
