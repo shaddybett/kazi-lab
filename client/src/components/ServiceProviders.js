@@ -80,7 +80,9 @@
 //         ]);
 
 //         if (!generalResponse.ok) {
-//           throw new Error("Failed to fetch general provider details");
+//           const errorMessage = await countyResponse.json();
+//           setError(errorMessage.error);
+//           // throw new Error("Failed to fetch general provider details");
 //         }
 //         if (!countyResponse.ok) {
 //           const errorMessage = await countyResponse.json();
@@ -282,7 +284,7 @@ function ServiceProviders() {
 
         const fetchCountyProviders = countyProviderIds
           ? fetch(
-              `/provider-delta?countyId=${countyId}&provider_ids=${countyProviderIds.join(",")}${
+              `/provider-details?countyId=${countyId}&provider_ids=${countyProviderIds.join(",")}${
                 locationEnabled
                   ? `&client_lat=${clientLocation.latitude}&client_lon=${clientLocation.longitude}`
                   : ""
