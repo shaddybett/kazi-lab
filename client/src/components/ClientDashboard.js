@@ -240,6 +240,7 @@ function ClientDashboard() {
   const [searchQuery, setSearchQuery] = useState("");
   const [counties, setCounties] = useState([]);
   const [selectedCounty, setSelectedCounty] = useState("");
+  const [countyId,setCountyId] = useState("");
   const [sortedByCounty, setSortedByCounty] = useState(false); // State to track if services are sorted by county
   const navigate = useNavigate();
 
@@ -305,6 +306,7 @@ function ClientDashboard() {
           if (response.ok) {
             const responseData = await response.json();
             setServices(responseData.services);
+
             setSortedByCounty(true); // Update state to indicate services are sorted by county
 
             // Store provider IDs in a different local storage key
