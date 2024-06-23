@@ -67,7 +67,7 @@ function ServiceProviders() {
         const fetchCountyProviders = countyProviderIds
           ? fetch(
               buildUrl(
-                `/provider-details?countyId=${countyId}`,
+                `/provider-delta?countyId=${countyId}`&
                 countyProviderIds
               ),
               { method: "GET", headers }
