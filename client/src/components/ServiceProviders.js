@@ -307,7 +307,7 @@ function ServiceProviders() {
   }, [clientLocation, locationEnabled]);
 
   useEffect(() => {
-    const fetchProviderDetails = async () => {
+    const fetchProviderDetailsCounty = async () => {
       try {
         const token = localStorage.getItem("token");
         // const providerIds = JSON.parse(localStorage.getItem("providerIds"));
@@ -349,7 +349,7 @@ function ServiceProviders() {
       }
     };
   
-    fetchProviderDetails();
+    fetchProviderDetailsCounty();
   }, [clientLocation, locationEnabled]);
   
   useEffect(() => {
