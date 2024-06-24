@@ -688,7 +688,7 @@ class ProviderDetails2(Resource):
 
         user_details = []
         for user in users:
-            if user.county_id == county_id:
+            if user.county == cnt_name:
                 distance = geodesic((client_lat, client_lon), (user.latitude, user.longitude)).miles if user.latitude and user.longitude else None
                 user_details.append({
                     'first_name': user.first_name,
