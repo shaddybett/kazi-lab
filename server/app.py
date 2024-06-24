@@ -611,10 +611,6 @@ class ProviderList(Resource):
         provider_ids = request.args.get('provider_ids')
         client_lat = request.args.get('client_lat')
         client_lon = request.args.get('client_lon')
-        county_id = request.args.get('countyId')
-
-        if county_id is not None:
-            return {'error':'ayegdss,nsns'},404
 
         if provider_ids is None:
             return {'error': 'No provider IDs provided'}, 400
