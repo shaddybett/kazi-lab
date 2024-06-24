@@ -38,7 +38,7 @@ function ServiceProviders() {
     const fetchProviderDetails = async () => {
       try {
         const token = localStorage.getItem("token");
-        const providerIds = JSON.parse(localStorage.getItem("providerIds"));
+        const provider_ids = JSON.parse(localStorage.getItem("providerIds"));
         const countyId = localStorage.getItem("countyId");
         const countyProviderIds = JSON.parse(
           localStorage.getItem("countyProviderIds")
@@ -57,18 +57,18 @@ function ServiceProviders() {
           return url;
         };
 
-        const fetchGeneralProviders = providerIds
-          ? fetch(buildUrl("/provider-details", providerIds), {
+        const fetchGeneralProviders = provider_ids
+          ? fetch(buildUrl("/provider-details", provider_ids), {
               method: "GET",
               headers,
             })
           : null;
 
-        const fetchCountyProviders = countyProviderIds
+        const fetchCountyProviders = provider_ids
           ? fetch(
               buildUrl(
                 `/provider-delta?countyId=${countyId}`&
-                countyProviderIds
+                provider_ids
               ),
               { method: "GET", headers }
             )
