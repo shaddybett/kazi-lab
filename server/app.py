@@ -202,24 +202,6 @@ class signup2(Resource):
                 existing_user.county = county_name
 
                 db.session.commit()
-
-                # Fetch the county_id based on county_name
-                # exi_county = County.query.filter_by(county_name=county_name).first()
-                # if not exi_county:
-                #     return {'error': 'County not found'}, 404
-
-                # county_id = exi_county.id 
-                # idd = existing_user.id
-
-                # provider_service = ProviderService.query.filter_by(provider_id=idd).first()
-                # if provider_service:
-                #     provider_service.county_id = county_id
-                # else:
-                #     # If no existing provider service, create a new one
-                #     provider_service = ProviderService(provider_id=idd, county_id=county_id)
-                #     db.session.add(provider_service)
-
-                # db.session.commit()
                 return {'message': 'User details updated successfully'}
             else:
                 return {'error': 'User not found'}, 404
