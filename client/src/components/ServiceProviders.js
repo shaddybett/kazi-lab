@@ -34,99 +34,173 @@ function ServiceProviders() {
       setLocationEnabled(false);
     }
   }, []);
+  // useEffect(() => {
+  //   const fetchProviderDetails = async () => {
+  //     try {
+  //       const token = localStorage.getItem("token");
+  //       const provider_ids = JSON.parse(localStorage.getItem("providerIds"));
+  //       const countyId = localStorage.getItem("countyId");
+  //       const countyProviderIds = JSON.parse(
+  //         localStorage.getItem("countyProviderIds")
+  //       );
+
+  //       const headers = {
+  //         "Content-Type": "application/json",
+  //         Authorization: `Bearer ${token}`,
+  //       };
+
+  //       const buildUrl = (base, ids) => {
+  //         let url = `${base}?provider_ids=${ids.join(",")}`;
+  //         if (locationEnabled) {
+  //           url += `&client_lat=${clientLocation.latitude}&client_lon=${clientLocation.longitude}`;
+  //         }
+  //         return url;
+  //       };
+
+  //       const fetchGeneralProviders = provider_ids
+  //         ? fetch(buildUrl("/provider-details", provider_ids), {
+  //             method: "GET",
+  //             headers,
+  //           })
+  //         : null;
+
+  //       const fetchCountyProviders = provider_ids
+  //         ? fetch(
+  //             buildUrl(
+  //               `/provider-delta?countyId=${countyId}`&
+  //               provider_ids
+  //             ),
+  //             { method: "GET", headers }
+  //           )
+  //         : null;
+
+  //       const [generalResponse, countyResponse] = await Promise.all([
+  //         fetchGeneralProviders,
+  //         fetchCountyProviders,
+  //       ]);
+
+  //       const generalProviderDetails = generalResponse
+  //         ? await generalResponse.json()
+  //         : [];
+  //       const countyProviderDetails = countyResponse
+  //         ? await countyResponse.json()
+  //         : [];
+
+  //       const allProviders = [
+  //         ...generalProviderDetails,
+  //         ...countyProviderDetails,
+  //       ];
+  //       setProviders(allProviders);
+  //       console.log("Provider Details:", allProviders);
+  //     } catch (error) {
+  //       console.error("Error fetching provider details:", error);
+  //     }
+  //   };
+
+  //   fetchProviderDetails();
+  // }, [clientLocation, locationEnabled]);
+
+  // useEffect(() => {
+  //   if (locationEnabled && providers.length > 0) {
+  //     const sortedProviders = [...providers]
+  //       .filter((provider) => provider.latitude && provider.longitude)
+  //       .sort((a, b) => {
+  //         const distanceA = getDistance(clientLocation, {
+  //           latitude: a.latitude,
+  //           longitude: a.longitude,
+  //         });
+  //         const distanceB = getDistance(clientLocation, {
+  //           latitude: b.latitude,
+  //           longitude: b.longitude,
+  //         });
+  //         return distanceA - distanceB;
+  //       })
+  //       .map((provider) => ({
+  //         ...provider,
+  //         distance: (
+  //           getDistance(clientLocation, {
+  //             latitude: provider.latitude,
+  //             longitude: provider.longitude,
+  //           }) / 1000
+  //         ).toFixed(2),
+  //       }));
+  //     setProviders(sortedProviders);
+  //   }
+  // }, [clientLocation, providers, locationEnabled]);
+
   useEffect(() => {
     const fetchProviderDetails = async () => {
       try {
         const token = localStorage.getItem("token");
         const providerIds = JSON.parse(localStorage.getItem("providerIds"));
         const countyId = localStorage.getItem("countyId");
-        const countyProviderIds = JSON.parse(
-          localStorage.getItem("countyProviderIds")
-        );
-
+        const countyProviderIds = JSON.parse(localStorage.getItem("countyProviderIds"));
+  
         const headers = {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         };
-
-        const buildUrl = (base, ids) => {
-          let url = `${base}?provider_ids=${ids.join(",")}`;
-          if (locationEnabled) {
-            url += `&client_lat=${clientLocation.latitude}&client_lon=${clientLocation.longitude}`;
+  
+        if (locationEnabled) {
+          const fetchGeneralProviders = fetch(
+            `/provider-details?provider_ids=${providerIds.join(",")}&client_lat=${clientLocation.latitude}&client_lon=${clientLocation.longitude}`,
+            { method: "GET", headers }
+          );
+  
+          const fetchCountyProviders = fetch(
+            `/provider-delta?countyId=${countyId}&provider_ids=${countyProviderIds.join(",")}&client_lat=${clientLocation.latitude}&client_lon=${clientLocation.longitude}`,
+            { method: "GET", headers }
+          );
+  
+          const [generalResponse, countyResponse] = await Promise.all([
+            fetchGeneralProviders,
+            fetchCountyProviders,
+          ]);
+  
+          if (!generalResponse.ok) {
+            const errorMessage = await generalResponse.json();
+            setError(errorMessage.error);
+            throw new Error("Failed to fetch general provider details");
           }
-          return url;
-        };
-
-        const fetchGeneralProviders = providerIds
-          ? fetch(buildUrl("/provider-details", providerIds), {
-              method: "GET",
-              headers,
-            })
-          : null;
-
-        const fetchCountyProviders = countyProviderIds
-          ? fetch(
-              buildUrl(
-                `/provider-delta?countyId=${countyId}`&
-                countyProviderIds
-              ),
-              { method: "GET", headers }
-            )
-          : null;
-
-        const [generalResponse, countyResponse] = await Promise.all([
-          fetchGeneralProviders,
-          fetchCountyProviders,
-        ]);
-
-        const generalProviderDetails = generalResponse
-          ? await generalResponse.json()
-          : [];
-        const countyProviderDetails = countyResponse
-          ? await countyResponse.json()
-          : [];
-
-        const allProviders = [
-          ...generalProviderDetails,
-          ...countyProviderDetails,
-        ];
-        setProviders(allProviders);
-        console.log("Provider Details:", allProviders);
+  
+          if (!countyResponse.ok) {
+            const errorMessage = await countyResponse.json();
+            setError(errorMessage.error);
+            throw new Error("Failed to fetch county provider details");
+          }
+  
+          const generalProviderDetails = await generalResponse.json();
+          const countyProviderDetails = await countyResponse.json();
+  
+          const allProviders = [...generalProviderDetails, ...countyProviderDetails];
+          setProviders(allProviders);
+          console.log("Provider Details:", allProviders);
+        } else {
+          const fetchCountyProviders = fetch(
+            `/provider-delta?countyId=${countyId}&provider_ids=${countyProviderIds.join(",")}`,
+            { method: "GET", headers }
+          );
+  
+          const countyResponse = await fetchCountyProviders;
+  
+          if (!countyResponse.ok) {
+            const errorMessage = await countyResponse.json();
+            setError(errorMessage.error);
+            throw new Error("Failed to fetch county provider details");
+          }
+  
+          const countyProviderDetails = await countyResponse.json();
+          setProviders(countyProviderDetails);
+          console.log("County Provider Details:", countyProviderDetails);
+        }
       } catch (error) {
         console.error("Error fetching provider details:", error);
       }
     };
-
+  
     fetchProviderDetails();
   }, [clientLocation, locationEnabled]);
-
-  useEffect(() => {
-    if (locationEnabled && providers.length > 0) {
-      const sortedProviders = [...providers]
-        .filter((provider) => provider.latitude && provider.longitude)
-        .sort((a, b) => {
-          const distanceA = getDistance(clientLocation, {
-            latitude: a.latitude,
-            longitude: a.longitude,
-          });
-          const distanceB = getDistance(clientLocation, {
-            latitude: b.latitude,
-            longitude: b.longitude,
-          });
-          return distanceA - distanceB;
-        })
-        .map((provider) => ({
-          ...provider,
-          distance: (
-            getDistance(clientLocation, {
-              latitude: provider.latitude,
-              longitude: provider.longitude,
-            }) / 1000
-          ).toFixed(2),
-        }));
-      setProviders(sortedProviders);
-    }
-  }, [clientLocation, providers, locationEnabled]);
+  
 
   const handleProviderClick = async (provider) => {
     try {
@@ -216,70 +290,70 @@ function ServiceProviders() {
 
 export default ServiceProviders;
 
-  // useEffect(() => {
-  //   const fetchProviderDetails = async () => {
-  //     try {
-  //       const token = localStorage.getItem("token");
-  //       const providerIds = JSON.parse(localStorage.getItem("providerIds"));
-  //       const countyId = localStorage.getItem("countyId");
-  //       const countyProviderIds = JSON.parse(localStorage.getItem("countyProviderIds"));
+// useEffect(() => {
+//   const fetchProviderDetails = async () => {
+//     try {
+//       const token = localStorage.getItem("token");
+//       const providerIds = JSON.parse(localStorage.getItem("providerIds"));
+//       const countyId = localStorage.getItem("countyId");
+//       const countyProviderIds = JSON.parse(localStorage.getItem("countyProviderIds"));
 
-  //       const fetchGeneralProviders = fetch(
-  //         `/provider-details?provider_ids=${providerIds.join(",")}${
-  //           locationEnabled
-  //             ? `&client_lat=${clientLocation.latitude}&client_lon=${clientLocation.longitude}`
-  //             : ""
-  //         }`,
-  //         {
-  //           method: "GET",
-  //           headers: {
-  //             "Content-Type": "application/json",
-  //             Authorization: `Bearer ${token}`,
-  //           },
-  //         }
-  //       );
+//       const fetchGeneralProviders = fetch(
+//         `/provider-details?provider_ids=${providerIds.join(",")}${
+//           locationEnabled
+//             ? `&client_lat=${clientLocation.latitude}&client_lon=${clientLocation.longitude}`
+//             : ""
+//         }`,
+//         {
+//           method: "GET",
+//           headers: {
+//             "Content-Type": "application/json",
+//             Authorization: `Bearer ${token}`,
+//           },
+//         }
+//       );
 
-  //       const fetchCountyProviders = fetch(
-  //         `/provider-details?countyId=${countyId}&provider_ids=${countyProviderIds.join(",")}${
-  //           locationEnabled
-  //             ? `&client_lat=${clientLocation.latitude}&client_lon=${clientLocation.longitude}`
-  //             : ""
-  //         }`,
-  //         {
-  //           method: "GET",
-  //           headers: {
-  //             "Content-Type": "application/json",
-  //             Authorization: `Bearer ${token}`,
-  //           },
-  //         }
-  //       );
+//       const fetchCountyProviders = fetch(
+//         `/provider-details?countyId=${countyId}&provider_ids=${countyProviderIds.join(",")}${
+//           locationEnabled
+//             ? `&client_lat=${clientLocation.latitude}&client_lon=${clientLocation.longitude}`
+//             : ""
+//         }`,
+//         {
+//           method: "GET",
+//           headers: {
+//             "Content-Type": "application/json",
+//             Authorization: `Bearer ${token}`,
+//           },
+//         }
+//       );
 
-  //       const [generalResponse, countyResponse] = await Promise.all([
-  //         fetchGeneralProviders,
-  //         fetchCountyProviders,
-  //       ]);
+//       const [generalResponse, countyResponse] = await Promise.all([
+//         fetchGeneralProviders,
+//         fetchCountyProviders,
+//       ]);
 
-  //       if (!generalResponse.ok) {
-  //         const errorMessage = await countyResponse.json();
-  //         setError(errorMessage.error);
-  //         // throw new Error("Failed to fetch general provider details");
-  //       }
-  //       if (!countyResponse.ok) {
-  //         const errorMessage = await countyResponse.json();
-  //         setError(errorMessage.error);
-  //         throw new Error("Failed to fetch county provider details");
-  //       }
+//       if (!generalResponse.ok) {
+//         const errorMessage = await countyResponse.json();
+//         setError(errorMessage.error);
+//         // throw new Error("Failed to fetch general provider details");
+//       }
+//       if (!countyResponse.ok) {
+//         const errorMessage = await countyResponse.json();
+//         setError(errorMessage.error);
+//         throw new Error("Failed to fetch county provider details");
+//       }
 
-  //       const generalProviderDetails = await generalResponse.json();
-  //       const countyProviderDetails = await countyResponse.json();
+//       const generalProviderDetails = await generalResponse.json();
+//       const countyProviderDetails = await countyResponse.json();
 
-  //       const allProviders = [...generalProviderDetails, ...countyProviderDetails];
-  //       setProviders(allProviders);
-  //       console.log("Provider Details:", allProviders);
-  //     } catch (error) {
-  //       console.error("Error fetching provider details:", error);
-  //     }
-  //   };
+//       const allProviders = [...generalProviderDetails, ...countyProviderDetails];
+//       setProviders(allProviders);
+//       console.log("Provider Details:", allProviders);
+//     } catch (error) {
+//       console.error("Error fetching provider details:", error);
+//     }
+//   };
 
-  //   fetchProviderDetails();
-  // }, [clientLocation, locationEnabled]);
+//   fetchProviderDetails();
+// }, [clientLocation, locationEnabled]);
