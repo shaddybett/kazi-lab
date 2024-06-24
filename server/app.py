@@ -295,71 +295,7 @@ class Dashboard(Resource):
         else:
             response = make_response({'error': 'Error fetching user details'}, 404)
             return response      
-# class AddService(Resource):
-#     @jwt_required()
-#     def post(self):
-#         current_user = get_jwt_identity()
-#         user = User.query.filter_by(email=current_user).first()
-#         reg_county = user.county
-#         exist_county = County.query.filter_by(county_name = reg_county).first()
-#         if exist_county:
-#             county_id = exist_county.id
-        
-#         if not user:
-#             return {'error': 'User not found'}, 404
 
-#         args = request.json
-#         existing_services = args.get('existing_services', [])
-#         new_service_name = args.get('service_name')
-
-#         if not existing_services and not new_service_name:
-#             return {'error': 'At least one service must be provided'}, 400
-
-#         service_ids = []
-
-#         for service_id in existing_services:
-#             provider_service = ProviderService.query.filter_by(provider_id=user.id, service_id=service_id).first()
-#             if not provider_service:
-#                 provider_service = ProviderService(
-#                     provider_id=user.id,
-#                     service_id=service_id,
-#                     county_id = county_id
-#                 )
-#                 db.session.add(provider_service)
-#                 service_ids.append(service_id)
-
-#         if new_service_name:
-#             existing_service = Service.query.filter(func.lower(Service.service_name) == func.lower(new_service_name)).first()
-#             provider_existing_service = Service.query.filter_by(service_name=new_service_name).first()
-            
-#             if provider_existing_service:
-#                 return {'error': f'Service "{new_service_name}" is already registered by you'}, 401
-            
-#             if existing_service:
-#                 return {'error': f'Service entered already exists,please mark from the list provided'}, 401
-
-#             new_service = Service(
-#                 service_name=new_service_name
-#                 # provider_id=user.id
-#             )
-#             db.session.add(new_service)
-#             db.session.flush() 
-#             county = user.county
-#             exi_county = County.query.filter_by(county_name=county).first()
-#             county_idd = None
-#             if exi_county:
-#                 county_idd = exi_county.id
-   
-#             provider_service = ProviderService(
-#                 provider_id=user.id,
-#                 service_id=new_service.id,
-#                 county_id = county_idd
-#             )
-#             db.session.add(provider_service)
-#             service_ids.append(new_service.id)
-
-#         db.session.commit()
-#         return {'message': f'Services created and associated with {user.first_name} {user.last_name}', 'service_ids': service_ids}, 201
 class AddService(Resource):
     @jwt_required()
     def post(self):
@@ -562,48 +498,6 @@ from flask_jwt_extended import jwt_required
 from geopy.distance import geodesic
 from models import User
 from app import db
-
-# class ProviderList(Resource):
-#     @jwt_required()
-#     def get(self):
-#         provider_ids = request.args.get('provider_ids')
-#         client_lat = request.args.get('client_lat')
-#         client_lon = request.args.get('client_lon')
-
-#         if provider_ids is None:
-#             return {'error': 'No provider IDs provided'}, 400
-
-#         try:
-#             client_lat = float(client_lat)
-#             client_lon = float(client_lon)
-#         except (ValueError, TypeError):
-#             return {'error': ''}, 400
-
-#         provider_ids_list = provider_ids.split(',')
-#         provider_ids_list = [int(provider_id) for provider_id in provider_ids_list]
-
-#         users = User.query.filter(User.id.in_(provider_ids_list)).all()
-
-#         if not users:
-#             return {'error': 'No users found for the given provider IDs'}, 404
-
-#         user_details = []
-#         for user in users:
-#             distance = geodesic((client_lat, client_lon), (user.latitude, user.longitude)).miles if user.latitude and user.longitude else None
-#             user_details.append({
-#                 'first_name': user.first_name,
-#                 'last_name': user.last_name,
-#                 'email': user.email,
-#                 'image': user.image,
-#                 'latitude': user.latitude,
-#                 'longitude': user.longitude,
-#                 'distance': distance,
-#                 'county': user.county
-#             })
-
-#         user_details.sort(key=lambda x: x['distance'] if x['distance'] is not None else float('inf'))
-#         print("User Details:", user_details)  # Log the user details
-#         return jsonify(user_details)
 
 class ProviderList(Resource):
     @jwt_required()
