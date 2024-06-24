@@ -563,6 +563,48 @@ from geopy.distance import geodesic
 from models import User
 from app import db
 
+# class ProviderList(Resource):
+#     @jwt_required()
+#     def get(self):
+#         provider_ids = request.args.get('provider_ids')
+#         client_lat = request.args.get('client_lat')
+#         client_lon = request.args.get('client_lon')
+
+#         if provider_ids is None:
+#             return {'error': 'No provider IDs provided'}, 400
+
+#         try:
+#             client_lat = float(client_lat)
+#             client_lon = float(client_lon)
+#         except (ValueError, TypeError):
+#             return {'error': ''}, 400
+
+#         provider_ids_list = provider_ids.split(',')
+#         provider_ids_list = [int(provider_id) for provider_id in provider_ids_list]
+
+#         users = User.query.filter(User.id.in_(provider_ids_list)).all()
+
+#         if not users:
+#             return {'error': 'No users found for the given provider IDs'}, 404
+
+#         user_details = []
+#         for user in users:
+#             distance = geodesic((client_lat, client_lon), (user.latitude, user.longitude)).miles if user.latitude and user.longitude else None
+#             user_details.append({
+#                 'first_name': user.first_name,
+#                 'last_name': user.last_name,
+#                 'email': user.email,
+#                 'image': user.image,
+#                 'latitude': user.latitude,
+#                 'longitude': user.longitude,
+#                 'distance': distance,
+#                 'county': user.county
+#             })
+
+#         user_details.sort(key=lambda x: x['distance'] if x['distance'] is not None else float('inf'))
+#         print("User Details:", user_details)  # Log the user details
+#         return jsonify(user_details)
+
 class ProviderList(Resource):
     @jwt_required()
     def get(self):
@@ -570,15 +612,12 @@ class ProviderList(Resource):
         client_lat = request.args.get('client_lat')
         client_lon = request.args.get('client_lon')
 
-        print(f"Received provider_ids: {provider_ids}, client_lat: {client_lat}, client_lon: {client_lon}")
-
         if provider_ids is None:
             return {'error': 'No provider IDs provided'}, 400
 
         try:
-            if client_lat and client_lon:
-                client_lat = float(client_lat)
-                client_lon = float(client_lon)
+            client_lat = float(client_lat)
+            client_lon = float(client_lon)
         except (ValueError, TypeError):
             return {'error': 'Invalid latitude or longitude values'}, 400
 
@@ -605,49 +644,7 @@ class ProviderList(Resource):
             })
 
         user_details.sort(key=lambda x: x['distance'] if x['distance'] is not None else float('inf'))
-        print("User Details:", user_details)
         return jsonify(user_details)
-
-# class ProviderList(Resource):
-#     @jwt_required()
-#     def get(self):
-#         provider_ids = request.args.get('provider_ids')
-#         client_lat = request.args.get('client_lat')
-#         client_lon = request.args.get('client_lon')
-
-#         if provider_ids is None:
-#             return {'error': 'No provider IDs provided'}, 400
-
-#         try:
-#             client_lat = float(client_lat)
-#             client_lon = float(client_lon)
-#         except (ValueError, TypeError):
-#             return {'error': 'Invalid latitude or longitude values'}, 400
-
-#         provider_ids_list = provider_ids.split(',')
-#         provider_ids_list = [int(provider_id) for provider_id in provider_ids_list]
-
-#         users = User.query.filter(User.id.in_(provider_ids_list)).all()
-
-#         if not users:
-#             return {'error': 'No users found for the given provider IDs'}, 404
-
-#         user_details = []
-#         for user in users:
-#             distance = geodesic((client_lat, client_lon), (user.latitude, user.longitude)).miles if user.latitude and user.longitude else None
-#             user_details.append({
-#                 'first_name': user.first_name,
-#                 'last_name': user.last_name,
-#                 'email': user.email,
-#                 'image': user.image,
-#                 'latitude': user.latitude,
-#                 'longitude': user.longitude,
-#                 'distance': distance,
-#                 'county': user.county
-#             })
-
-#         user_details.sort(key=lambda x: x['distance'] if x['distance'] is not None else float('inf'))
-#         return jsonify(user_details)
 
 
 
