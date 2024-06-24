@@ -664,11 +664,6 @@ class ProviderDetails2(Resource):
             return {'error': 'provider_ids and countyId are required parameters'}, 400
 
         try:
-            county_id = int(county_id)
-        except ValueError:
-            return {'error': 'Invalid countyId value'}, 400
-
-        try:
             client_lat = float(client_lat)
             client_lon = float(client_lon)
         except (ValueError, TypeError):
