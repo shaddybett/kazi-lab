@@ -741,6 +741,7 @@ function ClientDashboard() {
   const handleProviders = async (service) => {
     try {
       const token = localStorage.getItem("token");
+      const countyId = localStorage.getItem("countyId");
       const response = await fetch(`/provider-ids/${service.id}`, {
         method: "GET",
         headers: {
@@ -748,19 +749,35 @@ function ClientDashboard() {
           Authorization: `Bearer ${token}`,
         },
       });
+  
       if (response.ok) {
         const responseData = await response.json();
-        localStorage.setItem("providerIds", JSON.stringify(responseData.provider_ids));
-        const providerIds = responseData.provider_ids.join(",");
-        navigate(`/providers?provider_ids=${providerIds}`);
+        const providerIds = responseData.provider_ids;
+        
+        const providerResponse = await fetch(`/provider-delta?countyId=${countyId}&provider_ids=${providerIds.join(",")}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
+  
+        if (providerResponse.ok) {
+          const providersData = await providerResponse.json();
+          navigate('/service-providers', { state: { providers: providersData } });
+        } else {
+          const errorMessage = await providerResponse.json();
+          setError(errorMessage.error || "An error occurred while fetching provider details");
+        }
       } else {
         const errorMessage = await response.json();
         setError(errorMessage.error || "An error occurred while fetching provider IDs");
       }
     } catch (error) {
-      setError("An error occurred please try again later");
+      setError("An error occurred. Please try again later");
     }
   };
+  
 
   const handleLogout = async () => {
     const result = await Swal.fire({
