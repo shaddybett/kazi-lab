@@ -1,8 +1,8 @@
-
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Avatar, Dropdown, Navbar, Button, Card, Select } from "flowbite-react";
 import Swal from "sweetalert2";
+import { getDistance } from "geolib";
 
 function ClientDashboard() {
   const [data, setData] = useState({});
@@ -12,6 +12,33 @@ function ClientDashboard() {
   const [counties, setCounties] = useState([]);
   const [selectedCounty, setSelectedCounty] = useState("");
   const navigate = useNavigate();
+  const [providers,setProviders] = useState([])
+  const [clientLocation, setClientLocation] = useState({
+    latitude: null,
+    longitude: null,
+  });
+  const [locationEnabled, setLocationEnabled] = useState(false);
+
+  useEffect(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          setClientLocation({
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude,
+          });
+          setLocationEnabled(true);
+        },
+        (error) => {
+          console.error("Error getting location:", error);
+          setLocationEnabled(false);
+        }
+      );
+    } else {
+      console.error("Geolocation is not supported by this browser.");
+      setLocationEnabled(false);
+    }
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -87,6 +114,69 @@ function ClientDashboard() {
 
     fetchServicesByCounty();
   }, [selectedCounty]);
+  // useEffect(() => {
+  //   const fetchProviderDetailsCounty = async () => {
+  //     try {
+  //       const token = localStorage.getItem("token");
+  //       const countyId = localStorage.getItem("countyId");
+  //       const countyProviderIds = JSON.parse(localStorage.getItem("countyProviderIds"));
+
+  //       const headers = {
+  //         "Content-Type": "application/json",
+  //         Authorization: `Bearer ${token}`,
+  //       };
+
+  //       const url = locationEnabled
+  //         ? `/provider-delta?countyId=${countyId}&provider_ids=${countyProviderIds.join(",")}&client_lat=${clientLocation.latitude}&client_lon=${clientLocation.longitude}`
+  //         : `/provider-delta?countyId=${countyId}&provider_ids=${countyProviderIds.join(",")}`;
+
+  //       const response = await fetch(url, { method: "GET", headers });
+
+  //       if (!response.ok) {
+  //         const errorMessage = await response.json();
+  //         setError(errorMessage.error);
+  //         throw new Error("Failed to fetch county provider details");
+  //       }
+
+  //       const countyProviderDetails = await response.json();
+  //       setProviders(Array.isArray(countyProviderDetails) ? countyProviderDetails : []);
+  //       console.log("County Provider Details:", countyProviderDetails);
+  //     } catch (error) {
+  //       console.error("Error fetching county provider details:", error);
+  //       setProviders([]);
+  //     }
+  //   };
+
+  //   fetchProviderDetailsCounty();
+  // }, [clientLocation, locationEnabled]);
+
+  useEffect(() => {
+    if (locationEnabled && providers.length > 0) {
+      const sortedProviders = providers
+        .filter((provider) => provider.latitude && provider.longitude)
+        .sort((a, b) => {
+          const distanceA = getDistance(clientLocation, {
+            latitude: a.latitude,
+            longitude: a.longitude,
+          });
+          const distanceB = getDistance(clientLocation, {
+            latitude: b.latitude,
+            longitude: b.longitude,
+          });
+          return distanceA - distanceB;
+        })
+        .map((provider) => ({
+          ...provider,
+          distance: (
+            getDistance(clientLocation, {
+              latitude: provider.latitude,
+              longitude: provider.longitude,
+            }) / 1000
+          ).toFixed(2),
+        }));
+      setProviders(sortedProviders);
+    }
+  }, [clientLocation, providers, locationEnabled]);
 
   const handleProviders = async (service) => {
     try {
@@ -224,14 +314,11 @@ function ClientDashboard() {
 
 export default ClientDashboard;
 
-
-
-
-
 // import React, { useState, useEffect } from "react";
 // import { useNavigate } from "react-router-dom";
 // import { Avatar, Dropdown, Navbar, Button, Card, Select } from "flowbite-react";
 // import Swal from "sweetalert2";
+// import ServiceProviders from "./ServiceProviders";
 
 // function ClientDashboard() {
 //   const [data, setData] = useState({});
@@ -240,45 +327,44 @@ export default ClientDashboard;
 //   const [searchQuery, setSearchQuery] = useState("");
 //   const [counties, setCounties] = useState([]);
 //   const [selectedCounty, setSelectedCounty] = useState("");
-//   const [countyId,setCountyId] = useState("");
-//   const [sortedByCounty, setSortedByCounty] = useState(false); 
 //   const navigate = useNavigate();
 
 //   useEffect(() => {
 //     const fetchData = async () => {
 //       try {
 //         const token = localStorage.getItem("token");
-//         const [serviceResponse, userResponse, countyResponse] = await Promise.all([
-//           fetch("/service", {
-//             method: "GET",
-//             headers: {
-//               "Content-Type": "application/json",
-//               Authorization: `Bearer ${token}`,
-//             },
-//           }),
-//           fetch("/dashboard", {
-//             method: "GET",
-//             headers: {
-//               "Content-Type": "application/json",
-//               Authorization: `Bearer ${token}`,
-//             },
-//           }),
-//           fetch("/county", {
-//             method: "GET",
-//             headers: {
-//               "Content-Type": "application/json",
-//             },
-//           }),
-//         ]);
+//         const [serviceResponse, userResponse, countyResponse] =
+//           await Promise.all([
+//             fetch("/service", {
+//               method: "GET",
+//               headers: {
+//                 "Content-Type": "application/json",
+//                 Authorization: `Bearer ${token}`,
+//               },
+//             }),
+//             fetch("/dashboard", {
+//               method: "GET",
+//               headers: {
+//                 "Content-Type": "application/json",
+//                 Authorization: `Bearer ${token}`,
+//               },
+//             }),
+//             fetch("/county", {
+//               method: "GET",
+//               headers: {
+//                 "Content-Type": "application/json",
+//               },
+//             }),
+//           ]);
 
 //         if (serviceResponse.ok && userResponse.ok && countyResponse.ok) {
 //           const serviceData = await serviceResponse.json();
 //           const userData = await userResponse.json();
-//           const countyData = await countyResponse.json();
+//           const countyData = await countyResponse.json(); // Assuming county data is an array of objects with id and name
 
 //           setServices(serviceData.all_services);
 //           setData(userData);
-//           setCounties(countyData.all_counties);
+//           setCounties(countyData.all_counties); // Set counties in state
 //         } else {
 //           const errorMessage = await serviceResponse.json();
 //           setError(errorMessage.error || "An error occurred");
@@ -296,32 +382,29 @@ export default ClientDashboard;
 //       if (selectedCounty) {
 //         try {
 //           const token = localStorage.getItem("token");
-//           const response = await fetch(`/services-by-county/${selectedCounty}`, {
-//             method: "GET",
-//             headers: {
-//               "Content-Type": "application/json",
-//               Authorization: `Bearer ${token}`,
-//             },
-//           });
+//           const response = await fetch(
+//             `/services-by-county/${selectedCounty}`,
+//             {
+//               method: "GET",
+//               headers: {
+//                 "Content-Type": "application/json",
+//                 Authorization: `Bearer ${token}`,
+//               },
+//             }
+//           );
 //           if (response.ok) {
 //             const responseData = await response.json();
 //             setServices(responseData.services);
-//             setCountyId(responseData.county_id)
-
-//             setSortedByCounty(true);
-
-//             const providerIds = responseData.services.map(service => service.id);
-//             localStorage.setItem("countyProviderIds", JSON.stringify(providerIds));
-//             localStorage.setItem("countyId",responseData.county_id)
 //           } else {
 //             const errorMessage = await response.json();
-//             setError(errorMessage.error || "An error occurred while fetching services by county");
+//             setError(
+//               errorMessage.error ||
+//                 "An error occurred while fetching services by county"
+//             );
 //           }
 //         } catch (error) {
 //           setError("An error occurred please try again later");
 //         }
-//       } else {
-//         setSortedByCounty(false);
 //       }
 //     };
 
@@ -340,13 +423,17 @@ export default ClientDashboard;
 //       });
 //       if (response.ok) {
 //         const responseData = await response.json();
-//         const providerIdsKey = sortedByCounty ? "countyProviderIds" : "providerIds";
-//         localStorage.setItem(providerIdsKey, JSON.stringify(responseData.provider_ids));
+//         localStorage.setItem(
+//           "providerIds",
+//           JSON.stringify(responseData.provider_ids)
+//         );
 //         const providerIds = responseData.provider_ids.join(",");
 //         navigate(`/providers?provider_ids=${providerIds}`);
 //       } else {
 //         const errorMessage = await response.json();
-//         setError(errorMessage.error || "An error occurred while fetching provider IDs");
+//         setError(
+//           errorMessage.error || "An error occurred while fetching provider IDs"
+//         );
 //       }
 //     } catch (error) {
 //       setError("An error occurred please try again later");
@@ -375,7 +462,7 @@ export default ClientDashboard;
 //   useEffect(() => {
 //     if (error) {
 //       const timer = setTimeout(() => {
-//         setError('');
+//         setError("");
 //       }, 5000);
 //       return () => clearTimeout(timer);
 //     }
@@ -442,6 +529,10 @@ export default ClientDashboard;
 //           ))}
 //         </Select>
 //       </div>
+//       <div>
+//         <ServiceProviders selectedCounty={selectedCounty} />{" "}
+//         {/* Pass selectedCounty */}
+//       </div>
 
 //       <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
 //         {filteredServices.map((service) => (
@@ -464,3 +555,6 @@ export default ClientDashboard;
 // }
 
 // export default ClientDashboard;
+
+
+

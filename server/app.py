@@ -202,24 +202,6 @@ class signup2(Resource):
                 existing_user.county = county_name
 
                 db.session.commit()
-
-                # Fetch the county_id based on county_name
-                # exi_county = County.query.filter_by(county_name=county_name).first()
-                # if not exi_county:
-                #     return {'error': 'County not found'}, 404
-
-                # county_id = exi_county.id 
-                # idd = existing_user.id
-
-                # provider_service = ProviderService.query.filter_by(provider_id=idd).first()
-                # if provider_service:
-                #     provider_service.county_id = county_id
-                # else:
-                #     # If no existing provider service, create a new one
-                #     provider_service = ProviderService(provider_id=idd, county_id=county_id)
-                #     db.session.add(provider_service)
-
-                # db.session.commit()
                 return {'message': 'User details updated successfully'}
             else:
                 return {'error': 'User not found'}, 404
@@ -295,71 +277,7 @@ class Dashboard(Resource):
         else:
             response = make_response({'error': 'Error fetching user details'}, 404)
             return response      
-# class AddService(Resource):
-#     @jwt_required()
-#     def post(self):
-#         current_user = get_jwt_identity()
-#         user = User.query.filter_by(email=current_user).first()
-#         reg_county = user.county
-#         exist_county = County.query.filter_by(county_name = reg_county).first()
-#         if exist_county:
-#             county_id = exist_county.id
-        
-#         if not user:
-#             return {'error': 'User not found'}, 404
 
-#         args = request.json
-#         existing_services = args.get('existing_services', [])
-#         new_service_name = args.get('service_name')
-
-#         if not existing_services and not new_service_name:
-#             return {'error': 'At least one service must be provided'}, 400
-
-#         service_ids = []
-
-#         for service_id in existing_services:
-#             provider_service = ProviderService.query.filter_by(provider_id=user.id, service_id=service_id).first()
-#             if not provider_service:
-#                 provider_service = ProviderService(
-#                     provider_id=user.id,
-#                     service_id=service_id,
-#                     county_id = county_id
-#                 )
-#                 db.session.add(provider_service)
-#                 service_ids.append(service_id)
-
-#         if new_service_name:
-#             existing_service = Service.query.filter(func.lower(Service.service_name) == func.lower(new_service_name)).first()
-#             provider_existing_service = Service.query.filter_by(service_name=new_service_name).first()
-            
-#             if provider_existing_service:
-#                 return {'error': f'Service "{new_service_name}" is already registered by you'}, 401
-            
-#             if existing_service:
-#                 return {'error': f'Service entered already exists,please mark from the list provided'}, 401
-
-#             new_service = Service(
-#                 service_name=new_service_name
-#                 # provider_id=user.id
-#             )
-#             db.session.add(new_service)
-#             db.session.flush() 
-#             county = user.county
-#             exi_county = County.query.filter_by(county_name=county).first()
-#             county_idd = None
-#             if exi_county:
-#                 county_idd = exi_county.id
-   
-#             provider_service = ProviderService(
-#                 provider_id=user.id,
-#                 service_id=new_service.id,
-#                 county_id = county_idd
-#             )
-#             db.session.add(provider_service)
-#             service_ids.append(new_service.id)
-
-#         db.session.commit()
-#         return {'message': f'Services created and associated with {user.first_name} {user.last_name}', 'service_ids': service_ids}, 201
 class AddService(Resource):
     @jwt_required()
     def post(self):
@@ -577,7 +495,7 @@ from app import db
 #             client_lat = float(client_lat)
 #             client_lon = float(client_lon)
 #         except (ValueError, TypeError):
-#             return {'error': ''}, 400
+#             return {'error': 'Invalid latitude or longitude values'}, 400
 
 #         provider_ids_list = provider_ids.split(',')
 #         provider_ids_list = [int(provider_id) for provider_id in provider_ids_list]
@@ -602,8 +520,8 @@ from app import db
 #             })
 
 #         user_details.sort(key=lambda x: x['distance'] if x['distance'] is not None else float('inf'))
-#         print("User Details:", user_details)  # Log the user details
 #         return jsonify(user_details)
+
 
 class ProviderList(Resource):
     @jwt_required()
@@ -615,38 +533,57 @@ class ProviderList(Resource):
         if provider_ids is None:
             return {'error': 'No provider IDs provided'}, 400
 
-        try:
-            client_lat = float(client_lat)
-            client_lon = float(client_lon)
-        except (ValueError, TypeError):
-            return {'error': 'Invalid latitude or longitude values'}, 400
-
         provider_ids_list = provider_ids.split(',')
-        provider_ids_list = [int(provider_id) for provider_id in provider_ids_list]
+        try:
+            provider_ids_list = [int(provider_id) for provider_id in provider_ids_list]
+        except ValueError:
+            return {'error': 'Invalid provider IDs'}, 400
 
         users = User.query.filter(User.id.in_(provider_ids_list)).all()
-
         if not users:
             return {'error': 'No users found for the given provider IDs'}, 404
 
         user_details = []
-        for user in users:
-            distance = geodesic((client_lat, client_lon), (user.latitude, user.longitude)).miles if user.latitude and user.longitude else None
-            user_details.append({
-                'first_name': user.first_name,
-                'last_name': user.last_name,
-                'email': user.email,
-                'image': user.image,
-                'latitude': user.latitude,
-                'longitude': user.longitude,
-                'distance': distance,
-                'county': user.county
-            })
+        if client_lat and client_lon:
+            try:
+                client_lat = float(client_lat)
+                client_lon = float(client_lon)
+            except (ValueError, TypeError):
+                return {'error': 'Invalid latitude or longitude values'}, 400
 
-        user_details.sort(key=lambda x: x['distance'] if x['distance'] is not None else float('inf'))
-        return jsonify(user_details)
+            for user in users:
+                distance = geodesic((client_lat, client_lon), (user.latitude, user.longitude)).miles if user.latitude and user.longitude else None
+                user_details.append({
+                    'first_name': user.first_name,
+                    'last_name': user.last_name,
+                    'email': user.email,
+                    'image': user.image,
+                    'latitude': user.latitude,
+                    'longitude': user.longitude,
+                    'distance': distance,
+                    'county': user.county
+                })
 
+            user_details.sort(key=lambda x: x['distance'] if x['distance'] is not None else float('inf'))
+        else:
+            for user in users:
+                user_details.append({
+                    'first_name': user.first_name,
+                    'last_name': user.last_name,
+                    'email': user.email,
+                    'image': user.image,
+                    'latitude': user.latitude,
+                    'longitude': user.longitude,
+                    'distance': None,
+                    'county': user.county
+                })
 
+        response = {
+            'providers': user_details,
+            'message': 'Enable location services to see the closest providers' if not client_lat or not client_lon else None
+        }
+
+        return jsonify(response)
 
 class ProviderDetails2(Resource):
     @jwt_required()
@@ -659,29 +596,35 @@ class ProviderDetails2(Resource):
         if provider_ids is None or county_id is None:
             return {'error': 'provider_ids and countyId are required parameters'}, 400
 
-        try:
-            county_id = int(county_id)
-        except ValueError:
-            return {'error': 'Invalid countyId value'}, 400
+        county = County.query.filter_by(id=county_id).first()
+        if not county:
+            return {'error': 'County not found'}, 404
 
-        try:
-            client_lat = float(client_lat)
-            client_lon = float(client_lon)
-        except (ValueError, TypeError):
-            return {'error': 'Invalid latitude or longitude values'}, 400
+        cnt_name = county.county_name
 
         provider_ids_list = provider_ids.split(',')
-        provider_ids_list = [int(provider_id) for provider_id in provider_ids_list]
+        try:
+            provider_ids_list = [int(provider_id) for provider_id in provider_ids_list]
+        except ValueError:
+            return {'error': 'Invalid provider IDs'}, 400
 
         users = User.query.filter(User.id.in_(provider_ids_list)).all()
-
         if not users:
             return {'error': 'No users found for the given provider IDs'}, 404
 
         user_details = []
         for user in users:
-            if user.county_id == county_id:
-                distance = geodesic((client_lat, client_lon), (user.latitude, user.longitude)).miles if user.latitude and user.longitude else None
+            if user.county == cnt_name:
+                distance = None
+                if client_lat and client_lon:
+                    try:
+                        client_lat = float(client_lat)
+                        client_lon = float(client_lon)
+                        if user.latitude and user.longitude:
+                            distance = geodesic((client_lat, client_lon), (user.latitude, user.longitude)).miles
+                    except (ValueError, TypeError):
+                        return {'error': 'Invalid latitude or longitude values'}, 400
+                
                 user_details.append({
                     'first_name': user.first_name,
                     'last_name': user.last_name,
@@ -696,7 +639,59 @@ class ProviderDetails2(Resource):
         user_details.sort(key=lambda x: x['distance'] if x['distance'] is not None else float('inf'))
         return jsonify(user_details)
 
+# class ProviderDetails2(Resource):
+#     @jwt_required()
+#     def get(self):
+#         provider_ids = request.args.get('provider_ids')
+#         county_id = request.args.get('countyId')
+#         client_lat = request.args.get('client_lat')
+#         client_lon = request.args.get('client_lon')
 
+#         if provider_ids is None or county_id is None:
+#             return {'error': 'provider_ids and countyId are required parameters'}, 400
+
+#         county = County.query.filter_by(id=county_id).first()
+#         if not county:
+#             return {'error': 'County not found'}, 404
+
+#         cnt_name = county.county_name
+
+#         provider_ids_list = provider_ids.split(',')
+#         try:
+#             provider_ids_list = [int(provider_id) for provider_id in provider_ids_list]
+#         except ValueError:
+#             return {'error': 'Invalid provider IDs'}, 400
+
+#         users = User.query.filter(User.id.in_(provider_ids_list)).all()
+#         if not users:
+#             return {'error': 'No users found for the given provider IDs'}, 404
+
+#         user_details = []
+#         for user in users:
+#             if user.county == cnt_name:
+#                 distance = None
+#                 if client_lat and client_lon:
+#                     try:
+#                         client_lat = float(client_lat)
+#                         client_lon = float(client_lon)
+#                         if user.latitude and user.longitude:
+#                             distance = geodesic((client_lat, client_lon), (user.latitude, user.longitude)).miles
+#                     except (ValueError, TypeError):
+#                         return {'error': 'Invalid latitude or longitude values'}, 400
+                
+#                 user_details.append({
+#                     'first_name': user.first_name,
+#                     'last_name': user.last_name,
+#                     'email': user.email,
+#                     'image': user.image,
+#                     'latitude': user.latitude,
+#                     'longitude': user.longitude,
+#                     'distance': distance,
+#                     'county': user.county
+#                 })
+
+#         user_details.sort(key=lambda x: x['distance'] if x['distance'] is not None else float('inf'))
+#         return jsonify(user_details)
 
 # class ProviderDetails2(Resource):
 #     @jwt_required()
@@ -706,22 +701,17 @@ class ProviderDetails2(Resource):
 #         client_lat = request.args.get('client_lat')
 #         client_lon = request.args.get('client_lon')
 
-#         name_county = County.query.filter_by(id=county_id).first()
-#         if county_id is None:
-#             return {'error': 'No county id no service'}, 400
-#         if name_county:
-#             exi_county = name_county.county_name
+#         county = County.query.filter_by(id = county_id).first()
+#         if county:
+#             cnt_name = county.county_name
 
-#         if provider_ids is None:
-#             return {'error': 'No provider IDs provided'}, 400
-
-#         if client_lat is None or client_lon is None:
-#             return {'error': 'Client latitude and longitude are required'}, 400
+#         if provider_ids is None or county_id is None:
+#             return {'error': 'provider_ids and countyId are required parameters'}, 400
 
 #         try:
 #             client_lat = float(client_lat)
 #             client_lon = float(client_lon)
-#         except ValueError:
+#         except (ValueError, TypeError):
 #             return {'error': 'Invalid latitude or longitude values'}, 400
 
 #         provider_ids_list = provider_ids.split(',')
@@ -734,29 +724,20 @@ class ProviderDetails2(Resource):
 
 #         user_details = []
 #         for user in users:
-#             if user.latitude and user.longitude:
-#                 distance = geodesic((client_lat, client_lon), (user.latitude, user.longitude)).miles
-#             else:
-#                 distance = None
-
-#             user_detail = {
-#                 'first_name': user.first_name,
-#                 'last_name': user.last_name,
-#                 'email': user.email,
-#                 'image': user.image,
-#                 'latitude': user.latitude,
-#                 'longitude': user.longitude,
-#                 'distance': distance,
-#                 'county': user.county
-#             }
-            
-#             if user.county == exi_county:
-#                 user_details.append(user_detail)
-#             else:
-#                 return {'error': 'oops'}, 404
+#             if user.county == cnt_name:
+#                 distance = geodesic((client_lat, client_lon), (user.latitude, user.longitude)).miles if user.latitude and user.longitude else None
+#                 user_details.append({
+#                     'first_name': user.first_name,
+#                     'last_name': user.last_name,
+#                     'email': user.email,
+#                     'image': user.image,
+#                     'latitude': user.latitude,
+#                     'longitude': user.longitude,
+#                     'distance': distance,
+#                     'county': user.county
+#                 })
 
 #         user_details.sort(key=lambda x: x['distance'] if x['distance'] is not None else float('inf'))
-
 #         return jsonify(user_details)
 
 class ProviderIds(Resource):
@@ -793,25 +774,6 @@ def get_services_by_county(county_name):
 
     except Exception as e:
         return jsonify({'error': 'An error occurred while processing the request'}), 500
-
-
-# @app.route('/services-by-county/<county_name>', methods=['GET'])
-# @jwt_required()
-# def get_services_by_county(county_name):
-#     try:
-#         county = County.query.filter_by(county_name=county_name).first()
-#         if not county:
-#             return jsonify({'error': 'County not found'}), 404
-
-#         services = db.session.query(Service).join(ProviderService).filter(ProviderService.county_id == county.id).all()
-#         if services:
-#             service_names = [{'id': service.id, 'name': service.service_name}for service in services]
-#             return jsonify({'services': service_names}), 200
-#         else:
-#             return jsonify({'error': 'Sorry, no registered services for the selected county'}), 500
-
-#     except Exception as e:
-#         return jsonify({'error': 'An error occurred while processing the request'}), 500
 
 class UserDetails(Resource):
     def get(self):
