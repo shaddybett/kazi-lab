@@ -11,6 +11,32 @@ function ClientDashboard() {
   const [counties, setCounties] = useState([]);
   const [selectedCounty, setSelectedCounty] = useState("");
   const navigate = useNavigate();
+  const [clientLocation, setClientLocation] = useState({
+    latitude: null,
+    longitude: null,
+  });
+  const [locationEnabled, setLocationEnabled] = useState(false);
+
+  useEffect(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          setClientLocation({
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude,
+          });
+          setLocationEnabled(true);
+        },
+        (error) => {
+          console.error("Error getting location:", error);
+          setLocationEnabled(false);
+        }
+      );
+    } else {
+      console.error("Geolocation is not supported by this browser.");
+      setLocationEnabled(false);
+    }
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -86,6 +112,69 @@ function ClientDashboard() {
 
     fetchServicesByCounty();
   }, [selectedCounty]);
+  useEffect(() => {
+    const fetchProviderDetailsCounty = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const countyId = localStorage.getItem("countyId");
+        const countyProviderIds = JSON.parse(localStorage.getItem("countyProviderIds"));
+
+        const headers = {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        };
+
+        const url = locationEnabled
+          ? `/provider-delta?countyId=${countyId}&provider_ids=${countyProviderIds.join(",")}&client_lat=${clientLocation.latitude}&client_lon=${clientLocation.longitude}`
+          : `/provider-delta?countyId=${countyId}&provider_ids=${countyProviderIds.join(",")}`;
+
+        const response = await fetch(url, { method: "GET", headers });
+
+        if (!response.ok) {
+          const errorMessage = await response.json();
+          setError(errorMessage.error);
+          throw new Error("Failed to fetch county provider details");
+        }
+
+        const countyProviderDetails = await response.json();
+        setProviders(Array.isArray(countyProviderDetails) ? countyProviderDetails : []);
+        console.log("County Provider Details:", countyProviderDetails);
+      } catch (error) {
+        console.error("Error fetching county provider details:", error);
+        setProviders([]);
+      }
+    };
+
+    fetchProviderDetailsCounty();
+  }, [clientLocation, locationEnabled]);
+
+  useEffect(() => {
+    if (locationEnabled && providers.length > 0) {
+      const sortedProviders = providers
+        .filter((provider) => provider.latitude && provider.longitude)
+        .sort((a, b) => {
+          const distanceA = getDistance(clientLocation, {
+            latitude: a.latitude,
+            longitude: a.longitude,
+          });
+          const distanceB = getDistance(clientLocation, {
+            latitude: b.latitude,
+            longitude: b.longitude,
+          });
+          return distanceA - distanceB;
+        })
+        .map((provider) => ({
+          ...provider,
+          distance: (
+            getDistance(clientLocation, {
+              latitude: provider.latitude,
+              longitude: provider.longitude,
+            }) / 1000
+          ).toFixed(2),
+        }));
+      setProviders(sortedProviders);
+    }
+  }, [clientLocation, providers, locationEnabled]);
 
   const handleProviders = async (service) => {
     try {
