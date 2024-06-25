@@ -250,7 +250,6 @@ import { getDistance } from "geolib";
 
 function ServiceProviders() {
   const [providers, setProviders] = useState([]);
-  const [countyProviders,setCountyProviders] = useState([])
   const [selectedUser, setSelectedUser] = useState(null);
   const [error, setError] = useState("");
   const [clientLocation, setClientLocation] = useState({
@@ -313,42 +312,6 @@ function ServiceProviders() {
     };
 
     fetchProviderDetails();
-  }, [clientLocation, locationEnabled]);
-
-  useEffect(() => {
-    const fetchProviderDetailsCounty = async () => {
-      try {
-        const token = localStorage.getItem("token");
-        const countyId = localStorage.getItem("countyId");
-        const countyProviderIds = JSON.parse(localStorage.getItem("countyProviderIds"));
-
-        const headers = {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        };
-
-        const url = locationEnabled
-          ? `/provider-delta?countyId=${countyId}&provider_ids=${countyProviderIds.join(",")}&client_lat=${clientLocation.latitude}&client_lon=${clientLocation.longitude}`
-          : `/provider-delta?countyId=${countyId}&provider_ids=${countyProviderIds.join(",")}`;
-
-        const response = await fetch(url, { method: "GET", headers });
-
-        if (!response.ok) {
-          const errorMessage = await response.json();
-          setError(errorMessage.error);
-          throw new Error("Failed to fetch county provider details");
-        }
-
-        const countyProviderDetails = await response.json();
-        setProviders(Array.isArray(countyProviderDetails) ? countyProviderDetails : []);
-        console.log("County Provider Details:", countyProviderDetails);
-      } catch (error) {
-        console.error("Error fetching county provider details:", error);
-        setProviders([]);
-      }
-    };
-
-    fetchProviderDetailsCounty();
   }, [clientLocation, locationEnabled]);
 
   useEffect(() => {
