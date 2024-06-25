@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Avatar, Dropdown, Navbar, Button, Card, Select } from "flowbite-react";
 import Swal from "sweetalert2";
+import { getDistance } from "geolib";
 
 function ClientDashboard() {
   const [data, setData] = useState({});
@@ -11,6 +12,7 @@ function ClientDashboard() {
   const [counties, setCounties] = useState([]);
   const [selectedCounty, setSelectedCounty] = useState("");
   const navigate = useNavigate();
+  const [providers,setProviders] = useState([])
   const [clientLocation, setClientLocation] = useState({
     latitude: null,
     longitude: null,
