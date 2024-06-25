@@ -250,6 +250,7 @@ import { getDistance } from "geolib";
 
 function ServiceProviders() {
   const [providers, setProviders] = useState([]);
+  const [countyProviders,setCountyProviders] = useState([])
   const [selectedUser, setSelectedUser] = useState(null);
   const [error, setError] = useState("");
   const [clientLocation, setClientLocation] = useState({
