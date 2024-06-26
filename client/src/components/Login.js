@@ -69,7 +69,7 @@ function Login() {
           </div>
         </div>
         <div className="flex justify-center self-center z-10">
-          <div className="p-12 bg-glass mx-auto rounded-3xl w-full max-w-md">
+          <div className="p-12 bg-glass mx-auto rounded-3xl w-100">
             <div className="mb-7">
               <h3 className="font-semibold text-2xl text-gray-800">Sign In</h3>
             </div>
@@ -89,7 +89,7 @@ function Login() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="Password"
-                  className="text-sm text-gray-200 px-4 py-3 rounded-lg w-full bg-gray-200 focus:bg-gray-100 border border-gray-200 focus:outline-none focus:border-purple-400"
+                  className="text-sm  py-3 rounded-lg w-full bg-gray-200 focus:bg-gray-100 border border-gray-200 focus:outline-none focus:border-purple-400"
                 />
               </div>
               <div className="flex items-center mt-2">
@@ -97,7 +97,7 @@ function Login() {
                   type="checkbox"
                   checked={showPassword}
                   onChange={() => setShowPassword(!showPassword)}
-                  className="mr-2"
+                  className="mr-2 "
                 />
                 <label className="text-sm text-gray-200">Show Password</label>
               </div>
@@ -154,5 +154,4 @@ function Login() {
 }
 
 export default Login;
-
 
