@@ -11,11 +11,12 @@ function Login() {
   const [rememberMe, setRememberMe] = useState(false);
 
   const navigate = useNavigate();
+  const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("/login", {
+      const response = await fetch( `${backendUrl}/login` , {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

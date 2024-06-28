@@ -3,6 +3,7 @@ import React,{useState,useEffect} from 'react'
 function Dashboard() {
   const [data,setData] = useState([])
   const [error,setError] = useState('')
+  const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
 
   useEffect(()=>{
@@ -12,7 +13,7 @@ function Dashboard() {
         if (!token){
           throw new Error('Token not found');
         }
-        const response = await fetch('/dashboard',{
+        const response = await fetch(`${backendUrl}/dashboard`,{
           method:'GET',
           headers:{
             'Content-Type':'application/json',

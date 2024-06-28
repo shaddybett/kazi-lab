@@ -11,6 +11,7 @@ function ServiceProviders() {
     longitude: null,
   });
   const [locationEnabled, setLocationEnabled] = useState(false);
+  const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
   useEffect(() => {
     if (navigator.geolocation) {
@@ -45,8 +46,8 @@ function ServiceProviders() {
         };
 
         const url = locationEnabled
-          ? `/provider-details?provider_ids=${providerIds.join(",")}&client_lat=${clientLocation.latitude}&client_lon=${clientLocation.longitude}`
-          : `/provider-details?provider_ids=${providerIds.join(",")}`;
+          ? `${backendUrl}/provider-details?provider_ids=${providerIds.join(",")}&client_lat=${clientLocation.latitude}&client_lon=${clientLocation.longitude}`
+          : `${backendUrl}/provider-details?provider_ids=${providerIds.join(",")}`;
 
         const response = await fetch(url, { method: "GET", headers });
 
@@ -71,7 +72,7 @@ function ServiceProviders() {
   const handleProviderClick = async (provider) => {
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch(`/user-details?email=${provider.email}`, {
+      const response = await fetch(`${backendUrl}/user-details?email=${provider.email}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",

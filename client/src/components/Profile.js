@@ -28,6 +28,7 @@ function Profile() {
   const [refresh, setRefresh] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
   const navigate = useNavigate();
+  const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
   useEffect(() => {
     const handleEntry = async () => {
@@ -36,7 +37,7 @@ function Profile() {
         if (!token) {
           throw new Error("Token not found");
         }
-        const response = await fetch("/dashboard", {
+        const response = await fetch(`${backendUrl}/dashboard`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -91,7 +92,7 @@ function Profile() {
         if (!token) {
           throw new Error("Token not found");
         }
-        const response = await fetch("/delete", {
+        const response = await fetch(`${backendUrl}/delete`, {
           method: "DELETE",
           headers: {
             "Content-Type": "application/json",
@@ -132,7 +133,7 @@ function Profile() {
       });
       const formData = new FormData();
       formData.append("image", image);
-      const imageResponse = await fetch("/update-image", {
+      const imageResponse = await fetch(`${backendUrl}/update-image`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -140,7 +141,7 @@ function Profile() {
         body: formData,
       });
 
-      const response = await fetch("/update", {
+      const response = await fetch(`${backendUrl}/update`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

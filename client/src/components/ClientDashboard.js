@@ -18,6 +18,7 @@ function ClientDashboard() {
     longitude: null,
   });
   const [locationEnabled, setLocationEnabled] = useState(false);
+  const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
   useEffect(() => {
     if (navigator.geolocation) {
@@ -45,21 +46,21 @@ function ClientDashboard() {
       try {
         const token = localStorage.getItem("token");
         const [serviceResponse, userResponse, countyResponse] = await Promise.all([
-          fetch("/service", {
+          fetch(`${backendUrl}/service`, {
             method: "GET",
             headers: {
               "Content-Type": "application/json",
               Authorization: `Bearer ${token}`,
             },
           }),
-          fetch("/dashboard", {
+          fetch(`${backendUrl}/dashboard`, {
             method: "GET",
             headers: {
               "Content-Type": "application/json",
               Authorization: `Bearer ${token}`,
             },
           }),
-          fetch("/county", {
+          fetch(`${backendUrl}/county`, {
             method: "GET",
             headers: {
               "Content-Type": "application/json",
@@ -92,7 +93,7 @@ function ClientDashboard() {
       if (selectedCounty) {
         try {
           const token = localStorage.getItem("token");
-          const response = await fetch(`/services-by-county/${selectedCounty}`, {
+          const response = await fetch(`${backendUrl}/services-by-county/${selectedCounty}`, {
             method: "GET",
             headers: {
               "Content-Type": "application/json",
@@ -127,8 +128,8 @@ function ClientDashboard() {
         };
 
         const url = locationEnabled
-          ? `/provider-delta?countyId=${countyId}&provider_ids=${countyProviderIds.join(",")}&client_lat=${clientLocation.latitude}&client_lon=${clientLocation.longitude}`
-          : `/provider-delta?countyId=${countyId}&provider_ids=${countyProviderIds.join(",")}`;
+          ? `${backendUrl}/provider-delta?countyId=${countyId}&provider_ids=${countyProviderIds.join(",")}&client_lat=${clientLocation.latitude}&client_lon=${clientLocation.longitude}`
+          : `${backendUrl}/provider-delta?countyId=${countyId}&provider_ids=${countyProviderIds.join(",")}`;
 
         const response = await fetch(url, { method: "GET", headers });
 
@@ -181,7 +182,7 @@ function ClientDashboard() {
   const handleProviders = async (service) => {
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch(`/provider-ids/${service.id}`, {
+      const response = await fetch(`${backendUrl}/provider-ids/${service.id}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
