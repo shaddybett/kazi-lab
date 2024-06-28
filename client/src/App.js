@@ -9,6 +9,7 @@ import ProviderDashboard from "./components/ProviderDashboard";
 import Profile from "./components/Profile";
 import ProviderDetails from "./components/ProviderDetails";
 import ServiceProviders from "./components/ServiceProviders";
+import Providers from "./components/Providers";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
       <Route path="/profile" element={<Profile />} />
       <Route path="/provider-details" element={<ProviderDetails />} />
       <Route path="/providers" element={<ServiceProviders/>} />
+      <Route path="/primes" element= {<Providers/>} />
     </Routes>
   );
 }
