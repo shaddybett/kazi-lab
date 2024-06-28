@@ -16,6 +16,8 @@ function Signup() {
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
   const uuid = uuidv4();
+  const backendUrl = process.env.REACT_APP_BACKEND_URL;
+
 
   localStorage.setItem("signupUUID", uuid);
 
@@ -44,7 +46,7 @@ function Signup() {
     console.log(first_name, last_name, email, password, iiid);
 
     try {
-      const response = await fetch("/signup", {
+      const response = await fetch(`${backendUrl}/signup`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

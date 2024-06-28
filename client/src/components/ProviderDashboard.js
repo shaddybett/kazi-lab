@@ -16,6 +16,7 @@ function ProviderDashboard() {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
   const navigate = useNavigate();
+  const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
   const handleProfile = () => {
     navigate("/profile");
@@ -39,7 +40,7 @@ function ProviderDashboard() {
   const fetchData = async () => {
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch("/offers", {
+      const response = await fetch(`${backendUrl}/offers`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -61,7 +62,7 @@ function ProviderDashboard() {
   const fetchAllServices = async () => {
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch("/service", {
+      const response = await fetch(`${backendUrl}/service`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -84,7 +85,7 @@ function ProviderDashboard() {
     const handleEntry = async () => {
       const token = localStorage.getItem("token");
       try {
-        const response = await fetch("/dashboard", {
+        const response = await fetch(`${backendUrl}/dashboard`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -129,7 +130,7 @@ function ProviderDashboard() {
     if (result.isConfirmed) {
       const token = localStorage.getItem("token");
       try {
-        const response = await fetch("/add-service", {
+        const response = await fetch(`${backendUrl}/add-service`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -184,7 +185,7 @@ function ProviderDashboard() {
     if (result.isConfirmed) {
       const token = localStorage.getItem("token");
       try {
-        const response = await fetch(`/delete-service/${serviceId}`, {
+        const response = await fetch(`${backendUrl}/delete-service/${serviceId}`, {
           method: "DELETE",
           headers: {
             "Content-Type": "application/json",
