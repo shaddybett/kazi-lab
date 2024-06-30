@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "flowbite-react";
-// import Logo from '../Landing Page/assets/images/logo.png';
 
 function Login() {
   const [email, setEmail] = useState("");
