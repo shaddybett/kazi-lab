@@ -40,35 +40,36 @@ function Providers() {
       try {
         const token = localStorage.getItem("token");
         const providerIds = JSON.parse(localStorage.getItem("providerIds"));
-
+  
         const headers = {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         };
-
+  
         const url = locationEnabled
           ? `${backendUrl}/provider-delta?countyId=${countyIdd}&provider_ids=${providerIds.join(",")}&client_lat=${clientLocation.latitude}&client_lon=${clientLocation.longitude}`
           : `${backendUrl}/provider-delta?countyId=${countyIdd}&provider_ids=${providerIds.join(",")}`;
-
+  
         const response = await fetch(url, { method: "GET", headers });
-
+  
         if (!response.ok) {
           const errorMessage = await response.json();
           setError(errorMessage.error);
           throw new Error("Failed to fetch provider details");
         }
-
+  
         const providerDetails = await response.json();
-        setProviders(Array.isArray(providerDetails.providers) ? providerDetails.providers : []);
-        console.log("Provider Details:", providerDetails.providers); // Log provider details
+        setProviders(Array.isArray(providerDetails) ? providerDetails : []);
+        console.log("Provider Details:", providerDetails);
       } catch (error) {
         console.error("Error fetching provider details:", error);
         setProviders([]);
       }
     };
-
+  
     fetchProviderDetails();
   }, [clientLocation, locationEnabled]);
+  
 
   const handleProviderClick = async (provider) => {
     try {
