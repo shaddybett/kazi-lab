@@ -59,7 +59,6 @@ function ServiceProviders() {
 
         const providerDetails = await response.json();
         setProviders(Array.isArray(providerDetails.providers) ? providerDetails.providers : []);
-        console.log("Provider Details:", providerDetails.providers); // Log provider details
       } catch (error) {
         console.error("Error fetching provider details:", error);
         setProviders([]);
