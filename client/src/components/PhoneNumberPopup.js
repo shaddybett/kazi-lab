@@ -2,7 +2,9 @@ import React, { useRef, useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPhone } from "@fortawesome/free-solid-svg-icons";
 import { Button, Label, TextInput } from "flowbite-react";
-import thumb from '../assets/thumb.png'
+import thumb from "../assets/thumb.png";
+import down from "../assets/down.png";
+import chat from "../assets/chat.png";
 
 function PhoneNumberPopup({ phoneNumber, onClose }) {
   const popupRef = useRef();
@@ -80,10 +82,34 @@ function PhoneNumberPopup({ phoneNumber, onClose }) {
               </a>
             </p>
           </div>
-          <img src={thumb} onClick={likeJob} disabled={loading} className="mt-3 mr-20"/>
+          <div className="flex flex-row items-center justify-start mt-3">
+            <img
+              src={thumb}
+              onClick={likeJob}
+              disabled={loading}
+              className="mr-4 cursor-pointer"
+            />
+            <img
+              src={down}
+              onClick={likeJob}
+              disabled={loading}
+              className="mr-4 cursor-pointer"
+            />
+            <img
+              src={chat}
+              onClick={likeJob}
+              disabled={loading}
+              className="cursor-pointer"
+            />
+          </div>
+
           <div>
             <div className="mb-2 block">
-              <Label htmlFor="input-gray" color="gray" value={`Anything you would like to tell the administration concerning ${name}?`} />
+              <Label
+                htmlFor="input-gray"
+                color="gray"
+                value={`Anything you would like to tell the administration concerning ${name}?`}
+              />
             </div>
             <TextInput
               id="input-gray"
@@ -91,7 +117,9 @@ function PhoneNumberPopup({ phoneNumber, onClose }) {
               required
               color="gray"
             />
-            <Button gradientDuoTone="purpleToBlue" className="mt-4 ml-20" >Send</Button>
+            <Button gradientDuoTone="purpleToBlue" className="mt-4 ml-20">
+              Send
+            </Button>
           </div>
           {error && <p className="text-red-500 mt-2">{error}</p>}
           {success && <p className="text-green-500 mt-2">{success}</p>}
