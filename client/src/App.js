@@ -1,8 +1,9 @@
 import React from "react";
-import Landing from "./components/Landing";
-import Login from "./components/Login";
-import Signup from "./components/Signup";
+import "./App.css"
 import { Routes, Route } from "react-router-dom";
+import Landing from "./Pages/LandingPage/Landing";
+import Login from "./Pages/LoginPage/Login";
+import Signup from "./Pages/SignupPage/Signup";
 import Dashboard from "./components/Dashboard";
 import ClientDashboard from "./components/ClientDashboard";
 import ProviderDashboard from "./components/ProviderDashboard";
