@@ -87,13 +87,13 @@ function PhoneNumberPopup({ phoneNumber, onClose }) {
               src={thumb}
               onClick={likeJob}
               disabled={loading}
-              className="mr-4 cursor-pointer"
+              className="mr-16 cursor-pointer"
             />
             <img
               src={down}
               onClick={likeJob}
               disabled={loading}
-              className="mr-4 cursor-pointer"
+              className="mr-16 cursor-pointer"
             />
             <img
               src={chat}
