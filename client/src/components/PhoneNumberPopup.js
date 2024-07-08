@@ -33,6 +33,31 @@ function PhoneNumberPopup({ phoneNumber, onClose }) {
     event.stopPropagation();
   };
 
+  const unLikeJob = async () => {
+    setLoading(true);
+    setError(null);
+    setSuccess(null);
+    try {
+      const response = await fetch(`${backendUrl}/unlike_job/${idd}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(`Network response was not ok: ${response.statusText}`);
+      }
+
+      const data = await response.json();
+      setSuccess("unLike added ");
+    } catch (error) {
+      setError("Error unliking job");
+      console.error("Error liking job:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
   const likeJob = async () => {
     setLoading(true);
     setError(null);
@@ -85,13 +110,15 @@ function PhoneNumberPopup({ phoneNumber, onClose }) {
           <div className="flex flex-row items-center justify-start mt-3">
             <img
               src={thumb}
+              alt="thumbs up"
               onClick={likeJob}
               disabled={loading}
               className="mr-16 cursor-pointer"
             />
             <img
               src={down}
-              onClick={likeJob}
+              alt="thumbs down"
+              onClick={unLikeJob}
               disabled={loading}
               className="mr-16 cursor-pointer"
             />
