@@ -1,0 +1,143 @@
+ .login-container {
+     display: flex;
+     justify-content: center;
+     align-items: center;
+     height: 100vh;
+     background: linear-gradient(to bottom, var(--top-gradient-color), var(--bottom-gradient-color));
+ }
+
+ .login-box {
+     background: radial-gradient(97.24% 97.24% at 8.5% 0.1%, rgba(1, 111, 175, 0.8) 0.26%, rgba(0, 25, 72, 0.8) 100%);
+     padding: 40px;
+     border-radius: 10px;
+     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+     width: 80%;
+     text-align: center;
+ }
+
+ .login-title {
+     margin-bottom: 20px;
+
+ }
+
+ .login-form {
+     display: flex;
+     flex-direction: column;
+ }
+
+ .input-group {
+     margin-bottom: 15px;
+ }
+
+ .login-input {
+     width: 100%;
+     padding: 10px;
+     border: none;
+     border-radius: 5px;
+     font-size: 1rem;
+     outline: none;
+ }
+
+ .login-input::placeholder {
+     color: #a3a3a3;
+ }
+
+ .relative {
+     position: relative;
+ }
+
+ .eye-icon {
+     position: absolute;
+     right: 10px;
+     top: 50%;
+     transform: translateY(-50%);
+     cursor: pointer;
+     color: #a3a3a3;
+ }
+
+ .button-group {
+     margin-bottom: 20px;
+ }
+
+ .login-button {
+     width: 100%;
+     padding: 10px;
+     background: #0056b3;
+     color: #fff;
+     border: none;
+     border-radius: 5px;
+     font-size: 1rem;
+     cursor: pointer;
+     transition: 0.3s ease-in;
+ }
+
+ .login-button:hover {
+     background: #004494;
+ }
+
+ .error-text {
+     color: #ff6b6b;
+     font-size: 0.875rem;
+ }
+
+ .login-links {
+     display: flex;
+     flex-direction: column;
+     justify-content: space-between;
+     font-size: 0.875rem;
+     color: #a3a3a3;
+ }
+
+ .login-links a {
+     color: #a3a3a3;
+     text-decoration: none;
+ }
+
+ .login-links a:hover {
+     text-decoration: underline;
+ }
+
+
+
+/* Responsiveness */
+@media screen and (max-width: 1024px) {
+    .login-container {
+        max-width: 65%;
+    }
+}
+
+@media screen and (max-width: 786px) {
+    .login-container {
+        max-width: 75%;
+    }
+
+}
+
+@media screen and (max-width: 600px) {
+    .login-container {
+        max-width: 80%;
+    }
+    .login-box{
+        width: 85%;
+        padding: 15px;
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .login-container {
+        max-width: 90%;
+        margin: auto 10;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    .login-box{
+        width: 95%;
+    }
+}
+
+@media screen and (max-width: 400px) {
+    .login-container {
+        max-width: 98%;
+        min-height: 100vh;
+    }
+}
