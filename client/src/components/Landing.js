@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Button, Card } from "flowbite-react";
 import "./Components.css";
-import flower from "../assets/flower2.png";
+import flower from "../assets/rose.png";
 import worker from "../assets/worker.png";
 import rope from "../assets/rope.png";
 import hand from "../assets/hand.png";
@@ -18,10 +18,12 @@ function Landing() {
             Kazi-Konnect
           </h5>
         </div>
-        <p className="font-normal text-white">
-          Find trusted service providers or clients near you.
-        </p>
-        <img src={flower} className="flower" />
+        <div>
+          <p className="font-normal text-white">
+            Find trusted service providers or clients near you.
+          </p>
+          <img src={flower} className="flower ml-20" />
+        </div>
         <Button gradientDuoTone="purpleToBlue">
           <Link
             to="/login"
