@@ -1,0 +1,39 @@
+.page{
+    display: flex;
+    justify-content: center;
+    /* margin-top: 5%; */
+    /* margin-bottom: 5%; */
+    max-height: 100%;
+    /* background-color: aqua; */
+}
+.card{
+    background-color: rgb(29, 34, 102);
+    max-height: 80%;
+    /* margin-top: 10px; */
+    /* margin-bottom: 10px; */
+}
+.title{
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+.rope{
+    max-width: 200px;
+    margin-top: 300px;
+    margin-right: 100px;
+    /* background-color: aqua; */
+    /* margin-left: 200px; */
+}
+.hand{
+    max-width: 25%;
+    margin-bottom: 100px;
+}
+.head{
+    display: flex;
+    justify-content: center;
+}
+.title{
+    display: flex;
+    justify-content: center;
+}
+.flower{
+    max-height: 55vh;
+}
