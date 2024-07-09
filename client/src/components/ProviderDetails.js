@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import { Card, Label, Select } from "flowbite-react";
+import { Card, Label, Select,Button,Spinner } from "flowbite-react";
 import { useNavigate } from "react-router-dom";
 function ProviderDetails() {
   const [error, setError] = useState("");
@@ -12,6 +12,7 @@ function ProviderDetails() {
   const [latitude, setLatitude] = useState(null);
   const [longitude, setLongitude] = useState(null);
   const [manualLocation, setManualLocation] = useState(false);
+  const [loading,setLoading] = useState(false)
   // const [allServices, setAllServices] = useState([]);
   // const [newService, setNewService] = useState("");
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -79,6 +80,7 @@ function ProviderDetails() {
   };
 
   const handleServiceFormSubmit = async (e) => {
+    setLoading(true)
     e.preventDefault();
     try {
       const token = localStorage.getItem("token");
@@ -117,6 +119,7 @@ function ProviderDetails() {
     } catch (error) {
       setError(error.message || "An error occurred. Please try again later.");
     }
+    setLoading(false)
   };
 
   return (
@@ -176,60 +179,13 @@ function ProviderDetails() {
           onChange={(e) => setImage(e.target.files[0])}
         />
 
-        <button type="submit">Submit</button>
+        <Button type="submit" disabled={loading} >              {loading ? (
+                <Spinner aria-label="Loading" size="sm" className="mr-2" />
+              ) : (
+                "Submit"
+              )}</Button>
       </form>
       <Card className="max-w-sm">
-        {/* <h1 className="text-xl font-bold leading-none text-gray-900 dark:text-white">
-          Services you offer
-        </h1>
-        <div ref={dropdownRef}>
-          {error &&
-            error ===
-              "Service entered already exists,please mark from the list provided" && (
-              <div>
-                <ServiceDropdown
-                  services={allServices}
-                  selectedServices={selectedServices}
-                  handleCheckboxChange={handleCheckboxChange}
-                />
-              </div>
-            )}
-        </div>
-        {services.length > 0 ? (
-          <ul className="divide-y divide-gray-200 dark:divide-gray-700">
-            {services.map((service) => (
-              <li
-                key={service.id}
-                className="flex justify-between items-center"
-              >
-                <span>{service.name}</span>
-                <button
-                  className="text-red-500"
-                  onClick={() => handleDeleteService(service.id)}
-                >
-                  <FontAwesomeIcon icon={faTrash} />
-                </button>
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p>No services found</p>
-        )}
-        <div className="mt-4">
-          <input
-            className="rounded border border-blue-300 p-2"
-            type="text"
-            value={newService}
-            onChange={(e) => setNewService(e.target.value)}
-            placeholder="Add new service"
-          />
-          <button
-            className="ml-4 p-2 bg-blue-500 text-white rounded"
-            onClick={handleAddService}
-          >
-            Add
-          </button>
-        </div> */}
         <div className="max-w-md">
           <div className="mb-2 block">
             <Label htmlFor="counties" value="Select your county" />
