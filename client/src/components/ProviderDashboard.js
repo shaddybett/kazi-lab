@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Avatar, Dropdown, Navbar, Card } from "flowbite-react";
+import { Avatar, Dropdown, Navbar, Card, DropdownItem } from "flowbite-react";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -254,7 +254,13 @@ function ProviderDashboard() {
               </span>
             </Dropdown.Header>
             <Dropdown.Item onClick={handleProfile}>Profile</Dropdown.Item>
+            <Dropdown.Divider/>
+            <DropdownItem>Jobs Done <strong className="text-green-700 ml-4" >{data.jobs || 0}</strong></DropdownItem>
             <Dropdown.Divider />
+            <DropdownItem>Likes <strong className="text-green-700 ml-4" >{data.likes || 0}</strong></DropdownItem>
+            <Dropdown.Divider />
+            <Dropdown.Item >Chat</Dropdown.Item>
+            <Dropdown.Divider/>
             <Dropdown.Item onClick={handleLogout}>Logout</Dropdown.Item>
           </Dropdown>
           <Navbar.Toggle />
