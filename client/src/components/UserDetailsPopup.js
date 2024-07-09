@@ -160,7 +160,7 @@ function UserDetailsPopup({ user, onClose }) {
         <div className="flex flex-col items-center gap-2 mt-10">
           <Avatar className="mb-10" img={user.image} size="xl" />
           <div className="text-center md:text-left">
-            <p className="mb-3">
+            <p className="mb-3 text-black">
               <strong>Name:</strong> {user.first_name} {user.middle_name}{" "}
               {user.last_name}
             </p>
@@ -171,13 +171,13 @@ function UserDetailsPopup({ user, onClose }) {
                 <FontAwesomeIcon icon={faEnvelope} className="ml-10" />
               </a>
             </div>
-            <p className="mb-3">
+            <p className="mb-3 text-black">
               <strong>Jobs assigned:</strong> {jobsDone}
             </p>
-            <p className="mb-3">
+            <p className="mb-3 text-black">
               <strong>Likes:</strong> {user.likes}
             </p>
-            <p>Click the button below to get {user.first_name}'s phone number </p>
+            <p  className="text-black" >Click the button below to get {user.first_name}'s phone number </p>
             <Button onClick={assignJob} disabled={loading} gradientDuoTone="purpleToBlue" className="ml-20" >
               {loading ? 'Assigning...' : 'Assign'}
             </Button>

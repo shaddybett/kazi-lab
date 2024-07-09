@@ -95,12 +95,12 @@ function PhoneNumberPopup({ phoneNumber, onClose }) {
         onClick={stopPropagation}
       >
         <div className="flex flex-col items-center gap-2 mt-10">
-          <div className="text-center md:text-left">
-            <p>
+          <div className="text-center md:text-left ">
+            <p className=" text-black" >
               {name} is grateful for the assignment and asks you to leave a like
               to help get more clients.
             </p>
-            <p className="mb-3">
+            <p className="mt-3 text-black">
               <strong>Phone Number:</strong> {phoneNumber}{" "}
               <a href={`tel:${phoneNumber}`} className="ml-0 text-blue-500">
                 <FontAwesomeIcon icon={faPhone} className="ml-5" />

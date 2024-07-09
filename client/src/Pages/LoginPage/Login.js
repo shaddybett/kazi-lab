@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Button } from "flowbite-react";
+import { Button, Spinner } from "flowbite-react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import "./Login.css"; // Import your CSS file
 
@@ -10,12 +10,14 @@ function Login() {
   const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
+  const [loading,setLoading] = useState(false)
 
   const navigate = useNavigate();
   const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    setLoading(true);
     try {
       const response = await fetch(`${backendUrl}/login`, {
         method: "POST",
@@ -40,6 +42,7 @@ function Login() {
     } catch (error) {
       setError("An error occurred. Please try again later");
     }
+    setLoading(false);
     if (rememberMe) {
       localStorage.setItem("rememberMe", "true");
       localStorage.setItem("email", email);
@@ -90,8 +93,12 @@ function Login() {
             </div>
           </div>
           <div className="button-group">
-            <Button type="submit" className="login-button">
-              Login
+            <Button type="submit" className="login-button" disabled={loading} >
+              {loading ? (
+                <Spinner aria-label="Large spinner example" size="lg" />
+              ):(
+                "Login"
+              )}
             </Button>
           </div>
           {error && <p className="error-text">{error}</p>}

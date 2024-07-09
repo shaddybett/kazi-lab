@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Avatar, Dropdown, Navbar, Button, Card, Select } from "flowbite-react";
+import { Avatar, Dropdown, Navbar, Button, Card, Select, Spinner } from "flowbite-react";
 import Swal from "sweetalert2";
 import { getDistance } from "geolib";
 
@@ -14,6 +14,7 @@ function ClientDashboard() {
   const [countyId, setCountyId] = useState("");
   const navigate = useNavigate();
   const [providers, setProviders] = useState([]);
+  const [loading,setLoading] = useState(false)
   const [clientLocation, setClientLocation] = useState({
     latitude: null,
     longitude: null,
@@ -44,6 +45,7 @@ function ClientDashboard() {
   }, []);
 
   useEffect(() => {
+    setLoading(true)
     const fetchData = async () => {
       try {
         const token = localStorage.getItem("token");
@@ -86,6 +88,7 @@ function ClientDashboard() {
       } catch (error) {
         setError("An error occurred. Try again later");
       }
+      setLoading(false)
     };
 
     fetchData();
@@ -128,7 +131,6 @@ function ClientDashboard() {
   }, [selectedCounty]);
 
   const countyIdd = localStorage.getItem("countyId");
-  console.log("sffgdgshsjskkacounty:", countyId);
   useEffect(() => {
     const fetchProviderDetailsCounty = async () => {
       try {
