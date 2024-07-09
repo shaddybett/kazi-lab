@@ -196,6 +196,7 @@ import { v4 as uuidv4 } from "uuid";
 import ServiceProvider from "../../assets/gear.png";
 import InNeedOfService from "../../assets/customer.png";
 import "./Signup.css";
+import { Spinner } from "flowbite-react";
 
 function Signup() {
   const [email, setEmail] = useState("");
@@ -206,6 +207,7 @@ function Signup() {
   const [error, setError] = useState("");
   const [selectedRole, setSelectedRole] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const uuid = uuidv4();
   const backendUrl = process.env.REACT_APP_BACKEND_URL;
@@ -229,6 +231,7 @@ function Signup() {
 
   const handleSignup = async (e) => {
     e.preventDefault();
+    setLoading(true);
     if (password !== confirmPassword) {
       setError("Passwords do not match");
       return;
@@ -267,6 +270,7 @@ function Signup() {
     } catch (error) {
       setError("An error occurred, please try again later!");
     }
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -356,7 +360,14 @@ function Signup() {
               />
               <label>Show password</label>
             </div>
-            <button type="submit">Signup</button>
+            <button type="submit" disabled={loading}>
+              {" "}
+              {loading ? (
+                <Spinner aria-label="Large spinner example" size="lg" />
+              ) : (
+                "Signup"
+              )}{" "}
+            </button>
             {error && <p className="error">{error}</p>}
           </form>
           <p>
