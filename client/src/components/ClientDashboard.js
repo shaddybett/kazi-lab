@@ -14,7 +14,7 @@ function ClientDashboard() {
   const [countyId, setCountyId] = useState("");
   const navigate = useNavigate();
   const [providers, setProviders] = useState([]);
-  const [loading,setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
   const [clientLocation, setClientLocation] = useState({
     latitude: null,
     longitude: null,
@@ -45,33 +45,32 @@ function ClientDashboard() {
   }, []);
 
   useEffect(() => {
-    setLoading(true)
+    setLoading(true);
     const fetchData = async () => {
       try {
         const token = localStorage.getItem("token");
-        const [serviceResponse, userResponse, countyResponse] =
-          await Promise.all([
-            fetch(`${backendUrl}/service`, {
-              method: "GET",
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`,
-              },
-            }),
-            fetch(`${backendUrl}/dashboard`, {
-              method: "GET",
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`,
-              },
-            }),
-            fetch(`${backendUrl}/county`, {
-              method: "GET",
-              headers: {
-                "Content-Type": "application/json",
-              },
-            }),
-          ]);
+        const [serviceResponse, userResponse, countyResponse] = await Promise.all([
+          fetch(`${backendUrl}/service`, {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }),
+          fetch(`${backendUrl}/dashboard`, {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }),
+          fetch(`${backendUrl}/county`, {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }),
+        ]);
 
         if (serviceResponse.ok && userResponse.ok && countyResponse.ok) {
           const serviceData = await serviceResponse.json();
@@ -88,7 +87,7 @@ function ClientDashboard() {
       } catch (error) {
         setError("An error occurred. Try again later");
       }
-      setLoading(false)
+      setLoading(false);
     };
 
     fetchData();
@@ -146,9 +145,7 @@ function ClientDashboard() {
         const url = locationEnabled
           ? `${backendUrl}/provider-delta?countyId=${countyIdd}&provider_ids=${countyProviderIds.join(
               ","
-            )}&client_lat=${clientLocation.latitude}&client_lon=${
-              clientLocation.longitude
-            }`
+            )}&client_lat=${clientLocation.latitude}&client_lon=${clientLocation.longitude}`
           : `${backendUrl}/provider-delta?countyId=${countyIdd}&provider_ids=${countyProviderIds.join(
               ","
             )}`;
