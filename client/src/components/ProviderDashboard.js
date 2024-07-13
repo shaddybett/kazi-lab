@@ -1,4 +1,3 @@
-
 // import React, { useState, useEffect, useRef } from "react";
 // import { Avatar, Dropdown, Navbar, Card, DropdownItem, Button, Spinner } from "flowbite-react";
 // import { useNavigate } from "react-router-dom";
@@ -355,18 +354,18 @@
 //           ) : (
 //             <p>No services found</p>
 //           )}
-//           <div className="mt-4">
-//             <input
-//               className="rounded border border-blue-300 p-2"
-//               type="text"
-//               value={newService}
-//               onChange={(e) => setNewService(e.target.value)}
-//               placeholder="Add new service"
-//             />
-//             <button className="ml-4 p-2 bg-blue-500 text-white rounded" onClick={handleAddService}>
-//               Add
-//             </button>
-//           </div>
+// <div className="mt-4">
+//   <input
+//     className="rounded border border-blue-300 p-2"
+//     type="text"
+//     value={newService}
+//     onChange={(e) => setNewService(e.target.value)}
+//     placeholder="Add new service"
+//   />
+//   <button className="ml-4 p-2 bg-blue-500 text-white rounded" onClick={handleAddService}>
+//     Add
+//   </button>
+// </div>
 //           <p className="text-black">Upload photos or videos of your work</p>
 //           <input type="file" multiple onChange={handleFileChange} />
 //           <Button gradientDuoTone="purpleToBlue" className="max-w-20 ml-60" onClick={handleUpload} disabled={loading}>
@@ -406,14 +405,27 @@
 
 // export default ProviderDashboard;
 
-
 import React, { useState, useEffect, useRef } from "react";
 import Modal from "react-modal";
-import { Avatar, Dropdown, Navbar, Card, DropdownItem, Button, Spinner } from "flowbite-react";
+import {
+  Avatar,
+  Dropdown,
+  Navbar,
+  Card,
+  DropdownItem,
+  Button,
+  Spinner,
+  FileInput,
+  Label,
+} from "flowbite-react";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrash } from "@fortawesome/free-solid-svg-icons";
+import {
+  faTrash,
+  faPlus,
+  faSquarePlus,
+} from "@fortawesome/free-solid-svg-icons";
 import ServiceDropdown from "./ServiceDropdown";
 import "./ProviderDashboard.css"; // Import the CSS file
 
@@ -619,7 +631,10 @@ function ProviderDashboard() {
           fetchData();
         } else {
           const errorMessage = await response.json();
-          if (errorMessage.error === "Service entered already exists,please mark from the list provided") {
+          if (
+            errorMessage.error ===
+            "Service entered already exists,please mark from the list provided"
+          ) {
             setError(errorMessage.error);
             setNewService("");
             fetchAllServices();
@@ -649,13 +664,16 @@ function ProviderDashboard() {
     if (result.isConfirmed) {
       const token = localStorage.getItem("token");
       try {
-        const response = await fetch(`${backendUrl}/delete-service/${serviceId}`, {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const response = await fetch(
+          `${backendUrl}/delete-service/${serviceId}`,
+          {
+            method: "DELETE",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
         if (response.ok) {
           Swal.fire("Success", "Service deleted successfully", "success");
           fetchData();
@@ -670,7 +688,9 @@ function ProviderDashboard() {
   };
 
   const handleCheckboxChange = (service) => {
-    const selectedIndex = selectedServices.findIndex((s) => s.id === service.id);
+    const selectedIndex = selectedServices.findIndex(
+      (s) => s.id === service.id
+    );
     if (selectedIndex === -1) {
       setSelectedServices([...selectedServices, service]);
     } else {
@@ -724,9 +744,15 @@ function ProviderDashboard() {
             </Dropdown.Header>
             <Dropdown.Item onClick={handleProfile}>Profile</Dropdown.Item>
             <Dropdown.Divider />
-            <DropdownItem>Jobs Done <strong className="text-green-700 ml-4">{data.jobs || 0}</strong></DropdownItem>
+            <DropdownItem>
+              Jobs Done{" "}
+              <strong className="text-green-700 ml-4">{data.jobs || 0}</strong>
+            </DropdownItem>
             <Dropdown.Divider />
-            <DropdownItem>Likes <strong className="text-green-700 ml-4">{data.likes || 0}</strong></DropdownItem>
+            <DropdownItem>
+              Likes{" "}
+              <strong className="text-green-700 ml-4">{data.likes || 0}</strong>
+            </DropdownItem>
             <Dropdown.Divider />
             <Dropdown.Item>Chat</Dropdown.Item>
             <Dropdown.Divider />
@@ -742,15 +768,16 @@ function ProviderDashboard() {
           <Navbar.Link href="#"></Navbar.Link>
         </Navbar.Collapse>
       </Navbar>
-      <div>
-        <Card className="max-w-xl">
+      <div className="card">
+        <Card className="max-w-xl ">
           <h2>Hello, {data.first_name} welcome! </h2>
           <h1 className="text-xl font-bold leading-none text-gray-900 dark:text-white">
             Services you offer
           </h1>
           <div ref={dropdownRef}>
             {error &&
-              error === "Service entered already exists,please mark from the list provided" && (
+              error ===
+                "Service entered already exists,please mark from the list provided" && (
                 <div>
                   <ServiceDropdown
                     services={allServices}
@@ -763,7 +790,10 @@ function ProviderDashboard() {
           {services.length > 0 ? (
             <ul className="divide-y divide-gray-200 dark:divide-gray-700 ">
               {services.map((service) => (
-                <li key={service.id} className="flex justify-between items-center">
+                <li
+                  key={service.id}
+                  className="flex justify-between items-center"
+                >
                   <span>{service.name}</span>
                   <button
                     className="text-red-500"
@@ -777,7 +807,7 @@ function ProviderDashboard() {
           ) : (
             <p>No services found</p>
           )}
-          <div className="mt-4">
+          <div className="serve">
             <input
               className="rounded border border-blue-300 p-2"
               type="text"
@@ -785,15 +815,40 @@ function ProviderDashboard() {
               onChange={(e) => setNewService(e.target.value)}
               placeholder="Add new service"
             />
-            <button className="ml-4 p-2 bg-blue-500 text-white rounded" onClick={handleAddService}>
-              Add
+            <button
+              gradientDuoTone="purpleToBlue"
+              className="w-20 ml-10"
+              onClick={handleAddService}
+            >
+              <FontAwesomeIcon className="plus" icon={faSquarePlus} />
             </button>
           </div>
           <p className="text-black">Upload photos or videos of your work</p>
-          <input type="file" multiple onChange={handleFileChange} />
-          <Button gradientDuoTone="purpleToBlue" className="max-w-20 ml-60" onClick={handleUpload} disabled={loading}>
-            {loading ? (<Spinner aria-label="Loading" size="sm" className="mr-2" />) : ("Upload")}
-          </Button>
+          <div>
+            <div>
+              <Label htmlFor="file-upload-helper-text" />
+            </div>
+              <FileInput
+                id="file-upload-helper-text"
+                type="file"
+                multiple
+                onChange={handleFileChange}
+                helperText="max 4 photos and 2 videos"
+              />
+            <Button
+              gradientDuoTone="purpleToBlue"
+              className="max-w-20 ml-40 "
+              onClick={handleUpload}
+              disabled={loading}
+            >
+              {loading ? (
+                <Spinner aria-label="Loading" size="sm" className="mr-2" />
+              ) : (
+                "Upload"
+              )}
+            </Button>
+          </div>
+
           {error && <p className="text-red-500 mt-2">{error}</p>}
           <div className="image-grid">
             {photos.length > 0 && (
@@ -801,13 +856,21 @@ function ProviderDashboard() {
                 <h3>Uploaded Photos:</h3>
                 <div className="grid-container">
                   {photos.map((photo, index) => (
-                    <img
-                      key={index}
-                      src={photo}
-                      alt={`Uploaded ${index + 1}`}
-                      className="grid-item"
-                      onClick={() => openModal(photo)}
-                    />
+                    <div key={index} className="grid-item-container">
+                      <img
+                        key={index}
+                        src={photo}
+                        alt={`Uploaded ${index + 1}`}
+                        className="grid-item"
+                        onClick={() => openModal(photo)}
+                      />
+                      {/* <button
+                        className="text-red-500 delete-button"
+                        onClick={() => handleUploadDelete(photo, "photo")}
+                      >
+                        <FontAwesomeIcon icon={faTrash} />
+                      </button> */}
+                    </div>
                   ))}
                 </div>
               </div>
@@ -815,17 +878,25 @@ function ProviderDashboard() {
             {videos.length > 0 && (
               <div>
                 <h3>Uploaded Videos:</h3>
-                <div className="grid-container">
+                <div className="grid-containers">
                   {videos.map((video, index) => (
-                    <video
-                      key={index}
-                      controls
-                      className="grid-item"
-                      onClick={() => openModal(video)}
-                    >
-                      <source src={video} type="video/mp4" />
-                      Your browser does not support the video tag.
-                    </video>
+                    <div key={index} className="grid-item-container">
+                      <video
+                        key={index}
+                        controls
+                        className="grid-items"
+                        onClick={() => openModal(video)}
+                      >
+                        <source src={video} type="video/mp4" />
+                        Your browser does not support the video tag.
+                      </video>
+                      {/* <button
+                        className="text-red-500 delete-button"
+                        onClick={() => handleUploadDelete(video, "video")}
+                      >
+                        <FontAwesomeIcon icon={faTrash} />
+                      </button> */}
+                    </div>
                   ))}
                 </div>
               </div>
@@ -833,8 +904,15 @@ function ProviderDashboard() {
           </div>
         </Card>
       </div>
-      <Modal isOpen={isModalOpen} onRequestClose={closeModal} className="modal" overlayClassName="overlay">
-        {selectedImage && <img src={selectedImage} alt="Enlarged" className="modal-image" />}
+      <Modal
+        isOpen={isModalOpen}
+        onRequestClose={closeModal}
+        className="modal"
+        overlayClassName="overlay"
+      >
+        {selectedImage && (
+          <img src={selectedImage} alt="Enlarged" className="modal-image" />
+        )}
       </Modal>
     </div>
   );
