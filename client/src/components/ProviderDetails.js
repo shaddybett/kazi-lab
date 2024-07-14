@@ -89,6 +89,14 @@ function ProviderDetails() {
       const formImage = new formImage();
       formImage.append("image",image);
 
+      const userImageResponse = await fetch(`${backendUrl}/upload`,{
+        method:"POST",
+        headers:{
+          Authorization:`Bearer {token}`,
+        },
+        body: formImage,
+      })
+
       const formData = new FormData();
       // formData.append("image", image);
       formData.append("middle_name", middle_name);
@@ -119,6 +127,7 @@ function ProviderDetails() {
         const userDetailsErrors = await userDetailsResponse.json();
         setError(userDetailsErrors.error);
       }
+      
     } catch (error) {
       setError(error.message || "An error occurred. Please try again later.");
     }
