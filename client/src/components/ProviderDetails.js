@@ -127,7 +127,9 @@ function ProviderDetails() {
         const userDetailsErrors = await userDetailsResponse.json();
         setError(userDetailsErrors.error);
       }
-      
+      if (userImageResponse.ok){
+        
+      }
     } catch (error) {
       setError(error.message || "An error occurred. Please try again later.");
     }
