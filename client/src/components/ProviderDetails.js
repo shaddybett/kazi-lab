@@ -86,8 +86,11 @@ function ProviderDetails() {
       const token = localStorage.getItem("token");
       const uuid = localStorage.getItem("signupUUID");
 
+      const formImage = new formImage();
+      formImage.append("image",image);
+
       const formData = new FormData();
-      formData.append("image", image);
+      // formData.append("image", image);
       formData.append("middle_name", middle_name);
       formData.append("national_id", national_id);
       formData.append("phone_number", phone_number);
@@ -120,6 +123,7 @@ function ProviderDetails() {
       setError(error.message || "An error occurred. Please try again later.");
     }
     setLoading(false)
+
   };
 
   return (
