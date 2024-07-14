@@ -178,7 +178,6 @@ function ProviderDetails() {
           type="file"
           onChange={(e) => setImage(e.target.files[0])}
         />
-
         <Button type="submit" disabled={loading} >              {loading ? (
                 <Spinner aria-label="Loading" size="sm" className="mr-2" />
               ) : (
