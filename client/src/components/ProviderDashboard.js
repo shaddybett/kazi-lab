@@ -533,6 +533,7 @@ function ProviderDashboard() {
       if (response.ok) {
         const responseData = await response.json();
         setServices(responseData.services || []);
+        window.location.reload();
       } else {
         const errorMessage = await response.json();
         setError(errorMessage.error);
