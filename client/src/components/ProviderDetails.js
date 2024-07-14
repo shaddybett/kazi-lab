@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import { Card, Label, Select,Button,Spinner } from "flowbite-react";
+import { Card, Label, Select, Button, Spinner } from "flowbite-react";
 import { useNavigate } from "react-router-dom";
 function ProviderDetails() {
   const [error, setError] = useState("");
@@ -12,7 +12,7 @@ function ProviderDetails() {
   const [latitude, setLatitude] = useState(null);
   const [longitude, setLongitude] = useState(null);
   const [manualLocation, setManualLocation] = useState(false);
-  const [loading,setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
   // const [allServices, setAllServices] = useState([]);
   // const [newService, setNewService] = useState("");
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -80,25 +80,26 @@ function ProviderDetails() {
   };
 
   const handleServiceFormSubmit = async (e) => {
-    setLoading(true)
+    setLoading(true);
     e.preventDefault();
     try {
       const token = localStorage.getItem("token");
       const uuid = localStorage.getItem("signupUUID");
 
-      const formImage = new formImage();
-      formImage.append("image",image);
+      // Create FormData for image
+      const formImage = new FormData();
+      formImage.append("image", image);
 
-      const userImageResponse = await fetch(`${backendUrl}/upload`,{
-        method:"POST",
-        headers:{
-          Authorization:`Bearer {token}`,
+      const userImageResponse = await fetch(`${backendUrl}/upload`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
         },
         body: formImage,
-      })
+      });
 
+      // Create FormData for user details
       const formData = new FormData();
-      // formData.append("image", image);
       formData.append("middle_name", middle_name);
       formData.append("national_id", national_id);
       formData.append("phone_number", phone_number);
@@ -121,20 +122,27 @@ function ProviderDetails() {
           "userDetailsData",
           JSON.stringify(userDetailsData)
         );
-        setMessage("Services and user details added successfully");
-        navigate("/providerPage");
       } else {
         const userDetailsErrors = await userDetailsResponse.json();
         setError(userDetailsErrors.error);
       }
-      if (userImageResponse.ok){
-        
+
+      if (userImageResponse.ok) {
+        const imageData = await userImageResponse.json();
+        setMessage(imageData.message);
+      } else {
+        const imageError = await userImageResponse.json();
+        setError(imageError.error);
+      }
+
+      if (userDetailsResponse.ok && userImageResponse.ok) {
+        setMessage("User details registered successfully");
+        navigate("/providerPage");
       }
     } catch (error) {
       setError(error.message || "An error occurred. Please try again later.");
     }
-    setLoading(false)
-
+    setLoading(false);
   };
 
   return (
@@ -193,11 +201,14 @@ function ProviderDetails() {
           type="file"
           onChange={(e) => setImage(e.target.files[0])}
         />
-        <Button type="submit" disabled={loading} >              {loading ? (
-                <Spinner aria-label="Loading" size="sm" className="mr-2" />
-              ) : (
-                "Submit"
-              )}</Button>
+        <Button type="submit" disabled={loading}>
+          {" "}
+          {loading ? (
+            <Spinner aria-label="Loading" size="sm" className="mr-2" />
+          ) : (
+            "Submit"
+          )}
+        </Button>
       </form>
       <Card className="max-w-sm">
         <div className="max-w-md">
