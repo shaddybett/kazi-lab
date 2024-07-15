@@ -59,7 +59,7 @@
   }
   
   .grid-items {
-    width: 50%;
+    width: auto;
     height: auto;
     cursor: pointer;
     border-radius: 10px;
