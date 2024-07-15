@@ -1,10 +1,26 @@
 // import React, { useState, useEffect, useRef } from "react";
-// import { Avatar, Dropdown, Navbar, Card, DropdownItem, Button, Spinner } from "flowbite-react";
-// import { useNavigate } from "react-router-dom";
+// import Modal from "react-modal";
+// import {
+//   Avatar,
+//   Dropdown,
+//   Navbar,
+//   Card,
+//   DropdownItem,
+//   Button,
+//   Spinner,
+//   FileInput,
+//   Label,
+// } from "flowbite-react";
+// import { json, useNavigate } from "react-router-dom";
 // import Swal from "sweetalert2";
 // import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-// import { faTrash, faSquarePlus } from "@fortawesome/free-solid-svg-icons";
+// import {
+//   faTrash,
+//   faPlus,
+//   faSquarePlus,
+// } from "@fortawesome/free-solid-svg-icons";
 // import ServiceDropdown from "./ServiceDropdown";
+// import "./ProviderDashboard.css"; // Import the CSS file
 
 // function ProviderDashboard() {
 //   const [data, setData] = useState({});
@@ -18,6 +34,8 @@
 //   const [photos, setPhotos] = useState([]);
 //   const [videos, setVideos] = useState([]);
 //   const [loading, setLoading] = useState(false);
+//   const [isModalOpen, setIsModalOpen] = useState(false);
+//   const [selectedImage, setSelectedImage] = useState(null);
 //   const dropdownRef = useRef(null);
 //   const navigate = useNavigate();
 //   const backendUrl = process.env.REACT_APP_BACKEND_URL;
@@ -44,10 +62,10 @@
 //       setLoading(true);
 //       const token = localStorage.getItem("token");
 //       const formData = new FormData();
-//       const imageExtensions = ['png', 'jpg', 'jpeg', 'webp'];
+//       const imageExtensions = ["png", "jpg", "jpeg", "webp"];
 
 //       for (const file of files) {
-//         const fileExtension = file.name.split('.').pop().toLowerCase();
+//         const fileExtension = file.name.split(".").pop().toLowerCase();
 //         if (imageExtensions.includes(fileExtension)) {
 //           formData.append("photos", file);
 //         } else {
@@ -69,6 +87,7 @@
 //           setPhotos(responseData.photos || []);
 //           setVideos(responseData.videos || []);
 //           setError("");
+//           handleEntry();
 //         } else {
 //           const errorMessage = await response.json();
 //           setError(errorMessage.error || "An error occurred");
@@ -175,7 +194,48 @@
 //     fetchAllServices();
 //     handleEntry();
 //   }, [backendUrl]);
-
+//   const handleDelete = async (fileUrl, fileType) => {
+//     const result = await Swal.fire({
+//       title: "Are you sure?",
+//       icon: "warning",
+//       showCancelButton: true,
+//       confirmButtonColor: "#3085d6",
+//       cancelButtonColor: "#d33",
+//       confirmButtonText: "Yes, Delete!",
+//     });
+  
+//     if (result.isConfirmed) {
+//       try {
+//         const token = localStorage.getItem("token");
+//         const filename = fileUrl.split('/').pop();  // Extract the filename from the URL
+  
+//         const deleteResponse = await fetch(
+//           `${backendUrl}/delete-upload/${encodeURIComponent(fileType)}/${encodeURIComponent(filename)}`,
+//           {
+//             method: "DELETE",
+//             headers: {
+//               "Content-Type": "application/json",
+//               Authorization: `Bearer ${token}`,
+//             },
+//           }
+//         );
+  
+//         if (deleteResponse.ok) {
+//           handleEntry();
+//           Swal.fire("Success", "File deleted successfully", "success");
+//         } else {
+//           const errorMessage = await deleteResponse.json();
+//           setError(errorMessage.error || "An error occurred");
+//         }
+//       } catch (error) {
+//         setError("An error occurred. Please try again later");
+//       }
+//     }
+//   };
+  
+//   const handlePhotoDelete = (photoUrl) => handleDelete(photoUrl, "photo");
+//   const handleVideoDelete = (videoUrl) => handleDelete(videoUrl, "video");
+  
 //   const handleAddService = async () => {
 //     const result = await Swal.fire({
 //       title: "Are you sure?",
@@ -206,7 +266,10 @@
 //           fetchData();
 //         } else {
 //           const errorMessage = await response.json();
-//           if (errorMessage.error === "Service entered already exists,please mark from the list provided") {
+//           if (
+//             errorMessage.error ===
+//             "Service entered already exists,please mark from the list provided"
+//           ) {
 //             setError(errorMessage.error);
 //             setNewService("");
 //             fetchAllServices();
@@ -236,13 +299,16 @@
 //     if (result.isConfirmed) {
 //       const token = localStorage.getItem("token");
 //       try {
-//         const response = await fetch(`${backendUrl}/delete-service/${serviceId}`, {
-//           method: "DELETE",
-//           headers: {
-//             "Content-Type": "application/json",
-//             Authorization: `Bearer ${token}`,
-//           },
-//         });
+//         const response = await fetch(
+//           `${backendUrl}/delete-service/${serviceId}`,
+//           {
+//             method: "DELETE",
+//             headers: {
+//               "Content-Type": "application/json",
+//               Authorization: `Bearer ${token}`,
+//             },
+//           }
+//         );
 //         if (response.ok) {
 //           Swal.fire("Success", "Service deleted successfully", "success");
 //           fetchData();
@@ -257,7 +323,9 @@
 //   };
 
 //   const handleCheckboxChange = (service) => {
-//     const selectedIndex = selectedServices.findIndex((s) => s.id === service.id);
+//     const selectedIndex = selectedServices.findIndex(
+//       (s) => s.id === service.id
+//     );
 //     if (selectedIndex === -1) {
 //       setSelectedServices([...selectedServices, service]);
 //     } else {
@@ -282,6 +350,16 @@
 //     }
 //   };
 
+//   const openModal = (image) => {
+//     setSelectedImage(image);
+//     setIsModalOpen(true);
+//   };
+
+//   const closeModal = () => {
+//     setIsModalOpen(false);
+//     setSelectedImage(null);
+//   };
+
 //   return (
 //     <div>
 //       <Navbar fluid rounded className="bg-black">
@@ -301,9 +379,15 @@
 //             </Dropdown.Header>
 //             <Dropdown.Item onClick={handleProfile}>Profile</Dropdown.Item>
 //             <Dropdown.Divider />
-//             <DropdownItem>Jobs Done <strong className="text-green-700 ml-4">{data.jobs || 0}</strong></DropdownItem>
+//             <DropdownItem>
+//               Jobs Done{" "}
+//               <strong className="text-green-700 ml-4">{data.jobs || 0}</strong>
+//             </DropdownItem>
 //             <Dropdown.Divider />
-//             <DropdownItem>Likes <strong className="text-green-700 ml-4">{data.likes || 0}</strong></DropdownItem>
+//             <DropdownItem>
+//               Likes{" "}
+//               <strong className="text-green-700 ml-4">{data.likes || 0}</strong>
+//             </DropdownItem>
 //             <Dropdown.Divider />
 //             <Dropdown.Item>Chat</Dropdown.Item>
 //             <Dropdown.Divider />
@@ -319,15 +403,16 @@
 //           <Navbar.Link href="#"></Navbar.Link>
 //         </Navbar.Collapse>
 //       </Navbar>
-//       <div>
-//         <Card className="max-w-xl">
+//       <div className="card">
+//         <Card className="max-w-xl ">
 //           <h2>Hello, {data.first_name} welcome! </h2>
 //           <h1 className="text-xl font-bold leading-none text-gray-900 dark:text-white">
 //             Services you offer
 //           </h1>
 //           <div ref={dropdownRef}>
 //             {error &&
-//               error === "Service entered already exists,please mark from the list provided" && (
+//               error ===
+//                 "Service entered already exists,please mark from the list provided" && (
 //                 <div>
 //                   <ServiceDropdown
 //                     services={allServices}
@@ -340,7 +425,10 @@
 //           {services.length > 0 ? (
 //             <ul className="divide-y divide-gray-200 dark:divide-gray-700 ">
 //               {services.map((service) => (
-//                 <li key={service.id} className="flex justify-between items-center">
+//                 <li
+//                   key={service.id}
+//                   className="flex justify-between items-center"
+//                 >
 //                   <span>{service.name}</span>
 //                   <button
 //                     className="text-red-500"
@@ -354,31 +442,70 @@
 //           ) : (
 //             <p>No services found</p>
 //           )}
-// <div className="mt-4">
-//   <input
-//     className="rounded border border-blue-300 p-2"
-//     type="text"
-//     value={newService}
-//     onChange={(e) => setNewService(e.target.value)}
-//     placeholder="Add new service"
-//   />
-//   <button className="ml-4 p-2 bg-blue-500 text-white rounded" onClick={handleAddService}>
-//     Add
-//   </button>
-// </div>
+//           <div className="serve">
+//             <input
+//               className="rounded border border-blue-300 p-2"
+//               type="text"
+//               value={newService}
+//               onChange={(e) => setNewService(e.target.value)}
+//               placeholder="Add new service"
+//             />
+//             <button
+//               gradientDuoTone="purpleToBlue"
+//               className="w-20 ml-10"
+//               onClick={handleAddService}
+//             >
+//               <FontAwesomeIcon className="plus" icon={faSquarePlus} />
+//             </button>
+//           </div>
 //           <p className="text-black">Upload photos or videos of your work</p>
-//           <input type="file" multiple onChange={handleFileChange} />
-//           <Button gradientDuoTone="purpleToBlue" className="max-w-20 ml-60" onClick={handleUpload} disabled={loading}>
-//             {loading ? (<Spinner aria-label="Loading" size="sm" className="mr-2" />) : ("Upload")}
-//           </Button>
-//           {error && <p className="text-red-500 mt-2">{error}</p>}
 //           <div>
+//             <div>
+//               <Label htmlFor="file-upload-helper-text" />
+//             </div>
+//             <FileInput
+//               id="file-upload-helper-text"
+//               type="file"
+//               multiple
+//               onChange={handleFileChange}
+//               helperText="max 4 photos and 2 videos"
+//             />
+//             <Button
+//               gradientDuoTone="purpleToBlue"
+//               className="max-w-20 ml-40 "
+//               onClick={handleUpload}
+//               disabled={loading}
+//             >
+//               {loading ? (
+//                 <Spinner aria-label="Loading" size="sm" className="mr-2" />
+//               ) : (
+//                 "Upload"
+//               )}
+//             </Button>
+//           </div>
+
+//           {error && <p className="text-red-500 mt-2">{error}</p>}
+//           <div className="image-grid">
 //             {photos.length > 0 && (
 //               <div>
 //                 <h3>Uploaded Photos:</h3>
-//                 <div>
+//                 <div className="grid-container">
 //                   {photos.map((photo, index) => (
-//                     <img key={index} src={photo} alt={`Uploaded ${index + 1}`} style={{ maxWidth: '50%', height: 'auto', margin: '10px 0' }} />
+//                     <div key={index} className="grid-item-container">
+//                       <img
+//                         key={index}
+//                         src={photo}
+//                         alt={`Uploaded ${index + 1}`}
+//                         className="grid-item"
+//                         onClick={() => openModal(photo)}
+//                       />
+//                       <button
+//                         className="text-red-500 delete-button"
+//                         onClick={() => handlePhotoDelete(photo, "photo")}
+//                       >
+//                         <FontAwesomeIcon icon={faTrash} />
+//                       </button>
+//                     </div>
 //                   ))}
 //                 </div>
 //               </div>
@@ -386,12 +513,25 @@
 //             {videos.length > 0 && (
 //               <div>
 //                 <h3>Uploaded Videos:</h3>
-//                 <div>
+//                 <div className="grid-containers">
 //                   {videos.map((video, index) => (
-//                     <video key={index} controls style={{ maxWidth: '50%', height: 'auto', margin: '10px 0' }}>
-//                       <source src={video} type="video/mp4" />
-//                       Your browser does not support the video tag.
-//                     </video>
+//                     <div key={index} className="grid-item-container">
+//                       <video
+//                         key={index}
+//                         controls
+//                         className="grid-items"
+//                         onClick={() => openModal(video)}
+//                       >
+//                         <source src={video} type="video/mp4" />
+//                         Your browser does not support the video tag.
+//                       </video>
+//                       <button
+//                         className="text-red-500 delete-button"
+//                         onClick={() => handleVideoDelete(video, "video")}
+//                       >
+//                         <FontAwesomeIcon icon={faTrash} />
+//                       </button>
+//                     </div>
 //                   ))}
 //                 </div>
 //               </div>
@@ -399,11 +539,22 @@
 //           </div>
 //         </Card>
 //       </div>
+//       <Modal
+//         isOpen={isModalOpen}
+//         onRequestClose={closeModal}
+//         className="modal"
+//         overlayClassName="overlay"
+//       >
+//         {selectedImage && (
+//           <img src={selectedImage} alt="Enlarged" className="modal-image" />
+//         )}
+//       </Modal>
 //     </div>
 //   );
 // }
 
 // export default ProviderDashboard;
+
 
 import React, { useState, useEffect, useRef } from "react";
 import Modal from "react-modal";
@@ -418,7 +569,7 @@ import {
   FileInput,
   Label,
 } from "flowbite-react";
-import { useNavigate } from "react-router-dom";
+import { json, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -427,7 +578,7 @@ import {
   faSquarePlus,
 } from "@fortawesome/free-solid-svg-icons";
 import ServiceDropdown from "./ServiceDropdown";
-import "./ProviderDashboard.css"; // Import the CSS file
+import "./ProviderDashboard.css";
 
 function ProviderDashboard() {
   const [data, setData] = useState({});
@@ -494,6 +645,7 @@ function ProviderDashboard() {
           setPhotos(responseData.photos || []);
           setVideos(responseData.videos || []);
           setError("");
+          handleEntry();
         } else {
           const errorMessage = await response.json();
           setError(errorMessage.error || "An error occurred");
@@ -600,6 +752,57 @@ function ProviderDashboard() {
     fetchAllServices();
     handleEntry();
   }, [backendUrl]);
+
+  const handleDelete = async (fileUrl, fileType) => {
+    const result = await Swal.fire({
+      title: "Are you sure?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, Delete!",
+    });
+
+    if (result.isConfirmed) {
+      try {
+        const token = localStorage.getItem("token");
+        const filename = fileUrl.split('/').pop();  // Extract the filename from the URL
+
+        const deleteResponse = await fetch(
+          `${backendUrl}/delete-upload/${encodeURIComponent(fileType)}/${encodeURIComponent(filename)}`,
+          {
+            method: "DELETE",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        if (deleteResponse.ok) {
+          Swal.fire("Success", "File deleted successfully", "success");
+
+          // Update the state immediately
+          if (fileType === 'photo') {
+            setPhotos(photos.filter(photo => photo !== fileUrl));
+          } else {
+            setVideos(videos.filter(video => video !== fileUrl));
+          }
+
+          // Optionally refetch data to ensure everything is in sync
+          handleEntry();
+        } else {
+          const errorMessage = await deleteResponse.json();
+          setError(errorMessage.error || "An error occurred");
+        }
+      } catch (error) {
+        setError("An error occurred. Please try again later");
+      }
+    }
+  };
+
+  const handlePhotoDelete = (photoUrl) => handleDelete(photoUrl, "photo");
+  const handleVideoDelete = (videoUrl) => handleDelete(videoUrl, "video");
 
   const handleAddService = async () => {
     const result = await Swal.fire({
@@ -828,13 +1031,13 @@ function ProviderDashboard() {
             <div>
               <Label htmlFor="file-upload-helper-text" />
             </div>
-              <FileInput
-                id="file-upload-helper-text"
-                type="file"
-                multiple
-                onChange={handleFileChange}
-                helperText="max 4 photos and 2 videos"
-              />
+            <FileInput
+              id="file-upload-helper-text"
+              type="file"
+              multiple
+              onChange={handleFileChange}
+              helperText="max 4 photos and 2 videos"
+            />
             <Button
               gradientDuoTone="purpleToBlue"
               className="max-w-20 ml-40 "
@@ -864,12 +1067,12 @@ function ProviderDashboard() {
                         className="grid-item"
                         onClick={() => openModal(photo)}
                       />
-                      {/* <button
+                      <button
                         className="text-red-500 delete-button"
-                        onClick={() => handleUploadDelete(photo, "photo")}
+                        onClick={() => handlePhotoDelete(photo, "photo")}
                       >
                         <FontAwesomeIcon icon={faTrash} />
-                      </button> */}
+                      </button>
                     </div>
                   ))}
                 </div>
@@ -890,12 +1093,12 @@ function ProviderDashboard() {
                         <source src={video} type="video/mp4" />
                         Your browser does not support the video tag.
                       </video>
-                      {/* <button
+                      <button
                         className="text-red-500 delete-button"
-                        onClick={() => handleUploadDelete(video, "video")}
+                        onClick={() => handleVideoDelete(video, "video")}
                       >
                         <FontAwesomeIcon icon={faTrash} />
-                      </button> */}
+                      </button>
                     </div>
                   ))}
                 </div>

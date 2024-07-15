@@ -9,7 +9,7 @@
   
   .grid-item {
     width: 100px;
-    height: auto;
+    height: 100px;
     cursor: pointer;
     border-radius: 10px;
     margin-bottom: 20px;
@@ -59,7 +59,7 @@
   }
   
   .grid-items {
-    width: 50%;
+    width: auto;
     height: auto;
     cursor: pointer;
     border-radius: 10px;
