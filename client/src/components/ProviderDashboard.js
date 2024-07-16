@@ -203,12 +203,12 @@
 //       cancelButtonColor: "#d33",
 //       confirmButtonText: "Yes, Delete!",
 //     });
-  
+
 //     if (result.isConfirmed) {
 //       try {
 //         const token = localStorage.getItem("token");
 //         const filename = fileUrl.split('/').pop();  // Extract the filename from the URL
-  
+
 //         const deleteResponse = await fetch(
 //           `${backendUrl}/delete-upload/${encodeURIComponent(fileType)}/${encodeURIComponent(filename)}`,
 //           {
@@ -219,7 +219,7 @@
 //             },
 //           }
 //         );
-  
+
 //         if (deleteResponse.ok) {
 //           handleEntry();
 //           Swal.fire("Success", "File deleted successfully", "success");
@@ -232,10 +232,10 @@
 //       }
 //     }
 //   };
-  
+
 //   const handlePhotoDelete = (photoUrl) => handleDelete(photoUrl, "photo");
 //   const handleVideoDelete = (videoUrl) => handleDelete(videoUrl, "video");
-  
+
 //   const handleAddService = async () => {
 //     const result = await Swal.fire({
 //       title: "Are you sure?",
@@ -555,7 +555,6 @@
 
 // export default ProviderDashboard;
 
-
 import React, { useState, useEffect, useRef } from "react";
 import Modal from "react-modal";
 import {
@@ -762,14 +761,12 @@ function ProviderDashboard() {
       cancelButtonColor: "#d33",
       confirmButtonText: "Yes, Delete!",
     });
-
     if (result.isConfirmed) {
       try {
         const token = localStorage.getItem("token");
-        const filename = fileUrl.split('/').pop();  // Extract the filename from the URL
-
+        const fileName = fileUrl.split('/').pop(); // Extract the filename from the URL
         const deleteResponse = await fetch(
-          `${backendUrl}/delete-upload/${encodeURIComponent(fileType)}/${encodeURIComponent(filename)}`,
+          `${backendUrl}/delete-upload/${fileType}/${fileName}`,
           {
             method: "DELETE",
             headers: {
@@ -778,18 +775,8 @@ function ProviderDashboard() {
             },
           }
         );
-
         if (deleteResponse.ok) {
           Swal.fire("Success", "File deleted successfully", "success");
-
-          // Update the state immediately
-          if (fileType === 'photo') {
-            setPhotos(photos.filter(photo => photo !== fileUrl));
-          } else {
-            setVideos(videos.filter(video => video !== fileUrl));
-          }
-
-          // Optionally refetch data to ensure everything is in sync
           handleEntry();
         } else {
           const errorMessage = await deleteResponse.json();
@@ -800,7 +787,7 @@ function ProviderDashboard() {
       }
     }
   };
-
+  
   const handlePhotoDelete = (photoUrl) => handleDelete(photoUrl, "photo");
   const handleVideoDelete = (videoUrl) => handleDelete(videoUrl, "video");
 
@@ -935,7 +922,7 @@ function ProviderDashboard() {
           <Dropdown
             arrowIcon={false}
             inline
-            label={<Avatar alt="pic" img={data.image} rounded />}
+            label={<Avatar alt="pic" src={data.image} rounded />}
           >
             <Dropdown.Header>
               <span className="block text-sm">
