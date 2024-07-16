@@ -207,7 +207,7 @@ function ProviderDashboard() {
     if (result.isConfirmed) {
       try {
         const token = localStorage.getItem("token");
-        const fileName = fileUrl.split('/').pop(); // Extract the filename from the URL
+        const fileName = fileUrl.split("/").pop(); // Extract the filename from the URL
         const deleteResponse = await fetch(
           `${backendUrl}/delete-upload/${fileType}/${fileName}`,
           {
@@ -220,7 +220,8 @@ function ProviderDashboard() {
         );
         if (deleteResponse.ok) {
           Swal.fire("Success", "File deleted successfully", "success");
-          handleEntry();
+          // Update the frontend to reflect the deletion
+          handleEntry(); // Assuming handleEntry refreshes the displayed files
         } else {
           const errorMessage = await deleteResponse.json();
           setError(errorMessage.error || "An error occurred");
@@ -230,9 +231,48 @@ function ProviderDashboard() {
       }
     }
   };
-  
+
   const handlePhotoDelete = (photoUrl) => handleDelete(photoUrl, "photo");
   const handleVideoDelete = (videoUrl) => handleDelete(videoUrl, "video");
+
+  // const handleDelete = async (fileUrl, fileType) => {
+  //   const result = await Swal.fire({
+  //     title: "Are you sure?",
+  //     icon: "warning",
+  //     showCancelButton: true,
+  //     confirmButtonColor: "#3085d6",
+  //     cancelButtonColor: "#d33",
+  //     confirmButtonText: "Yes, Delete!",
+  //   });
+  //   if (result.isConfirmed) {
+  //     try {
+  //       const token = localStorage.getItem("token");
+  //       const fileName = fileUrl.split('/').pop(); // Extract the filename from the URL
+  //       const deleteResponse = await fetch(
+  //         `${backendUrl}/delete-upload/${fileType}/${fileName}`,
+  //         {
+  //           method: "DELETE",
+  //           headers: {
+  //             "Content-Type": "application/json",
+  //             Authorization: `Bearer ${token}`,
+  //           },
+  //         }
+  //       );
+  //       if (deleteResponse.ok) {
+  //         Swal.fire("Success", "File deleted successfully", "success");
+  //         handleEntry();
+  //       } else {
+  //         const errorMessage = await deleteResponse.json();
+  //         setError(errorMessage.error || "An error occurred");
+  //       }
+  //     } catch (error) {
+  //       setError("An error occurred. Please try again later");
+  //     }
+  //   }
+  // };
+
+  // const handlePhotoDelete = (photoUrl) => handleDelete(photoUrl, "photo");
+  // const handleVideoDelete = (videoUrl) => handleDelete(videoUrl, "video");
 
   const handleAddService = async () => {
     const result = await Swal.fire({
@@ -365,7 +405,7 @@ function ProviderDashboard() {
           <Dropdown
             arrowIcon={false}
             inline
-            label={<Avatar alt="pic" src={data.image} rounded />}
+            label={<Avatar alt="pic" img={data.image} rounded />}
           >
             <Dropdown.Header>
               <span className="block text-sm">
