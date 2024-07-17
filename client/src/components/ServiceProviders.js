@@ -66,6 +66,8 @@ function ServiceProviders() {
         }
 
         const providerDetails = await response.json();
+        console.log('Fetched provider details:', providerDetails); // Debug log
+
         setProviders(
           Array.isArray(providerDetails.providers)
             ? providerDetails.providers
@@ -152,10 +154,9 @@ function ServiceProviders() {
                     <div className="min-w-0 flex-1">
                       <p className="truncate text-sm font-medium text-gray-900 text-black">
                         {provider.first_name} {provider.last_name}{" "}
-                        {locationEnabled && provider.distance !== null
-                          ? `${provider.distance.toFixed(2)} km`
-                          : ""}{" "}
-                        Away
+                        {locationEnabled && provider.distance != null && (
+                          <span>{provider.distance.toFixed(2)} km Away</span>
+                        )}
                       </p>
                       <p className="truncate text-sm text-gray-500 dark:text-gray-400">
                         {provider.county ? provider.county : "Unknown"} county
