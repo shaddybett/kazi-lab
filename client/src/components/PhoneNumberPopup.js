@@ -13,8 +13,8 @@ function PhoneNumberPopup({ phoneNumber, onClose }) {
   const [success, setSuccess] = useState(null);
 
   const backendUrl = process.env.REACT_APP_BACKEND_URL;
-  const name = localStorage.getItem("name");
-  const idd = localStorage.getItem("idde");
+  const name = localStorage.getItem("namme");
+  const idd = localStorage.getItem("idid");
 
   const handleClickOutside = (event) => {
     if (popupRef.current && !popupRef.current.contains(event.target)) {

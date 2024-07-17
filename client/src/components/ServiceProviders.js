@@ -6,6 +6,8 @@ function ServiceProviders() {
   const [providers, setProviders] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
   const [error, setError] = useState("");
+  const [photos, setPhotos] = useState([]);
+  const [videos, setVideos] = useState([]);
   const [clientLocation, setClientLocation] = useState({
     latitude: null,
     longitude: null,
@@ -46,8 +48,14 @@ function ServiceProviders() {
         };
 
         const url = locationEnabled
-          ? `${backendUrl}/provider-details?provider_ids=${providerIds.join(",")}&client_lat=${clientLocation.latitude}&client_lon=${clientLocation.longitude}`
-          : `${backendUrl}/provider-details?provider_ids=${providerIds.join(",")}`;
+          ? `${backendUrl}/provider-details?provider_ids=${providerIds.join(
+              ","
+            )}&client_lat=${clientLocation.latitude}&client_lon=${
+              clientLocation.longitude
+            }`
+          : `${backendUrl}/provider-details?provider_ids=${providerIds.join(
+              ","
+            )}`;
 
         const response = await fetch(url, { method: "GET", headers });
 
@@ -58,7 +66,11 @@ function ServiceProviders() {
         }
 
         const providerDetails = await response.json();
-        setProviders(Array.isArray(providerDetails.providers) ? providerDetails.providers : []);
+        setProviders(
+          Array.isArray(providerDetails.providers)
+            ? providerDetails.providers
+            : []
+        );
       } catch (error) {
         console.error("Error fetching provider details:", error);
         setProviders([]);
@@ -71,17 +83,22 @@ function ServiceProviders() {
   const handleProviderClick = async (provider) => {
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch(`${backendUrl}/user-details?email=${provider.email}`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await fetch(
+        `${backendUrl}/user-details?email=${provider.email}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
       if (response.ok) {
         const userDetails = await response.json();
         setSelectedUser(userDetails);
+        setPhotos(userDetails.photos || []);
+        setVideos(userDetails.videos || []);
       } else {
         throw new Error("Failed to fetch user details");
       }
@@ -109,7 +126,7 @@ function ServiceProviders() {
               role="alert"
             >
               To see the closest service providers near you, please enable
-              location services then refresh the page.
+              location services then reload the page.
             </div>
           )}
           <ul className="divide-y divide-gray-200 dark:divide-gray-700">
@@ -137,7 +154,8 @@ function ServiceProviders() {
                         {provider.first_name} {provider.last_name}{" "}
                         {locationEnabled && provider.distance !== null
                           ? `${provider.distance.toFixed(2)} km`
-                          : ""} Away
+                          : ""}{" "}
+                        Away
                       </p>
                       <p className="truncate text-sm text-gray-500 dark:text-gray-400">
                         {provider.county ? provider.county : "Unknown"} county
@@ -159,5 +177,3 @@ function ServiceProviders() {
 }
 
 export default ServiceProviders;
-
-
