@@ -36,6 +36,8 @@ function ProviderDashboard() {
   const [loading, setLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
+  const [selectedVideo, setSelectedVideo] = useState(null);
+  const [isVideoLoading, setIsVideoLoading] = useState(false);
   const dropdownRef = useRef(null);
   const navigate = useNavigate();
   const backendUrl = process.env.REACT_APP_BACKEND_URL;
@@ -234,46 +236,6 @@ function ProviderDashboard() {
 
   const handlePhotoDelete = (photoUrl) => handleDelete(photoUrl, "photo");
   const handleVideoDelete = (videoUrl) => handleDelete(videoUrl, "video");
-
-  // const handleDelete = async (fileUrl, fileType) => {
-  //   const result = await Swal.fire({
-  //     title: "Are you sure?",
-  //     icon: "warning",
-  //     showCancelButton: true,
-  //     confirmButtonColor: "#3085d6",
-  //     cancelButtonColor: "#d33",
-  //     confirmButtonText: "Yes, Delete!",
-  //   });
-  //   if (result.isConfirmed) {
-  //     try {
-  //       const token = localStorage.getItem("token");
-  //       const fileName = fileUrl.split('/').pop(); // Extract the filename from the URL
-  //       const deleteResponse = await fetch(
-  //         `${backendUrl}/delete-upload/${fileType}/${fileName}`,
-  //         {
-  //           method: "DELETE",
-  //           headers: {
-  //             "Content-Type": "application/json",
-  //             Authorization: `Bearer ${token}`,
-  //           },
-  //         }
-  //       );
-  //       if (deleteResponse.ok) {
-  //         Swal.fire("Success", "File deleted successfully", "success");
-  //         handleEntry();
-  //       } else {
-  //         const errorMessage = await deleteResponse.json();
-  //         setError(errorMessage.error || "An error occurred");
-  //       }
-  //     } catch (error) {
-  //       setError("An error occurred. Please try again later");
-  //     }
-  //   }
-  // };
-
-  // const handlePhotoDelete = (photoUrl) => handleDelete(photoUrl, "photo");
-  // const handleVideoDelete = (videoUrl) => handleDelete(videoUrl, "video");
-
   const handleAddService = async () => {
     const result = await Swal.fire({
       title: "Are you sure?",
@@ -388,14 +350,23 @@ function ProviderDashboard() {
     }
   };
 
-  const openModal = (image) => {
-    setSelectedImage(image);
+  const openModal = (media, type) => {
+    if (type === 'image') {
+      setSelectedImage(media);
+      setSelectedVideo(null);
+    } else if (type === 'video') {
+      setSelectedImage(null);
+      setSelectedVideo(media);
+      setIsVideoLoading(true);
+    }
     setIsModalOpen(true);
   };
 
   const closeModal = () => {
     setIsModalOpen(false);
     setSelectedImage(null);
+    setSelectedVideo(null);
+    setIsVideoLoading(false);
   };
 
   return (
@@ -535,7 +506,7 @@ function ProviderDashboard() {
                         src={photo}
                         alt={`Uploaded ${index + 1}`}
                         className="grid-item"
-                        onClick={() => openModal(photo)}
+                        onClick={() => openModal(photo, 'image')}
                       />
                       <button
                         className="text-red-500 delete-button"
@@ -558,7 +529,8 @@ function ProviderDashboard() {
                         key={index}
                         controls
                         className="grid-items"
-                        onClick={() => openModal(video)}
+                        preload="metadata"
+                        onClick={() => openModal(video, 'video')}
                       >
                         <source src={video} type="video/mp4" />
                         Your browser does not support the video tag.
@@ -585,6 +557,20 @@ function ProviderDashboard() {
       >
         {selectedImage && (
           <img src={selectedImage} alt="Enlarged" className="modal-image" />
+        )}
+        {selectedVideo && (
+          <>
+            {isVideoLoading && <Spinner aria-label="Loading" size="lg" />}
+            <video
+              controls
+              className="modal-video"
+              onLoadedData={() => setIsVideoLoading(false)}
+              preload="metadata"
+            >
+              <source src={selectedVideo} type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
+          </>
         )}
       </Modal>
     </div>
