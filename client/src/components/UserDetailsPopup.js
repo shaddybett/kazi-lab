@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import { Avatar, Button, Card } from "flowbite-react";
+import { Avatar, Button, Card, Spinner } from "flowbite-react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
 import PhoneNumberPopup from "./PhoneNumberPopup";
@@ -15,6 +15,8 @@ function UserDetailsPopup({ user, onClose }) {
   const [showPhonePopup, setShowPhonePopup] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedMedia, setSelectedMedia] = useState(null);
+  const [mediaType, setMediaType] = useState(null); // Add mediaType state
+  const [isVideoLoading, setIsVideoLoading] = useState(false);
 
   const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
@@ -33,8 +35,8 @@ function UserDetailsPopup({ user, onClose }) {
       if (!response.ok) {
         throw new Error(`Network response was not ok: ${response.statusText}`);
       }
-      localStorage.setItem("namme",user.first_name)
-      localStorage.setItem("idid",user.id)
+      localStorage.setItem("namme", user.first_name);
+      localStorage.setItem("idid", user.id);
 
       const data = await response.json();
       setJobsDone(data.jobs_done);
@@ -49,23 +51,25 @@ function UserDetailsPopup({ user, onClose }) {
 
   if (!user) return null;
 
-  const openModal = (media) => {
+  const openModal = (media, type) => {
     setSelectedMedia(media);
+    setMediaType(type); // Set mediaType
+    if (type === "video") {
+      setIsVideoLoading(true);
+    }
     setIsModalOpen(true);
   };
 
   const closeModal = () => {
     setIsModalOpen(false);
     setSelectedMedia(null);
+    setMediaType(null); // Reset mediaType
+    setIsVideoLoading(false);
   };
 
   return (
     <div className="cardss">
-      <Card
-        ref={popupRef}
-        className="max-w-xl "
-        // className="bg-white rounded-lg p-6 w-full max-w-xs md:max-w-sm mx-4 md:mx-0"
-      >
+      <Card ref={popupRef} className="max-w-xl">
         <div className="flex flex-col items-center gap-2 mt-10">
           <Avatar className="mb-10" img={user.image} size="xl" />
           <div className="text-center md:text-left">
@@ -99,7 +103,7 @@ function UserDetailsPopup({ user, onClose }) {
                           src={photo}
                           alt={`Uploaded ${index + 1}`}
                           className="grid-item"
-                          onClick={() => openModal(photo)}
+                          onClick={() => openModal(photo, "image")}
                         />
                       </div>
                     ))}
@@ -115,7 +119,8 @@ function UserDetailsPopup({ user, onClose }) {
                         <video
                           controls
                           className="grid-items"
-                          onClick={() => openModal(video)}
+                          preload="metadata"
+                          onClick={() => openModal(video, "video")}
                         >
                           <source src={video} type="video/mp4" />
                           Your browser does not support the video tag.
@@ -158,11 +163,19 @@ function UserDetailsPopup({ user, onClose }) {
       >
         {selectedMedia && (
           <>
-            {selectedMedia.includes("video") ? (
-              <video controls className="modal-media">
-                <source src={selectedMedia} type="video/mp4" />
-                Your browser does not support the video tag.
-              </video>
+            {mediaType === "video" ? ( // Check mediaType instead
+              <>
+                {isVideoLoading && <Spinner aria-label="Loading" size="lg" />}
+                <video
+                  controls
+                  className="modal-media"
+                  onLoadedData={() => setIsVideoLoading(false)}
+                  preload="metadata"
+                >
+                  <source src={selectedMedia} type="video/mp4" />
+                  Your browser does not support the video tag.
+                </video>
+              </>
             ) : (
               <img src={selectedMedia} alt="Enlarged" className="modal-media" />
             )}
