@@ -11,6 +11,7 @@ import Profile from "./components/Profile";
 import ProviderDetails from "./components/ProviderDetails";
 import ServiceProviders from "./components/ServiceProviders";
 import Providers from "./components/Providers";
+import AdminPage from "./Pages/AdminPage/AdminPage";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
       <Route path="/signup" element={<Signup />} />
       <Route path="/dashboard" element={<Dashboard />} />
       <Route path="/clientPage" element={<ClientDashboard />} />
+      <Route path="/adminPage" element={<AdminPage/>} />
       <Route path="/providerPage" element={<ProviderDashboard />} />
       <Route path="/profile" element={<Profile />} />
       <Route path="/provider-details" element={<ProviderDetails />} />
