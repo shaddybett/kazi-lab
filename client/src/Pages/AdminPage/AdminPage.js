@@ -1,6 +1,8 @@
 import React,{useState} from 'react'
 
 function AdminPage() {
+    const [users,setUsers] = useState([])
+    const [error,setError] = useState([])
     const handleUsers = async (e)=>{
         const token = localStorage.getItem("token")
         e.preventDefault()
@@ -11,11 +13,18 @@ function AdminPage() {
             }
         })
         if (response.ok){
-
+            const responseData = response.json()
+            setUsers(responseData)
+        }
+        else{
+            const errorMessage = response.json()
+            setError(errorMessage.error)
         }
     }
   return (
-    <div></div>
+    <div>
+        
+    </div>
   )
 }
 
