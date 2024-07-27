@@ -31,9 +31,12 @@ function Login() {
         localStorage.setItem("token", data.access_token);
         localStorage.setItem("id", data.id);
         if (data.role_id === 2) {
-          navigate("/providerPage");
-        } else {
+          navigate("/providerPage")
+        } else if (data.role_id === 3) {
           navigate("/clientPage");
+        }
+        else {
+          navigate("/adminPage");
         }
       } else {
         const errorMessage = await response.json();
