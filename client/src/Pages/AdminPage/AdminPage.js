@@ -1,4 +1,5 @@
 import React,{useState} from 'react'
+import { Table } from "flowbite-react";
 
 function AdminPage() {
     const [users,setUsers] = useState([])
