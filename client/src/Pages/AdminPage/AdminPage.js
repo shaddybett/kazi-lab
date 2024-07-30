@@ -34,9 +34,12 @@ function AdminPage() {
             setError("An unexpected error occurred");
         }
     };
-    
+
   return (
-    <div>AdminPage</div>
+    <div>
+        <button onClick={handleUsers} >All users</button>
+        {error && <p>{error}</p>}
+    </div>
   )
 }
 
