@@ -18,16 +18,23 @@ function AdminPage() {
                     Authorization: `Bearer ${token}`,
                 },
             });
+
             if (response.ok){
                 const responseData = await response.json();
                 const fetchedProviders = responseData.filter(user => user.role_id === 2);
                 const fetchedClients = responseData.filter(user => user.role_id === 3);
-                setProviders(fetchedProviders)
-                setClients(fetchedClients)
+                setProviders(fetchedProviders);
+                setClients(fetchedClients);
             }
+            else {
+                const errorMessage = await response.json();
+                setError(errorMessage.error);
+            }
+        }catch (err) {
+            setError("An unexpected error occurred");
         }
-
-    }
+    };
+    
   return (
     <div>AdminPage</div>
   )
