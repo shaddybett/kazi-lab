@@ -7,15 +7,16 @@ function AdminPage() {
   const [error, setError] = useState(null);
 
   const backendUrl = process.env.REACT_APP_BACKEND_URL;
+
   const handleUsers = async (e) => {
     e.preventDefault();
-    const token = localStorage.getItem("token");
+    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcyMjM1NjEzMiwianRpIjoiNGU1OTQxMDItM2JhMi00NzlkLWJhZTgtOGQ4NWVlZjcyOWZhIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6Im50aGVpQGdtYWlsLmNvbSIsIm5iZiI6MTcyMjM1NjEzMiwiY3NyZiI6IjY3ZGMwYTRhLTcxNzUtNDY3Ny1hM2VlLTg1NDYzZGI5NjEyOCIsImV4cCI6MTcyMjM1OTczMn0.RfgElXKpeO-TP4y3RSlU9V_NLnoJ4s-H4je6KO6mBPM"
 
     try {
-      const response = await fetch(`{backendUrl}/all_users`, {
+      const response = await fetch(`${backendUrl}/all_users`, {
         method: "GET",
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${token}`
         },
       });
 
@@ -60,7 +61,7 @@ function AdminPage() {
                 key={index}
                 className="bg-white dark:border-gray-700 dark:bg-gray-800"
               >
-                <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                <Table.Cell className="whitespace-nowrap font-medium text-gray-900 text-black">
                   {user.first_name} {user.last_name}
                 </Table.Cell>
                 <Table.Cell>{user.email}</Table.Cell>
