@@ -8,8 +8,7 @@ function AdminPage() {
 
     const handleUsers = async (e) => {
         e.preventDefault();
-
-        
+        const token = localStorage.getItem('token') 
 
     }
   return (
