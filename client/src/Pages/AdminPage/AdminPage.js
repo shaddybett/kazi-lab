@@ -18,7 +18,10 @@ function AdminPage() {
                     Authorization: `Bearer ${token}`,
                 },
             });
-            
+            if (response.ok){
+                const responseData = await response.json();
+                
+            }
         }
 
     }
