@@ -21,6 +21,7 @@ function AdminPage() {
             if (response.ok){
                 const responseData = await response.json();
                 const fetchedProviders = responseData.filter(user => user.role_id === 2);
+                const fetchedClients = responseData.filter(user => user.role_id === 3);
             }
         }
 
