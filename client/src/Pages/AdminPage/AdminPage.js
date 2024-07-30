@@ -5,6 +5,13 @@ function AdminPage() {
     const [providers,setProviders] = useState([]);
     const [clients,setClients] = useState([]);
     const [error,setError] = useState(null);
+
+    const handleUsers = async (e) => {
+        e.preventDefault();
+
+        
+
+    }
   return (
     <div>AdminPage</div>
   )
