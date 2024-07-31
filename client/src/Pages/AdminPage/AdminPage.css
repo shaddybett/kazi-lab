@@ -6,3 +6,6 @@
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     font-weight: 600;
 }
+.table{
+    display: flex;
+}
