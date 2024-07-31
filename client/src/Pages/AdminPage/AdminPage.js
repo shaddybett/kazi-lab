@@ -6,8 +6,11 @@ function AdminPage() {
   const [providers, setProviders] = useState([]);
   const [clients, setClients] = useState([]);
   const [error, setError] = useState(null);
-  const [clicked,setClicked] = useState(false)
+  const [popupVisible,setPopupVisible] = useState(false)
 
+  const togglePopup = ()=>{
+    setPopupVisible(!popupVisible);
+  }
   const backendUrl = process.env.REACT_APP_BACKEND_URL;
   const handleUsers = async () => {
     const token = localStorage.getItem("token");
@@ -57,7 +60,7 @@ function AdminPage() {
                 <span className="sr-only">Edit</span>
               </Table.HeadCell>
             </Table.Head>
-            <Table.Body className="divide-y" onClick={setClicked(true)} >
+            <Table.Body className="divide-y" onClick={togglePopup} >
               {providers.map((user, index) => (
                 <Table.Row
                   key={index}
