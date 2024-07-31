@@ -1,6 +1,7 @@
 // import React, { useEffect, useState, useRef } from "react";
-// import { Card, Label, Select, Button, Spinner } from "flowbite-react";
 // import { useNavigate } from "react-router-dom";
+// import "./ProviderDetails.css"; // Import the CSS file
+
 // function ProviderDetails() {
 //   const [error, setError] = useState("");
 //   const [middle_name, setMiddle] = useState("");
@@ -13,12 +14,9 @@
 //   const [longitude, setLongitude] = useState(null);
 //   const [manualLocation, setManualLocation] = useState(false);
 //   const [loading, setLoading] = useState(false);
-//   // const [allServices, setAllServices] = useState([]);
-//   // const [newService, setNewService] = useState("");
 //   const [dropdownOpen, setDropdownOpen] = useState(false);
 //   const dropdownRef = useRef(null);
 //   const [counties, setCounties] = useState([]); // Initialize as empty array
-//   // const [services, setServices] = useState([]);
 //   const [county, setCounty] = useState(""); // New state for county
 //   const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
@@ -34,6 +32,7 @@
 //       }
 //     );
 //   }, []);
+
 //   const fetchAllCounties = async () => {
 //     try {
 //       const response = await fetch(`${backendUrl}/county`, {
@@ -98,6 +97,14 @@
 //         body: formImage,
 //       });
 
+//       if (userImageResponse.ok) {
+//         const imageData = await userImageResponse.json();
+//         setMessage(imageData.message);
+//       } else {
+//         const imageError = await userImageResponse.json();
+//         setError(imageError.error);
+//       }
+
 //       // Create FormData for user details
 //       const formData = new FormData();
 //       formData.append("middle_name", middle_name);
@@ -127,14 +134,6 @@
 //         setError(userDetailsErrors.error);
 //       }
 
-//       if (userImageResponse.ok) {
-//         const imageData = await userImageResponse.json();
-//         setMessage(imageData.message);
-//       } else {
-//         const imageError = await userImageResponse.json();
-//         setError(imageError.error);
-//       }
-
 //       if (userDetailsResponse.ok && userImageResponse.ok) {
 //         setMessage("User details registered successfully");
 //         navigate("/providerPage");
@@ -146,110 +145,78 @@
 //   };
 
 //   return (
-//     <div>
-//       <h1>Fill the forms below to complete your signup</h1>
-//       <form onSubmit={handleServiceFormSubmit}>
-//         <input
-//           type="text"
-//           placeholder="middle-name"
-//           value={middle_name}
-//           onChange={(e) => setMiddle(e.target.value)}
-//         />
-//         <input
-//           type="text"
-//           placeholder="0722000000"
-//           value={phone_number}
-//           onChange={(e) => setNumber(e.target.value)}
-//         />
-//         <input
-//           type="text"
-//           placeholder="12345678"
-//           value={national_id}
-//           onChange={(e) => setN_id(e.target.value)}
-//         />
-//         <div>
-//           <label>
-//             <input
-//               type="checkbox"
-//               checked={manualLocation}
-//               onChange={() => setManualLocation(!manualLocation)}
-//             />
-//             Manually enter location
-//           </label>
-//           {manualLocation && (
-//             <>
-//               <input
-//                 type="text"
-//                 placeholder="Latitude"
-//                 value={latitude || ""}
-//                 onChange={(e) => setLatitude(e.target.value)}
-//               />
-//               <input
-//                 type="text"
-//                 placeholder="Longitude"
-//                 value={longitude || ""}
-//                 onChange={(e) => setLongitude(e.target.value)}
-//               />
-//             </>
-//           )}
+//     <div className="provider-details-container">
+//       <h1>Service Provider</h1>
+//       <p>
+//         Please complete your registration by filling in the form below in order
+//         to start.
+//       </p>
+//       <form
+//         onSubmit={handleServiceFormSubmit}
+//         className="provider-details-form"
+//       >
+//         <div className="form-row">
+//           <input
+//             type="text"
+//             placeholder="ID Number"
+//             value={national_id}
+//             onChange={(e) => setN_id(e.target.value)}
+//           />
+//           <input
+//             type="text"
+//             placeholder="Phone number"
+//             value={phone_number}
+//             onChange={(e) => setNumber(e.target.value)}
+//           />
 //         </div>
-//         <div className="mb-2 block">
-//           <Label htmlFor="file-upload" value={image ? image.name : ""} />
-//         </div>
-//         <input
-//           id="file-upload"
-//           type="file"
-//           onChange={(e) => setImage(e.target.files[0])}
-//         />
-//         <Button type="submit" disabled={loading}>
-//           {" "}
-//           {loading ? (
-//             <Spinner aria-label="Loading" size="sm" className="mr-2" />
-//           ) : (
-//             "Submit"
-//           )}
-//         </Button>
-//       </form>
-//       <Card className="max-w-sm">
-//         <div className="max-w-md">
-//           <div className="mb-2 block">
-//             <Label htmlFor="counties" value="Select your county" />
-//           </div>
-//           <Select
+//         <div className="form-row">
+//           <input
+//             type="text"
+//             placeholder="Middle name"
+//             value={middle_name}
+//             onChange={(e) => setMiddle(e.target.value)}
+//           />
+//           <select
 //             id="counties"
 //             required
 //             value={county}
-//             onChange={(e) => setCounty(e.target.value)} // Update state on change
-//             className="text-black" // Ensure the text is visible
+//             onChange={(e) => setCounty(e.target.value)}
+//             className="text-black"
 //           >
 //             <option value="" disabled>
-//               Select your county
+//               Location
 //             </option>
 //             {counties.map((county) => (
-//               <option
-//                 key={county.id}
-//                 value={county.name}
-//                 className="text-black"
-//               >
+//               <option key={county.id} value={county.name}>
 //                 {county.name}
 //               </option>
 //             ))}
-//           </Select>
+//           </select>
 //         </div>
-//       </Card>
-//       {error && <p className="text-red-500">{error}</p>}
-//       {message && <p>{message}</p>}
+//         <div className="upload-section">
+//           <label htmlFor="file-upload" className="upload-label">
+//             {image ? image.name : "Upload File"}
+//           </label>
+//           <input
+//             id="file-upload"
+//             type="file"
+//             onChange={(e) => setImage(e.target.files[0])}
+//           />
+//         </div>
+//         <button type="submit" disabled={loading} className="get-started-button">
+//           {loading ? "Loading..." : "Get Started"}
+//         </button>
+//       </form>
+//       {error && <p className="error-text">{error}</p>}
+//       {message && <p className="success-text">{message}</p>}
 //     </div>
 //   );
 // }
 
 // export default ProviderDetails;
-
-
-
 import React, { useEffect, useState, useRef } from "react";
-import { Card, Label, Select, Button, Spinner } from "flowbite-react";
 import { useNavigate } from "react-router-dom";
+import "./ProviderDetails.css"; // Import the CSS file
 
 function ProviderDetails() {
   const [error, setError] = useState("");
@@ -394,98 +361,71 @@ function ProviderDetails() {
   };
 
   return (
-    <div>
-      <h1>Fill the forms below to complete your signup</h1>
-      <form onSubmit={handleServiceFormSubmit}>
-        <input
-          type="text"
-          placeholder="middle-name"
-          value={middle_name}
-          onChange={(e) => setMiddle(e.target.value)}
-        />
-        <input
-          type="text"
-          placeholder="0722000000"
-          value={phone_number}
-          onChange={(e) => setNumber(e.target.value)}
-        />
-        <input
-          type="text"
-          placeholder="12345678"
-          value={national_id}
-          onChange={(e) => setN_id(e.target.value)}
-        />
-        <div>
-          <label>
-            <input
-              type="checkbox"
-              checked={manualLocation}
-              onChange={() => setManualLocation(!manualLocation)}
-            />
-            Manually enter location
-          </label>
-          {manualLocation && (
-            <>
-              <input
-                type="text"
-                placeholder="Latitude"
-                value={latitude || ""}
-                onChange={(e) => setLatitude(e.target.value)}
-              />
-              <input
-                type="text"
-                placeholder="Longitude"
-                value={longitude || ""}
-                onChange={(e) => setLongitude(e.target.value)}
-              />
-            </>
-          )}
+    <div className="provider-details-container">
+      <h1>Service Provider</h1>
+      <p>
+        Please complete your registration by filling in the form below in order
+        to start.
+      </p>
+      <form onSubmit={handleServiceFormSubmit} className="form">
+        <div className="input-group">
+          <input
+            type="text"
+            placeholder="ID Number"
+            value={national_id}
+            onChange={(e) => setN_id(e.target.value)}
+            className="input"
+          />
+          <input
+            type="text"
+            placeholder="Phone number"
+            value={phone_number}
+            onChange={(e) => setNumber(e.target.value)}
+            className="input"
+          />
         </div>
-        <div className="mb-2 block">
-          <Label htmlFor="file-upload" value={image ? image.name : ""} />
-        </div>
-        <input
-          id="file-upload"
-          type="file"
-          onChange={(e) => setImage(e.target.files[0])}
-        />
-        <Button type="submit" disabled={loading}>
-          {loading ? (
-            <Spinner aria-label="Loading" size="sm" className="mr-2" />
-          ) : (
-            "Submit"
-          )}
-        </Button>
-      </form>
-      <Card className="max-w-sm">
-        <div className="max-w-md">
-          <div className="mb-2 block">
-            <Label htmlFor="counties" value="Select your county" />
-          </div>
-          <Select
+        <div className="input-group">
+          <input
+            type="text"
+            placeholder="Middle name"
+            value={middle_name}
+            onChange={(e) => setMiddle(e.target.value)}
+            className="input"
+          />
+          <select
             id="counties"
             required
             value={county}
-            onChange={(e) => setCounty(e.target.value)} // Update state on change
-            className="text-black" // Ensure the text is visible
+            onChange={(e) => setCounty(e.target.value)}
+            className="input"
           >
             <option value="" disabled>
-              Select your county
+              Location
             </option>
             {counties.map((county) => (
-              <option
-                key={county.id}
-                value={county.name}
-                className="text-black"
-              >
+              <option key={county.id} value={county.name}>
                 {county.name}
               </option>
             ))}
-          </Select>
+          </select>
         </div>
-      </Card>
-      {error && <p className="text-red-500">{error}</p>}
-      {message && <p>{message}</p>}
+        <div className="file-upload">
+          <label htmlFor="file-upload" className="file-upload-label">
+            {image ? image.name : "Upload File"}
+          </label>
+          <input
+            id="file-upload"
+            type="file"
+            onChange={(e) => setImage(e.target.files[0])}
+            className="file-input"
+          />
+        </div>
+        <button type="submit" disabled={loading} className="submit-button">
+          {loading ? "Loading..." : "Get Started"}
+        </button>
+      </form>
+      {error && <p className="error-message">{error}</p>}
+      {message && <p className="success-message">{message}</p>}
     </div>
   );
 }

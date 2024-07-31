@@ -8,7 +8,7 @@ import Dashboard from "./components/Dashboard";
 import ClientDashboard from "./components/ClientDashboard";
 import ProviderDashboard from "./components/ProviderDashboard";
 import Profile from "./components/Profile";
-import ProviderDetails from "./components/ProviderDetails";
+import ProviderDetails from "./Pages/ProviderDetails/ProviderDetails";
 import ServiceProviders from "./components/ServiceProviders";
 import Providers from "./components/Providers";
 
