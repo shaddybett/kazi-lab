@@ -47,7 +47,8 @@ function AdminPage() {
         }
       })
       if (response.ok){
-        
+        const userDetails = await response.json()
+        setSelectedUser(userDetails);
       }
     }
   }
