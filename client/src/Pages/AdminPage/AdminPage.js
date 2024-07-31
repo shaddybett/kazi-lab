@@ -77,11 +77,12 @@ function AdminPage() {
                 <span className="sr-only">Edit</span>
               </Table.HeadCell>
             </Table.Head>
-            <Table.Body className="divide-y"  >
+            <Table.Body className="divide-y">
               {providers.map((user, index) => (
                 <Table.Row
                   key={index}
                   className="bg-white dark:border-gray-700 dark:bg-gray-800"
+                  onClick={handleProviderClick}
                 >
                   <Table.Cell className="whitespace-nowrap font-medium text-gray-900 text-black">
                     {user.first_name} {user.last_name}
@@ -115,6 +116,7 @@ function AdminPage() {
                 <Table.Row
                   key={index}
                   className="bg-white dark:border-gray-700 dark:bg-gray-800"
+                  onClick={handleProviderClick}
                 >
                   <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
                     {user.first_name} {user.last_name}
