@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Table } from "flowbite-react";
-import './AdminPage.css'
+import "./AdminPage.css";
 
 function AdminPage() {
   const [providers, setProviders] = useState([]);
@@ -9,7 +9,7 @@ function AdminPage() {
 
   const backendUrl = process.env.REACT_APP_BACKEND_URL;
   const handleUsers = async () => {
-    const token = localStorage.getItem("token")
+    const token = localStorage.getItem("token");
 
     try {
       const response = await fetch(`${backendUrl}/all_users`, {
@@ -37,12 +37,12 @@ function AdminPage() {
       setError("An unexpected error occurred");
     }
   };
-  useEffect(()=>{
+  useEffect(() => {
     handleUsers();
-  },[]) // added a useefecct to make the page load on first render that is you must not necessarily click a button to run `handleUsers`
+  }, []); // added a useeffect to make the page load on first render that is you must not necessarily click a button to run `handleUsers`
   return (
     <div>
-        <h3 className="title" >All users</h3>
+      <h3 className="title">All users</h3>
       {error && <p>{error}</p>}
       <div className="overflow-x-auto">
         <h2>Providers</h2>
