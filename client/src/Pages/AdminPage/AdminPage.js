@@ -6,6 +6,7 @@ function AdminPage() {
   const [providers, setProviders] = useState([]);
   const [clients, setClients] = useState([]);
   const [error, setError] = useState(null);
+  const [clicked,setClicked] = useState(false)
 
   const backendUrl = process.env.REACT_APP_BACKEND_URL;
   const handleUsers = async () => {
@@ -56,7 +57,7 @@ function AdminPage() {
                 <span className="sr-only">Edit</span>
               </Table.HeadCell>
             </Table.Head>
-            <Table.Body className="divide-y">
+            <Table.Body className="divide-y" onClick={setClicked(true)} >
               {providers.map((user, index) => (
                 <Table.Row
                   key={index}
@@ -66,8 +67,6 @@ function AdminPage() {
                     {user.first_name} {user.last_name}
                   </Table.Cell>
                   <Table.Cell>{user.email}</Table.Cell>
-                  {/* <Table.Cell>{user.role_id}</Table.Cell>
-                <Table.Cell>{user.id}</Table.Cell> */}
                   <Table.Cell>
                     <a
                       href="#"
