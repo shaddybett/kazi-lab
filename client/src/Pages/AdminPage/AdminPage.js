@@ -6,11 +6,11 @@ function AdminPage() {
   const [providers, setProviders] = useState([]);
   const [clients, setClients] = useState([]);
   const [error, setError] = useState(null);
+  const [change,setChange] = useState([])
 
   const backendUrl = process.env.REACT_APP_BACKEND_URL;
   const handleUsers = async () => {
     const token = localStorage.getItem("token");
-
     try {
       const response = await fetch(`${backendUrl}/all_users`, {
         method: "GET",
