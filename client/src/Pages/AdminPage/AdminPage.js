@@ -27,6 +27,9 @@ function AdminPage() {
         const fetchedClients = responseData.filter(
           (user) => user.role_id === 3
         );
+        if (user.role_id === 2){
+            return "service provider"
+        }
         setProviders(fetchedProviders);
         setClients(fetchedClients);
       } else {
@@ -66,7 +69,7 @@ function AdminPage() {
                   {user.first_name} {user.last_name}
                 </Table.Cell>
                 <Table.Cell>{user.email}</Table.Cell>
-                <Table.Cell>{user.role_id}</Table.Cell>
+                <Table.Cell>mapRoleToId{user.role_id}</Table.Cell>
                 <Table.Cell>{user.id}</Table.Cell>
                 <Table.Cell>
                   <a
