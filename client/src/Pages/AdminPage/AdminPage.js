@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Table } from "flowbite-react";
 import "./AdminPage.css";
-import adminUsersPopup from './AdminUsersPopup'
+import AdminUsersPopup from "./AdminUsersPopup";
 
 function AdminPage() {
   const [providers, setProviders] = useState([]);
@@ -136,6 +136,9 @@ function AdminPage() {
           </Table>
         </div>
       </div>
+      {selectedUser && (
+        <AdminUsersPopup  user={selectedUser} onClose={closePopup}/>
+      ) }
     </div>
   );
 }
