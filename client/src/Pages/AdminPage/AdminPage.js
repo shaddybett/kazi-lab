@@ -49,6 +49,8 @@ function AdminPage() {
       if (response.ok){
         const userDetails = await response.json()
         setSelectedUser(userDetails);
+      }else {
+        throw new error ("Failed to load user details")
       }
     }
   }
