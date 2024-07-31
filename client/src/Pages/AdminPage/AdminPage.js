@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Table } from "flowbite-react";
+import './AdminPage.css'
 
 function AdminPage() {
   const [providers, setProviders] = useState([]);
