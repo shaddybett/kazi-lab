@@ -6,10 +6,6 @@ function AdminPage() {
   const [providers, setProviders] = useState([]);
   const [clients, setClients] = useState([]);
   const [error, setError] = useState(null);
-  const [popupVisible,setPopupVisible] = useState(false)
-  const togglePopup = ()=>{
-    setPopupVisible(!popupVisible);
-  }
   const backendUrl = process.env.REACT_APP_BACKEND_URL;
   const handleUsers = async () => {
     const token = localStorage.getItem("token");
@@ -50,14 +46,14 @@ function AdminPage() {
         <div className="table-1">
           <h3 className="table-1-title">Service Providers</h3>
           <Table hoverable>
-            <Table.Head onClick={togglePopup} >
+            <Table.Head >
               <Table.HeadCell>Name</Table.HeadCell>
               <Table.HeadCell>Email</Table.HeadCell>
               <Table.HeadCell>
                 <span className="sr-only">Edit</span>
               </Table.HeadCell>
             </Table.Head>
-            <Table.Body className="divide-y" onClick={togglePopup} >
+            <Table.Body className="divide-y"  >
               {providers.map((user, index) => (
                 <Table.Row
                   key={index}
@@ -86,8 +82,6 @@ function AdminPage() {
             <Table.Head>
               <Table.HeadCell>Name</Table.HeadCell>
               <Table.HeadCell>Email</Table.HeadCell>
-              {/* <Table.HeadCell>Role</Table.HeadCell>
-            <Table.HeadCell>ID Number</Table.HeadCell> */}
               <Table.HeadCell>
                 <span className="sr-only">Edit</span>
               </Table.HeadCell>
@@ -102,8 +96,6 @@ function AdminPage() {
                     {user.first_name} {user.last_name}
                   </Table.Cell>
                   <Table.Cell>{user.email}</Table.Cell>
-                  {/* <Table.Cell>{user.role_id}</Table.Cell>
-                <Table.Cell>{user.id}</Table.Cell> */}
                   <Table.Cell>
                     <a
                       href="#"
@@ -116,12 +108,6 @@ function AdminPage() {
               ))}
             </Table.Body>
           </Table>
-          {popupVisible && (
-            <div>
-              <p>Huy</p>
-              <button onClick={togglePopup} ></button>
-            </div>
-          )}
         </div>
       </div>
     </div>
