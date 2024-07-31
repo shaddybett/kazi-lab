@@ -55,6 +55,9 @@ function AdminPage() {
     } catch (error){
       console.error("Error fetching user details:", error);
     }
+  };
+  const closePopup = ()=>{
+    setSelectedUser(null);
   }
   useEffect(() => {
     handleUsers();
