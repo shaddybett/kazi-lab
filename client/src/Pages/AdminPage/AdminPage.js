@@ -26,12 +26,6 @@ function AdminPage() {
         const fetchedClients = responseData.filter(
           (user) => user.role_id === 3
         );
-
-        if (responseData.role_id === 2) {
-          return "service provider";
-        } else if (responseData.role_id === 3) {
-          return "client";
-        }
         setProviders(fetchedProviders);
         setClients(fetchedClients);
       } else {
