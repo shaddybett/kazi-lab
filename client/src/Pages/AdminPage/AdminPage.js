@@ -52,6 +52,8 @@ function AdminPage() {
       }else {
         throw new error ("Failed to load user details")
       }
+    } catch (error){
+      console.error("Error fetching user details:", error);
     }
   }
   useEffect(() => {
