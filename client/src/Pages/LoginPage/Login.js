@@ -35,7 +35,7 @@ function Login() {
         } else if (data.role_id === 3) {
           navigate("/clientPage");
         }
-        else {
+        else if (data.role_id === 1) {
           navigate("/adminPage");
         }
       } else {

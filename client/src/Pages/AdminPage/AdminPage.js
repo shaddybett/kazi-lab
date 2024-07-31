@@ -7,8 +7,7 @@ function AdminPage() {
   const [error, setError] = useState(null);
 
   const backendUrl = process.env.REACT_APP_BACKEND_URL;
-  const handleUsers = async (e) => {
-    e.preventDefault();
+  const handleUsers = async () => {
     const token = localStorage.getItem("token")
 
     try {
@@ -42,6 +41,7 @@ function AdminPage() {
   },[]) // added a useefecct to make the page load on first render that is you must not necessarily click a button to run `handleUsers`
   return (
     <div>
+        <h3 className="title" >All users</h3>
       {error && <p>{error}</p>}
       <div className="overflow-x-auto">
         <h2>Providers</h2>
@@ -49,7 +49,7 @@ function AdminPage() {
           <Table.Head>
             <Table.HeadCell>Name</Table.HeadCell>
             <Table.HeadCell>Email</Table.HeadCell>
-            <Table.HeadCell>Phone Number</Table.HeadCell>
+            <Table.HeadCell>Role</Table.HeadCell>
             <Table.HeadCell>ID Number</Table.HeadCell>
             <Table.HeadCell>
               <span className="sr-only">Edit</span>
@@ -65,7 +65,7 @@ function AdminPage() {
                   {user.first_name} {user.last_name}
                 </Table.Cell>
                 <Table.Cell>{user.email}</Table.Cell>
-                <Table.Cell>{user.phone_number}</Table.Cell>
+                <Table.Cell>{user.role_id}</Table.Cell>
                 <Table.Cell>{user.id}</Table.Cell>
                 <Table.Cell>
                   <a
@@ -84,7 +84,7 @@ function AdminPage() {
           <Table.Head>
             <Table.HeadCell>Name</Table.HeadCell>
             <Table.HeadCell>Email</Table.HeadCell>
-            <Table.HeadCell>Phone Number</Table.HeadCell>
+            <Table.HeadCell>Role</Table.HeadCell>
             <Table.HeadCell>ID Number</Table.HeadCell>
             <Table.HeadCell>
               <span className="sr-only">Edit</span>
@@ -100,7 +100,7 @@ function AdminPage() {
                   {user.first_name} {user.last_name}
                 </Table.Cell>
                 <Table.Cell>{user.email}</Table.Cell>
-                <Table.Cell>{user.phone_number}</Table.Cell>
+                <Table.Cell>{user.role_id}</Table.Cell>
                 <Table.Cell>{user.id}</Table.Cell>
                 <Table.Cell>
                   <a
