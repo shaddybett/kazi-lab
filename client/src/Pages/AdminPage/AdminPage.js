@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Table } from "flowbite-react";
 
 function AdminPage() {
@@ -7,16 +7,15 @@ function AdminPage() {
   const [error, setError] = useState(null);
 
   const backendUrl = process.env.REACT_APP_BACKEND_URL;
-
   const handleUsers = async (e) => {
     e.preventDefault();
-    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcyMjM1NjEzMiwianRpIjoiNGU1OTQxMDItM2JhMi00NzlkLWJhZTgtOGQ4NWVlZjcyOWZhIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6Im50aGVpQGdtYWlsLmNvbSIsIm5iZiI6MTcyMjM1NjEzMiwiY3NyZiI6IjY3ZGMwYTRhLTcxNzUtNDY3Ny1hM2VlLTg1NDYzZGI5NjEyOCIsImV4cCI6MTcyMjM1OTczMn0.RfgElXKpeO-TP4y3RSlU9V_NLnoJ4s-H4je6KO6mBPM"
+    const token = localStorage.getItem("token")
 
     try {
       const response = await fetch(`${backendUrl}/all_users`, {
         method: "GET",
         headers: {
-          Authorization: `Bearer ${token}`
+          Authorization: `Bearer ${token}`,
         },
       });
 
@@ -38,10 +37,11 @@ function AdminPage() {
       setError("An unexpected error occurred");
     }
   };
-
+  useEffect(()=>{
+    handleUsers();
+  },[]) // added a useefecct to make the page load on first render that is you must not necessarily click a button to run `handleUsers`
   return (
     <div>
-      <button onClick={handleUsers}>All users</button>
       {error && <p>{error}</p>}
       <div className="overflow-x-auto">
         <h2>Providers</h2>
