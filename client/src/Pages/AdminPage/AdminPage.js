@@ -2,15 +2,14 @@ import React, { useState, useEffect } from "react";
 import { Table } from "flowbite-react";
 import "./AdminPage.css";
 import AdminUsersPopup from "./AdminUsersPopup";
-import UserDetailsPopup from "../../components/UserDetailsPopup";
 
 function AdminPage() {
   const [providers, setProviders] = useState([]);
   const [clients, setClients] = useState([]);
   const [error, setError] = useState(null);
-  const [selectedUser,setSelectedUser] = useState(null)
+  const [selectedUser, setSelectedUser] = useState(null);
   const backendUrl = process.env.REACT_APP_BACKEND_URL;
-  
+
   const handleUsers = async () => {
     const token = localStorage.getItem("token");
     try {
@@ -39,30 +38,34 @@ function AdminPage() {
       setError("An unexpected error occurred");
     }
   };
-  const handleProviderClick = async (user) =>{
-    try{
-      const response = await fetch(`${backendUrl}/user-details?email=${user.email}`,{
-        method:"GET",
-        headers:{
+
+  const handleProviderClick = async (user) => {
+    try {
+      const response = await fetch(`${backendUrl}/user-details?email=${user.email}`, {
+        method: "GET",
+        headers: {
           "Content-Type": "application/json",
-        }
-      })
-      if (response.ok){
-        const userDetails = await response.json()
+        },
+      });
+      if (response.ok) {
+        const userDetails = await response.json();
         setSelectedUser(userDetails);
-      }else {
-        throw new error ("Failed to load user details")
+      } else {
+        throw new Error("Failed to load user details");
       }
-    } catch (error){
+    } catch (error) {
       console.error("Error fetching user details:", error);
     }
   };
-  const closePopup = ()=>{
+
+  const closePopup = () => {
     setSelectedUser(null);
-  }
+  };
+
   useEffect(() => {
     handleUsers();
-  }, []); // added a useeffect to make the page load on first render that is you must not necessarily click a button to run `handleUsers`
+  }, []);
+
   return (
     <div>
       <h3 className="title">All users</h3>
@@ -71,7 +74,7 @@ function AdminPage() {
         <div className="table-1">
           <h3 className="table-1-title">Service Providers</h3>
           <Table hoverable>
-            <Table.Head >
+            <Table.Head>
               <Table.HeadCell>Name</Table.HeadCell>
               <Table.HeadCell>Email</Table.HeadCell>
               <Table.HeadCell>
@@ -83,7 +86,7 @@ function AdminPage() {
                 <Table.Row
                   key={index}
                   className="bg-white dark:border-gray-700 dark:bg-gray-800"
-                  onClick={handleProviderClick}
+                  onClick={() => handleProviderClick(user)}
                 >
                   <Table.Cell className="whitespace-nowrap font-medium text-gray-900 text-black">
                     {user.first_name} {user.last_name}
@@ -102,8 +105,8 @@ function AdminPage() {
             </Table.Body>
           </Table>
         </div>
-        <div className="table-2" >
-          <h2 className="table-2-title" >Clients</h2>
+        <div className="table-2">
+          <h2 className="table-2-title">Clients</h2>
           <Table hoverable>
             <Table.Head>
               <Table.HeadCell>Name</Table.HeadCell>
@@ -117,7 +120,7 @@ function AdminPage() {
                 <Table.Row
                   key={index}
                   className="bg-white dark:border-gray-700 dark:bg-gray-800"
-                  onClick={handleProviderClick}
+                  onClick={() => handleProviderClick(user)}
                 >
                   <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
                     {user.first_name} {user.last_name}
@@ -138,9 +141,8 @@ function AdminPage() {
         </div>
       </div>
       {selectedUser && (
-        // <AdminUsersPopup  user={selectedUser} onClose={closePopup}/>
-        <UserDetailsPopup user={selectedUser} onClose={closePopup}/>
-      ) }
+        <AdminUsersPopup user={selectedUser} onClose={closePopup} />
+      )}
     </div>
   );
 }
