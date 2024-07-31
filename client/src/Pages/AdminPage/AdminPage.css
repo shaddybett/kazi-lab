@@ -8,4 +8,18 @@
 }
 .table{
     display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+.table-1-title{
+    /* margin-left: 10px; */
+    display: flex;
+    justify-content: center;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+.table-2-title{
+    /* margin-left: 10px; */
+    display: flex;
+    justify-content: center;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }

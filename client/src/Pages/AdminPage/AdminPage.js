@@ -51,7 +51,8 @@ function AdminPage() {
       <h3 className="title">All users</h3>
       {error && <p>{error}</p>}
       <div className="table">
-        <div>
+        <div className="table-1">
+          <h3 className="table-1-title">Service Providers</h3>
           <Table hoverable>
             <Table.Head>
               <Table.HeadCell>Name</Table.HeadCell>
@@ -87,41 +88,43 @@ function AdminPage() {
             </Table.Body>
           </Table>
         </div>
-        <h2>Clients</h2>
-        <Table hoverable>
-          <Table.Head>
-            <Table.HeadCell>Name</Table.HeadCell>
-            <Table.HeadCell>Email</Table.HeadCell>
-            {/* <Table.HeadCell>Role</Table.HeadCell>
+        <div className="table-2" >
+          <h2 className="table-2-title" >Clients</h2>
+          <Table hoverable>
+            <Table.Head>
+              <Table.HeadCell>Name</Table.HeadCell>
+              <Table.HeadCell>Email</Table.HeadCell>
+              {/* <Table.HeadCell>Role</Table.HeadCell>
             <Table.HeadCell>ID Number</Table.HeadCell> */}
-            <Table.HeadCell>
-              <span className="sr-only">Edit</span>
-            </Table.HeadCell>
-          </Table.Head>
-          <Table.Body className="divide-y">
-            {clients.map((user, index) => (
-              <Table.Row
-                key={index}
-                className="bg-white dark:border-gray-700 dark:bg-gray-800"
-              >
-                <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                  {user.first_name} {user.last_name}
-                </Table.Cell>
-                <Table.Cell>{user.email}</Table.Cell>
-                {/* <Table.Cell>{user.role_id}</Table.Cell>
+              <Table.HeadCell>
+                <span className="sr-only">Edit</span>
+              </Table.HeadCell>
+            </Table.Head>
+            <Table.Body className="divide-y">
+              {clients.map((user, index) => (
+                <Table.Row
+                  key={index}
+                  className="bg-white dark:border-gray-700 dark:bg-gray-800"
+                >
+                  <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                    {user.first_name} {user.last_name}
+                  </Table.Cell>
+                  <Table.Cell>{user.email}</Table.Cell>
+                  {/* <Table.Cell>{user.role_id}</Table.Cell>
                 <Table.Cell>{user.id}</Table.Cell> */}
-                <Table.Cell>
-                  <a
-                    href="#"
-                    className="font-medium text-cyan-600 hover:underline dark:text-cyan-500"
-                  >
-                    Edit
-                  </a>
-                </Table.Cell>
-              </Table.Row>
-            ))}
-          </Table.Body>
-        </Table>
+                  <Table.Cell>
+                    <a
+                      href="#"
+                      className="font-medium text-cyan-600 hover:underline dark:text-cyan-500"
+                    >
+                      Edit
+                    </a>
+                  </Table.Cell>
+                </Table.Row>
+              ))}
+            </Table.Body>
+          </Table>
+        </div>
       </div>
     </div>
   );
