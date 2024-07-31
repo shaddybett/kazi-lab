@@ -28,7 +28,6 @@ function AdminUsersPopup({ user, onClose }) {
       <Modal show={true} onClose={onClose}>
         <Modal.Header>{`${user.first_name} ${user.last_name}`}</Modal.Header>
         <Modal.Body>
-          {/* <Card> */}
             <div className="flex flex-col items-center">
               <img
                 src={user.image}
@@ -68,7 +67,6 @@ function AdminUsersPopup({ user, onClose }) {
                 </div>
               </div>
             </div>
-          {/* </Card> */}
         </Modal.Body>
         <Modal.Footer>
           <Button color="gray" onClick={onClose}>
