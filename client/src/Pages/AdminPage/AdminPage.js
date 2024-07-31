@@ -6,8 +6,9 @@ function AdminPage() {
   const [providers, setProviders] = useState([]);
   const [clients, setClients] = useState([]);
   const [error, setError] = useState(null);
-  const [popupVisible,setPopupVisible] = useState(false)
-
+  const popupComponent = ()=>{
+    const [popupVisible,setPopupVisible] = useState(false)
+  }
   const togglePopup = ()=>{
     setPopupVisible(!popupVisible);
   }
