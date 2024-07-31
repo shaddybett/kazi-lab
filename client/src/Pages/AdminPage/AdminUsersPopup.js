@@ -4,7 +4,9 @@ import { Card } from 'flowbite-react'
 function AdminUsersPopup() {
   return (
     <div>
-        <Card></Card>
+        <Card>
+            
+        </Card>
     </div>
   )
 }
