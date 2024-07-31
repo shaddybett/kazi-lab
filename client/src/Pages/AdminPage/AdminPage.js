@@ -50,11 +50,9 @@ function AdminPage() {
         <div className="table-1">
           <h3 className="table-1-title">Service Providers</h3>
           <Table hoverable>
-            <Table.Head>
+            <Table.Head onClick={togglePopup} >
               <Table.HeadCell>Name</Table.HeadCell>
               <Table.HeadCell>Email</Table.HeadCell>
-              {/* <Table.HeadCell>Role</Table.HeadCell>
-            <Table.HeadCell>ID Number</Table.HeadCell> */}
               <Table.HeadCell>
                 <span className="sr-only">Edit</span>
               </Table.HeadCell>
