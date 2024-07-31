@@ -9,6 +9,7 @@ function AdminPage() {
   const [error, setError] = useState(null);
   const [selectedUser,setSelectedUser] = useState(null)
   const backendUrl = process.env.REACT_APP_BACKEND_URL;
+  
   const handleUsers = async () => {
     const token = localStorage.getItem("token");
     try {
@@ -37,6 +38,19 @@ function AdminPage() {
       setError("An unexpected error occurred");
     }
   };
+  const handleProviderClick = async (user) =>{
+    try{
+      const response = await fetch(`${backendUrl}/user-details?email=${user.email}`,{
+        method:"GET",
+        headers:{
+          "Content-Type": "application/json",
+        }
+      })
+      if (response.ok){
+        
+      }
+    }
+  }
   useEffect(() => {
     handleUsers();
   }, []); // added a useeffect to make the page load on first render that is you must not necessarily click a button to run `handleUsers`
