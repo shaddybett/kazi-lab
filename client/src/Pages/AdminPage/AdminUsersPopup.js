@@ -1,8 +1,11 @@
 import React from 'react'
+import { Card } from 'flowbite-react'
 
 function AdminUsersPopup() {
   return (
-    <div>AdminUsersPopup</div>
+    <div>
+        <Card></Card>
+    </div>
   )
 }
 
