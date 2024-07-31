@@ -119,6 +119,12 @@ function AdminPage() {
               ))}
             </Table.Body>
           </Table>
+          {popupVisible && (
+            <div>
+              <p>Huy</p>
+              <button onClick={togglePopup} ></button>
+            </div>
+          )}
         </div>
       </div>
     </div>
