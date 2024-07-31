@@ -7,6 +7,7 @@ function AdminPage() {
   const [providers, setProviders] = useState([]);
   const [clients, setClients] = useState([]);
   const [error, setError] = useState(null);
+  const [selectedUser,setSelectedUser] = useState(null)
   const backendUrl = process.env.REACT_APP_BACKEND_URL;
   const handleUsers = async () => {
     const token = localStorage.getItem("token");
