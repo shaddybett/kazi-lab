@@ -134,7 +134,7 @@ function AdminPage() {
                     <Dropdown arrowIcon={false} inline label="Edit">
                       <Dropdown.Item>Message</Dropdown.Item>
                       <Dropdown.Divider />
-                      <Dropdown.Item>Block</Dropdown.Item>
+                      <Dropdown.Item className="text-red-500" >Block</Dropdown.Item>
                     </Dropdown>
                   </Table.Cell>
                 </Table.Row>
