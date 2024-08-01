@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Card } from "flowbite-react";
 
 const ChatBox = ({ senderId, receiver, onClose }) => {
   const [messages, setMessages] = useState([]);
