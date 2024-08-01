@@ -26,3 +26,6 @@
 .image{
     border-radius: 50%;
 }
+.edit{
+    display: flex;
+}

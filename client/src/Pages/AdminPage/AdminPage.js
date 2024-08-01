@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Table } from "flowbite-react";
+import { Table, Dropdown, DropdownItem, TableCell } from "flowbite-react";
 import "./AdminPage.css";
 import AdminUsersPopup from "./AdminUsersPopup";
 
@@ -41,12 +41,15 @@ function AdminPage() {
 
   const handleProviderClick = async (user) => {
     try {
-      const response = await fetch(`${backendUrl}/user-details?email=${user.email}`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await fetch(
+        `${backendUrl}/user-details?email=${user.email}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
       if (response.ok) {
         const userDetails = await response.json();
         setSelectedUser(userDetails);
@@ -86,20 +89,22 @@ function AdminPage() {
                 <Table.Row
                   key={index}
                   className="bg-white dark:border-gray-700 dark:bg-gray-800"
-                  onClick={() => handleProviderClick(user)}
                 >
-                  <Table.Cell className="whitespace-nowrap font-medium text-gray-900 text-black">
-                    {user.first_name} {user.last_name}
-                  </Table.Cell>
-                  <Table.Cell>{user.email}</Table.Cell>
-                  <Table.Cell>
-                    <a
-                      href="#"
-                      className="font-medium text-cyan-600 hover:underline dark:text-cyan-500"
-                    >
-                      Edit
-                    </a>
-                  </Table.Cell>
+                  <div onClick={() => handleProviderClick(user)}>
+                    <Table.Cell className="whitespace-nowrap font-medium text-gray-900 text-black">
+                      {user.first_name} {user.last_name}
+                    </Table.Cell>
+                    <Table.Cell>{user.email}</Table.Cell>
+                  </div>
+                  <TableCell>
+                    <Dropdown arrowIcon={false} inline label="Edit">
+                      <Dropdown.Item>Message</Dropdown.Item>
+                      <Dropdown.Divider />
+                      <Dropdown.Item className="text-red-500">
+                        Block
+                      </Dropdown.Item>
+                    </Dropdown>
+                  </TableCell>
                 </Table.Row>
               ))}
             </Table.Body>
@@ -111,28 +116,26 @@ function AdminPage() {
             <Table.Head>
               <Table.HeadCell>Name</Table.HeadCell>
               <Table.HeadCell>Email</Table.HeadCell>
-              <Table.HeadCell>
-                <span className="sr-only">Edit</span>
-              </Table.HeadCell>
             </Table.Head>
             <Table.Body className="divide-y">
               {clients.map((user, index) => (
                 <Table.Row
                   key={index}
                   className="bg-white dark:border-gray-700 dark:bg-gray-800"
-                  onClick={() => handleProviderClick(user)}
+                  
                 >
-                  <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                    {user.first_name} {user.last_name}
-                  </Table.Cell>
-                  <Table.Cell>{user.email}</Table.Cell>
+                  <div onClick={() => handleProviderClick(user)}>
+                    <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                      {user.first_name} {user.last_name}
+                    </Table.Cell>
+                    <Table.Cell>{user.email}</Table.Cell>
+                  </div>
                   <Table.Cell>
-                    <a
-                      href="#"
-                      className="font-medium text-cyan-600 hover:underline dark:text-cyan-500"
-                    >
-                      Edit
-                    </a>
+                    <Dropdown arrowIcon={false} inline label="Edit">
+                      <Dropdown.Item>Message</Dropdown.Item>
+                      <Dropdown.Divider />
+                      <Dropdown.Item>Block</Dropdown.Item>
+                    </Dropdown>
                   </Table.Cell>
                 </Table.Row>
               ))}
