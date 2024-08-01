@@ -1,15 +1,18 @@
 import React, { useState, useEffect } from "react";
-import { Table, Dropdown, DropdownItem, TableCell } from "flowbite-react";
+import { Table, Dropdown, TableCell } from "flowbite-react";
 import "./AdminPage.css";
 import AdminUsersPopup from "./AdminUsersPopup";
+import ChatBox from "../Chatbox/ChatBox";
 
 function AdminPage() {
   const [providers, setProviders] = useState([]);
   const [clients, setClients] = useState([]);
   const [error, setError] = useState(null);
   const [selectedUser, setSelectedUser] = useState(null);
+  const [chatUser, setChatUser] = useState(null); // For chat
   const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
+  const currentUserId = localStorage.getItem("id")
   const handleUsers = async () => {
     const token = localStorage.getItem("token");
     try {
@@ -61,8 +64,16 @@ function AdminPage() {
     }
   };
 
+  const handleChatClick = (user) => {
+    setChatUser(user);
+  };
+
   const closePopup = () => {
     setSelectedUser(null);
+  };
+
+  const closeChat = () => {
+    setChatUser(null);
   };
 
   useEffect(() => {
@@ -100,7 +111,7 @@ function AdminPage() {
                   </div>
                   <TableCell>
                     <Dropdown arrowIcon={false} inline label="Edit">
-                      <Dropdown.Item>Message</Dropdown.Item>
+                      <Dropdown.Item onClick={() => handleChatClick(user)}>Message</Dropdown.Item>
                       <Dropdown.Divider />
                       <Dropdown.Item className="text-red-500">
                         Block
@@ -125,7 +136,6 @@ function AdminPage() {
                 <Table.Row
                   key={index}
                   className="bg-white dark:border-gray-700 dark:bg-gray-800"
-                  
                 >
                   <div onClick={() => handleProviderClick(user)}>
                     <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
@@ -136,9 +146,9 @@ function AdminPage() {
                   </div>
                   <Table.Cell>
                     <Dropdown arrowIcon={false} inline label="Edit">
-                      <Dropdown.Item>Message</Dropdown.Item>
+                      <Dropdown.Item onClick={() => handleChatClick(user)}>Message</Dropdown.Item>
                       <Dropdown.Divider />
-                      <Dropdown.Item className="text-red-500" >Block</Dropdown.Item>
+                      <Dropdown.Item className="text-red-500">Block</Dropdown.Item>
                     </Dropdown>
                   </Table.Cell>
                 </Table.Row>
@@ -149,6 +159,9 @@ function AdminPage() {
       </div>
       {selectedUser && (
         <AdminUsersPopup user={selectedUser} onClose={closePopup} />
+      )}
+      {chatUser && (
+        <ChatBox senderId={currentUserId} receiver={chatUser} onClose={closeChat} />
       )}
     </div>
   );
