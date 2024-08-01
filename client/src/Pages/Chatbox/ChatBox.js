@@ -4,6 +4,7 @@ const ChatBox = ({ senderId, receiver, onClose }) => {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
 
+  const backendUrl = process.env.REACT_APP_BACKEND_URL;
   useEffect(() => {
     fetchMessages();
   }, [receiver.id]);
@@ -11,7 +12,7 @@ const ChatBox = ({ senderId, receiver, onClose }) => {
   const fetchMessages = async () => {
     try {
       const response = await fetch(
-        `${process.env.REACT_APP_BACKEND_URL}/get_messages/${senderId}/${receiver.id}`
+        `${backendUrl}/get_messages/${senderId}/${receiver.id}`
       );
       if (!response.ok) {
         throw new Error("Network response was not ok");
@@ -26,7 +27,7 @@ const ChatBox = ({ senderId, receiver, onClose }) => {
   const handleSendMessage = async () => {
     try {
       const response = await fetch(
-        `${process.env.REACT_APP_BACKEND_URL}/send_message`,
+        `${backendUrl}/send_message`,
         {
           method: "POST",
           headers: {
