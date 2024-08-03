@@ -63,9 +63,8 @@ function AdminPage() {
       console.error("Error fetching user details:", error);
     }
   };
-
   const handleChatClick = (user) => {
-    setChatUser(user);
+    setChatUser(user.id);
   };
 
   const closePopup = () => {

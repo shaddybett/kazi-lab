@@ -127,7 +127,7 @@ function PhoneNumberPopup({ phoneNumber, onClose }) {
             />
             <img
               src={chat}
-              onClick={() => handleChatClick(user)}
+              onClick={() => handleChatClick()}
               disabled={loading}
               className="cursor-pointer"
             />
