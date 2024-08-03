@@ -14,13 +14,16 @@ function PhoneNumberPopup({ phoneNumber, onClose }) {
 
   const backendUrl = process.env.REACT_APP_BACKEND_URL;
   const name = localStorage.getItem("namme");
-  const idd = localStorage.getItem("idid");
+  const idd = localStorage.getItem("idid"); // idd stands for the user's id
 
   const handleClickOutside = (event) => {
     if (popupRef.current && !popupRef.current.contains(event.target)) {
       onClose();
     }
   };
+  const handleChatClick = ()=>{
+
+  }
 
   useEffect(() => {
     document.addEventListener("mousedown", handleClickOutside);
@@ -124,7 +127,7 @@ function PhoneNumberPopup({ phoneNumber, onClose }) {
             />
             <img
               src={chat}
-              onClick={likeJob}
+              onClick={() => handleChatClick()}
               disabled={loading}
               className="cursor-pointer"
             />

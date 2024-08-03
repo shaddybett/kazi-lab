@@ -56,6 +56,8 @@ function AdminPage() {
       if (response.ok) {
         const userDetails = await response.json();
         setSelectedUser(userDetails);
+        const user_id = userDetails.id
+        handleChatClick(user_id);
       } else {
         throw new Error("Failed to load user details");
       }
@@ -63,9 +65,8 @@ function AdminPage() {
       console.error("Error fetching user details:", error);
     }
   };
-
-  const handleChatClick = (user) => {
-    setChatUser(user);
+  const handleChatClick = (user_id) => {
+    setChatUser(user_id);
   };
 
   const closePopup = () => {
@@ -111,7 +112,7 @@ function AdminPage() {
                   </div>
                   <TableCell>
                     <Dropdown arrowIcon={false} inline label="Edit">
-                      <Dropdown.Item onClick={() => handleChatClick(user)}>Message</Dropdown.Item>
+                      <Dropdown.Item onClick={() => handleChatClick(user)}>Chat</Dropdown.Item>
                       <Dropdown.Divider />
                       <Dropdown.Item className="text-red-500">
                         Block
@@ -146,7 +147,7 @@ function AdminPage() {
                   </div>
                   <Table.Cell>
                     <Dropdown arrowIcon={false} inline label="Edit">
-                      <Dropdown.Item onClick={() => handleChatClick(user)}>Message</Dropdown.Item>
+                      <Dropdown.Item onClick={() => handleChatClick(user)}>Chat</Dropdown.Item>
                       <Dropdown.Divider />
                       <Dropdown.Item className="text-red-500">Block</Dropdown.Item>
                     </Dropdown>
