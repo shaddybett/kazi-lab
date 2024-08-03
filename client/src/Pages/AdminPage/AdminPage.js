@@ -111,7 +111,7 @@ function AdminPage() {
                   </div>
                   <TableCell>
                     <Dropdown arrowIcon={false} inline label="Edit">
-                      <Dropdown.Item onClick={() => handleChatClick(user)}>Message</Dropdown.Item>
+                      <Dropdown.Item onClick={() => handleChatClick(user)}>Chat</Dropdown.Item>
                       <Dropdown.Divider />
                       <Dropdown.Item className="text-red-500">
                         Block
