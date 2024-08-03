@@ -222,8 +222,7 @@ function ProviderDashboard() {
         );
         if (deleteResponse.ok) {
           Swal.fire("Success", "File deleted successfully", "success");
-          // Update the frontend to reflect the deletion
-          handleEntry(); // Assuming handleEntry refreshes the displayed files
+          handleEntry();
         } else {
           const errorMessage = await deleteResponse.json();
           setError(errorMessage.error || "An error occurred");
