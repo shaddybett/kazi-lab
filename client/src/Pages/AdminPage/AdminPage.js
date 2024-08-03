@@ -56,6 +56,8 @@ function AdminPage() {
       if (response.ok) {
         const userDetails = await response.json();
         setSelectedUser(userDetails);
+        const user_id = userDetails.id
+        handleChatClick(user_id);
       } else {
         throw new Error("Failed to load user details");
       }
@@ -63,8 +65,8 @@ function AdminPage() {
       console.error("Error fetching user details:", error);
     }
   };
-  const handleChatClick = (user) => {
-    setChatUser(user.id);
+  const handleChatClick = (user_id) => {
+    setChatUser(user_id);
   };
 
   const closePopup = () => {
