@@ -209,7 +209,7 @@ function ProviderDashboard() {
     if (result.isConfirmed) {
       try {
         const token = localStorage.getItem("token");
-        const fileName = fileUrl.split("/").pop(); // Extract the filename from the URL
+        const fileName = fileUrl.split("/").pop(); 
         const deleteResponse = await fetch(
           `${backendUrl}/delete-upload/${fileType}/${fileName}`,
           {
