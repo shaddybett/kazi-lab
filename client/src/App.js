@@ -12,6 +12,7 @@ import ProviderDetails from "./components/ProviderDetails";
 import ServiceProviders from "./components/ServiceProviders";
 import Providers from "./components/Providers";
 import AdminPage from "./Pages/AdminPage/AdminPage";
+import ChatBox from "./Pages/Chatbox/ChatBox";
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
       <Route path="/provider-details" element={<ProviderDetails />} />
       <Route path="/providers" element={<ServiceProviders />} />
       <Route path="/primes" element={<Providers />} />
+      <Route path="/chat/:userId" element={<ChatBox />} />
     </Routes>
   );
 }

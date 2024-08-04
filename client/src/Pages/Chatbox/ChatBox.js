@@ -42,7 +42,7 @@ const ChatBox = ({ senderId, receiver, onClose }) => {
         throw new Error("Network response was not ok");
       }
       setNewMessage("");
-      fetchMessages(); // Refresh messages
+      fetchMessages();
     } catch (error) {
       console.error("Error sending message:", error);
     }
@@ -60,8 +60,8 @@ const ChatBox = ({ senderId, receiver, onClose }) => {
         <div className="chat-body">
           {messages.map((msg) => (
             <div key={msg.id} className="chat-message">
-              <p>
-                <strong>
+              <p className="text-black" >
+                <strong className="text-black" >
                   {msg.sender_id === senderId ? "You" : receiver.first_name}:
                 </strong>{" "}
                 {msg.content}
