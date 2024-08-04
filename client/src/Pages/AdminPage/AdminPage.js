@@ -127,7 +127,6 @@ function AdminPage() {
             <Table.Head>
               <Table.HeadCell>Name</Table.HeadCell>
               <Table.HeadCell>Email</Table.HeadCell>
-              <Table.HeadCell>User id</Table.HeadCell>
             </Table.Head>
             <Table.Body className="divide-y">
               {clients.map((user, index) => (
@@ -140,7 +139,6 @@ function AdminPage() {
                       {user.first_name} {user.last_name}
                     </Table.Cell>
                     <Table.Cell>{user.email}</Table.Cell>
-                    <Table.Cell>{user.id}</Table.Cell>
                   </div>
                   <Table.Cell>
                     <Dropdown arrowIcon={false} inline label="Edit">
