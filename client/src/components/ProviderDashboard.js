@@ -987,7 +987,7 @@ function ProviderDashboard() {
               <strong className="text-green-700 ml-4">{data.likes || 0}</strong>
             </DropdownItem>
             <Dropdown.Divider />
-            <Dropdown.Item>Chat</Dropdown.Item>
+            <Dropdown.Item onClick={handleChatClick} >Chat</Dropdown.Item>
             <Dropdown.Divider />
             <Dropdown.Item onClick={handleLogout}>Logout</Dropdown.Item>
           </Dropdown>
