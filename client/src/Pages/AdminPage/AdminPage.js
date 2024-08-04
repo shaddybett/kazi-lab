@@ -90,7 +90,6 @@ function AdminPage() {
             <Table.Head>
               <Table.HeadCell>Name</Table.HeadCell>
               <Table.HeadCell>Email</Table.HeadCell>
-              <Table.HeadCell>User id</Table.HeadCell>
               <Table.HeadCell>
                 <span className="sr-only">Edit</span>
               </Table.HeadCell>
