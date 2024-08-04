@@ -1038,7 +1038,7 @@ function ProviderDashboard() {
               ))}
             </ul>
           ) : (
-            <p>No services found</p>
+            <p className="text-red-400" >No services added</p>
           )}
           <div className="serve">
             <input
