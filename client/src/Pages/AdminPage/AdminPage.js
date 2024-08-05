@@ -9,7 +9,7 @@ function AdminPage() {
   const [clients, setClients] = useState([]);
   const [error, setError] = useState(null);
   const [selectedUser, setSelectedUser] = useState(null);
-  const [chatUser, setChatUser] = useState(null); // For chat
+  const [chatUser, setChatUser] = useState(null);
   const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
   const currentUserId = localStorage.getItem("id")

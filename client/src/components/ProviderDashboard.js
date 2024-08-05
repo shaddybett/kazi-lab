@@ -11,16 +11,13 @@ import {
   FileInput,
   Label,
 } from "flowbite-react";
-import { json, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faTrash,
-  faPlus,
-  faSquarePlus,
-} from "@fortawesome/free-solid-svg-icons";
+import { faTrash, faSquarePlus } from "@fortawesome/free-solid-svg-icons";
 import ServiceDropdown from "./ServiceDropdown";
 import "./ProviderDashboard.css";
+import ChatBox from "../Pages/Chatbox/ChatBox";
 
 function ProviderDashboard() {
   const [data, setData] = useState({});
@@ -38,6 +35,7 @@ function ProviderDashboard() {
   const [selectedImage, setSelectedImage] = useState(null);
   const [selectedVideo, setSelectedVideo] = useState(null);
   const [isVideoLoading, setIsVideoLoading] = useState(false);
+  const [chatUser, setChatUser] = useState(null);
   const dropdownRef = useRef(null);
   const navigate = useNavigate();
   const backendUrl = process.env.REACT_APP_BACKEND_URL;
@@ -195,7 +193,7 @@ function ProviderDashboard() {
     fetchData();
     fetchAllServices();
     handleEntry();
-  }, [backendUrl]);
+  }, []);
 
   const handleDelete = async (fileUrl, fileType) => {
     const result = await Swal.fire({
@@ -209,7 +207,7 @@ function ProviderDashboard() {
     if (result.isConfirmed) {
       try {
         const token = localStorage.getItem("token");
-        const fileName = fileUrl.split("/").pop(); 
+        const fileName = fileUrl.split("/").pop();
         const deleteResponse = await fetch(
           `${backendUrl}/delete-upload/${fileType}/${fileName}`,
           {
@@ -235,6 +233,7 @@ function ProviderDashboard() {
 
   const handlePhotoDelete = (photoUrl) => handleDelete(photoUrl, "photo");
   const handleVideoDelete = (videoUrl) => handleDelete(videoUrl, "video");
+
   const handleAddService = async () => {
     const result = await Swal.fire({
       title: "Are you sure?",
@@ -350,10 +349,10 @@ function ProviderDashboard() {
   };
 
   const openModal = (media, type) => {
-    if (type === 'image') {
+    if (type === "image") {
       setSelectedImage(media);
       setSelectedVideo(null);
-    } else if (type === 'video') {
+    } else if (type === "video") {
       setSelectedImage(null);
       setSelectedVideo(media);
       setIsVideoLoading(true);
@@ -366,6 +365,14 @@ function ProviderDashboard() {
     setSelectedImage(null);
     setSelectedVideo(null);
     setIsVideoLoading(false);
+  };
+
+  const handleChatClick = (user) => {
+    setChatUser(user);
+  };
+
+  const closeChat = () => {
+    setChatUser(null);
   };
 
   return (
@@ -397,7 +404,7 @@ function ProviderDashboard() {
               <strong className="text-green-700 ml-4">{data.likes || 0}</strong>
             </DropdownItem>
             <Dropdown.Divider />
-            <Dropdown.Item>Chat</Dropdown.Item>
+            <Dropdown.Item onClick={() => handleChatClick(data)}>Chat</Dropdown.Item>
             <Dropdown.Divider />
             <Dropdown.Item onClick={handleLogout}>Logout</Dropdown.Item>
           </Dropdown>
@@ -448,7 +455,7 @@ function ProviderDashboard() {
               ))}
             </ul>
           ) : (
-            <p className="text-red-500" >No services found</p>
+            <p className="text-red-500">No services found</p>
           )}
           <div className="serve">
             <input
@@ -505,11 +512,11 @@ function ProviderDashboard() {
                         src={photo}
                         alt={`Uploaded ${index + 1}`}
                         className="grid-item"
-                        onClick={() => openModal(photo, 'image')}
+                        onClick={() => openModal(photo, "image")}
                       />
                       <button
                         className="text-red-500 delete-button"
-                        onClick={() => handlePhotoDelete(photo, "photo")}
+                        onClick={() => handlePhotoDelete(photo)}
                       >
                         <FontAwesomeIcon icon={faTrash} />
                       </button>
@@ -529,14 +536,14 @@ function ProviderDashboard() {
                         controls
                         className="grid-items"
                         preload="metadata"
-                        onClick={() => openModal(video, 'video')}
+                        onClick={() => openModal(video, "video")}
                       >
                         <source src={video} type="video/mp4" />
                         Your browser does not support the video tag.
                       </video>
                       <button
                         className="text-red-500 delete-button"
-                        onClick={() => handleVideoDelete(video, "video")}
+                        onClick={() => handleVideoDelete(video)}
                       >
                         <FontAwesomeIcon icon={faTrash} />
                       </button>
@@ -572,6 +579,9 @@ function ProviderDashboard() {
           </>
         )}
       </Modal>
+      {chatUser && (
+        <ChatBox senderId={chatUser} receiver={data.id} onClose={closeChat} />
+      )}
     </div>
   );
 }
