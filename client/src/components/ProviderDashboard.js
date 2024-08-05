@@ -39,6 +39,7 @@ function ProviderDashboard() {
   const [selectedImage, setSelectedImage] = useState(null);
   const [selectedVideo, setSelectedVideo] = useState(null);
   const [isVideoLoading, setIsVideoLoading] = useState(false);
+  const [chatUser,setChatUser] = useState(null)
   const dropdownRef = useRef(null);
   const navigate = useNavigate();
   const backendUrl = process.env.REACT_APP_BACKEND_URL;
@@ -369,7 +370,7 @@ function ProviderDashboard() {
     setIsVideoLoading(false);
   };
   const handleChatClick = (data)=>{
-    
+
   }
 
   return (
