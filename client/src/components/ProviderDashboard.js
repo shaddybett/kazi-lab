@@ -368,6 +368,9 @@ function ProviderDashboard() {
     setSelectedVideo(null);
     setIsVideoLoading(false);
   };
+  const handleChatClick = (data)=>{
+    
+  }
 
   return (
     <div>
