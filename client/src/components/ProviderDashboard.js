@@ -370,7 +370,7 @@ function ProviderDashboard() {
     setIsVideoLoading(false);
   };
   const handleChatClick = (data)=>{
-
+    setChatUser(data);
   }
 
   return (
