@@ -372,6 +372,9 @@ function ProviderDashboard() {
   const handleChatClick = (data)=>{
     setChatUser(data);
   }
+  const closeChat = ()=>{
+    setChatUser(null)
+  }
 
   return (
     <div>
@@ -577,6 +580,7 @@ function ProviderDashboard() {
           </>
         )}
       </Modal>
+      { chatUser && (<ChatBox senderId={data.id} receiver={chatUser} onClose={closeChat} />)}
     </div>
   );
 }
