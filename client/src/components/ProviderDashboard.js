@@ -21,6 +21,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import ServiceDropdown from "./ServiceDropdown";
 import "./ProviderDashboard.css";
+import ChatBox from "../Pages/Chatbox/ChatBox";
 
 function ProviderDashboard() {
   const [data, setData] = useState({});
