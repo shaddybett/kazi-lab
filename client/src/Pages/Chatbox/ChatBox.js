@@ -8,12 +8,12 @@ const ChatBox = ({ senderId, receiver, onClose }) => {
   const backendUrl = process.env.REACT_APP_BACKEND_URL;
   useEffect(() => {
     fetchMessages();
-  }, [receiver.id]);
+  }, [receiver]);
 
   const fetchMessages = async () => {
     try {
       const response = await fetch(
-        `${backendUrl}/get_messages/${receiver.id}`
+        `${backendUrl}/get_messages/${receiver}`
       );
       if (response.ok){
         const responseData = response.json();
