@@ -15,7 +15,11 @@ const ChatBox = ({ senderId, receiver, onClose }) => {
       const response = await fetch(
         `${backendUrl}/get_messages/${receiver.id}`
       );
-      if (!response.ok) {
+      if (response.ok){
+        const responseData = response.json();
+        localStorage.setItem('senderId',responseData.sender_id)
+      }
+      else if (!response.ok) {
         throw new Error("Network response was not ok");
       }
       const data = await response.json();
