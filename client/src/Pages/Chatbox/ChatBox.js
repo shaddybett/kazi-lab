@@ -13,7 +13,7 @@ const ChatBox = ({ senderId, receiver, onClose }) => {
   const fetchMessages = async () => {
     try {
       const response = await fetch(
-        `${backendUrl}/get_messages/${senderId}/${receiver.id}`
+        `${backendUrl}/get_messages/${receiver.id}`
       );
       if (!response.ok) {
         throw new Error("Network response was not ok");
