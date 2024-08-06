@@ -1,31 +1,52 @@
 import React, { useState, useEffect } from "react";
-import { Card } from "flowbite-react";
+import Sidebar from "../Chat/SideBar";
+import ChatWindow from "../Chat/ChatWindow";
 
 const ChatBox = ({ senderId, receiver, onClose }) => {
   const [messages, setMessages] = useState([]);
-  const [newMessage, setNewMessage] = useState("");
+  const [groupedMessages, setGroupedMessages] = useState({});
+  const [activeUser, setActiveUser] = useState(null);
 
   const backendUrl = process.env.REACT_APP_BACKEND_URL;
+
   useEffect(() => {
     fetchMessages();
-  }, [receiver.id]);
+  }, [receiver]);
+
+  useEffect(() => {
+    const storedSenderId = localStorage.getItem("selectedSenderId");
+    if (storedSenderId) {
+      setActiveUser(storedSenderId);
+    }
+  }, []);
 
   const fetchMessages = async () => {
     try {
-      const response = await fetch(
-        `${backendUrl}/get_messages/${senderId}/${receiver.id}`
-      );
-      if (!response.ok) {
+      const response = await fetch(`${backendUrl}/get_messages/${receiver.id}`);
+      if (response.ok) {
+        const responseData = await response.json();
+        setMessages(responseData);
+        groupMessagesBySender(responseData);
+      } else {
         throw new Error("Network response was not ok");
       }
-      const data = await response.json();
-      setMessages(data);
     } catch (error) {
       console.error("Error fetching messages:", error);
     }
   };
 
-  const handleSendMessage = async () => {
+  const groupMessagesBySender = (messages) => {
+    const grouped = messages.reduce((acc, msg) => {
+      if (!acc[msg.sender_id]) {
+        acc[msg.sender_id] = [];
+      }
+      acc[msg.sender_id].push(msg);
+      return acc;
+    }, {});
+    setGroupedMessages(grouped);
+  };
+
+  const handleSendMessage = async (messageContent) => {
     try {
       const response = await fetch(`${backendUrl}/send_message`, {
         method: "POST",
@@ -35,13 +56,12 @@ const ChatBox = ({ senderId, receiver, onClose }) => {
         body: JSON.stringify({
           sender_id: senderId,
           receiver_id: receiver.id,
-          content: newMessage,
+          content: messageContent,
         }),
       });
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
-      setNewMessage("");
       fetchMessages();
     } catch (error) {
       console.error("Error sending message:", error);
@@ -49,36 +69,21 @@ const ChatBox = ({ senderId, receiver, onClose }) => {
   };
 
   return (
-    <div className="chat-box">
-      <Card>
-        <div className="chat-header">
-          <h3>
-            Chat with {receiver.first_name} {receiver.last_name}
-          </h3>
-          <button onClick={onClose}>Close</button>
-        </div>
-        <div className="chat-body">
-          {messages.map((msg) => (
-            <div key={msg.id} className="chat-message">
-              <p className="text-black" >
-                <strong className="text-black" >
-                  {msg.sender_id === senderId ? "You" : receiver.first_name}:
-                </strong>{" "}
-                {msg.content}
-              </p>
-            </div>
-          ))}
-        </div>
-        <div className="chat-footer">
-          <input
-            type="text"
-            value={newMessage}
-            onChange={(e) => setNewMessage(e.target.value)}
-            placeholder="Type a message"
-          />
-          <button onClick={handleSendMessage}>Send</button>
-        </div>
-      </Card>
+    <div className="flex h-full">
+      <Sidebar
+        contacts={Object.keys(groupedMessages).map((senderId) => ({
+          name: `Sender ${senderId}`,
+          status: "Online",
+          message: groupedMessages[senderId][0].content,
+          image: "default-avatar.png",
+        }))}
+        setActiveUser={setActiveUser}
+      />
+      <ChatWindow
+        activeUser={activeUser}
+        messages={activeUser ? groupedMessages[activeUser] : []}
+        sendMessage={handleSendMessage}
+      />
     </div>
   );
 };

@@ -359,6 +359,7 @@ function ProviderDashboard() {
     }
     setIsModalOpen(true);
   };
+  const senderId = localStorage.getItem("selectedSenderId")
 
   const closeModal = () => {
     setIsModalOpen(false);
@@ -580,7 +581,7 @@ function ProviderDashboard() {
         )}
       </Modal>
       {chatUser && (
-        <ChatBox senderId={chatUser} receiver={data.id} onClose={closeChat} />
+        <ChatBox senderId={senderId} receiver={data} onClose={closeChat} />
       )}
     </div>
   );
