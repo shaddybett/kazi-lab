@@ -3,9 +3,12 @@ import { Card } from "flowbite-react";
 
 const ChatBox = ({ senderId, receiver, onClose }) => {
   const [messages, setMessages] = useState([]);
+  const [groupedMessages, setGroupedMessages] = useState({});
+  const [selectedSenderId, setSelectedSenderId] = useState(null);
   const [newMessage, setNewMessage] = useState("");
 
   const backendUrl = process.env.REACT_APP_BACKEND_URL;
+
   useEffect(() => {
     fetchMessages();
   }, [receiver]);
@@ -15,14 +18,25 @@ const ChatBox = ({ senderId, receiver, onClose }) => {
       const response = await fetch(`${backendUrl}/get_messages/${receiver}`);
       if (response.ok) {
         const responseData = await response.json();
-        localStorage.setItem("senderId", responseData.sender_id); // Make sure this is correct based on the response structure
         setMessages(responseData);
+        groupMessagesBySender(responseData);
       } else {
         throw new Error("Network response was not ok");
       }
     } catch (error) {
       console.error("Error fetching messages:", error);
     }
+  };
+
+  const groupMessagesBySender = (messages) => {
+    const grouped = messages.reduce((acc, msg) => {
+      if (!acc[msg.sender_id]) {
+        acc[msg.sender_id] = [];
+      }
+      acc[msg.sender_id].push(msg);
+      return acc;
+    }, {});
+    setGroupedMessages(grouped);
   };
 
   const handleSendMessage = async () => {
@@ -47,9 +61,7 @@ const ChatBox = ({ senderId, receiver, onClose }) => {
       console.error("Error sending message:", error);
     }
   };
-  useEffect(() => {
-    fetchMessages();
-  }, []);
+
   return (
     <div className="chat-box">
       <Card>
@@ -60,16 +72,28 @@ const ChatBox = ({ senderId, receiver, onClose }) => {
           <button onClick={onClose}>Close</button>
         </div>
         <div className="chat-body">
-          {messages.map((msg) => (
-            <div key={msg.id} className="chat-message">
-              <p className="text-black">
-                <strong className="text-black">
-                  {msg.sender_id} {/* Include sender ID or name if needed */}
-                </strong>{" "}
-                {msg.content}
-              </p>
-            </div>
-          ))}
+          <div className="sender-list">
+            {Object.keys(groupedMessages).map((senderId) => (
+              <button
+                key={senderId}
+                onClick={() => setSelectedSenderId(senderId)}
+                className="sender-id"
+              >
+                Sender {senderId}
+              </button>
+            ))}
+          </div>
+          <div className="message-list">
+            {selectedSenderId &&
+              groupedMessages[selectedSenderId].map((msg) => (
+                <div key={msg.id} className="chat-message">
+                  <p className="text-black">
+                    <strong className="text-black">{msg.sender_id}</strong>{" "}
+                    {msg.content}
+                  </p>
+                </div>
+              ))}
+          </div>
         </div>
         <div className="chat-footer">
           <input
