@@ -20,6 +20,7 @@ const ChatBox = ({ senderId, receiver, onClose }) => {
         const responseData = await response.json();
         setMessages(responseData);
         groupMessagesBySender(responseData);
+        localStorage.setItem("senderId", responseData.sender_id); 
       } else {
         throw new Error("Network response was not ok");
       }
