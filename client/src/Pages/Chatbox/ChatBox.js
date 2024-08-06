@@ -1,11 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { Card } from "flowbite-react";
+import MessageInput from "../Chat/MessageInput";
+import MessageBubble from "../Chat/MessageBubble";
+import { IoMdChatbubbles } from "react-icons/io";
+import { FaBars } from "react-icons/fa";
 
 const ChatBox = ({ senderId, receiver, onClose }) => {
   const [messages, setMessages] = useState([]);
   const [groupedMessages, setGroupedMessages] = useState({});
   const [selectedSenderId, setSelectedSenderId] = useState(null);
   const [newMessage, setNewMessage] = useState("");
+  const [showOptions, setShowOptions] = useState(false);
 
   const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
@@ -14,7 +19,7 @@ const ChatBox = ({ senderId, receiver, onClose }) => {
   }, [receiver]);
 
   useEffect(() => {
-    const storedSenderId = localStorage.getItem('selectedSenderId');
+    const storedSenderId = localStorage.getItem("selectedSenderId");
     if (storedSenderId) {
       setSelectedSenderId(storedSenderId);
     }
@@ -46,7 +51,7 @@ const ChatBox = ({ senderId, receiver, onClose }) => {
     setGroupedMessages(grouped);
   };
 
-  const handleSendMessage = async () => {
+  const handleSendMessage = async (messageContent) => {
     try {
       const response = await fetch(`${backendUrl}/send_message`, {
         method: "POST",
@@ -56,13 +61,12 @@ const ChatBox = ({ senderId, receiver, onClose }) => {
         body: JSON.stringify({
           sender_id: senderId,
           receiver_id: receiver.id,
-          content: newMessage,
+          content: messageContent,
         }),
       });
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
-      setNewMessage("");
       fetchMessages();
     } catch (error) {
       console.error("Error sending message:", error);
@@ -71,25 +75,54 @@ const ChatBox = ({ senderId, receiver, onClose }) => {
 
   const handleSenderClick = (senderId) => {
     setSelectedSenderId(senderId);
-    localStorage.setItem('selectedSenderId', senderId);
+    localStorage.setItem("selectedSenderId", senderId);
   };
 
+  if (!receiver) {
+    return (
+      <div className="flex-grow bg-gray-900 p-4 flex items-center justify-center">
+        <IoMdChatbubbles className="text-white text-6xl mr-4" />
+        <h2 className="text-white text-xl">Select a user to start chatting</h2>
+      </div>
+    );
+  }
+
   return (
-    <div className="chat-box">
+    <div className="chat-box flex-grow bg-gray-900 p-4 flex flex-col justify-between">
       <Card>
-        <div className="chat-header">
-          <h3>
-            Chat with {receiver.first_name} {receiver.last_name}
-          </h3>
-          <button onClick={onClose}>Close</button>
+        <div className="chat-header flex items-center justify-between mb-4">
+          <div className="flex items-center">
+            <img
+              src={receiver.image || "default-avatar.png"}
+              alt={receiver.name}
+              className="w-12 h-12 rounded-full mr-3"
+            />
+            <div>
+              <p className="text-white">{receiver.name}</p>
+              <p className="text-gray-400 text-sm">Online</p>
+            </div>
+          </div>
+          <div className="relative">
+            <FaBars
+              className="text-white cursor-pointer"
+              onClick={() => setShowOptions(!showOptions)}
+            />
+            {showOptions && (
+              <div className="absolute right-0 mt-2 bg-gray-800 rounded-lg p-2 w-48">
+                <p className="text-white cursor-pointer">Option 1</p>
+                <p className="text-white cursor-pointer">Option 2</p>
+                <p className="text-white cursor-pointer">Option 3</p>
+              </div>
+            )}
+          </div>
         </div>
-        <div className="chat-body">
-          <div className="sender-list">
+        <div className="chat-body flex-1 overflow-y-auto mb-4">
+          <div className="sender-list flex mb-4">
             {Object.keys(groupedMessages).map((senderId) => (
               <button
                 key={senderId}
                 onClick={() => handleSenderClick(senderId)}
-                className="sender-id"
+                className="sender-id bg-gray-800 text-white p-2 rounded mr-2"
               >
                 Sender {senderId}
               </button>
@@ -98,25 +131,12 @@ const ChatBox = ({ senderId, receiver, onClose }) => {
           <div className="message-list">
             {selectedSenderId &&
               groupedMessages[selectedSenderId] &&
-              groupedMessages[selectedSenderId].map((msg) => (
-                <div key={msg.id} className="chat-message">
-                  <p className="text-black">
-                    <strong className="text-black">{msg.sender_id}</strong>{" "}
-                    {msg.content}
-                  </p>
-                </div>
+              groupedMessages[selectedSenderId].map((msg, index) => (
+                <MessageBubble key={index} message={msg}/>
               ))}
           </div>
         </div>
-        <div className="chat-footer">
-          <input
-            type="text"
-            value={newMessage}
-            onChange={(e) => setNewMessage(e.target.value)}
-            placeholder="Type a message"
-          />
-          <button onClick={handleSendMessage}>Send</button>
-        </div>
+        <MessageInput sendMessage={handleSendMessage} />
       </Card>
     </div>
   );
