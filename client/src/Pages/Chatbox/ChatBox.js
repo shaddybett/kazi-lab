@@ -12,18 +12,14 @@ const ChatBox = ({ senderId, receiver, onClose }) => {
 
   const fetchMessages = async () => {
     try {
-      const response = await fetch(
-        `${backendUrl}/get_messages/${receiver}`
-      );
-      if (response.ok){
-        const responseData = response.json();
-        localStorage.setItem('senderId',responseData.sender_id)
-      }
-      else if (!response.ok) {
+      const response = await fetch(`${backendUrl}/get_messages/${receiver}`);
+      if (response.ok) {
+        const responseData = await response.json();
+        localStorage.setItem("senderId", responseData.sender_id); // Make sure this is correct based on the response structure
+        setMessages(responseData);
+      } else {
         throw new Error("Network response was not ok");
       }
-      const data = await response.json();
-      setMessages(data);
     } catch (error) {
       console.error("Error fetching messages:", error);
     }
@@ -51,7 +47,9 @@ const ChatBox = ({ senderId, receiver, onClose }) => {
       console.error("Error sending message:", error);
     }
   };
-
+  useEffect(() => {
+    fetchMessages();
+  }, []);
   return (
     <div className="chat-box">
       <Card>
@@ -64,9 +62,9 @@ const ChatBox = ({ senderId, receiver, onClose }) => {
         <div className="chat-body">
           {messages.map((msg) => (
             <div key={msg.id} className="chat-message">
-              <p className="text-black" >
-                <strong className="text-black" >
-                  {msg.sender_id === senderId ? "You" : receiver.first_name}:
+              <p className="text-black">
+                <strong className="text-black">
+                  {msg.sender_id} {/* Include sender ID or name if needed */}
                 </strong>{" "}
                 {msg.content}
               </p>
