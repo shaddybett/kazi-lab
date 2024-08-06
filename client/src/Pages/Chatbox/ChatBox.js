@@ -13,14 +13,20 @@ const ChatBox = ({ senderId, receiver, onClose }) => {
     fetchMessages();
   }, [receiver]);
 
+  useEffect(() => {
+    const storedSenderId = localStorage.getItem('selectedSenderId');
+    if (storedSenderId) {
+      setSelectedSenderId(storedSenderId);
+    }
+  }, []);
+
   const fetchMessages = async () => {
     try {
-      const response = await fetch(`${backendUrl}/get_messages/${receiver}`);
+      const response = await fetch(`${backendUrl}/get_messages/${receiver.id}`);
       if (response.ok) {
         const responseData = await response.json();
         setMessages(responseData);
         groupMessagesBySender(responseData);
-        localStorage.setItem("senderId", responseData.sender_id); 
       } else {
         throw new Error("Network response was not ok");
       }
@@ -63,6 +69,11 @@ const ChatBox = ({ senderId, receiver, onClose }) => {
     }
   };
 
+  const handleSenderClick = (senderId) => {
+    setSelectedSenderId(senderId);
+    localStorage.setItem('selectedSenderId', senderId);
+  };
+
   return (
     <div className="chat-box">
       <Card>
@@ -77,7 +88,7 @@ const ChatBox = ({ senderId, receiver, onClose }) => {
             {Object.keys(groupedMessages).map((senderId) => (
               <button
                 key={senderId}
-                onClick={() => setSelectedSenderId(senderId)}
+                onClick={() => handleSenderClick(senderId)}
                 className="sender-id"
               >
                 Sender {senderId}
@@ -86,6 +97,7 @@ const ChatBox = ({ senderId, receiver, onClose }) => {
           </div>
           <div className="message-list">
             {selectedSenderId &&
+              groupedMessages[selectedSenderId] &&
               groupedMessages[selectedSenderId].map((msg) => (
                 <div key={msg.id} className="chat-message">
                   <p className="text-black">
