@@ -70,32 +70,9 @@ const ChatBox = ({ senderId, receiver, onClose }) => {
       console.error("Error sending message:", error);
     }
   };
-  const handleUserDetails = async(e)=>{
-    e.preventDefault()
-    setLoading(true)
-    try{
-      const response = await fetch(`${backendUrl}/details`,{
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          senderId: senderId,
-        })
-      })
-      if (response.ok){
-        const responseData = await response.json()
-        setDetails(responseData)
-      }
-      else{
-        const errorMessage = await response.json()
-        setError(errorMessage)
-      }
-    }
-    catch (error){
-      setError("An error occurred please try again later")
-    }
-    setLoading(false)
+
+  const handleUserDetails = async (e)=>{
+    
   }
 
   return (
