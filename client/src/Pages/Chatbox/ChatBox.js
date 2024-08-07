@@ -82,7 +82,10 @@ const ChatBox = ({ senderId, receiver, onClose }) => {
         },
         body: json.stringify({"senderId":senderId})
       })
-      
+      if (response.ok){
+        const responseData = await response.json()
+        setDetails(responseData)
+      }
     }
   }
 
