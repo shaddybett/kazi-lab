@@ -86,6 +86,10 @@ const ChatBox = ({ senderId, receiver, onClose }) => {
         const responseData = await response.json()
         setDetails(responseData)
       }
+      else {
+        const errorMessage = await response.json()
+        setError(errorMessage.error)
+      }
     }
   }
 
