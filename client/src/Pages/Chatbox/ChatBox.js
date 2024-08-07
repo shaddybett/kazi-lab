@@ -67,6 +67,9 @@ const ChatBox = ({ senderId, receiver, onClose }) => {
       console.error("Error sending message:", error);
     }
   };
+  const handleUserDetails = async(e)=>{
+    e.preventDefault()
+  }
 
   return (
     <div className="flex h-full">
