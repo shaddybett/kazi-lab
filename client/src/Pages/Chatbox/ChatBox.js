@@ -95,6 +95,7 @@ const ChatBox = ({ senderId, receiver, onClose }) => {
     catch (error){
       setError("An error occurred please try again later")
     }
+    setLoading(false)
   }
 
   return (
