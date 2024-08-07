@@ -80,7 +80,7 @@ const ChatBox = ({ senderId, receiver, onClose }) => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: json.stringify({"senderId":senderId})
+        body: JSON.stringify({"senderId":senderId})
       })
       if (response.ok){
         const responseData = await response.json()
@@ -91,8 +91,11 @@ const ChatBox = ({ senderId, receiver, onClose }) => {
         setError(errorMessage.error)
       }
     }
+    catch (error){
+      setError("An error occurred pleae try again later")
+    }
+    setLoading(false)
   }
-
   return (
     <div className="flex h-full">
       <Sidebar
@@ -109,6 +112,7 @@ const ChatBox = ({ senderId, receiver, onClose }) => {
         messages={activeUser ? groupedMessages[activeUser] : []}
         sendMessage={handleSendMessage}
       />
+      {error && <p className="text-red-500" >{error}</p>}
     </div>
   );
 };
