@@ -6,6 +6,7 @@ const ChatBox = ({ senderId, receiver, onClose }) => {
   const [messages, setMessages] = useState([]);
   const [groupedMessages, setGroupedMessages] = useState({});
   const [activeUser, setActiveUser] = useState(null);
+  const [details,setDetails] = useState([])
 
   const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
@@ -69,6 +70,20 @@ const ChatBox = ({ senderId, receiver, onClose }) => {
   };
   const handleUserDetails = async(e)=>{
     e.preventDefault()
+    try{
+      const response = await fetch(`${backendUrl}/details`,{
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          senderId: senderId,
+        })
+      })
+      if (response.ok){
+
+      }
+    }
   }
 
   return (
