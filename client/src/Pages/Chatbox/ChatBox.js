@@ -72,7 +72,18 @@ const ChatBox = ({ senderId, receiver, onClose }) => {
   };
 
   const handleUserDetails = async (e)=>{
-    
+    e.preventDefault()
+    setLoading(true)
+    try{
+      const response = await fetch (`${backendUrl}/details`,{
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: json.stringify({"senderId":senderId})
+      })
+      
+    }
   }
 
   return (
