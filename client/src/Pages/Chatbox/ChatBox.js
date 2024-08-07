@@ -7,6 +7,8 @@ const ChatBox = ({ senderId, receiver, onClose }) => {
   const [groupedMessages, setGroupedMessages] = useState({});
   const [activeUser, setActiveUser] = useState(null);
   const [details,setDetails] = useState([])
+  const [loading,setLoading] = useState(false)
+  const [error,setError] = useState([])
 
   const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
@@ -81,8 +83,16 @@ const ChatBox = ({ senderId, receiver, onClose }) => {
         })
       })
       if (response.ok){
-
+        const responseData = await response.json()
+        setDetails(responseData)
       }
+      else{
+        const errorMessage = await response.json()
+        setError(errorMessage)
+      }
+    }
+    catch (error){
+      setError("An error occurred please try again later")
     }
   }
 
