@@ -250,8 +250,8 @@ const ChatBox = ({ senderId, receiver, onClose }) => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          sender_id: senderId,
-          receiver_id: activeUser.id,
+          sender_id: receiver.id,
+          receiver_id: senderId,
           content: messageContent,
         }),
       });
