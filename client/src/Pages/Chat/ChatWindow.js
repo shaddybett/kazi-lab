@@ -81,12 +81,6 @@ const ChatWindow = ({ activeUser, messages, sendMessage }) => {
             <p className="text-gray-400 text-sm">Online</p>
           </div>
         </div>
-        <div className="relative">
-          <FaBars
-            className="text-white cursor-pointer"
-            onClick={() => setShowOptions(!showOptions)}
-          />
-        </div>
       </div>
       <div className="flex-1 overflow-y-auto mb-4">
         {messages && messages.map((message, index) => (
