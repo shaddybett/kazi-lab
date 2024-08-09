@@ -53,7 +53,6 @@ import React, { useState } from "react";
 import MessageInput from "./MessageInput";
 import MessageBubble from "./MessageBubble";
 import { IoMdChatbubbles } from "react-icons/io";
-import { FaBars } from "react-icons/fa";
 
 const ChatWindow = ({ activeUser, messages, sendMessage }) => {
   const [showOptions, setShowOptions] = useState(false);
