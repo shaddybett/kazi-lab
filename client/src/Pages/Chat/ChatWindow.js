@@ -55,7 +55,6 @@ import MessageBubble from "./MessageBubble";
 import { IoMdChatbubbles } from "react-icons/io";
 
 const ChatWindow = ({ activeUser, messages, sendMessage }) => {
-  const [showOptions, setShowOptions] = useState(false);
 
   if (!activeUser) {
     return (
