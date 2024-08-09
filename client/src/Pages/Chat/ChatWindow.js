@@ -53,10 +53,8 @@ import React, { useState } from "react";
 import MessageInput from "./MessageInput";
 import MessageBubble from "./MessageBubble";
 import { IoMdChatbubbles } from "react-icons/io";
-import { FaBars } from "react-icons/fa";
 
 const ChatWindow = ({ activeUser, messages, sendMessage }) => {
-  const [showOptions, setShowOptions] = useState(false);
 
   if (!activeUser) {
     return (
@@ -80,12 +78,6 @@ const ChatWindow = ({ activeUser, messages, sendMessage }) => {
             <p className="text-white">{activeUser.name}</p>
             <p className="text-gray-400 text-sm">Online</p>
           </div>
-        </div>
-        <div className="relative">
-          <FaBars
-            className="text-white cursor-pointer"
-            onClick={() => setShowOptions(!showOptions)}
-          />
         </div>
       </div>
       <div className="flex-1 overflow-y-auto mb-4">

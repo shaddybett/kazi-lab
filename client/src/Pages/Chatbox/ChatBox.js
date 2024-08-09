@@ -173,7 +173,7 @@ const ChatBox = ({ senderId, receiver, onClose }) => {
 
   const fetchMessages = async () => {
     try {
-      const response = await fetch(`${backendUrl}/get_messages/${receiver.id}`);
+      const response = await fetch(`${backendUrl}/get_messages/${senderId}`);
       if (response.ok) {
         const responseData = await response.json();
         console.log("Messages fetched: ", responseData);
@@ -250,8 +250,8 @@ const ChatBox = ({ senderId, receiver, onClose }) => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          sender_id: receiver.id,
-          receiver_id: senderId,
+          sender_id: senderId,
+          receiver_id: receiver.id,
           content: messageContent,
         }),
       });

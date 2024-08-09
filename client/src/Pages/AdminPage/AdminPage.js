@@ -63,7 +63,6 @@ function AdminPage() {
       console.error("Error fetching user details:", error);
     }
   };
-  const senderId = localStorage.getItem("selectedSenderId")
   const handleChatClick = (user) => {
     setChatUser(user);
   };
@@ -157,7 +156,7 @@ function AdminPage() {
         <AdminUsersPopup user={selectedUser} onClose={closePopup} />
       )}
       {chatUser && (
-        <ChatBox senderId={senderId} receiver={chatUser} onClose={closeChat} />
+        <ChatBox senderId={currentUserId} receiver={chatUser} onClose={closeChat} />
       )}
     </div>
   );
