@@ -1,99 +1,29 @@
-// import React from "react";
-// import classNames from "classnames";
-
-// const MessageBubble = ({ message }) => {
-//   const bubbleClass = classNames(
-//     "p-3 mb-2 rounded-lg max-w-xs break-words",
-//     {
-//       "bg-blue-500 text-white self-end": message.position === "right",
-//       "bg-gray-700 text-white self-start": message.position === "left",
-//     },
-//     {
-//       "ml-auto": message.position === "right",
-//       "mr-auto": message.position === "left",
-//     }
-//   );
-
-//   const renderMessageContent = () => {
-//     if (message.content.startsWith("[Image:")) {
-//       return (
-//         <>
-//           {message.position === "left" && (
-//             <p className="text-sm mb-2">Bot replying:</p>
-//           )}
-//           <img
-//             src={message.content.slice(7, -1)}
-//             alt="Sent"
-//             className="max-w-full h-auto rounded"
-//           />
-//         </>
-//       );
-//     } else if (message.content.startsWith("[Voice message:")) {
-//       return (
-//         <audio
-//           controls
-//           src={message.content.slice(14, -1)}
-//           className="w-full mt-2"
-//         >
-//           Your browser does not support the audio element.
-//         </audio>
-//       );
-//     } else {
-//       return <p className="whitespace-pre-wrap">{message.content}</p>;
-//     }
-//   };
-
-//   return <div className={bubbleClass}>{renderMessageContent()}</div>;
-// };
-
-// export default MessageBubble;
-
 import React from "react";
 import classNames from "classnames";
+import "./Chat.css"
 
 const MessageBubble = ({ message, senderId }) => {
+  // Determine if the message was sent by the admin (senderId) or received
+  const isSentByAdmin = message.sender_id === senderId;
+
+  // Conditionally apply classes based on who sent the message
   const bubbleClass = classNames(
     "p-3 mb-2 rounded-lg max-w-xs break-words",
     {
-      "bg-blue-500 text-white self-end": message.sender_id === senderId,
-      "bg-gray-700 text-white self-start": message.sender_id !== senderId,
+      "bg-blue-500 text-white self-end": isSentByAdmin, // Sent by admin
+      "bg-gray-700 text-white self-start": !isSentByAdmin, // Received
     },
     {
-      "ml-auto": message.sender_id === senderId,
-      "mr-auto": message.sender_id !== senderId,
+      "ml-auto": isSentByAdmin, // Align to the right
+      "mr-auto": !isSentByAdmin, // Align to the left
     }
   );
 
-  const renderMessageContent = () => {
-    if (message.content.startsWith("[Image:")) {
-      return (
-        <>
-          {message.sender_id !== senderId && (
-            <p className="text-sm mb-2">Bot replying:</p>
-          )}
-          <img
-            src={message.content.slice(7, -1)}
-            alt="Sent"
-            className="max-w-full h-auto rounded"
-          />
-        </>
-      );
-    } else if (message.content.startsWith("[Voice message:")) {
-      return (
-        <audio
-          controls
-          src={message.content.slice(14, -1)}
-          className="w-full mt-2"
-        >
-          Your browser does not support the audio element.
-        </audio>
-      );
-    } else {
-      return <p className="whitespace-pre-wrap">{message.content}</p>;
-    }
-  };
-
-  return <div className={bubbleClass}>{renderMessageContent()}</div>;
+  return (
+    <div className={bubbleClass}>
+      <p className="whitespace-pre-wrap">{message.content}</p>
+    </div>
+  );
 };
 
 export default MessageBubble;

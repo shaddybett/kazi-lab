@@ -17,7 +17,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash, faSquarePlus } from "@fortawesome/free-solid-svg-icons";
 import ServiceDropdown from "./ServiceDropdown";
 import "./ProviderDashboard.css";
-import ChatBox from "../Pages/Chatbox/ChatBox";
+import ServiceProviderChatBox from "../Pages/Chatbox/ServiceProviderChatbox";
 
 function ProviderDashboard() {
   const [data, setData] = useState({});
@@ -35,10 +35,12 @@ function ProviderDashboard() {
   const [selectedImage, setSelectedImage] = useState(null);
   const [selectedVideo, setSelectedVideo] = useState(null);
   const [isVideoLoading, setIsVideoLoading] = useState(false);
-  const [chatUser, setChatUser] = useState(null);
+  const [chatUser, setChatUser] = useState(null); // Stores the receiver of the chat
   const dropdownRef = useRef(null);
   const navigate = useNavigate();
   const backendUrl = process.env.REACT_APP_BACKEND_URL;
+
+  const currentUserId = localStorage.getItem("id"); // The service provider's ID
 
   const handleProfile = () => {
     navigate("/profile");
@@ -359,7 +361,6 @@ function ProviderDashboard() {
     }
     setIsModalOpen(true);
   };
-  const senderId = localStorage.getItem("selectedSenderId")
 
   const closeModal = () => {
     setIsModalOpen(false);
@@ -368,8 +369,8 @@ function ProviderDashboard() {
     setIsVideoLoading(false);
   };
 
-  const handleChatClick = (user) => {
-    setChatUser(user);
+  const handleChatClick = (data) => {
+    setChatUser(data); // Set the chat user as the receiver
   };
 
   const closeChat = () => {
@@ -581,7 +582,11 @@ function ProviderDashboard() {
         )}
       </Modal>
       {chatUser && (
-        <ChatBox  receiver={data} onClose={closeChat} />
+        <ServiceProviderChatBox
+          providerId={currentUserId}  // Pass the provider's ID
+          receiverId={chatUser.id}    // Pass the selected chat user's ID
+          onClose={closeChat}
+        />
       )}
     </div>
   );
