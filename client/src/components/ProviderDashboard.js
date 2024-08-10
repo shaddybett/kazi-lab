@@ -18,6 +18,7 @@ import { faTrash, faSquarePlus } from "@fortawesome/free-solid-svg-icons";
 import ServiceDropdown from "./ServiceDropdown";
 import "./ProviderDashboard.css";
 import ChatBox from "../Pages/Chatbox/ChatBox";
+import ServiceProviderChatBox from "../Pages/Chatbox/ServiceProviderChatbox";
 
 function ProviderDashboard() {
   const [data, setData] = useState({});
