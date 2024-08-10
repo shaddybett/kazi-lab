@@ -9,7 +9,7 @@ const ServiceProviderChatBox = ({ providerId }) => {
   const [details, setDetails] = useState({});
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  
+
   const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
   useEffect(() => {
@@ -17,6 +17,7 @@ const ServiceProviderChatBox = ({ providerId }) => {
   }, [providerId]);
 
   const fetchMessages = async (receiverId) => {
+    // console.log("receiveridiisjs:",receiverId.id)
     try {
       const response = await fetch(`${backendUrl}/get_messages_for_receiver/${receiverId}`);
       if (response.ok) {
