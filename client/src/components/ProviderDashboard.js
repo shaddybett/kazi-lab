@@ -359,7 +359,6 @@ function ProviderDashboard() {
     }
     setIsModalOpen(true);
   };
-  const senderId = localStorage.getItem("selectedSenderId")
 
   const closeModal = () => {
     setIsModalOpen(false);
