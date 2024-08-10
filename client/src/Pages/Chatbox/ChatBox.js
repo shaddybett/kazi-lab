@@ -178,6 +178,7 @@ const ChatBox = ({ senderId, receiver, onClose }) => {
         const responseData = await response.json();
         console.log("Messages fetched: ", responseData);
         setMessages(responseData);
+        const senders_id = localStorage.setItem("senders_id", responseData.sender_id)
         const userIds = extractUserIds(responseData);
         console.log("User IDs extracted: ", userIds);
         fetchUserDetails(userIds);
