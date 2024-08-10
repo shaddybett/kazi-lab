@@ -5,7 +5,7 @@ import ChatWindow from "../Chat/ChatWindow";
 const ServiceProviderChatBox = ({ providerId }) => {
   const [messages, setMessages] = useState([]);
   const [groupedMessages, setGroupedMessages] = useState({});
-  const [activeUser, setActiveUser] = useState(null);
+  const [activeUser, setActiveUser] = useState(null); 
   const [details, setDetails] = useState({});
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -13,16 +13,18 @@ const ServiceProviderChatBox = ({ providerId }) => {
   const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
   useEffect(() => {
-    fetchMessages(providerId);
+    if (providerId) {
+      fetchMessages(providerId);
+    }
   }, [providerId]);
 
-  const fetchMessages = async (receiverId) => {
-    // console.log("receiveridiisjs:",receiverId.id)
+  const fetchMessages = async (providerId) => {
     try {
-      const response = await fetch(`${backendUrl}/get_messages_for_receiver/${receiverId}`);
+      const response = await fetch(
+        `${backendUrl}/get_messages_for_receiver/${providerId}`
+      );
       if (response.ok) {
         const responseData = await response.json();
-        console.log("Messages fetched: ", responseData);
         setMessages(responseData);
         const userIds = extractUserIds(responseData);
         fetchUserDetails(userIds);
@@ -32,6 +34,7 @@ const ServiceProviderChatBox = ({ providerId }) => {
       }
     } catch (error) {
       console.error("Error fetching messages:", error);
+      setError("Error fetching messages");
     }
   };
 
@@ -39,8 +42,9 @@ const ServiceProviderChatBox = ({ providerId }) => {
     const userIds = new Set();
     messages.forEach((msg) => {
       userIds.add(msg.sender_id);
+      userIds.add(msg.receiver_id);
     });
-    return Array.from(userIds);
+    return Array.from(userIds).filter(id => id !== providerId);
   };
 
   const fetchUserDetails = async (userIds) => {
@@ -69,7 +73,6 @@ const ServiceProviderChatBox = ({ providerId }) => {
         return acc;
       }, {});
 
-      console.log("User details fetched: ", newDetails);
       setDetails((prevDetails) => ({ ...prevDetails, ...newDetails }));
     } catch (error) {
       setError("An error occurred, please try again later");
@@ -79,18 +82,19 @@ const ServiceProviderChatBox = ({ providerId }) => {
 
   const groupMessagesBySender = (messages) => {
     const grouped = messages.reduce((acc, msg) => {
-      if (!acc[msg.sender_id]) {
-        acc[msg.sender_id] = [];
+      const otherUserId = msg.sender_id === providerId ? msg.receiver_id : msg.sender_id;
+      if (!acc[otherUserId]) {
+        acc[otherUserId] = [];
       }
-      acc[msg.sender_id].push(msg);
+      acc[otherUserId].push(msg);
       return acc;
     }, {});
     setGroupedMessages(grouped);
   };
 
-  const handleSendMessage = async (messageContent, senderId) => {
-    if (!senderId) {
-      console.error("Sender ID is missing");
+  const handleSendMessage = async (messageContent) => {
+    if (!activeUser) {
+      console.error("Receiver ID is missing");
       return;
     }
 
@@ -102,7 +106,7 @@ const ServiceProviderChatBox = ({ providerId }) => {
         },
         body: JSON.stringify({
           sender_id: providerId,
-          receiver_id: senderId, 
+          receiver_id: activeUser, // activeUser is a user ID, not an object
           content: messageContent,
         }),
       });
@@ -111,30 +115,34 @@ const ServiceProviderChatBox = ({ providerId }) => {
         throw new Error("Network response was not ok");
       }
 
-      fetchMessages(providerId);  // Fetch updated messages after sending
+      fetchMessages(providerId); // Refresh messages after sending
     } catch (error) {
       console.error("Error sending message:", error);
+      setError("Error sending message");
     }
   };
 
   return (
     <div className="flex h-full">
       <Sidebar
-        contacts={Object.keys(groupedMessages).map((senderId) => ({
-          id: senderId,
-          name: details[senderId]
-            ? `${details[senderId].first_name} ${details[senderId].last_name}`
+        contacts={Object.keys(groupedMessages).map((otherUserId) => ({
+          id: otherUserId,
+          name: details[otherUserId]
+            ? `${details[otherUserId].first_name} ${details[otherUserId].last_name}`
             : "Unknown User",
           status: "Online",
-          message: groupedMessages[senderId][0].content,
-          image: details[senderId] ? details[senderId].image : null,
+          message: groupedMessages[otherUserId][0].content,
+          image: details[otherUserId] ? details[otherUserId].image : null,
         }))}
-        setActiveUser={setActiveUser}
+        setActiveUser={(user) => {
+          console.log("Setting active user:", user.id); // Debugging
+          setActiveUser(user.id);
+        }}
       />
       <ChatWindow
         activeUser={activeUser}
-        messages={activeUser ? groupedMessages[activeUser.id] : []}
-        sendMessage={(messageContent) => handleSendMessage(messageContent, activeUser.id)}
+        messages={activeUser ? groupedMessages[activeUser] : []}
+        sendMessage={handleSendMessage}
       />
       {error && <p className="text-red-500">{error}</p>}
       {loading && <p>Loading...</p>}
