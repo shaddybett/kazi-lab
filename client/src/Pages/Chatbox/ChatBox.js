@@ -158,10 +158,11 @@ const ChatBox = ({ senderId, receiver, onClose }) => {
   const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
   useEffect(() => {
-    if (activeUser) {
-      fetchMessages(activeUser.id);
+    if (receiver) {
+      setActiveUser(receiver);
+      fetchMessages(senderId, receiver.id);
     }
-  }, [activeUser]);
+  }, [receiver, senderId]);
 
   useEffect(() => {
     const storedSenderId = localStorage.getItem("selectedSenderId");
@@ -172,6 +173,10 @@ const ChatBox = ({ senderId, receiver, onClose }) => {
   }, []);
 
   const fetchMessages = async (senderId,receiverId) => {
+    if (!senderId || !receiverId) {
+      console.error("Missing senderId or receiverId");
+      return;
+    }
     try {
       const response = await fetch(`${backendUrl}/get_messages_between/${senderId}/${receiverId}`);
       if (response.ok) {
@@ -271,7 +276,7 @@ const ChatBox = ({ senderId, receiver, onClose }) => {
         throw new Error("Network response was not ok");
       }
   
-      fetchMessages(senderId, receiverId);  // Fetch updated messages after sending
+      fetchMessages(senderId, receiverId);
     } catch (error) {
       console.error("Error sending message:", error);
     }
