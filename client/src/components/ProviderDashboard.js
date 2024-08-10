@@ -40,6 +40,7 @@ function ProviderDashboard() {
   const navigate = useNavigate();
   const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
+  const currentUserId = localStorage.getItem("id")
   const handleProfile = () => {
     navigate("/profile");
   };
