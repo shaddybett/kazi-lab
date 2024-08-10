@@ -9,7 +9,7 @@ const ServiceProviderChatBox = ({ providerId }) => {
   const [details, setDetails] = useState({});
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-
+  
   const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
   useEffect(() => {
