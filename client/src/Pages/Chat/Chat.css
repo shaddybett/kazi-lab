@@ -1,0 +1,45 @@
+/* MessageBubble.css */
+.self-start {
+    justify-self: start;
+  }
+  
+  .self-end {
+    justify-self: end;
+  }
+  
+  .bg-blue-500 {
+    background-color: #3b82f6; /* Example blue color */
+  }
+  
+  .bg-gray-700 {
+    background-color: #374151; /* Example gray color */
+  }
+  
+  .ml-auto {
+    margin-left: auto;
+  }
+  
+  .mr-auto {
+    margin-right: auto;
+  }
+  
+  .rounded-lg {
+    border-radius: 0.5rem;
+  }
+  
+  .p-3 {
+    padding: 0.75rem;
+  }
+  
+  .mb-2 {
+    margin-bottom: 0.5rem;
+  }
+  
+  .max-w-xs {
+    max-width: 20rem;
+  }
+  
+  .break-words {
+    word-break: break-word;
+  }
+  
