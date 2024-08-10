@@ -171,9 +171,9 @@ const ChatBox = ({ senderId, receiver, onClose }) => {
     }
   }, []);
 
-  const fetchMessages = async () => {
+  const fetchMessages = async (senderId,receiverId) => {
     try {
-      const response = await fetch(`${backendUrl}/get_messages/${senderId}`);
+      const response = await fetch(`${backendUrl}/get_messages_between/${senderId}/${receiverId}`);
       if (response.ok) {
         const responseData = await response.json();
         console.log("Messages fetched: ", responseData);
@@ -247,14 +247,13 @@ const ChatBox = ({ senderId, receiver, onClose }) => {
   };
 
   const handleSendMessage = async (messageContent) => {
-    // Use the `receiver` prop if provided, otherwise fallback to `localStorage`
-    const receiverId = receiver || localStorage.getItem("senders_id");
-
+    const receiverId = receiver ? receiver.id : localStorage.getItem("senders_id");
+  
     if (!receiverId) {
       console.error("Receiver ID is missing");
       return;
     }
-
+  
     try {
       const response = await fetch(`${backendUrl}/send_message`, {
         method: "POST",
@@ -263,21 +262,21 @@ const ChatBox = ({ senderId, receiver, onClose }) => {
         },
         body: JSON.stringify({
           sender_id: senderId,
-          receiver_id: receiverId, // Use the determined receiver ID
+          receiver_id: receiverId, 
           content: messageContent,
         }),
       });
-
+  
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
-
-      // Fetch updated messages after sending a new one
-      fetchMessages(activeUser ? activeUser.id : receiverId);
+  
+      fetchMessages(senderId, receiverId);  // Fetch updated messages after sending
     } catch (error) {
       console.error("Error sending message:", error);
     }
   };
+  
 
   return (
     <div className="flex h-full">
