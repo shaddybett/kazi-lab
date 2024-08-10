@@ -41,6 +41,7 @@ function ProviderDashboard() {
   const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
   const currentUserId = localStorage.getItem("id")
+  const receiver = localStorage.getItem("senders_id")
   const handleProfile = () => {
     navigate("/profile");
   };
