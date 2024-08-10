@@ -585,6 +585,7 @@ function ProviderDashboard() {
       {chatUser && (
         <ChatBox senderId={currentUserId} onClose={closeChat} />
       )}
+      <ServiceProviderChatBox senderId={currentUserId} onClose={closeChat} />
     </div>
   );
 }
