@@ -173,7 +173,7 @@ const ChatBox = ({ senderId, receiver, onClose }) => {
 
   const fetchMessages = async () => {
     try {
-      const response = await fetch(`${backendUrl}/get_messages/${receiver.id}`);
+      const response = await fetch(`${backendUrl}/get_messages/${senderId}`);
       if (response.ok) {
         const responseData = await response.json();
         console.log("Messages fetched: ", responseData);
