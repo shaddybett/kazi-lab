@@ -582,7 +582,7 @@ function ProviderDashboard() {
         )}
       </Modal>
       {chatUser && (
-        <ChatBox senderId={currentUserId} receiver={receiver} onClose={closeChat} />
+        <ChatBox senderId={currentUserId} onClose={closeChat} />
       )}
     </div>
   );

@@ -64,7 +64,7 @@ function AdminPage() {
     }
   };
   const handleChatClick = (user) => {
-    setChatUser(user);
+    setChatUser(user.id);
   };
 
   const closePopup = () => {

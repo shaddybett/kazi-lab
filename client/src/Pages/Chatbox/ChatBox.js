@@ -178,7 +178,8 @@ const ChatBox = ({ senderId, receiver, onClose }) => {
         const responseData = await response.json();
         console.log("Messages fetched: ", responseData);
         setMessages(responseData);
-        localStorage.setItem("senders_id",responseData.sender_id)
+        localStorage.setItem("senders_id", responseData.sender_id);
+        console.log("I Doe, My Id is",responseData.sender_id)
         const userIds = extractUserIds(responseData);
         console.log("User IDs extracted: ", userIds);
         fetchUserDetails(userIds);
@@ -214,10 +215,12 @@ const ChatBox = ({ senderId, receiver, onClose }) => {
 
       const responses = await Promise.all(requests);
 
-      const detailsData = await Promise.all(responses.map((response) => {
-        if (response.ok) return response.json();
-        return null;
-      }));
+      const detailsData = await Promise.all(
+        responses.map((response) => {
+          if (response.ok) return response.json();
+          return null;
+        })
+      );
 
       const newDetails = detailsData.reduce((acc, detail, index) => {
         if (detail) acc[userIds[index]] = detail;
@@ -244,6 +247,14 @@ const ChatBox = ({ senderId, receiver, onClose }) => {
   };
 
   const handleSendMessage = async (messageContent) => {
+    // Use the `receiver` prop if provided, otherwise fallback to `localStorage`
+    const receiverId = receiver || localStorage.getItem("senders_id");
+
+    if (!receiverId) {
+      console.error("Receiver ID is missing");
+      return;
+    }
+
     try {
       const response = await fetch(`${backendUrl}/send_message`, {
         method: "POST",
@@ -252,14 +263,17 @@ const ChatBox = ({ senderId, receiver, onClose }) => {
         },
         body: JSON.stringify({
           sender_id: senderId,
-          receiver_id: receiver.id,
+          receiver_id: receiverId, // Use the determined receiver ID
           content: messageContent,
         }),
       });
+
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
-      fetchMessages(activeUser.id);
+
+      // Fetch updated messages after sending a new one
+      fetchMessages(activeUser ? activeUser.id : receiverId);
     } catch (error) {
       console.error("Error sending message:", error);
     }
@@ -270,7 +284,9 @@ const ChatBox = ({ senderId, receiver, onClose }) => {
       <Sidebar
         contacts={Object.keys(groupedMessages).map((senderId) => ({
           id: senderId,
-          name: details[senderId] ? `${details[senderId].first_name} ${details[senderId].last_name}` : "Unknown User",
+          name: details[senderId]
+            ? `${details[senderId].first_name} ${details[senderId].last_name}`
+            : "Unknown User",
           status: "Online",
           message: groupedMessages[senderId][0].content,
           image: details[senderId] ? details[senderId].image : null,
