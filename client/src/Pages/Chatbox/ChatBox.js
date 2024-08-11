@@ -22,7 +22,7 @@ const ChatBox = ({ senderId, receiver, onClose }) => {
       return;
     }
     try {
-      const response = await fetch(`${backendUrl}/get_messages_between/${senderId}/${receiverId}`);
+      const response = await fetch(`${backendUrl }/get_messages_between/${senderId}/${receiverId}`);
       if (response.ok) {
         const responseData = await response.json();
         setMessages(responseData);
@@ -136,6 +136,6 @@ const ChatBox = ({ senderId, receiver, onClose }) => {
       {loading && <p>Loading...</p>}
     </div>
   );
-};
+};  
 
 export default ChatBox;
