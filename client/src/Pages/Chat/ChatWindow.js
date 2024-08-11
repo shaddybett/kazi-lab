@@ -1,11 +1,10 @@
+
 // import React, { useState } from "react";
 // import MessageInput from "./MessageInput";
 // import MessageBubble from "./MessageBubble";
 // import { IoMdChatbubbles } from "react-icons/io";
-// import { FaBars } from "react-icons/fa";
 
 // const ChatWindow = ({ activeUser, messages, sendMessage }) => {
-//   const [showOptions, setShowOptions] = useState(false);
 
 //   if (!activeUser) {
 //     return (
@@ -30,16 +29,10 @@
 //             <p className="text-gray-400 text-sm">Online</p>
 //           </div>
 //         </div>
-//         <div className="relative">
-//           <FaBars
-//             className="text-white cursor-pointer"
-//             onClick={() => setShowOptions(!showOptions)}
-//           />
-//         </div>
 //       </div>
 //       <div className="flex-1 overflow-y-auto mb-4">
 //         {messages && messages.map((message, index) => (
-//           <MessageBubble key={index} message={message} />
+//           <MessageBubble key={index} message={message} senderId={activeUser.id} />
 //         ))}
 //       </div>
 //       <MessageInput sendMessage={sendMessage} />
@@ -49,13 +42,14 @@
 
 // export default ChatWindow;
 
-import React, { useState } from "react";
+
+
+import React from "react";
 import MessageInput from "./MessageInput";
 import MessageBubble from "./MessageBubble";
 import { IoMdChatbubbles } from "react-icons/io";
 
-const ChatWindow = ({ activeUser, messages, sendMessage }) => {
-
+const ChatWindow = ({ activeUser, messages, sendMessage, currentUserId }) => {
   if (!activeUser) {
     return (
       <div className="flex-grow bg-gray-900 p-4 flex items-center justify-center">
@@ -82,7 +76,7 @@ const ChatWindow = ({ activeUser, messages, sendMessage }) => {
       </div>
       <div className="flex-1 overflow-y-auto mb-4">
         {messages && messages.map((message, index) => (
-          <MessageBubble key={index} message={message} senderId={activeUser.id} />
+          <MessageBubble key={index} message={message} currentUserId={currentUserId} />
         ))}
       </div>
       <MessageInput sendMessage={sendMessage} />
