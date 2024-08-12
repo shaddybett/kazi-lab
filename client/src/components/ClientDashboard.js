@@ -346,7 +346,7 @@ function ClientDashboard() {
           </div>
         ))}
       </div>
-      {chatUser && (<)}
+      {chatUser && (<ServiceProviderChatBox providerId={currentUserId} onClose={onClose} />)}
 
       {error && <p className="text-red-500 mt-4">{error}</p>}
     </div>
