@@ -87,6 +87,9 @@ function PhoneNumberPopup({ phoneNumber, onClose }) {
   const handleChatClick = (idd)=>{
     setChatUser(idd)
   }
+  const onCloseChat =()=>{
+    setChatUser(null)
+  }
 
   return (
     <div
