@@ -7,6 +7,7 @@ const ChatBox = ({ senderId, receiver, onClose }) => {
   const [details, setDetails] = useState({});
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [activeUser, setActiveUser] = useState(null);
 
   const backendUrl = process.env.REACT_APP_BACKEND_URL;
   const sedId = Number(senderId)
@@ -78,7 +79,6 @@ const ChatBox = ({ senderId, receiver, onClose }) => {
     }
     setLoading(false);
   };
-  console.log(receiver)
 
   const handleSendMessage = async (messageContent) => {
     const receiverId = receiver ? receiver.id : localStorage.getItem("senders_id");
@@ -129,7 +129,7 @@ const ChatBox = ({ senderId, receiver, onClose }) => {
         setActiveUser={(user) => fetchMessages(sedId, user.id)}
       />
       <ChatWindow
-        activeUser={receiver}
+        activeUser={activeUser}
         messages={sortedMessages}
         sendMessage={handleSendMessage}
       />
