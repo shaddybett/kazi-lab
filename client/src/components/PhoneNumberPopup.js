@@ -11,6 +11,7 @@ function PhoneNumberPopup({ phoneNumber, onClose }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
+  const [chatUser,setChatUser] = useState(null)
 
   const backendUrl = process.env.REACT_APP_BACKEND_URL;
   const name = localStorage.getItem("namme");
