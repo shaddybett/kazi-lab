@@ -10,17 +10,17 @@ const ServiceProviderChatBox = ({ providerId }) => {
   const [activeUser, setActiveUser] = useState(null);
 
   const backendUrl = process.env.REACT_APP_BACKEND_URL;
-
+  const podId = Number(providerId)
   useEffect(() => {
-    if (providerId) {
-      fetchMessages(providerId);
+    if (podId) {
+      fetchMessages(podId);
     }
-  }, [providerId]);
+  }, [podId]);
 
-  const fetchMessages = async (providerId) => {
+  const fetchMessages = async (podId) => {
     try {
       const response = await fetch(
-        `${backendUrl}/get_messages_for_receiver/${providerId}`
+        `${backendUrl}/get_messages_for_receiver/${podId}`
       );
       if (response.ok) {
         const responseData = await response.json();
@@ -39,7 +39,7 @@ const ServiceProviderChatBox = ({ providerId }) => {
   const extractUserIds = (messages) => {
     const userIds = new Set();
     messages.forEach((msg) => {
-      const numbericPodId = Number(providerId)
+      const numbericPodId = Number(podId)
       if (msg.sender_id !== numbericPodId) {
         userIds.add(msg.sender_id);
       }
@@ -96,7 +96,7 @@ const ServiceProviderChatBox = ({ providerId }) => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          sender_id: providerId,
+          sender_id: podId,
           receiver_id: activeUser.id,
           content: messageContent,
         }),
@@ -106,7 +106,7 @@ const ServiceProviderChatBox = ({ providerId }) => {
         throw new Error("Network response was not ok");
       }
 
-      fetchMessages(providerId);
+      fetchMessages(podId);
     } catch (error) {
       console.error("Error sending message:", error);
       setError("Error sending message");
@@ -123,11 +123,11 @@ const ServiceProviderChatBox = ({ providerId }) => {
         contacts={Array.from(
           new Set(
             messages.map((msg) =>
-              msg.sender_id !== providerId ? msg.sender_id : msg.receiver_id
+              msg.sender_id !== podId ? msg.sender_id : msg.receiver_id
             )
           )
         )
-          .filter((contactId) => contactId !== providerId)
+          .filter((contactId) => contactId !== podId)
           .map((contactId) => ({
             id: contactId,
             name: details[contactId]
@@ -152,7 +152,7 @@ const ServiceProviderChatBox = ({ providerId }) => {
             msg.receiver_id === activeUser?.id
         )}
         sendMessage={handleSendMessage}
-        currentUserId={providerId}
+        currentUserId={podId}
       />
       {error && <p className="text-red-500">{error}</p>}
       {loading && <p>Loading...</p>}
