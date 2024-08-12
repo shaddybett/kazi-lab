@@ -269,6 +269,9 @@ function ClientDashboard() {
   const handleChat = (currentUserId)=>{
     setChatUser(currentUserId)
   }
+  const onClose=()=>{
+    setChatUser(null)
+  }
   return (
     <div className="p-4">
       <Navbar fluid rounded className="bg-black">
