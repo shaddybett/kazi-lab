@@ -39,10 +39,11 @@ const ServiceProviderChatBox = ({ providerId }) => {
   const extractUserIds = (messages) => {
     const userIds = new Set();
     messages.forEach((msg) => {
-      if (msg.sender_id !== providerId) {
+      const numbericPodId = Number(providerId)
+      if (msg.sender_id !== numbericPodId) {
         userIds.add(msg.sender_id);
       }
-      if (msg.receiver_id !== providerId) {
+      if (msg.receiver_id !== numbericPodId) {
         userIds.add(msg.receiver_id);
       }
     });
@@ -52,10 +53,7 @@ const ServiceProviderChatBox = ({ providerId }) => {
   const fetchUserDetails = async (userIds) => {
     setLoading(true);
     try {
-      // Filter out the providerId from the userIds
-      const filteredUserIds = userIds.filter((id) => id !== providerId);
-
-      const requests = filteredUserIds.map((userId) =>
+      const requests = userIds.map((userId) =>
         fetch(`${backendUrl}/details/${userId}`, {
           method: "GET",
           headers: {
@@ -74,7 +72,7 @@ const ServiceProviderChatBox = ({ providerId }) => {
       );
 
       const newDetails = detailsData.reduce((acc, detail, index) => {
-        if (detail) acc[filteredUserIds[index]] = detail;
+        if (detail) acc[userIds[index]] = detail;
         return acc;
       }, {});
 
@@ -84,39 +82,6 @@ const ServiceProviderChatBox = ({ providerId }) => {
     }
     setLoading(false);
   };
-
-  // const fetchUserDetails = async (userIds) => {
-  //   setLoading(true);
-  //   try {
-  //     const requests = userIds.map((userId) =>
-  //       fetch(`${backendUrl}/details/${userId}`, {
-  //         method: "GET",
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //         },
-  //       })
-  //     );
-
-  //     const responses = await Promise.all(requests);
-
-  //     const detailsData = await Promise.all(
-  //       responses.map((response) => {
-  //         if (response.ok) return response.json();
-  //         return null;
-  //       })
-  //     );
-
-  //     const newDetails = detailsData.reduce((acc, detail, index) => {
-  //       if (detail) acc[userIds[index]] = detail;
-  //       return acc;
-  //     }, {});
-
-  //     setDetails((prevDetails) => ({ ...prevDetails, ...newDetails }));
-  //   } catch (error) {
-  //     setError("An error occurred, please try again later");
-  //   }
-  //   setLoading(false);
-  // };
 
   const handleSendMessage = async (messageContent) => {
     if (!activeUser) {
