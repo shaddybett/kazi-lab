@@ -78,6 +78,7 @@ const ChatBox = ({ senderId, receiver, onClose }) => {
     }
     setLoading(false);
   };
+  console.log(receiver)
 
   const handleSendMessage = async (messageContent) => {
     const receiverId = receiver ? receiver.id : localStorage.getItem("senders_id");
