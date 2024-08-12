@@ -183,7 +183,7 @@ function PhoneNumberPopup({ phoneNumber, onClose }) {
               required
               color="gray"
             />
-            <Button gradientDuoTone="purpleToBlue" className="mt-4 ml-20"  >
+            <Button gradientDuoTone="purpleToBlue" className="mt-4 ml-20" onClick={handleSendMessage} >
               Send
             </Button>
           </div>
