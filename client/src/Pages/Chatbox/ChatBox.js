@@ -271,7 +271,6 @@ const ChatBox = ({ senderId, receiver, onClose }) => {
     }
   };
 
-  // Combine and sort messages by timestamp
   const sortedMessages = [...messages].sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
 
   return (
