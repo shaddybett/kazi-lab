@@ -9,20 +9,21 @@ const ChatBox = ({ senderId, receiver, onClose }) => {
   const [error, setError] = useState("");
 
   const backendUrl = process.env.REACT_APP_BACKEND_URL;
+  const sedId = Number(senderId)
 
   useEffect(() => {
     if (receiver) {
-      fetchMessages(senderId, receiver.id);
+      fetchMessages(sedId, receiver.id);
     }
-  }, [receiver, senderId]);
+  }, [receiver, sedId]);
 
-  const fetchMessages = async (senderId, receiverId) => {
-    if (!senderId || !receiverId) {
-      console.error("Missing senderId or receiverId");
+  const fetchMessages = async (sedId, receiverId) => {
+    if (!sedId || !receiverId) {
+      console.error("Missing sedId or receiverId");
       return;
     }
     try {
-      const response = await fetch(`${backendUrl}/get_messages_between/${senderId}/${receiverId}`);
+      const response = await fetch(`${backendUrl}/get_messages_between/${sedId}/${receiverId}`);
       if (response.ok) {
         const responseData = await response.json();
         setMessages(responseData);
@@ -93,7 +94,7 @@ const ChatBox = ({ senderId, receiver, onClose }) => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          sender_id: senderId,
+          sender_id: sedId,
           receiver_id: receiverId,
           content: messageContent,
         }),
@@ -103,7 +104,7 @@ const ChatBox = ({ senderId, receiver, onClose }) => {
         throw new Error("Network response was not ok");
       }
 
-      fetchMessages(senderId, receiverId);
+      fetchMessages(sedId, receiverId);
     } catch (error) {
       console.error("Error sending message:", error);
     }
@@ -114,7 +115,7 @@ const ChatBox = ({ senderId, receiver, onClose }) => {
   return (
     <div className="flex h-full">
       <Sidebar
-        contacts={Array.from(new Set(messages.map(msg => msg.sender_id === senderId ? msg.receiver_id : msg.sender_id)))
+        contacts={Array.from(new Set(messages.map(msg => msg.sender_id === sedId ? msg.receiver_id : msg.sender_id)))
           .map(contactId => ({
             id: contactId,
             name: details[contactId]
@@ -124,7 +125,7 @@ const ChatBox = ({ senderId, receiver, onClose }) => {
             message: messages.find(msg => msg.sender_id === contactId || msg.receiver_id === contactId)?.content,
             image: details[contactId] ? details[contactId].image : null,
           }))}
-        setActiveUser={(user) => fetchMessages(senderId, user.id)}
+        setActiveUser={(user) => fetchMessages(sedId, user.id)}
       />
       <ChatWindow
         activeUser={receiver}
