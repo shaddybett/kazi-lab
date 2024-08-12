@@ -3,19 +3,17 @@ import classNames from "classnames";
 import "./Chat.css"
 
 const MessageBubble = ({ message, senderId }) => {
-  // Determine if the message was sent by the admin (senderId) or received
   const isSentByAdmin = message.sender_id === senderId;
 
-  // Conditionally apply classes based on who sent the message
   const bubbleClass = classNames(
     "p-3 mb-2 rounded-lg max-w-xs break-words",
     {
-      "bg-blue-500 text-white self-end": isSentByAdmin, // Sent by admin
-      "bg-gray-700 text-white self-start": !isSentByAdmin, // Received
+      "bg-blue-500 text-white self-end": !isSentByAdmin,
+      "bg-gray-700 text-white self-start": isSentByAdmin,
     },
     {
-      "ml-auto": isSentByAdmin, // Align to the right
-      "mr-auto": !isSentByAdmin, // Align to the left
+      "ml-auto": !isSentByAdmin, 
+      "mr-auto": isSentByAdmin, 
     }
   );
 

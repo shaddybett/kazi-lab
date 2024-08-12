@@ -583,8 +583,8 @@ function ProviderDashboard() {
       </Modal>
       {chatUser && (
         <ServiceProviderChatBox
-          providerId={currentUserId}  // Pass the provider's ID
-          receiverId={chatUser.id}    // Pass the selected chat user's ID
+          providerId={currentUserId} 
+          receiverId={chatUser.id}   
           onClose={closeChat}
         />
       )}
