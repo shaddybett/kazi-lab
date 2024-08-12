@@ -5,6 +5,7 @@ import MessageBubble from "./MessageBubble";
 import { IoMdChatbubbles } from "react-icons/io";
 
 const ChatWindow = ({ activeUser, messages, sendMessage, detailss }) => {
+  console.log("ChatWindow: detailss", detailss);
 
   if (!activeUser) {
     return (
