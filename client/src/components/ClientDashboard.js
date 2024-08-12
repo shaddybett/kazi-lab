@@ -266,7 +266,9 @@ function ClientDashboard() {
   const filteredServices = services.filter((service) =>
     service.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
-
+  const handleChat = (currentUserId)=>{
+    setChatUser(currentUserId)
+  }
   return (
     <div className="p-4">
       <Navbar fluid rounded className="bg-black">
