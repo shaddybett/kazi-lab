@@ -39,10 +39,14 @@
 //   const extractUserIds = (messages) => {
 //     const userIds = new Set();
 //     messages.forEach((msg) => {
-//       userIds.add(msg.sender_id);
-//       userIds.add(msg.receiver_id);
+//       if (msg.sender_id !== providerId) {
+//         userIds.add(msg.sender_id);
+//       }
+//       if (msg.receiver_id !== providerId) {
+//         userIds.add(msg.receiver_id);
+//       }
 //     });
-//     return Array.from(userIds).filter((id) => id !== providerId);
+//     return Array.from(userIds);
 //   };
 
 //   const fetchUserDetails = async (userIds) => {
@@ -108,7 +112,7 @@
 //     }
 //   };
 
-//   // Combine and sort messages by timestamp
+//   // Filter and sort messages by timestamp
 //   const sortedMessages = [...messages].sort(
 //     (a, b) => new Date(a.timestamp) - new Date(b.timestamp)
 //   );
@@ -116,14 +120,19 @@
 //   return (
 //     <div className="flex h-full">
 //       <Sidebar
-//         contacts={Array.from(new Set(messages.map(msg => msg.sender_id === providerId ? msg.receiver_id : msg.sender_id)))
-//           .map(contactId => ({
+//         contacts={Array.from(
+//           new Set(messages.map((msg) => 
+//             msg.sender_id !== providerId ? msg.sender_id : msg.receiver_id
+//           ))
+//         )
+//           .filter((contactId) => contactId !== providerId)
+//           .map((contactId) => ({
 //             id: contactId,
 //             name: details[contactId]
 //               ? `${details[contactId].first_name} ${details[contactId].last_name}`
 //               : "Unknown User",
 //             status: "Online",
-//             message: messages.find(msg => msg.sender_id === contactId || msg.receiver_id === contactId)?.content,
+//             message: messages.find((msg) => msg.sender_id === contactId || msg.receiver_id === contactId)?.content,
 //             image: details[contactId] ? details[contactId].image : null,
 //           }))}
 //         setActiveUser={(user) => {
@@ -132,8 +141,11 @@
 //       />
 //       <ChatWindow
 //         activeUser={activeUser}
-//         messages={sortedMessages}
+//         messages={sortedMessages.filter(
+//           (msg) => msg.sender_id === activeUser?.id || msg.receiver_id === activeUser?.id
+//         )}
 //         sendMessage={handleSendMessage}
+//         currentUserId={providerId}
 //       />
 //       {error && <p className="text-red-500">{error}</p>}
 //       {loading && <p>Loading...</p>}
@@ -142,7 +154,6 @@
 // };
 
 // export default ServiceProviderChatBox;
-
 
 
 import React, { useState, useEffect } from "react";
@@ -186,6 +197,7 @@ const ServiceProviderChatBox = ({ providerId }) => {
   const extractUserIds = (messages) => {
     const userIds = new Set();
     messages.forEach((msg) => {
+      // Add the user ID only if it’s not the provider's ID
       if (msg.sender_id !== providerId) {
         userIds.add(msg.sender_id);
       }
@@ -268,20 +280,26 @@ const ServiceProviderChatBox = ({ providerId }) => {
     <div className="flex h-full">
       <Sidebar
         contacts={Array.from(
-          new Set(messages.map((msg) => 
-            msg.sender_id !== providerId ? msg.sender_id : msg.receiver_id
-          ))
-        )
-          .filter((contactId) => contactId !== providerId)
-          .map((contactId) => ({
-            id: contactId,
-            name: details[contactId]
-              ? `${details[contactId].first_name} ${details[contactId].last_name}`
-              : "Unknown User",
-            status: "Online",
-            message: messages.find((msg) => msg.sender_id === contactId || msg.receiver_id === contactId)?.content,
-            image: details[contactId] ? details[contactId].image : null,
-          }))}
+          new Set(
+            messages
+              .map((msg) =>
+                msg.sender_id !== providerId ? msg.sender_id : msg.receiver_id
+              )
+              .filter((contactId) => contactId !== providerId)
+          )
+        ).map((contactId) => ({
+          id: contactId,
+          name: details[contactId]
+            ? `${details[contactId].first_name} ${details[contactId].last_name}`
+            : "Unknown User",
+          status: "Online",
+          message: messages.find(
+            (msg) =>
+              (msg.sender_id === contactId && msg.receiver_id === providerId) ||
+              (msg.receiver_id === contactId && msg.sender_id === providerId)
+          )?.content,
+          image: details[contactId] ? details[contactId].image : null,
+        }))}
         setActiveUser={(user) => {
           setActiveUser(user);
         }}
@@ -289,7 +307,9 @@ const ServiceProviderChatBox = ({ providerId }) => {
       <ChatWindow
         activeUser={activeUser}
         messages={sortedMessages.filter(
-          (msg) => msg.sender_id === activeUser?.id || msg.receiver_id === activeUser?.id
+          (msg) =>
+            (msg.sender_id === activeUser?.id && msg.receiver_id === providerId) ||
+            (msg.receiver_id === activeUser?.id && msg.sender_id === providerId)
         )}
         sendMessage={handleSendMessage}
         currentUserId={providerId}
