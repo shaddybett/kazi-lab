@@ -283,6 +283,7 @@ function ClientDashboard() {
               </span>
             </Dropdown.Header>
             <Dropdown.Item onClick={handleProfile}>Profile</Dropdown.Item>
+            <Dropdown.Item onClick={handleChat}>Chat</Dropdown.Item>
             <Dropdown.Divider />
             <Dropdown.Item onClick={handleLogout}>Logout</Dropdown.Item>
           </Dropdown>
