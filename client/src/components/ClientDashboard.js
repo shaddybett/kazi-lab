@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Avatar, Dropdown, Navbar, Button, Card, Select, Spinner } from "flowbite-react";
 import Swal from "sweetalert2";
 import { getDistance } from "geolib";
+import ServiceProviderChatBox from "../Pages/Chatbox/ServiceProviderChatbox";
 
 function ClientDashboard() {
   const [data, setData] = useState({});
@@ -345,6 +346,7 @@ function ClientDashboard() {
           </div>
         ))}
       </div>
+      {chatUser && (<)}
 
       {error && <p className="text-red-500 mt-4">{error}</p>}
     </div>
