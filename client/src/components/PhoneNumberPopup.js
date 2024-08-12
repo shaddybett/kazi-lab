@@ -23,7 +23,11 @@ function PhoneNumberPopup({ phoneNumber, onClose }) {
   const user = userJson ? JSON.parse(userJson) : null;
 
   const handleChatClick = ()=>{
-    
+    if (user) {
+      setChatUser(user);
+    }else {
+      console.error("No user found in local storage")
+    }
   }
   const handleClickOutside = (event) => {
     if (popupRef.current && !popupRef.current.contains(event.target)) {
