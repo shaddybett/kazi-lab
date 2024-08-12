@@ -159,7 +159,7 @@ function PhoneNumberPopup({ phoneNumber, onClose }) {
           </div>
           {error && <p className="text-red-500 mt-2">{error}</p>}
           {success && <p className="text-green-500 mt-2">{success}</p>}
-          {chatUser && <ChatBox senderId={} /> }
+          {chatUser && <ChatBox senderId={currentUserId} receiver={idd} onClose={onCloseChat} /> }
         </div>
       </div>
     </div>
