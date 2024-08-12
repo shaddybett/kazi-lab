@@ -259,7 +259,7 @@ const ServiceProviderChatBox = ({ providerId }) => {
     }
   };
 
-  // Combine and sort messages by timestamp
+  // Filter and sort messages by timestamp
   const sortedMessages = [...messages].sort(
     (a, b) => new Date(a.timestamp) - new Date(b.timestamp)
   );
@@ -268,9 +268,11 @@ const ServiceProviderChatBox = ({ providerId }) => {
     <div className="flex h-full">
       <Sidebar
         contacts={Array.from(
-          new Set(messages.map((msg) => (msg.sender_id !== providerId ? msg.sender_id : msg.receiver_id)))
+          new Set(messages.map((msg) => 
+            msg.sender_id !== providerId ? msg.sender_id : msg.receiver_id
+          ))
         )
-          .filter((contactId) => contactId !== providerId) 
+          .filter((contactId) => contactId !== providerId)
           .map((contactId) => ({
             id: contactId,
             name: details[contactId]
@@ -286,9 +288,11 @@ const ServiceProviderChatBox = ({ providerId }) => {
       />
       <ChatWindow
         activeUser={activeUser}
-        messages={sortedMessages}
+        messages={sortedMessages.filter(
+          (msg) => msg.sender_id === activeUser?.id || msg.receiver_id === activeUser?.id
+        )}
         sendMessage={handleSendMessage}
-        currentUserId={providerId} // Pass providerId as currentUserId
+        currentUserId={providerId}
       />
       {error && <p className="text-red-500">{error}</p>}
       {loading && <p>Loading...</p>}
