@@ -99,30 +99,35 @@ function PhoneNumberPopup({ phoneNumber, onClose }) {
   const onCloseChat =()=>{
     setChatUser(null)
   }
-  const admins = [5,4]
+  const admins = [5, 4];
   const handleSendMessage = async (messageContent) => {
     try {
-      const response = await fetch(`${backendUrl}/send_message`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          sender_id: currentUserId,
-          receiver_id: admins,
-          content: messageContent,
-        }),
+      const sendMessages = admins.map(async (adminId) => {
+        const response = await fetch(`${backendUrl}/send_message`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            sender_id: currentUserId,
+            receiver_id: adminId, // Individual admin ID
+            content: messageContent,
+          }),
+        });
+  
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
       });
-
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-
+  
+      await Promise.all(sendMessages);
+  
     } catch (error) {
       console.error("Error sending message:", error);
       setError("Error sending message");
     }
   };
+  
   return (
     <div
       className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
