@@ -22,7 +22,7 @@ const ChatWindow = ({ activeUser, messages, sendMessage }) => {
           <img
             src={activeUser.image || "default-avatar.png"}
             alt={activeUser.name}
-            className="w-12 h-12 rounded-full mr-3 text-white "
+            className="w-12 h-12 rounded-full mr-3"
           />
           <div>
             <p className="text-white">{activeUser.name}</p>
