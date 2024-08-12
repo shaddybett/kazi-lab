@@ -52,7 +52,10 @@ const ServiceProviderChatBox = ({ providerId }) => {
   const fetchUserDetails = async (userIds) => {
     setLoading(true);
     try {
-      const requests = userIds.map((userId) =>
+      // Filter out the providerId from the userIds
+      const filteredUserIds = userIds.filter((id) => id !== providerId);
+
+      const requests = filteredUserIds.map((userId) =>
         fetch(`${backendUrl}/details/${userId}`, {
           method: "GET",
           headers: {
@@ -71,7 +74,7 @@ const ServiceProviderChatBox = ({ providerId }) => {
       );
 
       const newDetails = detailsData.reduce((acc, detail, index) => {
-        if (detail) acc[userIds[index]] = detail;
+        if (detail) acc[filteredUserIds[index]] = detail;
         return acc;
       }, {});
 
@@ -81,6 +84,39 @@ const ServiceProviderChatBox = ({ providerId }) => {
     }
     setLoading(false);
   };
+
+  // const fetchUserDetails = async (userIds) => {
+  //   setLoading(true);
+  //   try {
+  //     const requests = userIds.map((userId) =>
+  //       fetch(`${backendUrl}/details/${userId}`, {
+  //         method: "GET",
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //         },
+  //       })
+  //     );
+
+  //     const responses = await Promise.all(requests);
+
+  //     const detailsData = await Promise.all(
+  //       responses.map((response) => {
+  //         if (response.ok) return response.json();
+  //         return null;
+  //       })
+  //     );
+
+  //     const newDetails = detailsData.reduce((acc, detail, index) => {
+  //       if (detail) acc[userIds[index]] = detail;
+  //       return acc;
+  //     }, {});
+
+  //     setDetails((prevDetails) => ({ ...prevDetails, ...newDetails }));
+  //   } catch (error) {
+  //     setError("An error occurred, please try again later");
+  //   }
+  //   setLoading(false);
+  // };
 
   const handleSendMessage = async (messageContent) => {
     if (!activeUser) {
@@ -120,9 +156,11 @@ const ServiceProviderChatBox = ({ providerId }) => {
     <div className="flex h-full">
       <Sidebar
         contacts={Array.from(
-          new Set(messages.map((msg) => 
-            msg.sender_id !== providerId ? msg.sender_id : msg.receiver_id
-          ))
+          new Set(
+            messages.map((msg) =>
+              msg.sender_id !== providerId ? msg.sender_id : msg.receiver_id
+            )
+          )
         )
           .filter((contactId) => contactId !== providerId)
           .map((contactId) => ({
@@ -131,7 +169,10 @@ const ServiceProviderChatBox = ({ providerId }) => {
               ? `${details[contactId].first_name} ${details[contactId].last_name}`
               : "Unknown User",
             status: "Online",
-            message: messages.find((msg) => msg.sender_id === contactId || msg.receiver_id === contactId)?.content,
+            message: messages.find(
+              (msg) =>
+                msg.sender_id === contactId || msg.receiver_id === contactId
+            )?.content,
             image: details[contactId] ? details[contactId].image : null,
           }))}
         setActiveUser={(user) => {
@@ -141,7 +182,9 @@ const ServiceProviderChatBox = ({ providerId }) => {
       <ChatWindow
         activeUser={activeUser}
         messages={sortedMessages.filter(
-          (msg) => msg.sender_id === activeUser?.id || msg.receiver_id === activeUser?.id
+          (msg) =>
+            msg.sender_id === activeUser?.id ||
+            msg.receiver_id === activeUser?.id
         )}
         sendMessage={handleSendMessage}
         currentUserId={providerId}
