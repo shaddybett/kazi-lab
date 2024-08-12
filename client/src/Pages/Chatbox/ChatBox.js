@@ -8,7 +8,6 @@ const ChatBox = ({ senderId, receiver, onClose }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [activeUser, setActiveUser] = useState(null);
-  const [detailss,setDetailss] = useState(null)
 
   const backendUrl = process.env.REACT_APP_BACKEND_URL;
   const sedId = Number(senderId)
@@ -128,7 +127,7 @@ const ChatBox = ({ senderId, receiver, onClose }) => {
             message: messages.find(msg => msg.sender_id === contactId || msg.receiver_id === contactId)?.content,
             image: details[contactId] ? details[contactId].image : null,
           }))}
-        setActiveUser={(user) => {fetchMessages(sedId, user);setActiveUser(user);setDetailss(user)}}
+        setActiveUser={(user) => {fetchMessages(sedId, user);setActiveUser(user)}}
       />
       <ChatWindow
         activeUser={receiver}
