@@ -4,7 +4,7 @@ import MessageInput from "./MessageInput";
 import MessageBubble from "./MessageBubble";
 import { IoMdChatbubbles } from "react-icons/io";
 
-const ChatWindow = ({ activeUser, messages, sendMessage }) => {
+const ChatWindow = ({ activeUser, messages, sendMessage, detailss }) => {
 
   if (!activeUser) {
     return (
@@ -20,12 +20,12 @@ const ChatWindow = ({ activeUser, messages, sendMessage }) => {
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center">
           <img
-            src={activeUser.image || "default-avatar.png"}
+            src={activeUser.image || "default-avatar-img" }
             alt={activeUser.name}
             className="w-12 h-12 rounded-full mr-3"
           />
           <div>
-            <p className="text-white">{activeUser.name} </p>
+            <p className="text-white">{activeUser.name} {detailss.name} </p>
             <p className="text-gray-400 text-sm">Online</p>
           </div>
         </div>
