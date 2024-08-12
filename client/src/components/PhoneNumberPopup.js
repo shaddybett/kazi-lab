@@ -19,7 +19,11 @@ function PhoneNumberPopup({ phoneNumber, onClose }) {
   const idd = localStorage.getItem("idid"); // idd stands for the user's id
   const currentUserId = localStorage.getItem("id")
   const user = localStorage.getItem("user")
+  console.log("userdetailsare",user)
 
+  const handleChatClick = (user)=>{
+    setChatUser(user)
+  }
   const handleClickOutside = (event) => {
     if (popupRef.current && !popupRef.current.contains(event.target)) {
       onClose();
@@ -87,9 +91,6 @@ function PhoneNumberPopup({ phoneNumber, onClose }) {
       setLoading(false);
     }
   };
-  const handleChatClick = (idd)=>{
-    setChatUser(idd)
-  }
   const onCloseChat =()=>{
     setChatUser(null)
   }
@@ -160,7 +161,7 @@ function PhoneNumberPopup({ phoneNumber, onClose }) {
           </div>
           {error && <p className="text-red-500 mt-2">{error}</p>}
           {success && <p className="text-green-500 mt-2">{success}</p>}
-          {chatUser && (<ChatBox senderId={currentUserId} receiver={idd} onClose={onCloseChat} />)}
+          {chatUser && (<ChatBox senderId={currentUserId} receiver={chatUser} onClose={onCloseChat} />)}
         </div>
       </div>
     </div>

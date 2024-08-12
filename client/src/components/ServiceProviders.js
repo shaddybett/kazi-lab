@@ -98,7 +98,8 @@ function ServiceProviders() {
 
       if (response.ok) {
         const userDetails = await response.json();
-        localStorage.setItem("user",userDetails)
+        console.log("userdetails",userDetails)
+        localStorage.setItem("user", JSON.stringify(userDetails))
         setSelectedUser(userDetails);
         setPhotos(userDetails.photos || []);
         setVideos(userDetails.videos || []);
