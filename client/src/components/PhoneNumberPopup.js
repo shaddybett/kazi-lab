@@ -133,7 +133,7 @@ function PhoneNumberPopup({ phoneNumber, onClose }) {
             />
             <img
               src={chat}
-              onClick={() => handleChatClick()}
+              onClick={handleChatClick}
               disabled={loading}
               className="cursor-pointer"
             />
@@ -159,7 +159,7 @@ function PhoneNumberPopup({ phoneNumber, onClose }) {
           </div>
           {error && <p className="text-red-500 mt-2">{error}</p>}
           {success && <p className="text-green-500 mt-2">{success}</p>}
-          {chatUser && <ChatBox senderId={currentUserId} receiver={idd} onClose={onCloseChat} /> }
+          {chatUser && (<ChatBox senderId={currentUserId} receiver={idd} onClose={onCloseChat} />)}
         </div>
       </div>
     </div>
