@@ -15,6 +15,7 @@ function ClientDashboard() {
   const navigate = useNavigate();
   const [providers, setProviders] = useState([]);
   const [loading, setLoading] = useState(false);
+  comst [chatUser,setChatUser] = useState(null)
   const [clientLocation, setClientLocation] = useState({
     latitude: null,
     longitude: null,
