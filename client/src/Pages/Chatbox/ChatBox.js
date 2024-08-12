@@ -10,7 +10,7 @@ const ChatBox = ({ senderId, receiver, onClose }) => {
   const [activeUser, setActiveUser] = useState(null);
 
   const backendUrl = process.env.REACT_APP_BACKEND_URL;
-  const sedId = Number(senderId);
+  const sedId = Number(senderId)
 
   useEffect(() => {
     if (receiver) {
@@ -24,9 +24,7 @@ const ChatBox = ({ senderId, receiver, onClose }) => {
       return;
     }
     try {
-      const response = await fetch(
-        `${backendUrl}/get_messages_between/${sedId}/${receiverId}`
-      );
+      const response = await fetch(`${backendUrl}/get_messages_between/${sedId}/${receiverId}`);
       if (response.ok) {
         const responseData = await response.json();
         setMessages(responseData);
@@ -81,11 +79,10 @@ const ChatBox = ({ senderId, receiver, onClose }) => {
     }
     setLoading(false);
   };
+  console.log(receiver)
 
   const handleSendMessage = async (messageContent) => {
-    const receiverId = receiver
-      ? receiver.id
-      : localStorage.getItem("senders_id");
+    const receiverId = receiver ? receiver.id : localStorage.getItem("senders_id");
 
     if (!receiverId) {
       console.error("Receiver ID is missing");
@@ -115,37 +112,25 @@ const ChatBox = ({ senderId, receiver, onClose }) => {
     }
   };
 
-  const sortedMessages = [...messages].sort(
-    (a, b) => new Date(a.timestamp) - new Date(b.timestamp)
-  );
+  const sortedMessages = [...messages].sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
 
   return (
     <div className="flex h-full">
       <Sidebar
-        contacts={Array.from(
-          new Set(
-            messages.map((msg) =>
-              msg.sender_id === sedId ? msg.receiver_id : msg.sender_id
-            )
-          )
-        ).map((contactId) => ({
-          id: contactId,
-          name: details[contactId]
-            ? `${details[contactId].first_name} ${details[contactId].last_name}`
-            : "Unknown User",
-          status: "Online",
-          message: messages.find(
-            (msg) =>
-              msg.sender_id === contactId || msg.receiver_id === contactId
-          )?.content,
-          image: details[contactId] ? details[contactId].image : null,
-        }))}
-        setActiveUser={(user) => {
-          setActiveUser(user);
-        }}
+        contacts={Array.from(new Set(messages.map(msg => msg.sender_id === sedId ? msg.receiver_id : msg.sender_id)))
+          .map(contactId => ({
+            id: contactId,
+            name: details[contactId]
+              ? `${details[contactId].first_name} ${details[contactId].last_name}`
+              : "Unknown User",
+            status: "Online",
+            message: messages.find(msg => msg.sender_id === contactId || msg.receiver_id === contactId)?.content,
+            image: details[contactId] ? details[contactId].image : null,
+          }))}
+        setActiveUser={(user) => {fetchMessages(sedId, user.id);setActiveUser(user)}}
       />
       <ChatWindow
-        activeUser={activeUser}
+        activeUser={receiver}
         messages={sortedMessages}
         sendMessage={handleSendMessage}
       />
