@@ -267,8 +267,8 @@ function ClientDashboard() {
   const filteredServices = services.filter((service) =>
     service.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
-  const handleChat = (currentUserId)=>{
-    setChatUser(currentUserId)
+  const handleChat = (data)=>{
+    setChatUser(data)
   }
   const onClose=()=>{
     setChatUser(null)
