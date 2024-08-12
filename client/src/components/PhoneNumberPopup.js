@@ -22,9 +22,6 @@ function PhoneNumberPopup({ phoneNumber, onClose }) {
       onClose();
     }
   };
-  const handleChatClick = ()=>{
-
-  }
 
   useEffect(() => {
     document.addEventListener("mousedown", handleClickOutside);
@@ -87,6 +84,9 @@ function PhoneNumberPopup({ phoneNumber, onClose }) {
       setLoading(false);
     }
   };
+  const handleChatClick = ()=>{
+
+  }
 
   return (
     <div
