@@ -15,7 +15,7 @@ function ClientDashboard() {
   const navigate = useNavigate();
   const [providers, setProviders] = useState([]);
   const [loading, setLoading] = useState(false);
-  comst [chatUser,setChatUser] = useState(null)
+  const [chatUser,setChatUser] = useState(null)
   const [clientLocation, setClientLocation] = useState({
     latitude: null,
     longitude: null,
@@ -23,6 +23,7 @@ function ClientDashboard() {
   const [locationEnabled, setLocationEnabled] = useState(false);
   const backendUrl = process.env.REACT_APP_BACKEND_URL;
   // const countyId = localStorage.getItem("countyId");
+  const currentUserId = localStorage.getItem("id")
 
   useEffect(() => {
     if (navigator.geolocation) {
