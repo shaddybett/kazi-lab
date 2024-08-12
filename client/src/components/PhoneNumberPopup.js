@@ -18,11 +18,12 @@ function PhoneNumberPopup({ phoneNumber, onClose }) {
   const name = localStorage.getItem("namme");
   const idd = localStorage.getItem("idid"); // idd stands for the user's id
   const currentUserId = localStorage.getItem("id")
-  const user = localStorage.getItem("user")
-  console.log("userdetailsare",user)
+  const userJson = localStorage.getItem("user")
 
-  const handleChatClick = (user)=>{
-    setChatUser(user)
+  const user = userJson ? JSON.parse(userJson) : null;
+
+  const handleChatClick = ()=>{
+    
   }
   const handleClickOutside = (event) => {
     if (popupRef.current && !popupRef.current.contains(event.target)) {
