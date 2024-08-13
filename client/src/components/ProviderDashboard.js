@@ -35,12 +35,13 @@ function ProviderDashboard() {
   const [selectedImage, setSelectedImage] = useState(null);
   const [selectedVideo, setSelectedVideo] = useState(null);
   const [isVideoLoading, setIsVideoLoading] = useState(false);
-  const [chatUser, setChatUser] = useState(null); // Stores the receiver of the chat
+  const [chatUser, setChatUser] = useState(null); 
+  const [openClientsPage,setopenClientsPage] = useState(false)
   const dropdownRef = useRef(null);
   const navigate = useNavigate();
   const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
-  const currentUserId = localStorage.getItem("id"); // The service provider's ID
+  const currentUserId = localStorage.getItem("id"); 
 
   const handleProfile = () => {
     navigate("/profile");
@@ -370,12 +371,15 @@ function ProviderDashboard() {
   };
 
   const handleChatClick = (data) => {
-    setChatUser(data); // Set the chat user as the receiver
+    setChatUser(data);
   };
 
   const closeChat = () => {
     setChatUser(null);
   };
+  const handleClientsClick = ()=>{
+
+  }
 
   return (
     <div>
@@ -405,6 +409,7 @@ function ProviderDashboard() {
               Likes{" "}
               <strong className="text-green-700 ml-4">{data.likes || 0}</strong>
             </DropdownItem>
+            <Dropdown.Item onClick={() => handleClientsClick}>Clients</Dropdown.Item>
             <Dropdown.Divider />
             <Dropdown.Item onClick={() => handleChatClick(data)}>Chat</Dropdown.Item>
             <Dropdown.Divider />
