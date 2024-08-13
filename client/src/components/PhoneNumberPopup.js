@@ -104,13 +104,18 @@ function PhoneNumberPopup({ phoneNumber, onClose }) {
     setChatUser(null)
   }
   const admins = [5];
-  const handleSendMessage = async (messageContent) => {
-    if (messageContent === "") {
-      setError("Input field can't be empty")
+  const handleSendMessage = async () => {
+    if (messageContent.trim() === "") {
+      setError("Input field can't be empty");
       console.log("Message is empty, not sending");
       return;
     }
+  
     try {
+      // Debug: Check currentUserId and messageContent
+      console.log("Sending message from user:", currentUserId);
+      console.log("Message content:", messageContent);
+  
       const sendMessages = admins.map(async (adminId) => {
         const response = await fetch(`${backendUrl}/send_message`, {
           method: "POST",
@@ -119,24 +124,32 @@ function PhoneNumberPopup({ phoneNumber, onClose }) {
           },
           body: JSON.stringify({
             sender_id: currentUserId,
-            receiver_id: adminId, 
+            receiver_id: adminId,
             content: messageContent,
           }),
         });
   
         if (!response.ok) {
-          throw new Error("Network response was not ok");
+          const errorData = await response.json();
+          throw new Error(
+            `Network response was not ok: ${response.statusText} - ${errorData.error}`
+          );
         }
+  
+        // Debug: Check the response status and response body
+        console.log(`Message sent to admin ${adminId} with response:`, response);
       });
   
       await Promise.all(sendMessages);
-  
+      setSuccess("Message sent successfully");
     } catch (error) {
       console.error("Error sending message:", error);
-      setError("Error sending message");
+      setError(`Error sending message: ${error.message}`);
+    } finally {
+      setMessageContent("");
     }
-    setMessageContent("");
   };
+  
   
   return (
     <div
