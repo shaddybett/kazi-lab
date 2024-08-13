@@ -16,7 +16,7 @@ function PhoneNumberPopup({ phoneNumber, onClose }) {
 
   const backendUrl = process.env.REACT_APP_BACKEND_URL;
   const name = localStorage.getItem("namme");
-  const idd = localStorage.getItem("idid"); // idd stands for the user's id
+  const idd = localStorage.getItem("idid"); 
   const currentUserId = localStorage.getItem("id")
   const userJson = localStorage.getItem("user")
   const [messageContent, setMessageContent] = useState("");
