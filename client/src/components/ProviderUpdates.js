@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Card } from "flowbite-react";
+import { Card, Dropdown } from "flowbite-react";
 
 function ProviderUpdates({ senderId, assigned, likes }) {
   const backendUrl = process.env.REACT_APP_BACKEND_URL;
   const [providerIds, setProviderIds] = useState([]);
   const [customerDetails, setCustomerDetails] = useState([]);
+  const [chatUser,setChatUser] = useState(null)
 
   const fetchAssignedIds = async () => {
     try {
@@ -65,10 +66,20 @@ function ProviderUpdates({ senderId, assigned, likes }) {
       <Card>
         <h4 className="text-white">Recent Customers</h4>
         {customerDetails.map((customer, index) => (
-          <div key={index}>
+          <div key={index} className="flex items-center justify-between mb-2">
             <p>
               {customer.first_name} {customer.last_name}
             </p>
+            <Dropdown inline label="Options">
+              <Dropdown.Item>
+                <a
+                  href="#"
+                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-600 dark:hover:text-white"
+                >
+                  Chat
+                </a>
+              </Dropdown.Item>
+            </Dropdown>
           </div>
         ))}
         <strong className="text-green-700 ml-4">

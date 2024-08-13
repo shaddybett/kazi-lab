@@ -20,6 +20,7 @@ import "./ProviderDashboard.css";
 import ServiceProviderChatBox from "../Pages/Chatbox/ServiceProviderChatbox";
 import ProviderUpdates from "./ProviderUpdates";
 
+Modal.setAppElement("#root");
 function ProviderDashboard() {
   const [data, setData] = useState({});
   const [services, setServices] = useState([]);
@@ -593,7 +594,7 @@ function ProviderDashboard() {
           onClose={closeChat}
         />
       )}
-      {openClientsPage && (<ProviderUpdates senderId={data.id} assigned={data.jobs || 0} likes={data.likes}/>)}
+      {openClientsPage && (<ProviderUpdates senderId={data.id} assigned={data.jobs || 0} likes={data.likes || 0}/>)}
     </div>
   );
 }
