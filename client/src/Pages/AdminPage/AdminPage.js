@@ -4,6 +4,7 @@ import "./AdminPage.css";
 import AdminUsersPopup from "./AdminUsersPopup";
 import ChatBox from "../Chatbox/ChatBox";
 import ServiceProviderChatBox from "../Chatbox/ServiceProviderChatbox";
+import Swal from "sweetalert2";
 
 function AdminPage() {
   const [providers, setProviders] = useState([]);
@@ -12,6 +13,8 @@ function AdminPage() {
   const [selectedUser, setSelectedUser] = useState(null);
   const [chatUser, setChatUser] = useState(null);
   const backendUrl = process.env.REACT_APP_BACKEND_URL;
+  const [message,setMessage] = useState([])
+  const [reason,setReason] = useState([])
   const [chaty,setChaty]= useState(null)
 
   const currentUserId = localStorage.getItem("id");
@@ -87,6 +90,41 @@ function AdminPage() {
   const onClose = () => {
     setChaty(null);
   };
+  const handleBlock = async(user)=>{
+    const result = await Swal.fire({
+      title: "Are you sure?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, Logout!",
+    });
+    if (result.isConfirmed) {
+      const formData = new formData({
+        'first_name': user.first_name,
+        'last_name': user.last_name,
+        'email': user.email,
+        'user_id':user.id
+      })
+      const response = await fetch(`${backendUrl}/block_user`,{
+        method:"POST",
+        headers:{
+          'Content-Type':'formdata'
+        },
+        body:formData
+      })
+      if (response.ok){
+        const responseData = await response.json()
+        setMessage(responseData.message)
+      }
+      else{
+        const errorMessage = await response.json()
+        setError(errorMessage.error)
+      }
+      
+    }
+
+  }
 
   return (
     <div>
@@ -147,7 +185,7 @@ function AdminPage() {
                         Chat
                       </Dropdown.Item>
                       <Dropdown.Divider />
-                      <Dropdown.Item className="text-red-500">
+                      <Dropdown.Item className="text-red-500" onClick={handleBlock(user)} >
                         Block
                       </Dropdown.Item>
                     </Dropdown>

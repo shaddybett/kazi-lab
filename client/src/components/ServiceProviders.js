@@ -66,7 +66,7 @@ function ServiceProviders() {
         }
 
         const providerDetails = await response.json();
-        console.log('Fetched provider details:', providerDetails); // Debug log
+        console.log('Fetched provider details:', providerDetails); 
 
         setProviders(
           Array.isArray(providerDetails.providers)
