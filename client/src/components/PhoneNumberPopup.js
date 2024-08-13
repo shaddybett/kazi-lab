@@ -105,7 +105,7 @@ function PhoneNumberPopup({ phoneNumber, onClose }) {
   }
   const admins = [5];
   const handleSendMessage = async (messageContent) => {
-    if (messageContent.trim() === "") {
+    if (messageContent === "") {
       setError("Input field can't be empty")
       console.log("Message is empty, not sending");
       return;
