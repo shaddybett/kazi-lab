@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { Table, Dropdown, TableCell } from "flowbite-react";
+import { Table, Dropdown, TableCell, Navbar, Avatar } from "flowbite-react";
 import "./AdminPage.css";
 import AdminUsersPopup from "./AdminUsersPopup";
 import ChatBox from "../Chatbox/ChatBox";
+import ServiceProviderChatBox from "../Chatbox/ServiceProviderChatbox";
 
 function AdminPage() {
   const [providers, setProviders] = useState([]);
@@ -11,8 +12,9 @@ function AdminPage() {
   const [selectedUser, setSelectedUser] = useState(null);
   const [chatUser, setChatUser] = useState(null);
   const backendUrl = process.env.REACT_APP_BACKEND_URL;
+  const [chaty,setChaty]= useState(null)
 
-  const currentUserId = localStorage.getItem("id")
+  const currentUserId = localStorage.getItem("id");
   const handleUsers = async () => {
     const token = localStorage.getItem("token");
     try {
@@ -78,9 +80,42 @@ function AdminPage() {
   useEffect(() => {
     handleUsers();
   }, []);
+  const handleChat = () => {
+    setChaty(currentUserId);
+  };
+
+  const onClose = () => {
+    setChaty(null);
+  };
 
   return (
     <div>
+      <Navbar fluid rounded className="bg-black">
+        <div className="flex md:order-2">
+          <Dropdown
+            arrowIcon={false}
+            inline
+            label={<Avatar alt="User settings" rounded />}
+          >
+            <Dropdown.Header>
+              <span className="block text-sm"></span>
+              <span className="block truncate text-sm font-medium"></span>
+            </Dropdown.Header>
+            <Dropdown.Item>Profile</Dropdown.Item>
+            <Dropdown.Item onClick={handleChat} >Chat</Dropdown.Item>
+            <Dropdown.Divider />
+            <Dropdown.Item>Logout</Dropdown.Item>
+          </Dropdown>
+          <Navbar.Toggle />
+        </div>
+        <Navbar.Collapse>
+          <Navbar.Link href="/link1" active></Navbar.Link>
+          <Navbar.Link href="/link2"></Navbar.Link>
+          <Navbar.Link href="/link3"></Navbar.Link>
+          <Navbar.Link href="/link4"></Navbar.Link>
+          <Navbar.Link href="/link5"></Navbar.Link>
+        </Navbar.Collapse>
+      </Navbar>
       <h3 className="title">All users</h3>
       {error && <p>{error}</p>}
       <div className="table">
@@ -108,7 +143,9 @@ function AdminPage() {
                   </div>
                   <TableCell>
                     <Dropdown arrowIcon={false} inline label="Edit">
-                      <Dropdown.Item onClick={() => handleChatClick(user)}>Chat</Dropdown.Item>
+                      <Dropdown.Item onClick={() => handleChatClick(user)}>
+                        Chat
+                      </Dropdown.Item>
                       <Dropdown.Divider />
                       <Dropdown.Item className="text-red-500">
                         Block
@@ -141,9 +178,13 @@ function AdminPage() {
                   </div>
                   <Table.Cell>
                     <Dropdown arrowIcon={false} inline label="Edit">
-                      <Dropdown.Item onClick={() => handleChatClick(user)}>Chat</Dropdown.Item>
+                      <Dropdown.Item onClick={() => handleChatClick(user)}>
+                        Chat
+                      </Dropdown.Item>
                       <Dropdown.Divider />
-                      <Dropdown.Item className="text-red-500">Block</Dropdown.Item>
+                      <Dropdown.Item className="text-red-500">
+                        Block
+                      </Dropdown.Item>
                     </Dropdown>
                   </Table.Cell>
                 </Table.Row>
@@ -156,7 +197,14 @@ function AdminPage() {
         <AdminUsersPopup user={selectedUser} onClose={closePopup} />
       )}
       {chatUser && (
-        <ChatBox senderId={currentUserId} receiver={chatUser} onClose={closeChat} />
+        <ChatBox
+          senderId={currentUserId}
+          receiver={chatUser}
+          onClose={closeChat}
+        />
+      )}
+      {chaty && (
+        <ServiceProviderChatBox providerId={currentUserId} onClose={onClose} />
       )}
     </div>
   );
