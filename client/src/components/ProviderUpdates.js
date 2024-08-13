@@ -1,23 +1,83 @@
-import React from 'react'
-function ProviderUpdates({senderId}) {
+import React, { useEffect, useState } from "react";
+import { Card } from "flowbite-react";
+
+function ProviderUpdates({ senderId, assigned, likes }) {
   const backendUrl = process.env.REACT_APP_BACKEND_URL;
-  const handleRecentCustomers = async()=>{
-    const response = await fetch(`${backendUrl}/assigned_resource/{senderId}`,{
-      method:'GET',
-      headers:{
-        
+  const [providerIds, setProviderIds] = useState([]);
+  const [customerDetails, setCustomerDetails] = useState([]);
+
+  const fetchAssignedIds = async () => {
+    try {
+      const response = await fetch(
+        `${backendUrl}/assigned_resource/${senderId}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      const data = await response.json();
+      if (response.ok) {
+        setProviderIds(data.provider_ids);
+      } else {
+        console.error(data.error);
       }
-    })
-  }
-  const handleCustomerDetails = async()=>{
-    const response = await fetch(`${backendUrl}/{senderIds}`)
-  }
+    } catch (error) {
+      console.error("Error fetching assigned IDs:", error);
+    }
+  };
+
+  const fetchCustomerDetails = async () => {
+    if (providerIds.length === 0) return;
+
+    try {
+      const response = await fetch(
+        `${backendUrl}/recent_clients/${providerIds.join(",")}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      const data = await response.json();
+      if (response.ok) {
+        setCustomerDetails(data);
+      } else {
+        console.error(data.error);
+      }
+    } catch (error) {
+      console.error("Error fetching customer details:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchAssignedIds();
+  }, [senderId]);
+
+  useEffect(() => {
+    fetchCustomerDetails();
+  }, [providerIds]);
+
   return (
     <div>
-      <h4 className='text-white' >Recent Customers</h4>
-      <p></p>
+      <Card>
+        <h4 className="text-white">Recent Customers</h4>
+        {customerDetails.map((customer, index) => (
+          <div key={index}>
+            <p>
+              {customer.first_name} {customer.last_name}
+            </p>
+          </div>
+        ))}
+        <strong className="text-green-700 ml-4">
+          Jobs Assigned {assigned}
+        </strong>
+        <strong className="text-green-700 ml-4">Likes given {likes}</strong>
+      </Card>
     </div>
-  )
+  );
 }
 
-export default ProviderUpdates
+export default ProviderUpdates;

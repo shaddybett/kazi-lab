@@ -18,6 +18,7 @@ import { faTrash, faSquarePlus } from "@fortawesome/free-solid-svg-icons";
 import ServiceDropdown from "./ServiceDropdown";
 import "./ProviderDashboard.css";
 import ServiceProviderChatBox from "../Pages/Chatbox/ServiceProviderChatbox";
+import ProviderUpdates from "./ProviderUpdates";
 
 function ProviderDashboard() {
   const [data, setData] = useState({});
@@ -378,9 +379,8 @@ function ProviderDashboard() {
     setChatUser(null);
   };
   const handleClientsClick = ()=>{
-
+    setopenClientsPage(true)
   }
-
   return (
     <div>
       <Navbar fluid rounded className="bg-black">
@@ -593,6 +593,7 @@ function ProviderDashboard() {
           onClose={closeChat}
         />
       )}
+      {openClientsPage && (<ProviderUpdates senderId={data.id} assigned={data.jobs || 0} likes={data.likes}/>)}
     </div>
   );
 }
