@@ -19,6 +19,7 @@ function PhoneNumberPopup({ phoneNumber, onClose }) {
   const idd = localStorage.getItem("idid"); // idd stands for the user's id
   const currentUserId = localStorage.getItem("id")
   const userJson = localStorage.getItem("user")
+  const [messageContent, setMessageContent] = useState("");
 
   const user = userJson ? JSON.parse(userJson) : null;
 
@@ -99,7 +100,7 @@ function PhoneNumberPopup({ phoneNumber, onClose }) {
   const onCloseChat =()=>{
     setChatUser(null)
   }
-  const admins = [5, 4];
+  const admins = [5];
   const handleSendMessage = async (messageContent) => {
     try {
       const sendMessages = admins.map(async (adminId) => {
@@ -110,7 +111,7 @@ function PhoneNumberPopup({ phoneNumber, onClose }) {
           },
           body: JSON.stringify({
             sender_id: currentUserId,
-            receiver_id: adminId, // Individual admin ID
+            receiver_id: adminId, 
             content: messageContent,
           }),
         });
