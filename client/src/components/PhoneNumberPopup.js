@@ -20,7 +20,7 @@ function PhoneNumberPopup({ phoneNumber, onClose }) {
   const currentUserId = localStorage.getItem("id")
   const userJson = localStorage.getItem("user")
   const [messageContent, setMessageContent] = useState("");
-  
+
   const handleInputChange = (e) => {
     setMessageContent(e.target.value);
   };
@@ -105,6 +105,11 @@ function PhoneNumberPopup({ phoneNumber, onClose }) {
   }
   const admins = [5];
   const handleSendMessage = async (messageContent) => {
+    if (messageContent.trim() === "") {
+      setError("Input field can't be empty")
+      console.log("Message is empty, not sending");
+      return;
+    }
     try {
       const sendMessages = admins.map(async (adminId) => {
         const response = await fetch(`${backendUrl}/send_message`, {
