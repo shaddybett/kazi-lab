@@ -256,6 +256,7 @@ import AdminUsersPopup from "./AdminUsersPopup";
 import ChatBox from "../Chatbox/ChatBox";
 import ServiceProviderChatBox from "../Chatbox/ServiceProviderChatbox";
 import Swal from "sweetalert2";
+import BlockedUser from "../LoginPage/BlockedUser";
 
 function AdminPage() {
   const [providers, setProviders] = useState([]);

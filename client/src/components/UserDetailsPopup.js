@@ -25,10 +25,12 @@ function UserDetailsPopup({ user, onClose }) {
     setError(null);
     setSuccess(null);
     try {
+      const token = localStorage.getItem("token");
       const response = await fetch(`${backendUrl}/assign_job/${user.id}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
       });
 
