@@ -20,7 +20,10 @@ function PhoneNumberPopup({ phoneNumber, onClose }) {
   const currentUserId = localStorage.getItem("id")
   const userJson = localStorage.getItem("user")
   const [messageContent, setMessageContent] = useState("");
-
+  
+  const handleInputChange = (e) => {
+    setMessageContent(e.target.value);
+  };
   const user = userJson ? JSON.parse(userJson) : null;
 
   const handleChatClick = ()=>{
