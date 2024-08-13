@@ -370,9 +370,6 @@ function AdminPage() {
       try {
         const response = await fetch(`${backendUrl}/block_user`, {
           method: "POST",
-          headers: {
-            "Content-Type": "multipart/form-data"
-          },
           body: formData,
         });
 
