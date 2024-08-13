@@ -197,6 +197,8 @@ function PhoneNumberPopup({ phoneNumber, onClose }) {
               placeholder="Your text here..."
               required
               color="gray"
+              value={messageContent}  
+              onChange={handleInputChange} 
             />
             <Button gradientDuoTone="purpleToBlue" className="mt-4 ml-20" onClick={handleSendMessage} >
               Send
