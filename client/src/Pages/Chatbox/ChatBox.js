@@ -127,7 +127,7 @@ const ChatBox = ({ senderId, receiver, onClose }) => {
             message: messages.find(msg => msg.sender_id === contactId || msg.receiver_id === contactId)?.content,
             image: details[contactId] ? details[contactId].image : null,
           }))}
-        setActiveUser={(user) => {fetchMessages(sedId, user);setActiveUser(user)}}
+        setActiveUser={(user) => {  console.log("Setting active user in ChatBox:", user);  fetchMessages(sedId, user);setActiveUser(user)}}
       />
       <ChatWindow
         activeUser={receiver}

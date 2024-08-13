@@ -66,7 +66,7 @@ function ServiceProviders() {
         }
 
         const providerDetails = await response.json();
-        console.log('Fetched provider details:', providerDetails); // Debug log
+        console.log('Fetched provider details:', providerDetails); 
 
         setProviders(
           Array.isArray(providerDetails.providers)
@@ -98,6 +98,7 @@ function ServiceProviders() {
 
       if (response.ok) {
         const userDetails = await response.json();
+        localStorage.setItem("user", JSON.stringify(userDetails))
         setSelectedUser(userDetails);
         setPhotos(userDetails.photos || []);
         setVideos(userDetails.videos || []);

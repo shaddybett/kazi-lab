@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Avatar, Dropdown, Navbar, Button, Card, Select, Spinner } from "flowbite-react";
 import Swal from "sweetalert2";
 import { getDistance } from "geolib";
+import ServiceProviderChatBox from "../Pages/Chatbox/ServiceProviderChatbox";
 
 function ClientDashboard() {
   const [data, setData] = useState({});
@@ -15,13 +16,14 @@ function ClientDashboard() {
   const navigate = useNavigate();
   const [providers, setProviders] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [chatUser, setChatUser] = useState(null);
   const [clientLocation, setClientLocation] = useState({
     latitude: null,
     longitude: null,
   });
   const [locationEnabled, setLocationEnabled] = useState(false);
   const backendUrl = process.env.REACT_APP_BACKEND_URL;
-  // const countyId = localStorage.getItem("countyId");
+  const currentUserId = localStorage.getItem("id");
 
   useEffect(() => {
     if (navigator.geolocation) {
@@ -75,11 +77,11 @@ function ClientDashboard() {
         if (serviceResponse.ok && userResponse.ok && countyResponse.ok) {
           const serviceData = await serviceResponse.json();
           const userData = await userResponse.json();
-          const countyData = await countyResponse.json(); // Assuming county data is an array of objects with id and name
+          const countyData = await countyResponse.json();
 
           setServices(serviceData.all_services);
           setData(userData);
-          setCounties(countyData.all_counties); // Set counties in state
+          setCounties(countyData.all_counties);
         } else {
           const errorMessage = await serviceResponse.json();
           setError(errorMessage.error || "An error occurred");
@@ -265,6 +267,14 @@ function ClientDashboard() {
     service.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
+  const handleChat = () => {
+    setChatUser(currentUserId);
+  };
+
+  const onClose = () => {
+    setChatUser(null);
+  };
+
   return (
     <div className="p-4">
       <Navbar fluid rounded className="bg-black">
@@ -283,6 +293,7 @@ function ClientDashboard() {
               </span>
             </Dropdown.Header>
             <Dropdown.Item onClick={handleProfile}>Profile</Dropdown.Item>
+            <Dropdown.Item onClick={handleChat}>Chat</Dropdown.Item>
             <Dropdown.Divider />
             <Dropdown.Item onClick={handleLogout}>Logout</Dropdown.Item>
           </Dropdown>
@@ -337,6 +348,9 @@ function ClientDashboard() {
           </div>
         ))}
       </div>
+      {chatUser && (
+        <ServiceProviderChatBox providerId={currentUserId} onClose={onClose} />
+      )}
 
       {error && <p className="text-red-500 mt-4">{error}</p>}
     </div>

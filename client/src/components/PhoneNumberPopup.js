@@ -5,25 +5,39 @@ import { Button, Label, TextInput } from "flowbite-react";
 import thumb from "../assets/thumb.png";
 import down from "../assets/down.png";
 import chat from "../assets/chat.png";
+import ChatBox from "../Pages/Chatbox/ChatBox";
 
 function PhoneNumberPopup({ phoneNumber, onClose }) {
   const popupRef = useRef();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
+  const [chatUser,setChatUser] = useState(null)
 
   const backendUrl = process.env.REACT_APP_BACKEND_URL;
   const name = localStorage.getItem("namme");
-  const idd = localStorage.getItem("idid"); // idd stands for the user's id
+  const idd = localStorage.getItem("idid"); 
+  const currentUserId = localStorage.getItem("id")
+  const userJson = localStorage.getItem("user")
+  const [messageContent, setMessageContent] = useState("");
 
+  const handleInputChange = (e) => {
+    setMessageContent(e.target.value);
+  };
+  const user = userJson ? JSON.parse(userJson) : null;
+
+  const handleChatClick = ()=>{
+    if (user) {
+      setChatUser(user);
+    }else {
+      console.error("No user found in local storage")
+    }
+  }
   const handleClickOutside = (event) => {
     if (popupRef.current && !popupRef.current.contains(event.target)) {
       onClose();
     }
   };
-  const handleChatClick = ()=>{
-
-  }
 
   useEffect(() => {
     document.addEventListener("mousedown", handleClickOutside);
@@ -86,7 +100,57 @@ function PhoneNumberPopup({ phoneNumber, onClose }) {
       setLoading(false);
     }
   };
-
+  const onCloseChat =()=>{
+    setChatUser(null)
+  }
+  const admins = [5];
+  const handleSendMessage = async () => {
+    if (messageContent === "") {
+      setError("Input field can't be empty");
+      console.log("Message is empty, not sending");
+      return;
+    }
+  
+    try {
+      // Debug: Check currentUserId and messageContent
+      console.log("Sending message from user:", currentUserId);
+      console.log("Message content:", messageContent);
+  
+      const sendMessages = admins.map(async (adminId) => {
+        const response = await fetch(`${backendUrl}/send_message`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            sender_id: currentUserId,
+            receiver_id: adminId,
+            content: messageContent,
+          }),
+        });
+  
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(
+            `Network response was not ok: ${response.statusText} - ${errorData.error}`
+          );
+        }
+  
+        // Debug: Check the response status and response body
+        console.log(`Message sent to admin ${adminId} with response:`, response);
+      });
+  
+      await Promise.all(sendMessages);
+      setSuccess("Message sent successfully");
+    } catch (error) {
+      console.error("Error sending message:", error);
+      setError(`Error sending message: ${error.message}`);
+    } finally {
+      setMessageContent("");
+    }
+  };
+  
+  
   return (
     <div
       className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
@@ -127,7 +191,7 @@ function PhoneNumberPopup({ phoneNumber, onClose }) {
             />
             <img
               src={chat}
-              onClick={() => handleChatClick()}
+              onClick={handleChatClick}
               disabled={loading}
               className="cursor-pointer"
             />
@@ -146,13 +210,16 @@ function PhoneNumberPopup({ phoneNumber, onClose }) {
               placeholder="Your text here..."
               required
               color="gray"
+              value={messageContent}  
+              onChange={handleInputChange} 
             />
-            <Button gradientDuoTone="purpleToBlue" className="mt-4 ml-20">
+            <Button gradientDuoTone="purpleToBlue" className="mt-4 ml-20" onClick={handleSendMessage} >
               Send
             </Button>
           </div>
           {error && <p className="text-red-500 mt-2">{error}</p>}
           {success && <p className="text-green-500 mt-2">{success}</p>}
+          {chatUser && (<ChatBox senderId={currentUserId} receiver={chatUser} onClose={onCloseChat} />)}
         </div>
       </div>
     </div>

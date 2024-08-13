@@ -5,6 +5,7 @@ import MessageBubble from "./MessageBubble";
 import { IoMdChatbubbles } from "react-icons/io";
 
 const ChatWindow = ({ activeUser, messages, sendMessage, detailss }) => {
+  console.log("ChatWindow: detailss", detailss);
 
   if (!activeUser) {
     return (
@@ -25,7 +26,7 @@ const ChatWindow = ({ activeUser, messages, sendMessage, detailss }) => {
             className="w-12 h-12 rounded-full mr-3"
           />
           <div>
-            <p className="text-white">{activeUser.name} {detailss.name} </p>
+            <p className="text-white">{activeUser.name} </p>
             <p className="text-gray-400 text-sm">Online</p>
           </div>
         </div>
