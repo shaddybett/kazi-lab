@@ -135,6 +135,7 @@ function PhoneNumberPopup({ phoneNumber, onClose }) {
       console.error("Error sending message:", error);
       setError("Error sending message");
     }
+    setMessageContent("");
   };
   
   return (
