@@ -103,7 +103,7 @@ function PhoneNumberPopup({ phoneNumber, onClose }) {
   const onCloseChat =()=>{
     setChatUser(null)
   }
-  const admins = [5];
+  const admins = [7];
   const handleSendMessage = async () => {
     if (messageContent === "") {
       setError("Input field can't be empty");
