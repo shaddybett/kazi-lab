@@ -1008,15 +1008,6 @@ function ProviderDashboard() {
             </Dropdown.Header>
             <Dropdown.Item onClick={handleProfile}>Profile</Dropdown.Item>
             <Dropdown.Divider />
-            <DropdownItem>
-              Jobs Done{" "}
-              <strong className="text-green-700 ml-4">{data.jobs || 0}</strong>
-            </DropdownItem>
-            <Dropdown.Divider />
-            <DropdownItem>
-              Likes{" "}
-              <strong className="text-green-700 ml-4">{data.likes || 0}</strong>
-            </DropdownItem>
             <Dropdown.Item onClick={handleClientsClick}>Clients</Dropdown.Item>
             <Dropdown.Divider />
             <Dropdown.Item onClick={() => handleChatClick(data)}>Chat</Dropdown.Item>
