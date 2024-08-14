@@ -40,7 +40,7 @@ function BlockedUser({ details }) {
       });
 
       await Promise.all(sendMessages);
-      setSuccess("Message sent successfully");
+      setSuccess("Message sent successfully kindly check your email for response from the team");
     } catch (error) {
       console.error("Error sending message:", error);
       setError(`Error sending message: ${error.message}`);
