@@ -295,6 +295,14 @@ function PhoneNumberPopup({ phoneNumber, onClose }) {
     setPaymentModalOpen(true);
   };
 
+  const handleCardDetailsChange = (e) => {
+    const { name, value } = e.target;
+    setCardDetails((prevDetails) => ({
+      ...prevDetails,
+      [name]: value,
+    }));
+  };
+
   const unLikeJob = async () => {
     setLoading(true);
     setError(null);
