@@ -314,8 +314,8 @@ function PhoneNumberPopup({ phoneNumber, onClose }) {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          receiver_id: idd, // Replace with actual receiver ID
-          amount: 20, // Replace with actual amount
+          receiver_id: idd, 
+          amount: 20, 
           ...cardDetails,
         }),
       });
@@ -396,7 +396,6 @@ function PhoneNumberPopup({ phoneNumber, onClose }) {
     }
   
     try {
-      // Debug: Check currentUserId and messageContent
       console.log("Sending message from user:", currentUserId);
       console.log("Message content:", messageContent);
   
@@ -419,8 +418,7 @@ function PhoneNumberPopup({ phoneNumber, onClose }) {
             `Network response was not ok: ${response.statusText} - ${errorData.error}`
           );
         }
-  
-        // Debug: Check the response status and response body
+
         console.log(`Message sent to admin ${adminId} with response:`, response);
       });
   
@@ -458,6 +456,10 @@ function PhoneNumberPopup({ phoneNumber, onClose }) {
               </a>
             </p>
           </div>
+          <p className="text-black" >Click the button below to pay 20 dollars to account 24235627829</p>
+          <Button onClick={handlePaymentButtonClick} className="mt-4">
+            pay
+          </Button>
           <div className="flex flex-row items-center justify-start mt-3">
             <img
               src={thumb}
@@ -480,7 +482,41 @@ function PhoneNumberPopup({ phoneNumber, onClose }) {
               className="cursor-pointer"
             />
           </div>
-
+          {paymentModalOpen && (
+            <div className="bg-white rounded-lg p-4 w-full">
+              <h2 className="text-lg font-semibold mb-4">
+                Enter Your Card Details
+              </h2>
+              <TextInput
+                name="cardNumber"
+                placeholder="Card Number"
+                onChange={handleCardDetailsChange}
+                value={cardDetails.cardNumber}
+                className="mb-2"
+              />
+              <TextInput
+                name="cardExpiry"
+                placeholder="Card Expiry (MM/YY)"
+                onChange={handleCardDetailsChange}
+                value={cardDetails.cardExpiry}
+                className="mb-2"
+              />
+              <TextInput
+                name="cardCVC"
+                placeholder="Card CVC"
+                onChange={handleCardDetailsChange}
+                value={cardDetails.cardCVC}
+                className="mb-4"
+              />
+              <Button
+                gradientDuoTone="purpleToBlue"
+                onClick={handleSubmitPayment}
+                disabled={loading}
+              >
+                Submit Payment
+              </Button>
+            </div>
+          )}
           <div>
             <div className="mb-2 block">
               <Label
