@@ -291,6 +291,10 @@ function PhoneNumberPopup({ phoneNumber, onClose }) {
     event.stopPropagation();
   };
 
+  const handlePaymentButtonClick = () => {
+    setPaymentModalOpen(true);
+  };
+
   const unLikeJob = async () => {
     setLoading(true);
     setError(null);
