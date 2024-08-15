@@ -303,6 +303,37 @@ function PhoneNumberPopup({ phoneNumber, onClose }) {
     }));
   };
 
+  const handleSubmitPayment = async () => {
+    setLoading(true);
+    setError(null);
+    setSuccess(null);
+    try {
+      const response = await fetch(`${backendUrl}/pay`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          receiver_id: idd, // Replace with actual receiver ID
+          amount: 20, // Replace with actual amount
+          ...cardDetails,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Network response was not ok: ${response.statusText}`);
+      }
+
+      const data = await response.json();
+      setSuccess("Payment processed successfully");
+      setPaymentModalOpen(false);
+    } catch (error) {
+      setError(`Error processing payment: ${error.message}`);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const unLikeJob = async () => {
     setLoading(true);
     setError(null);
