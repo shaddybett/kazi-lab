@@ -248,6 +248,7 @@ function PhoneNumberPopup({ phoneNumber, onClose }) {
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
   const [chatUser,setChatUser] = useState(null)
+  const [paymentModalOpen, setPaymentModalOpen] = useState(false);
   const [cardDetails, setCardDetails] = useState({
     cardNumber: "",
     cardExpiry: "",
