@@ -127,7 +127,7 @@ function ClientDashboard() {
     };
 
     fetchServicesByCounty();
-  }, [selectedCounty]);
+  }, [selectedCounty, backendUrl]);
 
   const countyIdd = localStorage.getItem("countyId");
   useEffect(() => {
