@@ -279,7 +279,7 @@ function PhoneNumberPopup({ phoneNumber, onClose }) {
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, []);
+  }, [handleClickOutside]);
 
   const stopPropagation = (event) => {
     event.stopPropagation();
