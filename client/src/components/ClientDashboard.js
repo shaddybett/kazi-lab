@@ -169,7 +169,7 @@ function ClientDashboard() {
     };
 
     fetchProviderDetailsCounty();
-  }, [clientLocation, locationEnabled]);
+  }, [clientLocation, locationEnabled, backendUrl, countyIdd]);
 
   useEffect(() => {
     if (locationEnabled && providers.length > 0) {
