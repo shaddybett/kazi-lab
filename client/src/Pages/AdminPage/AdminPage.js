@@ -18,7 +18,7 @@ function AdminPage() {
 
   const currentUserId = localStorage.getItem("id");
 
-  const handleUsers = async () => {
+  const handleUsers = useCallback(async () => {
     const token = localStorage.getItem("token");
     try {
       const response = await fetch(`${backendUrl}/all_users`, {
@@ -27,7 +27,7 @@ function AdminPage() {
           Authorization: `Bearer ${token}`,
         },
       });
-
+  
       if (response.ok) {
         const responseData = await response.json();
         const fetchedProviders = responseData.filter(
@@ -45,7 +45,8 @@ function AdminPage() {
     } catch (err) {
       setError("An unexpected error occurred");
     }
-  };
+  }, [backendUrl]);
+  
 
   const handleProviderClick = async (user) => {
     if (user.is_blocked) {
@@ -99,7 +100,7 @@ function AdminPage() {
 
   useEffect(() => {
     handleUsers();
-  }, []);
+  }, [backendUrl]);
 
   const handleChat = () => {
     setChaty(currentUserId);
@@ -207,6 +208,7 @@ function AdminPage() {
       </Navbar>
       <h3 className="title">All users</h3>
       {error && <p>{error}</p>}
+      {message && <p>{message}</p>}
       <div className="table">
         <div className="table-1">
           <h3 className="table-1-title">Service Providers</h3>
