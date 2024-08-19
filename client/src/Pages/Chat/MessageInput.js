@@ -98,7 +98,7 @@ const MessageInput = ({ sendMessage }) => {
         <div className="relative mb-2">
           <img
             src={selectedImage.previewUrl}
-            alt="Selected Image"
+            alt="Selected"
             className="w-24 h-24 rounded mr-2 cursor-pointer"
           />
           <FaTimes

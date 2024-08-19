@@ -1,5 +1,5 @@
 
-import React, { useState } from "react";
+import React from "react";
 import MessageInput from "./MessageInput";
 import MessageBubble from "./MessageBubble";
 import { IoMdChatbubbles } from "react-icons/io";
