@@ -609,7 +609,6 @@ import {
   Dropdown,
   Navbar,
   Card,
-  DropdownItem,
   Button,
   Spinner,
   FileInput,
@@ -803,7 +802,7 @@ function ProviderDashboard() {
     fetchData();
     fetchAllServices();
     handleEntry();
-  }, []);
+  }, [fetchAllServices,fetchData,handleEntry]);
 
   const handleDelete = async (fileUrl, fileType) => {
     const result = await Swal.fire({

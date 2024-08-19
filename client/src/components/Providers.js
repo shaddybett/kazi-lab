@@ -74,7 +74,7 @@ function Providers() {
     };
 
     fetchProviderDetails();
-  }, [clientLocation, locationEnabled]);
+  }, [clientLocation, locationEnabled, backendUrl, countyIdd]);
 
   const handleProviderClick = async (provider) => {
     try {

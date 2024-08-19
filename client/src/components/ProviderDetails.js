@@ -305,7 +305,7 @@ function ProviderDetails() {
   useEffect(() => {
     // Fetch counties when the component mounts
     fetchAllCounties();
-  }, []);
+  }, [fetchAllCounties]);
 
   useEffect(() => {
     // Add event listener for clicks outside the dropdown when the dropdown is open
