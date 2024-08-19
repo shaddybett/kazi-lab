@@ -241,6 +241,8 @@ import thumb from "../assets/thumb.png";
 import down from "../assets/down.png";
 import chat from "../assets/chat.png";
 import ChatBox from "../Pages/Chatbox/ChatBox";
+import { loadStripe } from "@stripe/stripe-js";
+import { Elements,CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 
 function PhoneNumberPopup({ phoneNumber, onClose }) {
   const popupRef = useRef();
