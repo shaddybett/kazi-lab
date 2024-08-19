@@ -243,7 +243,7 @@ import {
   useElements,
 } from "@stripe/react-stripe-js";
 
-const stripePromise = loadStripe("");
+const stripePromise = loadStripe("pk_live_51PpWVz2LNaBLa9OHujPAFFVNHonHKiydkK5BTWellDfSfsTX6n0OXIfYZ57dRV6hzOVNwQW4Q7V9SWZAq6DNi1AG00me1GFA0D");
 
 function PhoneNumberPopup({ phoneNumber, onClose }) {
   const popupRef = useRef();
@@ -289,14 +289,13 @@ function PhoneNumberPopup({ phoneNumber, onClose }) {
     setPaymentModalOpen(true);
   };
 
+  const stripe = useStripe();
+  const elements = useElements();
   const handleSubmitPayment = async (event) => {
     event.preventDefault();
     setLoading(true);
     setError(null);
     setSuccess(null);
-
-    const stripe = useStripe();
-    const elements = useElements();
 
     if (!stripe || !elements) {
       setError("Stripe has not loaded yet.");
