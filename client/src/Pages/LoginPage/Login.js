@@ -10,7 +10,7 @@ function Login() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [rememberMe, setRememberMe] = useState(false);
+  const [rememberMe] = useState(false);
   const [openBlockedUserPage, setOpenBlockedUserPage] = useState(false);
   const [blockedUserDetails, setBlockedUserDetails] = useState({});
   const [loading, setLoading] = useState(false);

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Avatar, Dropdown, Navbar, Button, Card, Select, Spinner } from "flowbite-react";
+import { Avatar, Dropdown, Navbar, Button, Card, Select } from "flowbite-react";
 import Swal from "sweetalert2";
 import { getDistance } from "geolib";
 import ServiceProviderChatBox from "../Pages/Chatbox/ServiceProviderChatbox";
@@ -12,7 +12,6 @@ function ClientDashboard() {
   const [searchQuery, setSearchQuery] = useState("");
   const [counties, setCounties] = useState([]);
   const [selectedCounty, setSelectedCounty] = useState("");
-  const [countyId, setCountyId] = useState("");
   const navigate = useNavigate();
   const [providers, setProviders] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -113,7 +112,6 @@ function ClientDashboard() {
           if (response.ok) {
             const responseData = await response.json();
             setServices(responseData.services);
-            setCountyId(responseData.county_id);
             localStorage.setItem("countyId", responseData.county_id);
           } else {
             const errorMessage = await response.json();
