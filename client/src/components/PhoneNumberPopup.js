@@ -243,7 +243,9 @@ import {
   useElements,
 } from "@stripe/react-stripe-js";
 
-const stripePromise = loadStripe("pk_live_51PpWVz2LNaBLa9OHujPAFFVNHonHKiydkK5BTWellDfSfsTX6n0OXIfYZ57dRV6hzOVNwQW4Q7V9SWZAq6DNi1AG00me1GFA0D");
+const stripePromise = loadStripe(
+  "pk_live_51PpWVz2LNaBLa9OHujPAFFVNHonHKiydkK5BTWellDfSfsTX6n0OXIfYZ57dRV6hzOVNwQW4Q7V9SWZAq6DNi1AG00me1GFA0D"
+);
 
 function PhoneNumberPopup({ phoneNumber, onClose }) {
   const popupRef = useRef();
@@ -279,7 +281,7 @@ function PhoneNumberPopup({ phoneNumber, onClose }) {
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, []);
+  }, [handleClickOutside]);
 
   const stopPropagation = (event) => {
     event.stopPropagation();
@@ -320,29 +322,32 @@ function PhoneNumberPopup({ phoneNumber, onClose }) {
       }
 
       const data = await response.json();
-
       const cardElement = elements.getElement(CardElement);
 
-      const { error: stripeError, paymentIntent } =
-        await stripe.confirmCardPayment(data.client_secret, {
-          payment_method: {
-            card: cardElement,
-          },
-        });
+      const { error: stripeError, paymentIntent } = await stripe.confirmCardPayment(data.client_secret, {
+        payment_method: {
+          card: cardElement,
+        },
+      });
 
       if (stripeError) {
         throw new Error(stripeError.message);
       }
 
-      setSuccess("Payment processed successfully");
-      setPaymentModalOpen(false);
+      if (paymentIntent.status === "succeeded") {
+        setSuccess("Payment processed successfully");
+        setPaymentModalOpen(false);
+      } else {
+        setError(`Payment failed with status: ${paymentIntent.status}`);
+      }
+      
     } catch (error) {
       setError(`Error processing payment: ${error.message}`);
     } finally {
       setLoading(false);
     }
   };
-
+  
   const unLikeJob = async () => {
     setLoading(true);
     setError(null);
@@ -359,7 +364,6 @@ function PhoneNumberPopup({ phoneNumber, onClose }) {
         throw new Error(`Network response was not ok: ${response.statusText}`);
       }
 
-      const data = await response.json();
       setSuccess("unLike added ");
     } catch (error) {
       setError("Error unliking job");
@@ -384,7 +388,6 @@ function PhoneNumberPopup({ phoneNumber, onClose }) {
         throw new Error(`Network response was not ok: ${response.statusText}`);
       }
 
-      const data = await response.json();
       setSuccess("Like added successfully");
     } catch (error) {
       setError("Error liking job");
@@ -490,6 +493,7 @@ function PhoneNumberPopup({ phoneNumber, onClose }) {
             />
             <img
               src={chat}
+              alt="chat"
               onClick={handleChatClick}
               disabled={loading}
               className="cursor-pointer"

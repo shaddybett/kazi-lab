@@ -64,7 +64,7 @@ function Profile() {
       }
     };
     handleEntry();
-  }, [refresh]);
+  }, [refresh, backendUrl]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;

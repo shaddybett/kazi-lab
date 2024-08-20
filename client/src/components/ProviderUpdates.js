@@ -168,11 +168,11 @@ function ProviderUpdates({ senderId, assigned, likes }) {
 
   useEffect(() => {
     fetchAssignedIds();
-  }, [senderId]);
+  }, [senderId, fetchAssignedIds]);
 
   useEffect(() => {
     fetchCustomerDetails();
-  }, [providerIds]);
+  }, [providerIds,fetchCustomerDetails]);
 
   return (
     <div>

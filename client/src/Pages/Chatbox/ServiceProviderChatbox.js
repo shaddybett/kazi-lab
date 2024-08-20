@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useCallback } from "react";
 import Sidebar from "../Chat/SideBar";
 import ChatWindow from "../Chat/ChatWindow";
 
@@ -11,13 +11,31 @@ const ServiceProviderChatBox = ({ providerId }) => {
 
   const backendUrl = process.env.REACT_APP_BACKEND_URL;
   const podId = Number(providerId)
-  useEffect(() => {
-    if (podId) {
-      fetchMessages(podId);
-    }
-  }, [podId]);
+  // useEffect(() => {
+  //   if (podId) {
+  //     fetchMessages(podId);
+  //   }
+  // }, [podId]);
 
-  const fetchMessages = async (podId) => {
+  // const fetchMessages = async (podId) => {
+  //   try {
+  //     const response = await fetch(
+  //       `${backendUrl}/get_messages_for_receiver/${podId}`
+  //     );
+  //     if (response.ok) {
+  //       const responseData = await response.json();
+  //       setMessages(responseData);
+  //       const userIds = extractUserIds(responseData);
+  //       fetchUserDetails(userIds);
+  //     } else {
+  //       throw new Error("Network response was not ok");
+  //     }
+  //   } catch (error) {
+  //     console.error("Error fetching messages:", error);
+  //     setError("Error fetching messages");
+  //   }
+  // };
+  const fetchMessages = useCallback(async (podId) => {
     try {
       const response = await fetch(
         `${backendUrl}/get_messages_for_receiver/${podId}`
@@ -34,7 +52,13 @@ const ServiceProviderChatBox = ({ providerId }) => {
       console.error("Error fetching messages:", error);
       setError("Error fetching messages");
     }
-  };
+  }, [backendUrl]);
+
+  useEffect(() => {
+    if (podId) {
+      fetchMessages(podId);
+    }
+  }, [podId, fetchMessages]);
 
   const extractUserIds = (messages) => {
     const userIds = new Set();
