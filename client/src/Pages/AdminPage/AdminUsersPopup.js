@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Modal, Button } from "flowbite-react";
 import "./AdminPage.css";
 
@@ -29,7 +29,7 @@ function AdminUsersPopup({ user, onClose }) {
                   <img
                     key={index}
                     src={photo}
-                    alt={`User's uploaded photo ${index}`}
+                    alt={`User's upload ${index}`}
                     className="photo"
                   />
                 ))}

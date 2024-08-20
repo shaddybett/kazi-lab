@@ -52,7 +52,7 @@ const ServiceProviderChatBox = ({ providerId }) => {
       console.error("Error fetching messages:", error);
       setError("Error fetching messages");
     }
-  }, [backendUrl]);
+  }, [backendUrl,extractUserIds, fetchUserDetails]);
 
   useEffect(() => {
     if (podId) {

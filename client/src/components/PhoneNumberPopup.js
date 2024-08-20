@@ -270,11 +270,11 @@ function PhoneNumberPopup({ phoneNumber, onClose }) {
       console.error("No user found in local storage");
     }
   };
-  const handleClickOutside = (event) => {
+  const handleClickOutside = useCallback((event) => {
     if (popupRef.current && !popupRef.current.contains(event.target)) {
       onClose();
     }
-  };
+  }, [onClose]);
 
   useEffect(() => {
     document.addEventListener("mousedown", handleClickOutside);
