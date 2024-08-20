@@ -14,7 +14,7 @@ function ClientDashboard() {
   const [selectedCounty, setSelectedCounty] = useState("");
   const navigate = useNavigate();
   const [providers, setProviders] = useState([]);
-  const [setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [chatUser, setChatUser] = useState(null);
   const [clientLocation, setClientLocation] = useState({
     latitude: null,
