@@ -322,29 +322,32 @@ function PhoneNumberPopup({ phoneNumber, onClose }) {
       }
 
       const data = await response.json();
-
       const cardElement = elements.getElement(CardElement);
 
-      const { error: stripeError, paymentIntent } =
-        await stripe.confirmCardPayment(data.client_secret, {
-          payment_method: {
-            card: cardElement,
-          },
-        });
+      const { error: stripeError, paymentIntent } = await stripe.confirmCardPayment(data.client_secret, {
+        payment_method: {
+          card: cardElement,
+        },
+      });
 
       if (stripeError) {
         throw new Error(stripeError.message);
       }
 
-      setSuccess("Payment processed successfully");
-      setPaymentModalOpen(false);
+      if (paymentIntent.status === "succeeded") {
+        setSuccess("Payment processed successfully");
+        setPaymentModalOpen(false);
+      } else {
+        setError(`Payment failed with status: ${paymentIntent.status}`);
+      }
+      
     } catch (error) {
       setError(`Error processing payment: ${error.message}`);
     } finally {
       setLoading(false);
     }
   };
-
+  
   const unLikeJob = async () => {
     setLoading(true);
     setError(null);
