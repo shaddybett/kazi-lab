@@ -100,7 +100,7 @@ function AdminPage() {
 
   useEffect(() => {
     handleUsers();
-  }, [backendUrl]);
+  }, [backendUrl, handleUsers]);
 
   const handleChat = () => {
     setChaty(currentUserId);

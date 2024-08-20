@@ -92,7 +92,7 @@ function ClientDashboard() {
     };
 
     fetchData();
-  }, []);
+  }, [backendUrl, setLoading]);
 
   useEffect(() => {
     const fetchServicesByCounty = async () => {

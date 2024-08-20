@@ -37,13 +37,13 @@
 //   const [selectedImage, setSelectedImage] = useState(null);
 //   const [selectedVideo, setSelectedVideo] = useState(null);
 //   const [isVideoLoading, setIsVideoLoading] = useState(false);
-//   const [chatUser, setChatUser] = useState(null); 
+//   const [chatUser, setChatUser] = useState(null);
 //   const [openClientsPage,setopenClientsPage] = useState(false)
 //   const dropdownRef = useRef(null);
 //   const navigate = useNavigate();
 //   const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
-//   const currentUserId = localStorage.getItem("id"); 
+//   const currentUserId = localStorage.getItem("id");
 
 //   const handleProfile = () => {
 //     navigate("/profile");
@@ -589,8 +589,8 @@
 //       </Modal>
 //       {chatUser && (
 //         <ServiceProviderChatBox
-//           providerId={currentUserId} 
-//           receiverId={chatUser.id}   
+//           providerId={currentUserId}
+//           receiverId={chatUser.id}
 //           onClose={closeChat}
 //         />
 //       )}
@@ -601,8 +601,7 @@
 
 // export default ProviderDashboard;
 
-
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import Modal from "react-modal";
 import {
   Avatar,
@@ -722,8 +721,7 @@ function ProviderDashboard() {
       navigate("/login");
     }
   };
-
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     try {
       const token = localStorage.getItem("token");
       const response = await fetch(`${backendUrl}/offers`, {
@@ -743,9 +741,9 @@ function ProviderDashboard() {
     } catch (error) {
       setError("An error occurred. Please try again later.");
     }
-  };
+  }, []); // If fetchData relies on some external variables, include them in the dependency array.
 
-  const fetchAllServices = async () => {
+  const fetchAllServices = useCallback(async () => {
     try {
       const token = localStorage.getItem("token");
       const response = await fetch(`${backendUrl}/service`, {
@@ -765,9 +763,9 @@ function ProviderDashboard() {
     } catch (error) {
       setError("An error occurred. Please try again later.");
     }
-  };
+  }, []); // Add dependencies if needed.
 
-  const handleEntry = async () => {
+  const handleEntry = useCallback(async () => {
     const token = localStorage.getItem("token");
     try {
       const response = await fetch(`${backendUrl}/dashboard`, {
@@ -796,13 +794,93 @@ function ProviderDashboard() {
     } catch (error) {
       setError("An error occurred. Please try again later");
     }
-  };
+  }, []); // Add dependencies if needed.
 
   useEffect(() => {
     fetchData();
     fetchAllServices();
     handleEntry();
-  }, [fetchAllServices,fetchData,handleEntry]);
+  }, [fetchData, fetchAllServices, handleEntry]);
+  // const fetchData = async () => {
+  //   try {
+  //     const token = localStorage.getItem("token");
+  //     const response = await fetch(`${backendUrl}/offers`, {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //         Authorization: `Bearer ${token}`,
+  //       },
+  //     });
+  //     if (response.ok) {
+  //       const responseData = await response.json();
+  //       setServices(responseData.services || []);
+  //     } else {
+  //       const errorMessage = await response.json();
+  //       setError(errorMessage.error);
+  //     }
+  //   } catch (error) {
+  //     setError("An error occurred. Please try again later.");
+  //   }
+  // };
+
+  // const fetchAllServices = async () => {
+  //   try {
+  //     const token = localStorage.getItem("token");
+  //     const response = await fetch(`${backendUrl}/service`, {
+  //       method: "GET",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //         Authorization: `Bearer ${token}`,
+  //       },
+  //     });
+  //     if (response.ok) {
+  //       const responseData = await response.json();
+  //       setAllServices(responseData.all_services || []);
+  //     } else {
+  //       const errorMessage = await response.json();
+  //       setError(errorMessage.error);
+  //     }
+  //   } catch (error) {
+  //     setError("An error occurred. Please try again later.");
+  //   }
+  // };
+
+  // const handleEntry = async () => {
+  //   const token = localStorage.getItem("token");
+  //   try {
+  //     const response = await fetch(`${backendUrl}/dashboard`, {
+  //       method: "GET",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //         Authorization: `Bearer ${token}`,
+  //       },
+  //     });
+  //     if (response.ok) {
+  //       const responseData = await response.json();
+  //       setData(responseData);
+  //       setPhotos(responseData.photos || []);
+  //       setVideos(responseData.videos || []);
+  //     } else {
+  //       const errorMessage = await response.json();
+  //       setError(errorMessage.error || "An error occurred");
+  //     }
+  //     if (response.status === 422 || response.status === 401) {
+  //       setError("Your session has expired. Please log in again.");
+  //       setTimeout(() => {
+  //         window.location.href = "/login";
+  //       }, 5000);
+  //       return;
+  //     }
+  //   } catch (error) {
+  //     setError("An error occurred. Please try again later");
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   fetchData();
+  //   fetchAllServices();
+  //   handleEntry();
+  // }, [fetchAllServices,fetchData,handleEntry]);
 
   const handleDelete = async (fileUrl, fileType) => {
     const result = await Swal.fire({
@@ -1009,7 +1087,9 @@ function ProviderDashboard() {
             <Dropdown.Divider />
             <Dropdown.Item onClick={handleClientsClick}>Clients</Dropdown.Item>
             <Dropdown.Divider />
-            <Dropdown.Item onClick={() => handleChatClick(data)}>Chat</Dropdown.Item>
+            <Dropdown.Item onClick={() => handleChatClick(data)}>
+              Chat
+            </Dropdown.Item>
             <Dropdown.Divider />
             <Dropdown.Item onClick={handleLogout}>Logout</Dropdown.Item>
           </Dropdown>

@@ -177,7 +177,7 @@ const ChatBox = ({ senderId, receiver, onClose }) => {
     } catch (error) {
       console.error("Error fetching messages:", error);
     }
-  }, [backendUrl]);
+  }, [backendUrl, fetchUserDetails]);
 
   useEffect(() => {
     if (receiver) {

@@ -74,7 +74,7 @@
 //         <h4 className="text-black">Recent Customers</h4>
 //         {customerDetails.map((customer, index) => (
 //           <div key={index} className="flex items-center justify-between mb-2 text-black ">
-//             <p className="text-black" > 
+//             <p className="text-black" >
 //               {customer.first_name} {customer.last_name}
 //             </p>
 //             <Dropdown inline label="Options">
@@ -96,9 +96,7 @@
 
 // export default ProviderUpdates;
 
-
-
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { Card, Dropdown } from "flowbite-react";
 import ChatBox from "../Pages/Chatbox/ChatBox";
 
@@ -109,7 +107,7 @@ function ProviderUpdates({ senderId, assigned, likes }) {
   const [openChat, setOpenChat] = useState(false);
   const [currentCustomer, setCurrentCustomer] = useState(null); // To store the customer to chat with
 
-  const fetchAssignedIds = async () => {
+  const fetchAssignedIds = useCallback(async () => {
     try {
       const response = await fetch(
         `${backendUrl}/assigned_resource/${senderId}`,
@@ -130,14 +128,14 @@ function ProviderUpdates({ senderId, assigned, likes }) {
     } catch (error) {
       console.error("Error fetching assigned IDs:", error);
     }
-  };
+  }, [senderId, backendUrl]); // Dependencies: senderId and backendUrl
 
-  const fetchCustomerDetails = async () => {
+  const fetchCustomerDetails = useCallback(async () => {
     if (providerIds.length === 0) {
       console.log("No provider IDs available yet.");
       return;
     }
-    const stringProviderIds = providerIds.map(id => id.toString());
+    const stringProviderIds = providerIds.map((id) => id.toString());
 
     try {
       const response = await fetch(
@@ -159,7 +157,7 @@ function ProviderUpdates({ senderId, assigned, likes }) {
     } catch (error) {
       console.error("Error fetching customer details:", error);
     }
-  };
+  }, [providerIds, backendUrl]); // Dependencies: providerIds and backendUrl
 
   const handleChatClick = (customer) => {
     setCurrentCustomer(customer); // Set the current customer to chat with
@@ -168,11 +166,11 @@ function ProviderUpdates({ senderId, assigned, likes }) {
 
   useEffect(() => {
     fetchAssignedIds();
-  }, [senderId, fetchAssignedIds]);
+  }, [fetchAssignedIds]); // Now it has a stable reference
 
   useEffect(() => {
     fetchCustomerDetails();
-  }, [providerIds,fetchCustomerDetails]);
+  }, [providerIds, fetchCustomerDetails]); // Now it has a stable reference
 
   return (
     <div>
@@ -182,7 +180,10 @@ function ProviderUpdates({ senderId, assigned, likes }) {
           <p className="text-gray-500">No customers available.</p>
         )}
         {customerDetails.map((customer, index) => (
-          <div key={index} className="flex items-center justify-between mb-2 text-black">
+          <div
+            key={index}
+            className="flex items-center justify-between mb-2 text-black"
+          >
             <p className="text-black">
               {customer.first_name} {customer.last_name}
             </p>
@@ -193,7 +194,9 @@ function ProviderUpdates({ senderId, assigned, likes }) {
             </Dropdown>
           </div>
         ))}
-        <strong className="text-green-700 ml-4">Jobs Assigned {assigned}</strong>
+        <strong className="text-green-700 ml-4">
+          Jobs Assigned {assigned}
+        </strong>
         <strong className="text-green-700 ml-4">Likes given {likes}</strong>
       </Card>
       {openChat && <ChatBox senderId={senderId} receiver={currentCustomer} />}
@@ -201,4 +204,4 @@ function ProviderUpdates({ senderId, assigned, likes }) {
   );
 }
 
-export default ProviderUpdates; 
+export default ProviderUpdates;

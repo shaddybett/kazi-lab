@@ -227,7 +227,7 @@
 
 // export default PhoneNumberPopup;
 
-import React, { useRef, useEffect, useState } from "react";
+import React, { useRef, useEffect, useState, useCallback } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPhone } from "@fortawesome/free-solid-svg-icons";
 import { Button, Label, TextInput } from "flowbite-react";
@@ -270,11 +270,11 @@ function PhoneNumberPopup({ phoneNumber, onClose }) {
       console.error("No user found in local storage");
     }
   };
-  const handleClickOutside = (event) => {
+  const handleClickOutside = useCallback((event) => {
     if (popupRef.current && !popupRef.current.contains(event.target)) {
       onClose();
     }
-  };
+  }, [onClose]);
 
   useEffect(() => {
     document.addEventListener("mousedown", handleClickOutside);
