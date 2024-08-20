@@ -763,7 +763,7 @@ function ProviderDashboard() {
     } catch (error) {
       setError("An error occurred. Please try again later.");
     }
-  }, []); // Add dependencies if needed.
+  }, [backendUrl]);
 
   const handleEntry = useCallback(async () => {
     const token = localStorage.getItem("token");
@@ -794,7 +794,7 @@ function ProviderDashboard() {
     } catch (error) {
       setError("An error occurred. Please try again later");
     }
-  }, []); // Add dependencies if needed.
+  }, [backendUrl]);
 
   useEffect(() => {
     fetchData();

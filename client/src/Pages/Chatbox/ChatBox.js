@@ -1,4 +1,4 @@
-// import React, { useState, useEffect } from "react";
+// import React, { useState, useEffect, useCallback } from "react";
 // import Sidebar from "../Chat/SideBar";
 // import ChatWindow from "../Chat/ChatWindow";
 
@@ -10,15 +10,9 @@
 //   const [activeUser, setActiveUser] = useState(null);
 
 //   const backendUrl = process.env.REACT_APP_BACKEND_URL;
-//   const sedId = Number(senderId)
+//   const sedId = Number(senderId);
 
-//   useEffect(() => {
-//     if (receiver) {
-//       fetchMessages(sedId, receiver.id);
-//     }
-//   }, [receiver, sedId]);
-
-//   const fetchMessages = async (sedId, receiverId) => {
+//   const fetchMessages = useCallback(async (sedId, receiverId) => {
 //     if (!sedId || !receiverId) {
 //       console.error("Missing sedId or receiverId");
 //       return;
@@ -36,7 +30,13 @@
 //     } catch (error) {
 //       console.error("Error fetching messages:", error);
 //     }
-//   };
+//   }, [backendUrl, fetchUserDetails]);
+
+//   useEffect(() => {
+//     if (receiver) {
+//       fetchMessages(sedId, receiver.id);
+//     }
+//   }, [receiver, sedId, fetchMessages]);
 
 //   const extractUserIds = (messages) => {
 //     const userIds = new Set();
@@ -79,7 +79,6 @@
 //     }
 //     setLoading(false);
 //   };
-//   console.log(receiver)
 
 //   const handleSendMessage = async (messageContent) => {
 //     const receiverId = receiver ? receiver.id : localStorage.getItem("senders_id");
@@ -127,7 +126,7 @@
 //             message: messages.find(msg => msg.sender_id === contactId || msg.receiver_id === contactId)?.content,
 //             image: details[contactId] ? details[contactId].image : null,
 //           }))}
-//         setActiveUser={(user) => {  console.log("Setting active user in ChatBox:", user);  fetchMessages(sedId, user);setActiveUser(user)}}
+//         setActiveUser={(user) => { console.log("Setting active user in ChatBox:", user); fetchMessages(sedId, user); setActiveUser(user); }}
 //       />
 //       <ChatWindow
 //         activeUser={receiver}
@@ -144,7 +143,6 @@
 // export default ChatBox;
 
 
-
 import React, { useState, useEffect, useCallback } from "react";
 import Sidebar from "../Chat/SideBar";
 import ChatWindow from "../Chat/ChatWindow";
@@ -159,42 +157,8 @@ const ChatBox = ({ senderId, receiver, onClose }) => {
   const backendUrl = process.env.REACT_APP_BACKEND_URL;
   const sedId = Number(senderId);
 
-  const fetchMessages = useCallback(async (sedId, receiverId) => {
-    if (!sedId || !receiverId) {
-      console.error("Missing sedId or receiverId");
-      return;
-    }
-    try {
-      const response = await fetch(`${backendUrl}/get_messages_between/${sedId}/${receiverId}`);
-      if (response.ok) {
-        const responseData = await response.json();
-        setMessages(responseData);
-        const userIds = extractUserIds(responseData);
-        fetchUserDetails(userIds);
-      } else {
-        throw new Error("Network response was not ok");
-      }
-    } catch (error) {
-      console.error("Error fetching messages:", error);
-    }
-  }, [backendUrl, fetchUserDetails]);
-
-  useEffect(() => {
-    if (receiver) {
-      fetchMessages(sedId, receiver.id);
-    }
-  }, [receiver, sedId, fetchMessages]);
-
-  const extractUserIds = (messages) => {
-    const userIds = new Set();
-    messages.forEach((msg) => {
-      userIds.add(msg.sender_id);
-      userIds.add(msg.receiver_id);
-    });
-    return Array.from(userIds);
-  };
-
-  const fetchUserDetails = async (userIds) => {
+  // Move fetchUserDetails above fetchMessages
+  const fetchUserDetails = useCallback(async (userIds) => {
     setLoading(true);
     try {
       const requests = userIds.map((userId) =>
@@ -225,6 +189,41 @@ const ChatBox = ({ senderId, receiver, onClose }) => {
       setError("An error occurred, please try again later");
     }
     setLoading(false);
+  }, [backendUrl]);
+
+  const fetchMessages = useCallback(async (sedId, receiverId) => {
+    if (!sedId || !receiverId) {
+      console.error("Missing sedId or receiverId");
+      return;
+    }
+    try {
+      const response = await fetch(`${backendUrl}/get_messages_between/${sedId}/${receiverId}`);
+      if (response.ok) {
+        const responseData = await response.json();
+        setMessages(responseData);
+        const userIds = extractUserIds(responseData);
+        fetchUserDetails(userIds); // Now fetchUserDetails is defined above
+      } else {
+        throw new Error("Network response was not ok");
+      }
+    } catch (error) {
+      console.error("Error fetching messages:", error);
+    }
+  }, [backendUrl, fetchUserDetails]);
+
+  useEffect(() => {
+    if (receiver) {
+      fetchMessages(sedId, receiver.id);
+    }
+  }, [receiver, sedId, fetchMessages]);
+
+  const extractUserIds = (messages) => {
+    const userIds = new Set();
+    messages.forEach((msg) => {
+      userIds.add(msg.sender_id);
+      userIds.add(msg.receiver_id);
+    });
+    return Array.from(userIds);
   };
 
   const handleSendMessage = async (messageContent) => {
