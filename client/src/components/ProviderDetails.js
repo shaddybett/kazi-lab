@@ -245,9 +245,7 @@
 
 // export default ProviderDetails;
 
-
-
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useCallback } from "react";
 import { Card, Label, Select, Button, Spinner } from "flowbite-react";
 import { useNavigate } from "react-router-dom";
 
@@ -282,7 +280,7 @@ function ProviderDetails() {
     );
   }, []);
 
-  const fetchAllCounties = async () => {
+  const fetchAllCounties = useCallback(async () => {
     try {
       const response = await fetch(`${backendUrl}/county`, {
         method: "GET",
@@ -300,7 +298,7 @@ function ProviderDetails() {
     } catch (error) {
       setError("An error occurred. Please try again later.");
     }
-  };
+  }, []); // Empty dependency array means this function won't change unless a prop or state used inside changes.
 
   useEffect(() => {
     // Fetch counties when the component mounts
