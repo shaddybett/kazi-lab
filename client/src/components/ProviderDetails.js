@@ -298,7 +298,7 @@ function ProviderDetails() {
     } catch (error) {
       setError("An error occurred. Please try again later.");
     }
-  }, []); // Empty dependency array means this function won't change unless a prop or state used inside changes.
+  }, [backendUrl]); 
 
   useEffect(() => {
     // Fetch counties when the component mounts
