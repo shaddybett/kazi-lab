@@ -260,6 +260,8 @@ function PhoneNumberPopup({ phoneNumber, onClose }) {
   const currentUserId = localStorage.getItem("id");
   const userJson = localStorage.getItem("user");
   const [messageContent, setMessageContent] = useState("");
+  const [bankCode, setBankCode] = useState("");
+  const [accountNumber, setAccountNumber] = useState("");
 
   const user = userJson ? JSON.parse(userJson) : null;
 
@@ -270,11 +272,14 @@ function PhoneNumberPopup({ phoneNumber, onClose }) {
       console.error("No user found in local storage");
     }
   };
-  const handleClickOutside = useCallback((event) => {
-    if (popupRef.current && !popupRef.current.contains(event.target)) {
-      onClose();
-    }
-  }, [onClose]);
+  const handleClickOutside = useCallback(
+    (event) => {
+      if (popupRef.current && !popupRef.current.contains(event.target)) {
+        onClose();
+      }
+    },
+    [onClose]
+  );
 
   useEffect(() => {
     document.addEventListener("mousedown", handleClickOutside);
@@ -314,6 +319,8 @@ function PhoneNumberPopup({ phoneNumber, onClose }) {
         body: JSON.stringify({
           receiver_id: idd,
           amount: 20,
+          bank_code: bankCode,
+          account_number: accountNumber,
         }),
       });
 
@@ -324,11 +331,12 @@ function PhoneNumberPopup({ phoneNumber, onClose }) {
       const data = await response.json();
       const cardElement = elements.getElement(CardElement);
 
-      const { error: stripeError, paymentIntent } = await stripe.confirmCardPayment(data.client_secret, {
-        payment_method: {
-          card: cardElement,
-        },
-      });
+      const { error: stripeError, paymentIntent } =
+        await stripe.confirmCardPayment(data.client_secret, {
+          payment_method: {
+            card: cardElement,
+          },
+        });
 
       if (stripeError) {
         throw new Error(stripeError.message);
@@ -340,14 +348,13 @@ function PhoneNumberPopup({ phoneNumber, onClose }) {
       } else {
         setError(`Payment failed with status: ${paymentIntent.status}`);
       }
-      
     } catch (error) {
       setError(`Error processing payment: ${error.message}`);
     } finally {
       setLoading(false);
     }
   };
-  
+
   const unLikeJob = async () => {
     setLoading(true);
     setError(null);
@@ -506,6 +513,24 @@ function PhoneNumberPopup({ phoneNumber, onClose }) {
                   Enter Your Card Details
                 </h2>
                 <form onSubmit={handleSubmitPayment}>
+                  <div className="mb-4">
+                    <Label htmlFor="bank-code" value="Bank Code" />
+                    <TextInput
+                      id="bank-code"
+                      value={bankCode}
+                      onChange={(e) => setBankCode(e.target.value)}
+                      required
+                    />
+                  </div>
+                  <div className="mb-4">
+                    <Label htmlFor="account-number" value="Account Number" />
+                    <TextInput
+                      id="account-number"
+                      value={accountNumber}
+                      onChange={(e) => setAccountNumber(e.target.value)}
+                      required
+                    />
+                  </div>
                   <CardElement className="mb-4" />
                   <Button
                     gradientDuoTone="purpleToBlue"
