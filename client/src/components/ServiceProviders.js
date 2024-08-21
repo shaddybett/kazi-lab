@@ -134,7 +134,7 @@ function ServiceProviders() {
           )}
           <ul className="divide-y divide-gray-200 dark:divide-gray-700">
             {providers.length === 0 ? (
-              <p>No providers available</p>
+              <p className="text-gray-500" >No providers available</p>
             ) : (
               providers.map((provider, index) => (
                 <li
