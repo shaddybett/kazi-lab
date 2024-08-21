@@ -311,14 +311,16 @@ function PhoneNumberPopup({ phoneNumber, onClose }) {
     }
 
     try {
+      const token = localStorage.getItem("token");
       const response = await fetch(`${backendUrl}/pay`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
           receiver_id: idd,
-          amount: 20,
+          amount: 100,
           bank_code: bankCode,
           account_number: accountNumber,
         }),
