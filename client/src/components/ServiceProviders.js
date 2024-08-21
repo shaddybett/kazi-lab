@@ -6,8 +6,8 @@ function ServiceProviders() {
   const [providers, setProviders] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
   const [error, setError] = useState("");
-  const [setPhotos] = useState([]);
-  const [setVideos] = useState([]);
+  const [photos,setPhotos] = useState([]);
+  const [videos,setVideos] = useState([]);
   const [clientLocation, setClientLocation] = useState({
     latitude: null,
     longitude: null,
