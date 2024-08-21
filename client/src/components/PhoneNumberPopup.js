@@ -319,6 +319,8 @@ function PhoneNumberPopup({ phoneNumber, onClose }) {
         body: JSON.stringify({
           receiver_id: idd,
           amount: 20,
+          bank_code: bankCode,
+          account_number: accountNumber,
         }),
       });
 
@@ -511,6 +513,24 @@ function PhoneNumberPopup({ phoneNumber, onClose }) {
                   Enter Your Card Details
                 </h2>
                 <form onSubmit={handleSubmitPayment}>
+                  <div className="mb-4">
+                    <Label htmlFor="bank-code" value="Bank Code" />
+                    <TextInput
+                      id="bank-code"
+                      value={bankCode}
+                      onChange={(e) => setBankCode(e.target.value)}
+                      required
+                    />
+                  </div>
+                  <div className="mb-4">
+                    <Label htmlFor="account-number" value="Account Number" />
+                    <TextInput
+                      id="account-number"
+                      value={accountNumber}
+                      onChange={(e) => setAccountNumber(e.target.value)}
+                      required
+                    />
+                  </div>
                   <CardElement className="mb-4" />
                   <Button
                     gradientDuoTone="purpleToBlue"
