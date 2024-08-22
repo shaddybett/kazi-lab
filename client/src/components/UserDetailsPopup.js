@@ -207,7 +207,7 @@ import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
 
 // Load your Stripe publishable key
-const stripePromise = loadStripe("pk_live_51PpWVz2LNaBLa9OHujPAFFVNHonHKiydkK5BTWellDfSfsTX6n0OXIfYZ57dRV6hzOVNwQW4Q7V9SWZAq6DNi1AG00me1GFA0D");
+const stripePromise = loadStripe("pk_live_51PpWVz2LNaBLa90HujPAFFVNHonHKiydkK5BTWeIIDfSfsTX6n00XlfYZ57dRV6hz0VNwQW4Q7V9SWZAq6DN11AG00me1GFA0D");
 
 function UserDetailsPopup({ user, onClose }) {
   const popupRef = useRef();

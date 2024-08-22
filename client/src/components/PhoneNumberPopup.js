@@ -244,7 +244,7 @@ import {
 } from "@stripe/react-stripe-js";
 
 const stripePromise = loadStripe(
-  "pk_live_51PpWVz2LNaBLa9OHujPAFFVNHonHKiydkK5BTWellDfSfsTX6n0OXIfYZ57dRV6hzOVNwQW4Q7V9SWZAq6DNi1AG00me1GFA0D"
+  "pk_live_51PpWVz2LNaBLa90HujPAFFVNHonHKiydkK5BTWeIIDfSfsTX6n00XlfYZ57dRV6hz0VNwQW4Q7V9SWZAq6DN11AG00me1GFA0D"
 );
 
 function PhoneNumberPopup({ phoneNumber, onClose }) {
