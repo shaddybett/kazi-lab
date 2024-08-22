@@ -310,6 +310,15 @@ function PhoneNumberPopup({ phoneNumber, onClose }) {
       return;
     }
 
+    const cardElement = elements.getElement(CardElement);
+    if (!cardElement) {
+      setError(
+        "Card details not found. Please ensure the card element is correctly mounted."
+      );
+      setLoading(false);
+      return;
+    }
+
     try {
       const token = localStorage.getItem("token");
       const response = await fetch(`${backendUrl}/pay`, {
@@ -331,7 +340,6 @@ function PhoneNumberPopup({ phoneNumber, onClose }) {
       }
 
       const data = await response.json();
-      const cardElement = elements.getElement(CardElement);
 
       const { error: stripeError, paymentIntent } =
         await stripe.confirmCardPayment(data.client_secret, {
@@ -356,6 +364,65 @@ function PhoneNumberPopup({ phoneNumber, onClose }) {
       setLoading(false);
     }
   };
+
+  // const handleSubmitPayment = async (event) => {
+  //   event.preventDefault();
+  //   setLoading(true);
+  //   setError(null);
+  //   setSuccess(null);
+
+  //   if (!stripe || !elements) {
+  //     setError("Stripe has not loaded yet.");
+  //     setLoading(false);
+  //     return;
+  //   }
+
+  //   try {
+  //     const token = localStorage.getItem("token");
+  //     const response = await fetch(`${backendUrl}/pay`, {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //         Authorization: `Bearer ${token}`,
+  //       },
+  //       body: JSON.stringify({
+  //         receiver_id: idd,
+  //         amount: 100,
+  //         bank_code: bankCode,
+  //         account_number: accountNumber,
+  //       }),
+  //     });
+
+  //     if (!response.ok) {
+  //       throw new Error(`Network response was not ok: ${response.statusText}`);
+  //     }
+
+  //     const data = await response.json();
+  //     const cardElement = elements.getElement(CardElement);
+
+  //     const { error: stripeError, paymentIntent } =
+  //       await stripe.confirmCardPayment(data.client_secret, {
+  //         payment_method: {
+  //           card: cardElement,
+  //         },
+  //       });
+
+  //     if (stripeError) {
+  //       throw new Error(stripeError.message);
+  //     }
+
+  //     if (paymentIntent.status === "succeeded") {
+  //       setSuccess("Payment processed successfully");
+  //       setPaymentModalOpen(false);
+  //     } else {
+  //       setError(`Payment failed with status: ${paymentIntent.status}`);
+  //     }
+  //   } catch (error) {
+  //     setError(`Error processing payment: ${error.message}`);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
 
   const unLikeJob = async () => {
     setLoading(true);
