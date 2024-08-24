@@ -466,7 +466,7 @@ function PhoneNumberPopup({ phoneNumber, onClose }) {
 
       if (paymentIntent.status === "succeeded") {
         setSuccess("Payment processed successfully");
-        onClose(); // Close popup on successful payment
+        onClose(); 
       } else {
         setError(`Payment failed with status: ${paymentIntent.status}`);
       }
