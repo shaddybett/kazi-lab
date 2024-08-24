@@ -3,6 +3,7 @@ import React from "react";
 import MessageInput from "./MessageInput";
 import MessageBubble from "./MessageBubble";
 import { IoMdChatbubbles } from "react-icons/io";
+import './Chat.css'
 
 const ChatWindow = ({ activeUser, messages, sendMessage, detailss }) => {
   console.log("ChatWindow: detailss", detailss);
@@ -19,7 +20,7 @@ const ChatWindow = ({ activeUser, messages, sendMessage, detailss }) => {
   return (
     <div className="flex-grow bg-gray-900 p-4 flex flex-col justify-between">
       <div className="flex items-center justify-between mb-4">
-        <div className="flex items-center">
+      <div className="flex items-center">
           <img
             src={activeUser.image || "default-avatar-img" }
             alt={activeUser.name}
