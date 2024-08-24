@@ -194,6 +194,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import Sidebar from "../Chat/SideBar";
 import ChatWindow from "../Chat/ChatWindow";
+import './Chatbox.css'
 
 const ServiceProviderChatBox = ({ providerId }) => {
   const [messages, setMessages] = useState([]);
