@@ -1,9 +1,11 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 function Sponsored() {
+  const [bankCode,setBankCode] = useState(null)
+  
   return (
     <div>
-      
+
     </div>
   )
 }
