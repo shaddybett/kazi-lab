@@ -106,12 +106,6 @@ function PayPopup( onClose ) {
       <div ref={popupRef} className="bg-white rounded-lg p-6 w-full max-w-xs md:max-w-sm mx-4 md:mx-0" onClick={stopPropagation}>
         <div className="flex flex-col items-center gap-2 mt-10">
           <div className="text-center md:text-left">
-            <p className="text-black">
-              <strong>Phone Number:</strong> {phoneNumber}{" "}
-              <a href={`tel:${phoneNumber}`} className="ml-0 text-blue-500">
-                <FontAwesomeIcon icon={faPhone} className="ml-5" />
-              </a>
-            </p>
           </div>
           <p className="text-black">Click the button below to pay 20 dollars to account 24235627829</p>
           <form onSubmit={handleSubmitPayment}>
