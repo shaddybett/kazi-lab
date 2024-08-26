@@ -14,6 +14,7 @@ import Providers from "./components/Providers";
 import AdminPage from "./Pages/AdminPage/AdminPage";
 import ChatBox from "./Pages/Chatbox/ChatBox";
 import Sponsored from "./Pages/Sponsored";
+import Sponsor from "./Pages/Sponsor";
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
       <Route path="/primes" element={<Providers />} />
       <Route path="/chat/:userId" element={<ChatBox />} />
       <Route path="/sponsored" element={<Sponsored />} />
+      <Route path="/sponsor" element={<Sponsor />} />
     </Routes>
   );
 }
