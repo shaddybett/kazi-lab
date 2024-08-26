@@ -11,7 +11,9 @@ function Sponsored() {
   const handleBankAccount = ()=>{
     setBankAccount()
   }
-  const 
+  const handleAmount = ()=>{
+    setAmount()
+  }
   return (
     <div>
       <input type='text'  />
