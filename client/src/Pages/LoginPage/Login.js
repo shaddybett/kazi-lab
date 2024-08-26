@@ -40,6 +40,8 @@ function Login() {
           navigate("/clientPage");
         } else if (data.role_id === 1) {
           navigate("/adminPage");
+        } else if (data.role_id === 4) {
+          navigate ("/sponsored")
         }
       } else {
         const errorMessage = await response.json();
