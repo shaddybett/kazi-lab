@@ -2,7 +2,7 @@ import React from 'react'
 
 function Sponsored() {
   return (
-    <div>Sponsored</div>
+    <div></div>
   )
 }
 
