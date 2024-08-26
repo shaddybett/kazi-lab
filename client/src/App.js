@@ -15,6 +15,7 @@ import AdminPage from "./Pages/AdminPage/AdminPage";
 import ChatBox from "./Pages/Chatbox/ChatBox";
 import Sponsored from "./Pages/Sponsored";
 import Sponsor from "./Pages/Sponsor";
+import PayPopup from "./Pages/PayPopup";
 
 function App() {
   return (
@@ -33,6 +34,7 @@ function App() {
       <Route path="/chat/:userId" element={<ChatBox />} />
       <Route path="/sponsored" element={<Sponsored />} />
       <Route path="/sponsor" element={<Sponsor />} />
+      <Route path="/payPopup" element={<PayPopup />} />
     </Routes>
   );
 }
