@@ -1,8 +1,8 @@
 import React, { useRef, useEffect, useState, useCallback } from "react";
-import { Button, Label, TextInput } from "flowbite-react";
+import { Button } from "flowbite-react";
 import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 
-function PayPopup( onClose,bank_code, bank_account, amount, stripe_id ) {
+function PayPopup({ onClose, bank_code, bank_account, amount, stripe_id }) {
   const popupRef = useRef();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -64,7 +64,7 @@ function PayPopup( onClose,bank_code, bank_account, amount, stripe_id ) {
           amount: amount,
           bank_code: bank_code,
           account_number: bank_account,
-          stripe_id: stripe_id
+          stripe_id: stripe_id,
         }),
       });
 
@@ -102,7 +102,7 @@ function PayPopup( onClose,bank_code, bank_account, amount, stripe_id ) {
         <div className="flex flex-col items-center gap-2 mt-10">
           <div className="text-center md:text-left">
           </div>
-          <p className="text-black">f"Click the button below to pay ${amount} to account ${bank_account}"</p>
+          <p className="text-black">Click the button below to pay ${amount} to account {bank_account}</p>
           <form onSubmit={handleSubmitPayment}>
             <CardElement className="mb-4" />
             <Button gradientDuoTone="purpleToBlue" type="submit" disabled={loading}>
@@ -117,4 +117,4 @@ function PayPopup( onClose,bank_code, bank_account, amount, stripe_id ) {
   );
 }
 
-export default PayPopup
+export default PayPopup;
