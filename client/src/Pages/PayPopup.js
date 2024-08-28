@@ -1,14 +1,12 @@
 import React, { useRef, useEffect, useState, useCallback } from "react";
-import { Button, Label, TextInput } from "flowbite-react";
+import { Button } from "flowbite-react";
 import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 
-function PayPopup( onClose ) {
+function PayPopup({ onClose, bank_code, bank_account, amount, stripe_id }) {
   const popupRef = useRef();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
-  const [bankCode, setBankCode] = useState("");
-  const [accountNumber, setAccountNumber] = useState("");
 
   const stripe = useStripe();
   const elements = useElements();
@@ -55,7 +53,6 @@ function PayPopup( onClose ) {
     try {
       const backendUrl = process.env.REACT_APP_BACKEND_URL;
       const token = localStorage.getItem("token");
-      const idd = localStorage.getItem("idid");
 
       const response = await fetch(`${backendUrl}/pay`, {
         method: "POST",
@@ -64,10 +61,10 @@ function PayPopup( onClose ) {
           Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
-          receiver_id: idd,
-          amount: 100,
-          bank_code: bankCode,
-          account_number: accountNumber,
+          amount: amount,
+          bank_code: bank_code,
+          account_number: bank_account,
+          stripe_id: stripe_id,
         }),
       });
 
@@ -105,16 +102,8 @@ function PayPopup( onClose ) {
         <div className="flex flex-col items-center gap-2 mt-10">
           <div className="text-center md:text-left">
           </div>
-          <p className="text-black">Click the button below to pay 20 dollars to account 24235627829</p>
+          <p className="text-black">Click the button below to pay ${amount} to account {bank_account}</p>
           <form onSubmit={handleSubmitPayment}>
-            <div className="mb-4">
-              <Label htmlFor="bank-code" value="Bank Code" />
-              <TextInput id="bank-code" value={bankCode} onChange={(e) => setBankCode(e.target.value)} required />
-            </div>
-            <div className="mb-4">
-              <Label htmlFor="account-number" value="Account Number" />
-              <TextInput id="account-number" value={accountNumber} onChange={(e) => setAccountNumber(e.target.value)} required />
-            </div>
             <CardElement className="mb-4" />
             <Button gradientDuoTone="purpleToBlue" type="submit" disabled={loading}>
               {loading ? "Processing..." : "Submit Payment"}
@@ -128,4 +117,4 @@ function PayPopup( onClose ) {
   );
 }
 
-export default PayPopup
+export default PayPopup;
