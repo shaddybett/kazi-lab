@@ -16,7 +16,8 @@ function Sponsor() {
 
   const handleNeedyStudents = async () => {
     try {
-      const response = await fetch("/fetch_needy", {
+      const backendUrl = process.env.REACT_APP_BACKEND_URL;
+      const response = await fetch(`${backendUrl}/fetch_needy`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
