@@ -741,7 +741,7 @@ function ProviderDashboard() {
     } catch (error) {
       setError("An error occurred. Please try again later.");
     }
-  }, [backendUrl]); // If fetchData relies on some external variables, include them in the dependency array.
+  }, [backendUrl]);
 
   const fetchAllServices = useCallback(async () => {
     try {
