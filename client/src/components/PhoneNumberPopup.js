@@ -332,6 +332,10 @@ import React, { useRef, useEffect, useState, useCallback } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPhone } from "@fortawesome/free-solid-svg-icons";
 import { Button, Label, TextInput } from "flowbite-react";
+import thumb from "../assets/thumb.png";
+import down from "../assets/down.png";
+import chat from "../assets/chat.png";
+import ChatBox from "../Pages/Chatbox/ChatBox";
 
 function PhoneNumberPopup({ phoneNumber, onClose }) {
   const popupRef = useRef();
