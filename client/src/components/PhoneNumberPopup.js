@@ -251,82 +251,76 @@
 //         className="bg-white rounded-lg p-6 w-full max-w-xs md:max-w-sm mx-4 md:mx-0"
 //         onClick={stopPropagation}
 //       >
-//         <div className="flex flex-col items-center gap-2 mt-10">
-//           <div className="text-center md:text-left ">
-//             <p className=" text-black">
-//               {name} is grateful for the assignment and asks you to leave a like
-//               to help get more clients.
-//             </p>
-//             <p className="mt-3 text-black">
-//               <strong>Phone Number:</strong> {phoneNumber}{" "}
-//               <a href={`tel:${phoneNumber}`} className="ml-0 text-blue-500">
-//                 <FontAwesomeIcon icon={faPhone} className="ml-5" />
-//               </a>
-//             </p>
-//           </div>
-//           <p className="text-black">
-//             Click the button below to pay 20 dollars to account 24235627829
-//           </p>
-//           <Button onClick={handlePaymentButtonClick} className="mt-4">
-//             Pay
-//           </Button>
-//           <div className="flex flex-row items-center justify-start mt-3">
-//             <img
-//               src={thumb}
-//               alt="thumbs up"
-//               onClick={likeJob}
-//               disabled={loading}
-//               className="mr-16 cursor-pointer"
-//             />
-//             <img
-//               src={down}
-//               alt="thumbs down"
-//               onClick={unLikeJob}
-//               disabled={loading}
-//               className="mr-16 cursor-pointer"
-//             />
-//             <img
-//               src={chat}
-//               alt="chat"
-//               onClick={handleChatClick}
-//               disabled={loading}
-//               className="cursor-pointer"
-//             />
-//           </div>
-//           <div>
-//             <div className="mb-2 block">
-//               <Label
-//                 htmlFor="input-gray"
-//                 color="gray"
-//                 value={`Anything you would like to tell the administration concerning ${name}?`}
-//               />
-//             </div>
-//             <TextInput
-//               id="input-gray"
-//               placeholder="Your text here..."
-//               required
-//               color="gray"
-//               value={messageContent}
-//               onChange={(e) => setMessageContent(e.target.value)}
-//             />
-//             <Button
-//               gradientDuoTone="purpleToBlue"
-//               className="mt-4 ml-20"
-//               onClick={handleSendMessage}
-//             >
-//               Send
-//             </Button>
-//           </div>
-//           {error && <p className="text-red-500 mt-2">{error}</p>}
-//           {success && <p className="text-green-500 mt-2">{success}</p>}
-//           {chatUser && (
-//             <ChatBox
-//               senderId={currentUserId}
-//               receiver={chatUser}
-//               onClose={onCloseChat}
-//             />
-//           )}
-//         </div>
+// <div className="flex flex-col items-center gap-2 mt-10">
+//   <div className="text-center md:text-left ">
+//     <p className=" text-black">
+//       {name} is grateful for the assignment and asks you to leave a like
+//       to help get more clients.
+//     </p>
+//     <p className="mt-3 text-black">
+//       <strong>Phone Number:</strong> {phoneNumber}{" "}
+//       <a href={`tel:${phoneNumber}`} className="ml-0 text-blue-500">
+//         <FontAwesomeIcon icon={faPhone} className="ml-5" />
+//       </a>
+//     </p>
+//   </div>
+//   <div className="flex flex-row items-center justify-start mt-3">
+//     <img
+//       src={thumb}
+//       alt="thumbs up"
+//       onClick={likeJob}
+//       disabled={loading}
+//       className="mr-16 cursor-pointer"
+//     />
+//     <img
+//       src={down}
+//       alt="thumbs down"
+//       onClick={unLikeJob}
+//       disabled={loading}
+//       className="mr-16 cursor-pointer"
+//     />
+//     <img
+//       src={chat}
+//       alt="chat"
+//       onClick={handleChatClick}
+//       disabled={loading}
+//       className="cursor-pointer"
+//     />
+//   </div>
+//   <div>
+//     <div className="mb-2 block">
+//       <Label
+//         htmlFor="input-gray"
+//         color="gray"
+//         value={`Anything you would like to tell the administration concerning ${name}?`}
+//       />
+//     </div>
+//     <TextInput
+//       id="input-gray"
+//       placeholder="Your text here..."
+//       required
+//       color="gray"
+//       value={messageContent}
+//       onChange={(e) => setMessageContent(e.target.value)}
+//     />
+//     <Button
+//       gradientDuoTone="purpleToBlue"
+//       className="mt-4 ml-20"
+//       onClick={handleSendMessage}
+//     >
+//       Send
+//     </Button>
+//   </div>
+//   {error && <p className="text-red-500 mt-2">{error}</p>}
+//   {success && <p className="text-green-500 mt-2">{success}</p>}
+//   {chatUser && (
+//     <ChatBox
+//       senderId={currentUserId}
+//       receiver={chatUser}
+//       onClose={onCloseChat}
+//     />
+//   )}
+// </div>
 //       </div>
 //     </div>
 //   );
@@ -496,16 +490,74 @@ function PhoneNumberPopup({ phoneNumber, onClose }) {
         onClick={stopPropagation}
       >
         <div className="flex flex-col items-center gap-2 mt-10">
-          <div className="text-center md:text-left">
-            <p className="text-black">
+          <div className="text-center md:text-left ">
+            <p className=" text-black">
+              {name} is grateful for the assignment and asks you to leave a like
+              to help get more clients.
+            </p>
+            <p className="mt-3 text-black">
               <strong>Phone Number:</strong> {phoneNumber}{" "}
               <a href={`tel:${phoneNumber}`} className="ml-0 text-blue-500">
                 <FontAwesomeIcon icon={faPhone} className="ml-5" />
               </a>
             </p>
           </div>
+          <div className="flex flex-row items-center justify-start mt-3">
+            <img
+              src={thumb}
+              alt="thumbs up"
+              onClick={likeJob}
+              disabled={loading}
+              className="mr-16 cursor-pointer"
+            />
+            <img
+              src={down}
+              alt="thumbs down"
+              onClick={unLikeJob}
+              disabled={loading}
+              className="mr-16 cursor-pointer"
+            />
+            <img
+              src={chat}
+              alt="chat"
+              onClick={handleChatClick}
+              disabled={loading}
+              className="cursor-pointer"
+            />
+          </div>
+          <div>
+            <div className="mb-2 block">
+              <Label
+                htmlFor="input-gray"
+                color="gray"
+                value={`Anything you would like to tell the administration concerning ${name}?`}
+              />
+            </div>
+            <TextInput
+              id="input-gray"
+              placeholder="Your text here..."
+              required
+              color="gray"
+              value={messageContent}
+              onChange={(e) => setMessageContent(e.target.value)}
+            />
+            <Button
+              gradientDuoTone="purpleToBlue"
+              className="mt-4 ml-20"
+              onClick={handleSendMessage}
+            >
+              Send
+            </Button>
+          </div>
           {error && <p className="text-red-500 mt-2">{error}</p>}
           {success && <p className="text-green-500 mt-2">{success}</p>}
+          {chatUser && (
+            <ChatBox
+              senderId={currentUserId}
+              receiver={chatUser}
+              onClose={onCloseChat}
+            />
+          )}
         </div>
       </div>
     </div>
