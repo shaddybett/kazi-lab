@@ -34,7 +34,7 @@
 //   const [bankCode, setBankCode] = useState("");
 //   const [accountNumber, setAccountNumber] = useState("");
 
-//   const user = userJson ? JSON.parse(userJson) : null;
+  // const user = userJson ? JSON.parse(userJson) : null;
 
 //   const handleChatClick = () => {
 //     if (user) {
@@ -385,10 +385,23 @@ function PhoneNumberPopup({ phoneNumber, onClose }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
+  const [chatUser, setChatUser] = useState(null);
+  const backendUrl = process.env.REACT_APP_BACKEND_URL;
+  const name = localStorage.getItem("namme");
+  const idd = localStorage.getItem("idid");
+  const currentUserId = localStorage.getItem("id");
+  const userJson = localStorage.getItem("user");
+  const [messageContent, setMessageContent] = useState("");
 
+  const user = userJson ? JSON.parse(userJson) : null;
 
-  const stripe = useStripe();
-  const elements = useElements();
+  const handleChatClick = () => {
+    if (user) {
+      setChatUser(user);
+    } else {
+      console.error("No user found in local storage");
+    }
+  };
 
   const handleClickOutside = useCallback(
     (event) => {
@@ -410,71 +423,6 @@ function PhoneNumberPopup({ phoneNumber, onClose }) {
     event.stopPropagation();
   };
 
-  const handleSubmitPayment = async (event) => {
-    event.preventDefault();
-    setLoading(true);
-    setError(null);
-    setSuccess(null);
-
-    if (!stripe || !elements) {
-      setError("Stripe has not loaded yet.");
-      setLoading(false);
-      return;
-    }
-
-    const cardElement = elements.getElement(CardElement);
-    if (!cardElement) {
-      setError("Card details not found. Please ensure the card element is correctly mounted.");
-      setLoading(false);
-      return;
-    }
-
-    try {
-      const backendUrl = process.env.REACT_APP_BACKEND_URL;
-      const token = localStorage.getItem("token");
-      const idd = localStorage.getItem("idid");
-
-      const response = await fetch(`${backendUrl}/pay`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          receiver_id: idd,
-          amount: 100,
-          bank_code: bankCode,
-          account_number: accountNumber,
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error(`Network response was not ok: ${response.statusText}`);
-      }
-
-      const data = await response.json();
-      const { error: stripeError, paymentIntent } = await stripe.confirmCardPayment(data.client_secret, {
-        payment_method: {
-          card: cardElement,
-        },
-      });
-
-      if (stripeError) {
-        throw new Error(stripeError.message);
-      }
-
-      if (paymentIntent.status === "succeeded") {
-        setSuccess("Payment processed successfully");
-        onClose(); 
-      } else {
-        setError(`Payment failed with status: ${paymentIntent.status}`);
-      }
-    } catch (error) {
-      setError(`Error processing payment: ${error.message}`);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50" onClick={handleClickOutside}>
