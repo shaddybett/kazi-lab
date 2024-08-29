@@ -34,7 +34,7 @@
 //   const [bankCode, setBankCode] = useState("");
 //   const [accountNumber, setAccountNumber] = useState("");
 
-  // const user = userJson ? JSON.parse(userJson) : null;
+// const user = userJson ? JSON.parse(userJson) : null;
 
 //   const handleChatClick = () => {
 //     if (user) {
@@ -88,7 +88,7 @@
 //       setError(
 //         "Card details not found. Please ensure the card element is correctly mounted."
 //       );
-//       setLoading(false);  
+//       setLoading(false);
 //       return;
 //     }
 
@@ -138,108 +138,108 @@
 //     }
 //   };
 
-//   const unLikeJob = async () => {
-//     setLoading(true);
-//     setError(null);
-//     setSuccess(null);
-//     try {
-//       const response = await fetch(`${backendUrl}/unlike_job/${idd}`, {
+// const unLikeJob = async () => {
+//   setLoading(true);
+//   setError(null);
+//   setSuccess(null);
+//   try {
+//     const response = await fetch(`${backendUrl}/unlike_job/${idd}`, {
+//       method: "POST",
+//       headers: {
+//         "Content-Type": "application/json",
+//       },
+//     });
+
+//     if (!response.ok) {
+//       throw new Error(`Network response was not ok: ${response.statusText}`);
+//     }
+
+//     setSuccess("unLike added ");
+//   } catch (error) {
+//     setError("Error unliking job");
+//     console.error("Error liking job:", error);
+//   } finally {
+//     setLoading(false);
+//   }
+// };
+
+// const likeJob = async () => {
+//   setLoading(true);
+//   setError(null);
+//   setSuccess(null);
+//   try {
+//     const response = await fetch(`${backendUrl}/like_job/${idd}`, {
+//       method: "POST",
+//       headers: {
+//         "Content-Type": "application/json",
+//       },
+//     });
+
+//     if (!response.ok) {
+//       throw new Error(`Network response was not ok: ${response.statusText}`);
+//     }
+
+//     setSuccess("Like added successfully");
+//   } catch (error) {
+//     setError("Error liking job");
+//     console.error("Error liking job:", error);
+//   } finally {
+//     setLoading(false);
+//   }
+// };
+
+// const onCloseChat = () => {
+//   setChatUser(null);
+// };
+
+// const admins = [7];
+
+// const handleSendMessage = async () => {
+//   if (messageContent === "") {
+//     setError("Input field can't be empty");
+//     console.log("Message is empty, not sending");
+//     return;
+//   }
+
+//   try {
+//     console.log("Sending message from user:", currentUserId);
+//     console.log("Message content:", messageContent);
+
+//     const sendMessages = admins.map(async (adminId) => {
+//       const response = await fetch(`${backendUrl}/send_message`, {
 //         method: "POST",
 //         headers: {
 //           "Content-Type": "application/json",
 //         },
+//         body: JSON.stringify({
+//           sender_id: currentUserId,
+//           receiver_id: adminId,
+//           content: messageContent,
+//         }),
 //       });
 
 //       if (!response.ok) {
-//         throw new Error(`Network response was not ok: ${response.statusText}`);
-//       }
-
-//       setSuccess("unLike added ");
-//     } catch (error) {
-//       setError("Error unliking job");
-//       console.error("Error liking job:", error);
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
-
-//   const likeJob = async () => {
-//     setLoading(true);
-//     setError(null);
-//     setSuccess(null);
-//     try {
-//       const response = await fetch(`${backendUrl}/like_job/${idd}`, {
-//         method: "POST",
-//         headers: {
-//           "Content-Type": "application/json",
-//         },
-//       });
-
-//       if (!response.ok) {
-//         throw new Error(`Network response was not ok: ${response.statusText}`);
-//       }
-
-//       setSuccess("Like added successfully");
-//     } catch (error) {
-//       setError("Error liking job");
-//       console.error("Error liking job:", error);
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
-
-//   const onCloseChat = () => {
-//     setChatUser(null);
-//   };
-
-//   const admins = [7];
-
-//   const handleSendMessage = async () => {
-//     if (messageContent === "") {
-//       setError("Input field can't be empty");
-//       console.log("Message is empty, not sending");
-//       return;
-//     }
-
-//     try {
-//       console.log("Sending message from user:", currentUserId);
-//       console.log("Message content:", messageContent);
-
-//       const sendMessages = admins.map(async (adminId) => {
-//         const response = await fetch(`${backendUrl}/send_message`, {
-//           method: "POST",
-//           headers: {
-//             "Content-Type": "application/json",
-//           },
-//           body: JSON.stringify({
-//             sender_id: currentUserId,
-//             receiver_id: adminId,
-//             content: messageContent,
-//           }),
-//         });
-
-//         if (!response.ok) {
-//           const errorData = await response.json();
-//           throw new Error(
-//             `Network response was not ok: ${response.statusText} - ${errorData.error}`
-//           );
-//         }
-
-//         console.log(
-//           `Message sent to admin ${adminId} with response:`,
-//           response
+//         const errorData = await response.json();
+//         throw new Error(
+//           `Network response was not ok: ${response.statusText} - ${errorData.error}`
 //         );
-//       });
+//       }
 
-//       await Promise.all(sendMessages);
-//       setSuccess("Message sent successfully");
-//     } catch (error) {
-//       console.error("Error sending message:", error);
-//       setError(`Error sending message: ${error.message}`);
-//     } finally {
-//       setMessageContent("");
-//     }
-//   };
+//       console.log(
+//         `Message sent to admin ${adminId} with response:`,
+//         response
+//       );
+//     });
+
+//     await Promise.all(sendMessages);
+//     setSuccess("Message sent successfully");
+//   } catch (error) {
+//     console.error("Error sending message:", error);
+//     setError(`Error sending message: ${error.message}`);
+//   } finally {
+//     setMessageContent("");
+//   }
+// };
 
 //   return (
 //     <div
@@ -371,9 +371,6 @@
 
 // export default PhoneNumberPopup;
 
-
-
-
 import React, { useRef, useEffect, useState, useCallback } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPhone } from "@fortawesome/free-solid-svg-icons";
@@ -422,11 +419,119 @@ function PhoneNumberPopup({ phoneNumber, onClose }) {
   const stopPropagation = (event) => {
     event.stopPropagation();
   };
+  const unLikeJob = async () => {
+    setLoading(true);
+    setError(null);
+    setSuccess(null);
+    try {
+      const response = await fetch(`${backendUrl}/unlike_job/${idd}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
 
+      if (!response.ok) {
+        throw new Error(`Network response was not ok: ${response.statusText}`);
+      }
+
+      setSuccess("unLike added ");
+    } catch (error) {
+      setError("Error unliking job");
+      console.error("Error liking job:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const likeJob = async () => {
+    setLoading(true);
+    setError(null);
+    setSuccess(null);
+    try {
+      const response = await fetch(`${backendUrl}/like_job/${idd}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(`Network response was not ok: ${response.statusText}`);
+      }
+
+      setSuccess("Like added successfully");
+    } catch (error) {
+      setError("Error liking job");
+      console.error("Error liking job:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const onCloseChat = () => {
+    setChatUser(null);
+  };
+
+  const admins = [7];
+
+  const handleSendMessage = async () => {
+    if (messageContent === "") {
+      setError("Input field can't be empty");
+      console.log("Message is empty, not sending");
+      return;
+    }
+
+    try {
+      console.log("Sending message from user:", currentUserId);
+      console.log("Message content:", messageContent);
+
+      const sendMessages = admins.map(async (adminId) => {
+        const response = await fetch(`${backendUrl}/send_message`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            sender_id: currentUserId,
+            receiver_id: adminId,
+            content: messageContent,
+          }),
+        });
+
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(
+            `Network response was not ok: ${response.statusText} - ${errorData.error}`
+          );
+        }
+
+        console.log(
+          `Message sent to admin ${adminId} with response:`,
+          response
+        );
+      });
+
+      await Promise.all(sendMessages);
+      setSuccess("Message sent successfully");
+    } catch (error) {
+      console.error("Error sending message:", error);
+      setError(`Error sending message: ${error.message}`);
+    } finally {
+      setMessageContent("");
+    }
+  };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50" onClick={handleClickOutside}>
-      <div ref={popupRef} className="bg-white rounded-lg p-6 w-full max-w-xs md:max-w-sm mx-4 md:mx-0" onClick={stopPropagation}>
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
+      onClick={handleClickOutside}
+    >
+      <div
+        ref={popupRef}
+        className="bg-white rounded-lg p-6 w-full max-w-xs md:max-w-sm mx-4 md:mx-0"
+        onClick={stopPropagation}
+      >
         <div className="flex flex-col items-center gap-2 mt-10">
           <div className="text-center md:text-left">
             <p className="text-black">
@@ -436,18 +541,34 @@ function PhoneNumberPopup({ phoneNumber, onClose }) {
               </a>
             </p>
           </div>
-          <p className="text-black">Click the button below to pay 20 dollars to account 24235627829</p>
+          <p className="text-black">
+            Click the button below to pay 20 dollars to account 24235627829
+          </p>
           <form onSubmit={handleSubmitPayment}>
             <div className="mb-4">
               <Label htmlFor="bank-code" value="Bank Code" />
-              <TextInput id="bank-code" value={bankCode} onChange={(e) => setBankCode(e.target.value)} required />
+              <TextInput
+                id="bank-code"
+                value={bankCode}
+                onChange={(e) => setBankCode(e.target.value)}
+                required
+              />
             </div>
             <div className="mb-4">
               <Label htmlFor="account-number" value="Account Number" />
-              <TextInput id="account-number" value={accountNumber} onChange={(e) => setAccountNumber(e.target.value)} required />
+              <TextInput
+                id="account-number"
+                value={accountNumber}
+                onChange={(e) => setAccountNumber(e.target.value)}
+                required
+              />
             </div>
             <CardElement className="mb-4" />
-            <Button gradientDuoTone="purpleToBlue" type="submit" disabled={loading}>
+            <Button
+              gradientDuoTone="purpleToBlue"
+              type="submit"
+              disabled={loading}
+            >
               {loading ? "Processing..." : "Submit Payment"}
             </Button>
           </form>
