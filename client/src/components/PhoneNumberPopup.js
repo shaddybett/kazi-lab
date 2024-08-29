@@ -385,8 +385,7 @@ function PhoneNumberPopup({ phoneNumber, onClose }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
-  const [bankCode, setBankCode] = useState("");
-  const [accountNumber, setAccountNumber] = useState("");
+
 
   const stripe = useStripe();
   const elements = useElements();
