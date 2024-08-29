@@ -12,7 +12,7 @@ function Sponsored() {
       setError("Invalid bank code");
       return false;
     }
-    if (!bankAccount.match(/^\d{12}$/)) {
+    if (!bankAccount.match(/^\d{13}$/)) {
       setError("Invalid bank account number");
       return false;
     }
