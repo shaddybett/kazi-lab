@@ -541,37 +541,6 @@ function PhoneNumberPopup({ phoneNumber, onClose }) {
               </a>
             </p>
           </div>
-          <p className="text-black">
-            Click the button below to pay 20 dollars to account 24235627829
-          </p>
-          <form onSubmit={handleSubmitPayment}>
-            <div className="mb-4">
-              <Label htmlFor="bank-code" value="Bank Code" />
-              <TextInput
-                id="bank-code"
-                value={bankCode}
-                onChange={(e) => setBankCode(e.target.value)}
-                required
-              />
-            </div>
-            <div className="mb-4">
-              <Label htmlFor="account-number" value="Account Number" />
-              <TextInput
-                id="account-number"
-                value={accountNumber}
-                onChange={(e) => setAccountNumber(e.target.value)}
-                required
-              />
-            </div>
-            <CardElement className="mb-4" />
-            <Button
-              gradientDuoTone="purpleToBlue"
-              type="submit"
-              disabled={loading}
-            >
-              {loading ? "Processing..." : "Submit Payment"}
-            </Button>
-          </form>
           {error && <p className="text-red-500 mt-2">{error}</p>}
           {success && <p className="text-green-500 mt-2">{success}</p>}
         </div>
