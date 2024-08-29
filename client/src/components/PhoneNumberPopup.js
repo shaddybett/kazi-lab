@@ -293,43 +293,6 @@
 //               className="cursor-pointer"
 //             />
 //           </div>
-//           {paymentModalOpen && (
-//             <Elements stripe={stripePromise}>
-//               <div className="bg-white rounded-lg p-4 w-full">
-//                 <h2 className="text-lg font-semibold mb-4">
-//                   Enter Your Card Details
-//                 </h2>
-//                 <form onSubmit={handleSubmitPayment}>
-//                   <div className="mb-4">
-//                     <Label htmlFor="bank-code" value="Bank Code" />
-//                     <TextInput
-//                       id="bank-code"
-//                       value={bankCode}
-//                       onChange={(e) => setBankCode(e.target.value)}
-//                       required
-//                     />
-//                   </div>
-//                   <div className="mb-4">
-//                     <Label htmlFor="account-number" value="Account Number" />
-//                     <TextInput
-//                       id="account-number"
-//                       value={accountNumber}
-//                       onChange={(e) => setAccountNumber(e.target.value)}
-//                       required
-//                     />
-//                   </div>
-//                   <CardElement className="mb-4" />
-//                   <Button
-//                     gradientDuoTone="purpleToBlue"
-//                     type="submit"
-//                     disabled={loading}
-//                   >
-//                     Submit Payment
-//                   </Button>
-//                 </form>
-//               </div>
-//             </Elements>
-//           )}
 //           <div>
 //             <div className="mb-2 block">
 //               <Label
