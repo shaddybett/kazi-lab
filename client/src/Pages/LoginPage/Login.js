@@ -4,7 +4,6 @@ import { Button, Spinner } from "flowbite-react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import "./Login.css"; 
 import BlockedUser from "./BlockedUser";
-
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
