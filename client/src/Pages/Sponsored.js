@@ -42,7 +42,7 @@ function Sponsored() {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ amount, bankCode, bankAccount }),
+        body: JSON.stringify({ amount, bankCode, bankAccount,name }),
       });
       if (response.ok) {
         const responseData = await response.json();
