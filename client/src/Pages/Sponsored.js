@@ -5,7 +5,7 @@ function Sponsored() {
   const [bankAccount, setBankAccount] = useState("");
   const [amount, setAmount] = useState("");
   const [message, setMessage] = useState("");
-  const [name,setName] = useState("")
+  const [name, setName] = useState("");
   const [error, setError] = useState("");
 
   const validateInput = () => {
@@ -35,12 +35,12 @@ function Sponsored() {
 
     try {
       const backendUrl = process.env.REACT_APP_BACKEND_URL;
-      const token = localStorage.getItem("token")
+      const token = localStorage.getItem("token");
       const response = await fetch(`${backendUrl}/needy`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization:`Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({ amount, bankCode, bankAccount }),
       });
@@ -71,7 +71,14 @@ function Sponsored() {
         value={bankAccount}
         onChange={(e) => setBankAccount(e.target.value)}
       />
-      <label htmlFor="name" ></label>
+      <label htmlFor="name">
+        <input
+          type="text"
+          id="name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+        />
+      </label>
       <label htmlFor="amount"> Amount:</label>
       <input
         id="amount"
