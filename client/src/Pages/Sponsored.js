@@ -5,6 +5,7 @@ function Sponsored() {
   const [bankAccount, setBankAccount] = useState("");
   const [amount, setAmount] = useState("");
   const [message, setMessage] = useState("");
+  const [name,setName] = useState("")
   const [error, setError] = useState("");
 
   const validateInput = () => {
@@ -70,6 +71,7 @@ function Sponsored() {
         value={bankAccount}
         onChange={(e) => setBankAccount(e.target.value)}
       />
+      <label htmlFor="name" ></label>
       <label htmlFor="amount"> Amount:</label>
       <input
         id="amount"

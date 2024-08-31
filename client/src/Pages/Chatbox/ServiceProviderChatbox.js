@@ -206,7 +206,6 @@ const ServiceProviderChatBox = ({ providerId }) => {
   const backendUrl = process.env.REACT_APP_BACKEND_URL;
   const podId = Number(providerId);
 
-  // Memoized function to extract user IDs from messages
   const extractUserIds = useCallback((messages) => {
     const userIds = new Set();
     const numericPodId = Number(podId);
@@ -223,7 +222,6 @@ const ServiceProviderChatBox = ({ providerId }) => {
     return Array.from(userIds);
   }, [podId]);
 
-  // Memoized function to fetch user details
   const fetchUserDetails = useCallback(async (userIds) => {
     setLoading(true);
     try {
@@ -257,7 +255,6 @@ const ServiceProviderChatBox = ({ providerId }) => {
     setLoading(false);
   }, [backendUrl]);
 
-  // Fetch messages and user details when podId changes
   const fetchMessages = useCallback(async (podId) => {
     try {
       const response = await fetch(
