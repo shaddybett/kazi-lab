@@ -17,6 +17,7 @@ function AdminPage() {
   const [chaty, setChaty] = useState(null);
 
   const currentUserId = localStorage.getItem("id");
+  const navigate = useNavigate();
 
   const handleUsers = useCallback(async () => {
     const token = localStorage.getItem("token");
