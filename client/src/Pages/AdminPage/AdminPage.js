@@ -109,6 +109,9 @@ function AdminPage() {
   const onClose = () => {
     setChaty(null);
   };
+  const handleLogout = ()=>{
+    
+  }
 
   const handleBlock = async (user) => {
     const { value: blockDetails } = await Swal.fire({
