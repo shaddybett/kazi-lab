@@ -109,8 +109,19 @@ function AdminPage() {
   const onClose = () => {
     setChaty(null);
   };
-  const handleLogout = ()=>{
-    
+  const handleLogout = async()=>{
+    const result = await Swal.fire({
+      title: "Are you sure?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, Logout!",
+    });
+    if (result.isConfirmed) {
+      localStorage.removeItem("token");
+      navigate("/login");
+    }
   }
 
   const handleBlock = async (user) => {
