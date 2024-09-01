@@ -5,7 +5,7 @@ import AdminUsersPopup from "./AdminUsersPopup";
 import ChatBox from "../Chatbox/ChatBox";
 import ServiceProviderChatBox from "../Chatbox/ServiceProviderChatbox";
 import Swal from "sweetalert2";
-
+import { useNavigate } from "react-router-dom";
 function AdminPage() {
   const [providers, setProviders] = useState([]);
   const [clients, setClients] = useState([]);
@@ -17,6 +17,7 @@ function AdminPage() {
   const [chaty, setChaty] = useState(null);
 
   const currentUserId = localStorage.getItem("id");
+  const navigate = useNavigate();
 
   const handleUsers = useCallback(async () => {
     const token = localStorage.getItem("token");
@@ -109,6 +110,20 @@ function AdminPage() {
   const onClose = () => {
     setChaty(null);
   };
+  const handleLogout = async()=>{
+    const result = await Swal.fire({
+      title: "Are you sure?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, Logout!",
+    });
+    if (result.isConfirmed) {
+      localStorage.removeItem("token");
+      navigate("/login");
+    }
+  }
 
   const handleBlock = async (user) => {
     const { value: blockDetails } = await Swal.fire({
@@ -194,7 +209,7 @@ function AdminPage() {
             <Dropdown.Item>Profile</Dropdown.Item>
             <Dropdown.Item onClick={handleChat}>Chat</Dropdown.Item>
             <Dropdown.Divider />
-            <Dropdown.Item>Logout</Dropdown.Item>
+            <Dropdown.Item onClick={handleLogout} >Logout</Dropdown.Item>
           </Dropdown>
           <Navbar.Toggle />
         </div>
