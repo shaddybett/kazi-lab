@@ -197,7 +197,7 @@ function AdminPage() {
             <Dropdown.Item>Profile</Dropdown.Item>
             <Dropdown.Item onClick={handleChat}>Chat</Dropdown.Item>
             <Dropdown.Divider />
-            <Dropdown.Item>Logout</Dropdown.Item>
+            <Dropdown.Item onClick={handleLogout} >Logout</Dropdown.Item>
           </Dropdown>
           <Navbar.Toggle />
         </div>
