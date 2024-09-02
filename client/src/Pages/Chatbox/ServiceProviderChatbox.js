@@ -191,7 +191,7 @@
 
 // src/Pages/Chatbox/ServiceProviderChatbox.js
 
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import Sidebar from "../Chat/SideBar";
 import ChatWindow from "../Chat/ChatWindow";
 import './Chatbox.css'
@@ -202,6 +202,7 @@ const ServiceProviderChatBox = ({ providerId }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [activeUser, setActiveUser] = useState(null);
+  const popupRef = useRef(null)
 
   const backendUrl = process.env.REACT_APP_BACKEND_URL;
   const podId = Number(providerId);
@@ -221,6 +222,12 @@ const ServiceProviderChatBox = ({ providerId }) => {
 
     return Array.from(userIds);
   }, [podId]);
+
+  useEffect(() => {
+    const handleClickOutside = (event)=>{
+      if (popup)
+    }
+  })
 
   const fetchUserDetails = useCallback(async (userIds) => {
     setLoading(true);
@@ -254,6 +261,7 @@ const ServiceProviderChatBox = ({ providerId }) => {
     }
     setLoading(false);
   }, [backendUrl]);
+
 
   const fetchMessages = useCallback(async (podId) => {
     try {
