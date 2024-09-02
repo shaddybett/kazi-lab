@@ -59,11 +59,11 @@ function AdminPage() {
       });
       if (response.ok){
         const responseData = await response.json();
-        setBlocked(responseData.users)
+        setBlocked(responseData.users);
       }
       else{
-        const errorResponse = await response.json()
-        setError(errorResponse.error)
+        const errorResponse = await response.json();
+        setError(errorResponse.error);
       }
     }catch (error){
       setError('An error occurred,please try again later')
@@ -370,7 +370,7 @@ function AdminPage() {
         <ServiceProviderChatBox providerId={currentUserId} onClose={closeChatty} />
         </div>
       )}
-      {blocked && (<BlockedUsers  blocked={blocked} onClose={handleBlockedClose} />)}
+      {blocked.length > 0 && (<BlockedUsers  blocked={blocked} onClose={handleBlockedClose} />)}
     </div>
   );
 }
