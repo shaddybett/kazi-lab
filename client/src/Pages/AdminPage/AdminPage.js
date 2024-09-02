@@ -128,8 +128,18 @@ function AdminPage() {
   }
 
   useEffect(() => {
-    const handleClickOutside = (event) 
-  })
+    const handleClickOutside = (event) => {
+      if (popupRef.current && !popupRef.current.contains(event.target)) {
+        setChaty(null);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside );
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside );
+    };
+  }, [popupRef])
 
   const handleBlock = async (user) => {
     const { value: blockDetails } = await Swal.fire({
@@ -332,7 +342,9 @@ function AdminPage() {
         />
       )}
       {chaty && (
+        <div ref={popupRef} >
         <ServiceProviderChatBox providerId={currentUserId} onClose={closeChatty} />
+        </div>
       )}
     </div>
   );
