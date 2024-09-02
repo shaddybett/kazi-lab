@@ -56,10 +56,10 @@ function AdminPage() {
     try{
       const response = await fetch(`${backendUrl}/fetch_blocked`,{
         method:'GET'
-      })
+      });
       if (response.ok){
-        const responseData = await response.json()
-        setBlocked(responseData.user_details)
+        const responseData = await response.json();
+        setBlocked(responseData.users)
       }
       else{
         const errorResponse = await response.json()
