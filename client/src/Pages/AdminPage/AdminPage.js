@@ -261,32 +261,20 @@ function AdminPage() {
   }, [error]);
   return (
     <div>
-      <Navbar fluid rounded className="bg-black">
-        <div className="flex md:order-2">
+      <Navbar fluid rounded className="bg-blue-300">
+        <div>
           <Dropdown
             arrowIcon={false}
             inline
             label={<Avatar alt="User settings" rounded />}
           >
-            <Dropdown.Header>
-              <span className="block text-sm"></span>
-              <span className="block truncate text-sm font-medium"></span>
-            </Dropdown.Header>
             <Dropdown.Item>Profile</Dropdown.Item>
             <Dropdown.Item onClick={handleChat}>Chat</Dropdown.Item>
             <Dropdown.Item onClick={handleBlockedUsers}>Blocked</Dropdown.Item>
             <Dropdown.Divider />
             <Dropdown.Item onClick={handleLogout}>Logout</Dropdown.Item>
           </Dropdown>
-          <Navbar.Toggle />
         </div>
-        <Navbar.Collapse>
-          <Navbar.Link href="/link1" active></Navbar.Link>
-          <Navbar.Link href="/link2"></Navbar.Link>
-          <Navbar.Link href="/link3"></Navbar.Link>
-          <Navbar.Link href="/link4"></Navbar.Link>
-          <Navbar.Link href="/link5"></Navbar.Link>
-        </Navbar.Collapse>
       </Navbar>
       <h3 className="title">All users</h3>
       {error && <p style={{ color: "red" }}>{error}</p>}
