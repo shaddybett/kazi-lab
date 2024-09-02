@@ -71,7 +71,7 @@ function AdminPage() {
   }
 
   const handleProviderClick = async (user) => {
-    if (user.is_blocked) {
+    if (user.is_blocked ) {
       Swal.fire({
         title: "Blocked User",
         text: `Reason: ${user.block_reason}`,

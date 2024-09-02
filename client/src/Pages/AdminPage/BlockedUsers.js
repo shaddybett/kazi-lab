@@ -5,9 +5,9 @@ function BlockedUsers({ blocked, onClose, click }) {
     <div>
       <button onClick={onClose}>Close</button>
       {blocked.length > 0 ? (
-        blocked.map((user) => (
-          <div key={user.id} onClick={click} >
-            {user.first_name} {user.last_name} - {user.reason}
+        blocked.map((bUser) => (
+          <div key={bUser.id} onClick={()=> click(bUser)} >
+            {bUser.first_name} {bUser.last_name} - {bUser.reason}
           </div>
         ))
       ) : (
