@@ -16,6 +16,7 @@ function AdminPage() {
   const backendUrl = process.env.REACT_APP_BACKEND_URL;
   const [message, setMessage] = useState([]);
   const [chaty, setChaty] = useState(null);
+  const [blocked,setBlocked] = useState('')
   const popupRef = useRef(null)
 
   const currentUserId = localStorage.getItem("id");
@@ -49,6 +50,17 @@ function AdminPage() {
       setError("An unexpected error occurred");
     }
   }, [backendUrl]);
+
+  const handleBlockedUsers = async()=>{
+    try{
+      const response = await fetch(`${backendUrl}/fetch_blocked`,{
+        method:'GET'
+      })
+      if (response.ok){
+
+      }
+    }
+  }
   
 
   const handleProviderClick = async (user) => {
