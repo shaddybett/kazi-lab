@@ -16,7 +16,7 @@ function AdminPage() {
   const backendUrl = process.env.REACT_APP_BACKEND_URL;
   const [message, setMessage] = useState([]);
   const [chaty, setChaty] = useState(null);
-  const [blocked,setBlocked] = useState('')
+  const [blocked,setBlocked] = useState([])
   const popupRef = useRef(null)
 
   const currentUserId = localStorage.getItem("id");
@@ -57,11 +57,17 @@ function AdminPage() {
         method:'GET'
       })
       if (response.ok){
-
+        const responseData = await response.json()
+        setBlocked(responseData.user_details)
       }
+      else{
+        const errorResponse = await response.json()
+        setError(errorResponse.error)
+      }
+    }catch (error){
+      setError('An error occurred,please try again later')
     }
   }
-  
 
   const handleProviderClick = async (user) => {
     if (user.is_blocked) {
