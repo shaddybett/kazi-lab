@@ -370,7 +370,7 @@ function AdminPage() {
         <ServiceProviderChatBox providerId={currentUserId} onClose={closeChatty} />
         </div>
       )}
-      {blocked.length > 0 && (<BlockedUsers  blocked={blocked} onClose={handleBlockedClose} />)}
+      {blocked.length > 0 && (<BlockedUsers  blocked={blocked} onClose={handleBlockedClose} click={handleProviderClick} />)}
     </div>
   );
 }
