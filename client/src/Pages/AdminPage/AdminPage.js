@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import { Table, Dropdown, TableCell, Navbar, Avatar } from "flowbite-react";
 import "./AdminPage.css";
 import AdminUsersPopup from "./AdminUsersPopup";
@@ -6,6 +6,8 @@ import ChatBox from "../Chatbox/ChatBox";
 import ServiceProviderChatBox from "../Chatbox/ServiceProviderChatbox";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
+import BlockedUsers from "./BlockedUsers";
+
 function AdminPage() {
   const [providers, setProviders] = useState([]);
   const [clients, setClients] = useState([]);
@@ -15,6 +17,8 @@ function AdminPage() {
   const backendUrl = process.env.REACT_APP_BACKEND_URL;
   const [message, setMessage] = useState([]);
   const [chaty, setChaty] = useState(null);
+  const [blocked, setBlocked] = useState([]);
+  const popupRef = useRef(null);
 
   const currentUserId = localStorage.getItem("id");
   const navigate = useNavigate();
@@ -28,7 +32,7 @@ function AdminPage() {
           Authorization: `Bearer ${token}`,
         },
       });
-  
+
       if (response.ok) {
         const responseData = await response.json();
         const fetchedProviders = responseData.filter(
@@ -47,7 +51,43 @@ function AdminPage() {
       setError("An unexpected error occurred");
     }
   }, [backendUrl]);
+
+  const handleBlockedUsers = async () => {
+    try {
+      const response = await fetch(`${backendUrl}/fetch_blocked`, {
+        method: "GET",
+      });
+      if (response.ok) {
+        const responseData = await response.json();
+        setBlocked(responseData.users);
+      } else {
+        const errorResponse = await response.json();
+        setError(errorResponse.error);
+        handleBlockedClose();
+      }
+    } catch (error) {
+      setError("An error occurred,please try again later");
+    }
+  };
   
+
+  const handleBlockedProviderClick = async (bUser) => {
+    if (bUser) {
+      Swal.fire({
+        title: "Blocked User",
+        text: `Reason: ${bUser.reason}`,
+        icon: "info",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Unblock User",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          handleUnblock(bUser);
+        }
+      });
+    }
+  };
 
   const handleProviderClick = async (user) => {
     if (user.is_blocked) {
@@ -87,6 +127,10 @@ function AdminPage() {
     }
   };
 
+  const handleBlockedClose = () => {
+    setBlocked([]);
+  };
+
   const handleChatClick = (user) => {
     setChatUser(user);
   };
@@ -107,10 +151,10 @@ function AdminPage() {
     setChaty(currentUserId);
   };
 
-  const onClose = () => {
+  const closeChatty = () => {
     setChaty(null);
   };
-  const handleLogout = async()=>{
+  const handleLogout = async () => {
     const result = await Swal.fire({
       title: "Are you sure?",
       icon: "warning",
@@ -123,7 +167,21 @@ function AdminPage() {
       localStorage.removeItem("token");
       navigate("/login");
     }
-  }
+  };
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (popupRef.current && !popupRef.current.contains(event.target)) {
+        setChaty(null);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [popupRef]);
 
   const handleBlock = async (user) => {
     const { value: blockDetails } = await Swal.fire({
@@ -184,6 +242,7 @@ function AdminPage() {
       if (response.ok) {
         Swal.fire("Success", "User has been unblocked", "success");
         handleUsers();
+        handleBlockedUsers();
       } else {
         const errorMessage = await response.json();
         setError(errorMessage.error);
@@ -193,36 +252,33 @@ function AdminPage() {
       setError("An unexpected error occurred");
     }
   };
+  useEffect(() => {
+    if (error) {
+      const timer = setTimeout(() => {
+        setError("");
+      }, 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [error]);
   return (
     <div>
-      <Navbar fluid rounded className="bg-black">
-        <div className="flex md:order-2">
+      <Navbar fluid rounded className="bg-blue-300">
+        <div>
           <Dropdown
             arrowIcon={false}
             inline
             label={<Avatar alt="User settings" rounded />}
           >
-            <Dropdown.Header>
-              <span className="block text-sm"></span>
-              <span className="block truncate text-sm font-medium"></span>
-            </Dropdown.Header>
             <Dropdown.Item>Profile</Dropdown.Item>
             <Dropdown.Item onClick={handleChat}>Chat</Dropdown.Item>
+            <Dropdown.Item onClick={handleBlockedUsers}>Blocked</Dropdown.Item>
             <Dropdown.Divider />
-            <Dropdown.Item onClick={handleLogout} >Logout</Dropdown.Item>
+            <Dropdown.Item onClick={handleLogout}>Logout</Dropdown.Item>
           </Dropdown>
-          <Navbar.Toggle />
         </div>
-        <Navbar.Collapse>
-          <Navbar.Link href="/link1" active></Navbar.Link>
-          <Navbar.Link href="/link2"></Navbar.Link>
-          <Navbar.Link href="/link3"></Navbar.Link>
-          <Navbar.Link href="/link4"></Navbar.Link>
-          <Navbar.Link href="/link5"></Navbar.Link>
-        </Navbar.Collapse>
       </Navbar>
       <h3 className="title">All users</h3>
-      {error && <p>{error}</p>}
+      {error && <p style={{ color: "red" }}>{error}</p>}
       {message && <p>{message}</p>}
       <div className="table">
         <div className="table-1">
@@ -258,12 +314,21 @@ function AdminPage() {
                         Chat
                       </Dropdown.Item>
                       <Dropdown.Divider />
-                      <Dropdown.Item
-                        className="text-red-500"
-                        onClick={() => handleBlock(user)}
-                      >
-                        Block
-                      </Dropdown.Item>
+                      {user.is_blocked ? (
+                        <Dropdown.Item
+                          className="text-green-500"
+                          onClick={() => handleUnblock(user)} // Unblock function here
+                        >
+                          Unblock
+                        </Dropdown.Item>
+                      ) : (
+                        <Dropdown.Item
+                          className="text-red-500"
+                          onClick={() => handleBlock(user)} // Block function here
+                        >
+                          Block
+                        </Dropdown.Item>
+                      )}
                     </Dropdown>
                   </TableCell>
                 </Table.Row>
@@ -295,20 +360,29 @@ function AdminPage() {
                   <Table.Cell onClick={() => handleProviderClick(user)}>
                     {user.email}
                   </Table.Cell>
-                  <Table.Cell>
+                  <TableCell>
                     <Dropdown arrowIcon={false} inline label="Edit">
                       <Dropdown.Item onClick={() => handleChatClick(user)}>
                         Chat
                       </Dropdown.Item>
                       <Dropdown.Divider />
-                      <Dropdown.Item
-                        className="text-red-500"
-                        onClick={() => handleBlock(user)}
-                      >
-                        Block
-                      </Dropdown.Item>
+                      {user.is_blocked ? (
+                        <Dropdown.Item
+                          className="text-green-500"
+                          onClick={() => handleUnblock(user)} // Unblock function here
+                        >
+                          Unblock
+                        </Dropdown.Item>
+                      ) : (
+                        <Dropdown.Item
+                          className="text-red-500"
+                          onClick={() => handleBlock(user)} // Block function here
+                        >
+                          Block
+                        </Dropdown.Item>
+                      )}
                     </Dropdown>
-                  </Table.Cell>
+                  </TableCell>
                 </Table.Row>
               ))}
             </Table.Body>
@@ -326,7 +400,19 @@ function AdminPage() {
         />
       )}
       {chaty && (
-        <ServiceProviderChatBox providerId={currentUserId} onClose={onClose} />
+        <div ref={popupRef}>
+          <ServiceProviderChatBox
+            providerId={currentUserId}
+            onClose={closeChatty}
+          />
+        </div>
+      )}
+      {blocked.length > 0 && (
+        <BlockedUsers
+          blocked={blocked}
+          onClose={handleBlockedClose}
+          click={handleBlockedProviderClick}
+        />
       )}
     </div>
   );
