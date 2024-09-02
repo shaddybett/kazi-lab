@@ -6,6 +6,7 @@ import ChatBox from "../Chatbox/ChatBox";
 import ServiceProviderChatBox from "../Chatbox/ServiceProviderChatbox";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
+import BlockedUsers from "./BlockedUsers";
 
 function AdminPage() {
   const [providers, setProviders] = useState([]);
@@ -106,6 +107,10 @@ function AdminPage() {
       }
     }
   };
+
+  const handleBlockedClose = () =>{
+    setBlocked([])
+  }
 
   const handleChatClick = (user) => {
     setChatUser(user);
@@ -365,6 +370,7 @@ function AdminPage() {
         <ServiceProviderChatBox providerId={currentUserId} onClose={closeChatty} />
         </div>
       )}
+      {blocked && (<BlockedUsers  blocked={blocked} onClose={handleBlockedClose} />)}
     </div>
   );
 }
