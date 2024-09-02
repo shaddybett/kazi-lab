@@ -250,6 +250,14 @@ function AdminPage() {
       setError("An unexpected error occurred");
     }
   };
+  useEffect(() => {
+    if (error) {
+      const timer = setTimeout(() => {
+        setError("");
+      }, 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [error])
   return (
     <div>
       <Navbar fluid rounded className="bg-black">
