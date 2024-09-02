@@ -280,7 +280,7 @@ function AdminPage() {
         </Navbar.Collapse>
       </Navbar>
       <h3 className="title">All users</h3>
-      {error && <p>{error}</p>}
+      {error && <p style={{color:'red'}} >{error}</p>}
       {message && <p>{message}</p>}
       <div className="table">
         <div className="table-1">
