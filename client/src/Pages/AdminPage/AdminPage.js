@@ -63,6 +63,7 @@ function AdminPage() {
       } else {
         const errorResponse = await response.json();
         setError(errorResponse.error);
+        handleBlockedClose();
       }
     } catch (error) {
       setError("An error occurred,please try again later");
