@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import { Table, Dropdown, TableCell, Navbar, Avatar } from "flowbite-react";
 import "./AdminPage.css";
 import AdminUsersPopup from "./AdminUsersPopup";
@@ -6,6 +6,7 @@ import ChatBox from "../Chatbox/ChatBox";
 import ServiceProviderChatBox from "../Chatbox/ServiceProviderChatbox";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
+
 function AdminPage() {
   const [providers, setProviders] = useState([]);
   const [clients, setClients] = useState([]);
@@ -15,6 +16,7 @@ function AdminPage() {
   const backendUrl = process.env.REACT_APP_BACKEND_URL;
   const [message, setMessage] = useState([]);
   const [chaty, setChaty] = useState(null);
+  const popupRef = useRef(null)
 
   const currentUserId = localStorage.getItem("id");
   const navigate = useNavigate();
@@ -124,6 +126,10 @@ function AdminPage() {
       navigate("/login");
     }
   }
+
+  useEffect(() => {
+    const handleClickOutside = (event) 
+  })
 
   const handleBlock = async (user) => {
     const { value: blockDetails } = await Swal.fire({

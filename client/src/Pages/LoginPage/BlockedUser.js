@@ -12,7 +12,7 @@ function BlockedUser({ details }) {
     setMessageContent(e.target.value);
   };
 
-  const admins = [7]; 
+  const admins = [4,5]; 
   const handleSendMessage = async () => {
     if (messageContent === "") {
       setError("Input field can't be empty");
