@@ -224,6 +224,7 @@ function AdminPage() {
             </Dropdown.Header>
             <Dropdown.Item>Profile</Dropdown.Item>
             <Dropdown.Item onClick={handleChat}>Chat</Dropdown.Item>
+            <Dropdown.Item onClick={handleChat}>Blocked</Dropdown.Item>
             <Dropdown.Divider />
             <Dropdown.Item onClick={handleLogout} >Logout</Dropdown.Item>
           </Dropdown>
