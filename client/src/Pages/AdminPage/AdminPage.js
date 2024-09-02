@@ -240,6 +240,7 @@ function AdminPage() {
       if (response.ok) {
         Swal.fire("Success", "User has been unblocked", "success");
         handleUsers();
+        handleBlockedUsers();
       } else {
         const errorMessage = await response.json();
         setError(errorMessage.error);
