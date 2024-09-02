@@ -107,7 +107,7 @@ function AdminPage() {
     setChaty(currentUserId);
   };
 
-  const onClose = () => {
+  const closeChatty = () => {
     setChaty(null);
   };
   const handleLogout = async()=>{
@@ -326,7 +326,7 @@ function AdminPage() {
         />
       )}
       {chaty && (
-        <ServiceProviderChatBox providerId={currentUserId} onClose={onClose} />
+        <ServiceProviderChatBox providerId={currentUserId} onClose={closeChatty} />
       )}
     </div>
   );
