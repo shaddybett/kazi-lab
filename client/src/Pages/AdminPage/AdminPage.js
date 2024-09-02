@@ -70,8 +70,26 @@ function AdminPage() {
     }
   }
 
+  const handleBlockedProviderClick = async (bUser) => {
+    if (bUser) {
+      Swal.fire({
+        title: "Blocked User",
+        text: `Reason: ${bUser.reason}`,
+        icon: "info",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Unblock User",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          handleUnblock(bUser);
+        }
+      });
+    }
+  }
+
   const handleProviderClick = async (user) => {
-    if (user.is_blocked ) {
+    if (user.is_blocked) {
       Swal.fire({
         title: "Blocked User",
         text: `Reason: ${user.block_reason}`,
@@ -85,7 +103,7 @@ function AdminPage() {
           handleUnblock(user);
         }
       });
-    } else {
+    }else {
       try {
         const response = await fetch(
           `${backendUrl}/user-details?email=${user.email}`,
@@ -370,7 +388,7 @@ function AdminPage() {
         <ServiceProviderChatBox providerId={currentUserId} onClose={closeChatty} />
         </div>
       )}
-      {blocked.length > 0 && (<BlockedUsers  blocked={blocked} onClose={handleBlockedClose} click={handleProviderClick} />)}
+      {blocked.length > 0 && (<BlockedUsers  blocked={blocked} onClose={handleBlockedClose} click={handleBlockedProviderClick} />)}
     </div>
   );
 }
