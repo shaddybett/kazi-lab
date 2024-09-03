@@ -39,7 +39,7 @@ function Login() {
         } else if (data.role_id === 3) {
           navigate("/clientPage");
         } else if (data.role_id === 1) {
-          navigate("/adminPage");
+          navigate("/adminMain");
         } else if (data.role_id === 4) {
           navigate ("/sponsored")
         }
