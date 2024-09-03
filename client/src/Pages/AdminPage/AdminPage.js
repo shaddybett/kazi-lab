@@ -69,7 +69,6 @@ function AdminPage() {
       setError("An error occurred,please try again later");
     }
   };
-  
 
   const handleBlockedProviderClick = async (bUser) => {
     if (bUser) {
@@ -260,10 +259,11 @@ function AdminPage() {
       return () => clearTimeout(timer);
     }
   }, [error]);
+
   return (
     <div>
-      <Navbar fluid rounded className="bg-blue-300">
-        <div>
+      <Navbar fluid rounded className="bg-blue-300 navbar">
+        <div className="avatar-container">
           <Dropdown
             arrowIcon={false}
             inline
@@ -295,7 +295,7 @@ function AdminPage() {
               {providers.map((user, index) => (
                 <Table.Row
                   key={index}
-                  className={`bg-white dark:border-gray-700 dark:bg-gray-800 ${
+                  className={`bg-white dark:border-gray-700 dark:bg-gray-800 table-row ${
                     user.is_blocked ? "bg-red-200" : ""
                   }`}
                 >
@@ -347,7 +347,7 @@ function AdminPage() {
               {clients.map((user, index) => (
                 <Table.Row
                   key={index}
-                  className={`bg-white dark:border-gray-700 dark:bg-gray-800 ${
+                  className={`bg-white dark:border-gray-700 dark:bg-gray-800 table-row ${
                     user.is_blocked ? "bg-red-200" : ""
                   }`}
                 >

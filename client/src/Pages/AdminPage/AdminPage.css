@@ -1,31 +1,74 @@
-.title{
+/* Make sure the container does not exceed the viewport width */
+.table {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-x: auto; /* Enable horizontal scrolling only if necessary */
+  }
+  
+  .table-1{
+    width: 100%; /* Ensure the tables take full width of the container */
+    max-width: 600px; /* Optional: set a max-width for better centering */
+    margin: 0 auto; /* Center the tables horizontally */
+    box-sizing: border-box;
+    margin-bottom: 20px;
+  }
+  .table-2{
+    width: 100%; /* Ensure the tables take full width of the container */
+    max-width: 600px; /* Optional: set a max-width for better centering */
+    margin: 0 auto; /* Center the tables horizontally */
+    box-sizing: border-box;
+    margin-top: 20px;
+    /* background-color: aqua; */
+  }
+  
+  /* Remove table's inherent margin/padding */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    /* background-color: blue; */
+  }
+  
+  /* Navbar styling */
+  .navbar {
+    /* display: flex; */
+    /* justify-content: space-between; */
+    padding: 10px 20px;
+  }
+  
+  .navbar .avatar-container {
+    margin-left: auto; /* Push the avatar dropdown to the right */
+  }
+  
+  /* Ensure the content doesn't overflow */
+  body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+  }
+  
+  /* Handle table row wrapping and alignment */
+  .table-row {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  @media (min-width: 768px) {
+    .table-row {
+      flex-direction: row;
+      text-align: left;
+    }
+  }
+  .title{
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: larger;
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
-    font-weight: 600;
-}
-.table{
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-}
-.table-1-title{
-    /* margin-left: 10px; */
-    display: flex;
-    justify-content: center;
+    font-weight: 500;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-}
-.table-2-title{
-    /* margin-left: 10px; */
-    display: flex;
-    justify-content: center;
+  }
+  .table-1-title, .table-2-title{
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-}
-.image{
-    border-radius: 50%;
-}
-.edit{
-    display: flex;
-}
+    font-weight: 400;
+  }
