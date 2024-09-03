@@ -16,6 +16,7 @@ import ChatBox from "./Pages/Chatbox/ChatBox";
 import Sponsored from "./Pages/Sponsored";
 import Sponsor from "./Pages/Sponsor";
 import PayPopup from "./Pages/PayPopup";
+import AdminMain from "./Pages/AdminPage/AdminMain";
 
 function App() {
   return (
@@ -35,6 +36,7 @@ function App() {
       <Route path="/sponsored" element={<Sponsored />} />
       <Route path="/sponsor" element={<Sponsor />} />
       <Route path="/payPopup" element={<PayPopup />} />
+      <Route path="/adminMain" element={<AdminMain/>} />
     </Routes>
   );
 }
