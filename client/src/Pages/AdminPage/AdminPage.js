@@ -7,6 +7,7 @@ import ServiceProviderChatBox from "../Chatbox/ServiceProviderChatbox";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import BlockedUsers from "./BlockedUsers";
+import AdminMain from "./AdminMain";
 
 function AdminPage() {
   const [providers, setProviders] = useState([]);
@@ -414,6 +415,13 @@ function AdminPage() {
           click={handleBlockedProviderClick}
         />
       )}
+      {
+        <AdminMain
+          blocked={blocked}
+          onClose={handleBlockedClose}
+          click={handleBlockedProviderClick}
+        />
+      }
     </div>
   );
 }
