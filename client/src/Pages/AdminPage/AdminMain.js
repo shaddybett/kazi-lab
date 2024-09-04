@@ -8,9 +8,10 @@ import {
   HiUser,
   HiViewBoards,
 } from "react-icons/hi";
-import AdminPage from "./AdminPage";
+// import AdminPage from "./AdminPage";
 import ServiceProviderChatBox from "../Chatbox/ServiceProviderChatbox";
 import BlockedUsers from "./BlockedUsers";
+import AdminPage from "./AdminPage";
 
 function AdminMain({blocked,onclose,click}) {
   const currentUserId = localStorage.getItem("id");
@@ -21,13 +22,13 @@ function AdminMain({blocked,onclose,click}) {
       case "dasboard":
         return <div>Dashboard content</div>;
       case "users":
-        return ;
+            return <AdminPage/>;
       case "blocked":
         return <BlockedUsers blocked={blocked} onclose={onclose} click={click} />
       case "chat":
         return <ServiceProviderChatBox providerId={currentUserId} />;
       default:
-        return <AdminPage/> 
+        return <AdminPage/>
     }
   };
 

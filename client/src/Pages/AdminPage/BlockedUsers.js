@@ -1,12 +1,14 @@
-import React from 'react';
+import React, {useContext} from 'react';
+import AuthContext from '../../Authorization/AuthProvider';
 
-function BlockedUsers({ blocked, onClose, click }) {
+function BlockedUsers() {
+  const { blocked, onClose, onBlockedUserClick } = useContext(AuthContext);
   return (
     <div>
       <button onClick={onClose}>Close</button>
       {blocked.length > 0 ? (
         blocked.map((bUser) => (
-          <div key={bUser.id} onClick={()=> click(bUser)} >
+          <div key={bUser.id} onClick={()=> onBlockedUserClick(bUser)} >
             {bUser.first_name} {bUser.last_name} - {bUser.reason}
           </div>
         ))

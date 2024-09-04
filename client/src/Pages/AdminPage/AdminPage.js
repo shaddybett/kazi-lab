@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useRef } from "react";
+import React, { useState, useEffect, useCallback, useRef, createContext } from "react";
 import { Table, Dropdown, TableCell, Navbar, Avatar } from "flowbite-react";
 import "./AdminPage.css";
 import AdminUsersPopup from "./AdminUsersPopup";
@@ -7,7 +7,7 @@ import ServiceProviderChatBox from "../Chatbox/ServiceProviderChatbox";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import BlockedUsers from "./BlockedUsers";
-import AdminMain from "./AdminMain";
+import AuthProvider from "../../Authorization/AuthProvider";
 
 function AdminPage() {
   const [providers, setProviders] = useState([]);
@@ -52,6 +52,13 @@ function AdminPage() {
       setError("An unexpected error occurred");
     }
   }, [backendUrl]);
+
+  const AuthContext = createContext({
+    blocked: [],
+    setBlocked: () => {},
+    handleBlockedClose: () => {},
+    onBlockedUserClick: () => {},
+  });
 
   const handleBlockedUsers = async () => {
     try {
@@ -145,6 +152,7 @@ function AdminPage() {
 
   useEffect(() => {
     handleUsers();
+    handleBlockedUsers();
   }, [backendUrl, handleUsers]);
 
   const handleChat = () => {
@@ -415,13 +423,13 @@ function AdminPage() {
           click={handleBlockedProviderClick}
         />
       )}
-      {
-        <AdminMain
-          blocked={blocked}
-          onClose={handleBlockedClose}
-          click={handleBlockedProviderClick}
-        />
-      }
+      <AuthProvider
+        blocked={blocked}
+        onClose={handleBlockedClose}
+        onBlockedUserClick={handleBlockedProviderClick} // Updated prop name
+      >
+        {blocked.length > 0 && <BlockedUsers />}
+      </AuthProvider>
     </div>
   );
 }
