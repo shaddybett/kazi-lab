@@ -6,6 +6,7 @@ import AdminPage from './AdminPage';
 import BlockedUsers from './BlockedUsers';
 
 function AdminMain() {
+    const currentUserId = localStorage.getItem("id");
     return (
         <Router>
             <div className="flex h-screen">
@@ -41,7 +42,6 @@ function AdminMain() {
                     </Sidebar.Items>
                 </Sidebar>
 
-                {/* Main Content Area */}
                 <div className="flex-grow p-4">
                     <Routes>
                         {/* <Route path="/dashboard" element={<Dashboard />} /> */}
