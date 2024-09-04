@@ -17,15 +17,10 @@ import Sponsored from "./Pages/Sponsored";
 import Sponsor from "./Pages/Sponsor";
 import PayPopup from "./Pages/PayPopup";
 import AdminMain from "./Pages/AdminPage/AdminMain";
-import {AuthProvider } from "./Authorization/AuthProvider";
-import BlockedUsers from "./Pages/AdminPage/BlockedUsers";
 
 function App() {
   return (
     <Routes>
-      <AuthProvider>
-        <BlockedUsers />
-      </AuthProvider>
       <Route path="/" element={<Landing />} />
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
