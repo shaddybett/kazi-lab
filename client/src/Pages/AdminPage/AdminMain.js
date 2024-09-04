@@ -1,14 +1,14 @@
 import React from 'react';
 import { Sidebar } from "flowbite-react";
 import { HiArrowSmRight, HiChartPie, HiInbox, HiShoppingBag, HiTable, HiUser, HiViewBoards } from "react-icons/hi";
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Route, Routes } from 'react-router-dom';
 import AdminPage from './AdminPage';
+import ServiceProviderChatBox from '../Chatbox/ServiceProviderChatbox';
 import BlockedUsers from './BlockedUsers';
 
 function AdminMain() {
     const currentUserId = localStorage.getItem("id");
     return (
-        <Router>
             <div className="flex h-screen">
                 {/* Sidebar */}
                 <Sidebar aria-label="Sidebar with logo branding example">
@@ -46,13 +46,12 @@ function AdminMain() {
                     <Routes>
                         {/* <Route path="/dashboard" element={<Dashboard />} /> */}
                         {/* <Route path="/kanban" element={<Kanban />} /> */}
-                        {/* <Route path="/inbox" element={<Inbox />} /> */}
+                        <Route path="/chat" element={<ServiceProviderChatBox />} />
                         <Route path="/users" element={<AdminPage />} />
                         <Route path="/blocked" element={<BlockedUsers/>} />
                     </Routes>
                 </div>
             </div>
-        </Router>
     );
 }
 
