@@ -8,7 +8,6 @@ import {
   HiUser,
   HiViewBoards,
 } from "react-icons/hi";
-// import AdminPage from "./AdminPage";
 import ServiceProviderChatBox from "../Chatbox/ServiceProviderChatbox";
 import BlockedUsers from "./BlockedUsers";
 import AdminPage from "./AdminPage";
