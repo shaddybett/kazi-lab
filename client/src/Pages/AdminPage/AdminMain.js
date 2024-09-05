@@ -1,21 +1,23 @@
 import React, { useState } from "react";
 import { Sidebar } from "flowbite-react";
 import {
-  HiArrowSmRight,
   HiChartPie,
   HiInbox,
   HiShoppingBag,
   HiUser,
   HiViewBoards,
+  HiArrowSmLeft,
 } from "react-icons/hi";
-// import AdminPage from "./AdminPage";
 import ServiceProviderChatBox from "../Chatbox/ServiceProviderChatbox";
 import BlockedUsers from "./BlockedUsers";
 import AdminPage from "./AdminPage";
+import Swal from "sweetalert2";
+import { useNavigate } from "react-router-dom";
 
 function AdminMain({blocked,onclose,click}) {
   const currentUserId = localStorage.getItem("id");
   const [activeComponent, setActiveComponent] = useState("dashboard");
+  const navigate = useNavigate();
 
   const renderComponent = () => {
     switch (activeComponent) {
@@ -29,6 +31,20 @@ function AdminMain({blocked,onclose,click}) {
         return <ServiceProviderChatBox providerId={currentUserId} />;
       default:
         return <AdminPage/>
+    }
+  };
+  const handleLogout = async () => {
+    const result = await Swal.fire({
+      title: "Are you sure?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, Logout!",
+    });
+    if (result.isConfirmed) {
+      localStorage.removeItem("token");
+      navigate("/login");
     }
   };
 
@@ -53,7 +69,7 @@ function AdminMain({blocked,onclose,click}) {
               Kanban
             </Sidebar.Item>
             <Sidebar.Item
-              onClick={() => setActiveComponent("inbox")}
+              onClick={() => setActiveComponent("chat")}
               icon={HiInbox}
             >
               Inbox
@@ -71,10 +87,10 @@ function AdminMain({blocked,onclose,click}) {
               Blocked
             </Sidebar.Item>
             <Sidebar.Item
-              onClick={() => setActiveComponent("chat")}
-              icon={HiArrowSmRight}
+              onClick={handleLogout}
+              icon={HiArrowSmLeft}
             >
-              Chat
+              Logout
             </Sidebar.Item>
           </Sidebar.ItemGroup>
         </Sidebar.Items>
