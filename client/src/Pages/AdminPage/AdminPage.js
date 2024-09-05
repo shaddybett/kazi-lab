@@ -20,7 +20,6 @@ function AdminPage() {
   const [blocked, setBlocked] = useState([]);
   const popupRef = useRef(null);
 
-
   const currentUserId = localStorage.getItem("id");
   const navigate = useNavigate();
 
@@ -154,21 +153,6 @@ function AdminPage() {
   const closeChatty = () => {
     setChaty(null);
   };
-  const handleLogout = async () => {
-    const result = await Swal.fire({
-      title: "Are you sure?",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, Logout!",
-    });
-    if (result.isConfirmed) {
-      localStorage.removeItem("token");
-      navigate("/login");
-    }
-  };
-
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (popupRef.current && !popupRef.current.contains(event.target)) {
@@ -263,7 +247,7 @@ function AdminPage() {
 
   return (
     <div>
-      <Navbar fluid rounded className="bg-blue-300 navbar">
+      {/* <Navbar fluid rounded className="bg-blue-300 navbar">
         <div className="avatar-container">
           <Dropdown
             arrowIcon={false}
@@ -277,7 +261,7 @@ function AdminPage() {
             <Dropdown.Item onClick={handleLogout}>Logout</Dropdown.Item>
           </Dropdown>
         </div>
-      </Navbar>
+      </Navbar> */}
       <h3 className="title">All users</h3>
       {error && <p style={{ color: "red" }}>{error}</p>}
       {message && <p>{message}</p>}
