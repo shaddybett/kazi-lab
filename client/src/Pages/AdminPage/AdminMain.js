@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { Sidebar, Avatar, Dropdown } from "flowbite-react";
+import { Sidebar, Avatar} from "flowbite-react";
 import {
   HiChartPie,
   HiInbox,
