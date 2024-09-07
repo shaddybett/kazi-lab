@@ -57,13 +57,14 @@ th:nth-child(3), td:nth-child(3) {
 @media (min-width: 768px) {
   .table-row {
     text-align: left; /* For large screens, ensure left alignment */
+    background-color: #cdd6d5;
   }
 }
 
 /* Hover effect for table rows */
 /* General hover effect for unblocked rows */
 .table-row:hover {
-  background-color: #8b8f94; /* Gray hover background for unblocked rows */
+  background-color: #b5b8bb; /* Gray hover background for unblocked rows */
 }
 
 /* Disable hover effect for blocked rows */
