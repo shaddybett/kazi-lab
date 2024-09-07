@@ -1,10 +1,9 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { Sidebar, Avatar} from "flowbite-react";
+import { Sidebar, Avatar } from "flowbite-react";
 import {
   HiChartPie,
   HiInbox,
   HiShoppingBag,
-  HiUser,
   HiArrowSmLeft,
 } from "react-icons/hi";
 import ServiceProviderChatBox from "../Chatbox/ServiceProviderChatbox";
@@ -12,7 +11,7 @@ import BlockedUsers from "./BlockedUsers";
 import AdminPage from "./AdminPage";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
-import './AdminPage.css'
+import "./AdminPage.css";
 
 function AdminMain({ blocked, onclose, click }) {
   const currentUserId = localStorage.getItem("id");
@@ -20,7 +19,6 @@ function AdminMain({ blocked, onclose, click }) {
   const [user, setUser] = useState({});
   const [error, setError] = useState("");
   const navigate = useNavigate();
- 
 
   const renderComponent = () => {
     switch (activeComponent) {
@@ -63,9 +61,9 @@ function AdminMain({ blocked, onclose, click }) {
   useEffect(() => {
     handleUser();
   }, [handleUser]);
-  const handleProfile = ()=>{
-    navigate('/profile')
-  }
+  const handleProfile = () => {
+    navigate("/profile");
+  };
   const handleLogout = async () => {
     const result = await Swal.fire({
       title: "Are you sure?",
@@ -82,21 +80,23 @@ function AdminMain({ blocked, onclose, click }) {
   };
 
   return (
-    <div className="flex h-screen">
-      <Sidebar aria-label="Sidebar with logo branding example">
-        <div
-        >
-          <Avatar alt={Avatar} img={user.image} rounded onClick={handleProfile} />
-          <>
-            <span className="block text-sm text-black ">
-              {user.first_name} {user.last_name}
-            </span>
-            <span className="block truncate text-sm font-medium ">
-              {user.email}
-            </span>
-          </>
+    <div className=" sidebar flex h-screen bg-gray-800 text-white ">
+      <Sidebar  >
+        <div className="ml-16 mb-2 " >
+          <img
+            className="admipic "
+            src={user.image}
+            alt={Avatar}
+            onClick={handleProfile}
+          />
+          <span className="block text-sm text-black ml-4 ">
+            {user.first_name} {user.last_name}
+          </span>
+          <span className="block truncate text-sm font-medium ">
+            {user.email}
+          </span>
         </div>
-        <Sidebar.Items>
+        <Sidebar.Items className="ml-4" >
           <Sidebar.ItemGroup>
             <Sidebar.Item
               onClick={() => setActiveComponent("dashboard")}
@@ -109,12 +109,6 @@ function AdminMain({ blocked, onclose, click }) {
               icon={HiInbox}
             >
               Inbox
-            </Sidebar.Item>
-            <Sidebar.Item
-              onClick={() => setActiveComponent("users")}
-              icon={HiUser}
-            >
-              Users
             </Sidebar.Item>
             <Sidebar.Item
               onClick={() => setActiveComponent("blocked")}
