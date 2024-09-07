@@ -106,3 +106,6 @@ th:nth-child(3), td:nth-child(3) {
 .email{
   color: antiquewhite;
 }
+.email-i{
+  color: rgb(55, 68, 80);
+}

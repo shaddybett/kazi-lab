@@ -80,9 +80,9 @@ function AdminMain({ blocked, onclose, click }) {
   };
 
   return (
-    <div className=" sidebar flex h-screen bg-gray-800 text-white ">
-      <Sidebar  >
-        <div className="ml-16 mb-2 " >
+    <div className=" sidebar flex h-screen text-white">
+      <Sidebar className="items" >
+        <div className="ml-16 mb-2 items " >
           <img
             className="admipic "
             src={user.image}
@@ -92,11 +92,11 @@ function AdminMain({ blocked, onclose, click }) {
           <span className="block text-sm text-black ml-4 ">
             {user.first_name} {user.last_name}
           </span>
-          <span className="block truncate text-sm font-medium ">
+          <span className="block truncate text-sm font-medium email-i ">
             {user.email}
           </span>
         </div>
-        <Sidebar.Items className="ml-4" >
+        <Sidebar.Items className="ml-4 items " >
           <Sidebar.ItemGroup>
             <Sidebar.Item
               onClick={() => setActiveComponent("dashboard")}
