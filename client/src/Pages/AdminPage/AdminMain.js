@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { Sidebar } from "flowbite-react";
+import React, { useCallback, useEffect, useState } from "react";
+import { Sidebar, Avatar, Dropdown } from "flowbite-react";
 import {
   HiChartPie,
   HiInbox,
@@ -13,54 +13,55 @@ import AdminPage from "./AdminPage";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 
-function AdminMain({blocked,onclose,click}) {
+function AdminMain({ blocked, onclose, click }) {
   const currentUserId = localStorage.getItem("id");
   const [activeComponent, setActiveComponent] = useState("dashboard");
-  const [user,setUser] = useState({})
-  const [error,setError] = useState('')
+  const [user, setUser] = useState({});
+  const [error, setError] = useState("");
   const navigate = useNavigate();
-  const backendUrl = process.env.REACT_APP_BACKEND_URL;
+ 
 
   const renderComponent = () => {
     switch (activeComponent) {
       case "dasboard":
         return <div>Dashboard content</div>;
       case "users":
-            return <AdminPage/>;
+        return <AdminPage />;
       case "blocked":
-        return <BlockedUsers blocked={blocked} onclose={onclose} click={click} />
+        return (
+          <BlockedUsers blocked={blocked} onclose={onclose} click={click} />
+        );
       case "chat":
         return <ServiceProviderChatBox providerId={currentUserId} />;
       default:
-        return <AdminPage/>
+        return <AdminPage />;
     }
   };
-  const handleUser = async()=>{
-    try{
-      const token = localStorage.getItem('token');
-      const response = await fetch (`${backendUrl}/dashboard`,{
-        method:'GET',
-        headers:{
-          'Content-Type':'application/json',
-          Authorization:`Bearer ${token}`
-        }
-      })
-      if (response.ok){
-        const responseData = await response.json()
-        setUser(responseData)
+  const handleUser = useCallback(async () => {
+    try {
+      const backendUrl = process.env.REACT_APP_BACKEND_URL;
+      const token = localStorage.getItem("token");
+      const response = await fetch(`${backendUrl}/dashboard`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (response.ok) {
+        const responseData = await response.json();
+        setUser(responseData);
+      } else {
+        const errorMessage = await response.json();
+        setError(errorMessage.error);
       }
-      else{
-        const errorMessage = await response.json()
-        setError(errorMessage.error)
-      }
+    } catch (error) {
+      setError("An error occurred, please try again later");
     }
-    catch (error){
-      setError('An error occurred, please try again later')
-    }
-  }
-  useEffect(()=>{
+  }, []);
+  useEffect(() => {
     handleUser();
-  },[handleUser])
+  }, [handleUser]);
   const handleLogout = async () => {
     const result = await Swal.fire({
       title: "Are you sure?",
@@ -79,9 +80,18 @@ function AdminMain({blocked,onclose,click}) {
   return (
     <div className="flex h-screen">
       <Sidebar aria-label="Sidebar with logo branding example">
-        <Sidebar.Logo href="#" img="/favicon.svg" imgAlt="kq">
-          KaziQonnect
-        </Sidebar.Logo>
+        <div
+        >
+          <Avatar alt={Avatar} img={user.image} rounded />
+          <>
+            <span className="block text-sm text-black ">
+              {user.first_name} {user.last_name}
+            </span>
+            <span className="block truncate text-sm font-medium ">
+              {user.email}
+            </span>
+          </>
+        </div>
         <Sidebar.Items>
           <Sidebar.ItemGroup>
             <Sidebar.Item
@@ -108,16 +118,14 @@ function AdminMain({blocked,onclose,click}) {
             >
               Blocked
             </Sidebar.Item>
-            <Sidebar.Item
-              onClick={handleLogout}
-              icon={HiArrowSmLeft}
-            >
+            <Sidebar.Item onClick={handleLogout} icon={HiArrowSmLeft}>
               Logout
             </Sidebar.Item>
           </Sidebar.ItemGroup>
         </Sidebar.Items>
       </Sidebar>
       <div className="flex-grow p-4">{renderComponent()}</div>
+      {error && <p style={{ color: "red" }}>{error}</p>}
     </div>
   );
 }
