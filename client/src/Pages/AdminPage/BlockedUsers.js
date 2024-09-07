@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from "react";
 import Swal from "sweetalert2";
+import "./AdminPage.css";
+import { Table } from "flowbite-react";
+// import { HiDotsHorizontal, HiDotsVertical } from "react-icons/hi";
 
 function BlockedUsers() {
   const [blocked, setBlocked] = useState([]);
@@ -84,19 +87,47 @@ function BlockedUsers() {
   }, [error]);
 
   return (
-    <div>
-      {blocked.length > 0 ? (
-        blocked.map((bUser) => (
-          <div key={bUser.id} onClick={() => handleClick(bUser)}>
-            {bUser.first_name} {bUser.last_name} - {bUser.reason}
-          </div>
-        ))
-      ) : (
-        <p className="text-red-600" >No blocked users to display</p>
-      )}
-      {error && <p>{error}</p>}
+    <div className="table-1">
+      <h3 className="table-1-title">Blocked Users</h3>
+      <Table>
+        <Table.Head>
+          <Table.HeadCell>Name</Table.HeadCell>
+          <Table.HeadCell>Email</Table.HeadCell>
+          <Table.HeadCell>Reason</Table.HeadCell>
+        </Table.Head>
+        <Table.Body>
+          {blocked.length > 0 ? (
+            blocked.map((bUser)=>(
+              <Table.Row key={bUser.id}>
+              <Table.Cell className="name" onClick={() => handleClick(bUser)} >
+                {bUser.first_name} {bUser.last_name}
+              </Table.Cell>
+              <Table.Cell>{bUser.email}</Table.Cell>
+              <Table.Cell>{bUser.reason}</Table.Cell>
+            </Table.Row>
+            ))
+          ):(
+            <p className="text-red-600">No blocked users to display</p>
+          )}
+        </Table.Body>
+      </Table>
     </div>
   );
 }
 
 export default BlockedUsers;
+
+{
+  /* <div>
+{blocked.length > 0 ? (
+  blocked.map((bUser) => (
+    <div key={bUser.id} onClick={() => handleClick(bUser)}>
+      {bUser.first_name} {bUser.last_name} - {bUser.reason}
+    </div>
+  ))
+) : (
+  <p className="text-red-600">No blocked users to display</p>
+)}
+{error && <p>{error}</p>}
+</div> */
+}

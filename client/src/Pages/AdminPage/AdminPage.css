@@ -67,6 +67,9 @@ th:nth-child(3), td:nth-child(3) {
 .table-row:hover {
   background-color: #b5b8bb; /* Gray hover background for unblocked rows */
 }
+.blocked-row{
+  background-color: #f05050;
+}
 
 /* Disable hover effect for blocked rows */
 .blocked-row:hover {
@@ -103,4 +106,3 @@ th:nth-child(3), td:nth-child(3) {
 .email{
   color: antiquewhite;
 }
-

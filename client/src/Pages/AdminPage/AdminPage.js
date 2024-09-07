@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
-import { Table, Dropdown, TableCell, Navbar, Avatar } from "flowbite-react";
+import { Table, Dropdown } from "flowbite-react";
 import "./AdminPage.css";
 import AdminUsersPopup from "./AdminUsersPopup";
 import ChatBox from "../Chatbox/ChatBox";
@@ -250,7 +250,7 @@ function AdminPage() {
                       : "hover:bg-gray-200"
                   }`}
                 >
-                  <Table.Cell>
+                  <Table.Cell className="name" >
                     {user.first_name} {user.last_name}
                   </Table.Cell>
                   <Table.Cell>{user.email}</Table.Cell>
