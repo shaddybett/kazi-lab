@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
-import { Table, Dropdown, TableCell, Navbar, Avatar } from "flowbite-react";
+import { Table, Dropdown } from "flowbite-react";
 import "./AdminPage.css";
 import AdminUsersPopup from "./AdminUsersPopup";
 import ChatBox from "../Chatbox/ChatBox";
@@ -7,6 +7,7 @@ import ServiceProviderChatBox from "../Chatbox/ServiceProviderChatbox";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import BlockedUsers from "./BlockedUsers";
+import { HiDotsHorizontal, HiDotsVertical } from "react-icons/hi";
 
 function AdminPage() {
   const [providers, setProviders] = useState([]);
@@ -52,41 +53,9 @@ function AdminPage() {
     }
   }, [backendUrl]);
 
-  const handleBlockedUsers = async () => {
-    try {
-      const response = await fetch(`${backendUrl}/fetch_blocked`, {
-        method: "GET",
-      });
-      if (response.ok) {
-        const responseData = await response.json();
-        setBlocked(responseData.users);
-      } else {
-        const errorResponse = await response.json();
-        setError(errorResponse.error);
-        handleBlockedClose();
-      }
-    } catch (error) {
-      setError("An error occurred,please try again later");
-    }
-  };
-
-  const handleBlockedProviderClick = async (bUser) => {
-    if (bUser) {
-      Swal.fire({
-        title: "Blocked User",
-        text: `Reason: ${bUser.reason}`,
-        icon: "info",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Unblock User",
-      }).then((result) => {
-        if (result.isConfirmed) {
-          handleUnblock(bUser);
-        }
-      });
-    }
-  };
+  useEffect(() => {
+    handleUsers();
+  }, [handleUsers]);
 
   const handleProviderClick = async (user) => {
     if (user.is_blocked) {
@@ -201,8 +170,6 @@ function AdminPage() {
         if (response.ok) {
           Swal.fire("Success", "User has been blocked", "success");
           handleUsers();
-          const responseData = await response.json();
-          setMessage(responseData.message);
         } else {
           const errorMessage = await response.json();
           setError(errorMessage.error);
@@ -226,7 +193,6 @@ function AdminPage() {
       if (response.ok) {
         Swal.fire("Success", "User has been unblocked", "success");
         handleUsers();
-        handleBlockedUsers();
       } else {
         const errorMessage = await response.json();
         setError(errorMessage.error);
@@ -268,106 +234,114 @@ function AdminPage() {
       <div className="table">
         <div className="table-1">
           <h3 className="table-1-title">Service Providers</h3>
-          <Table hoverable>
+          <Table>
             <Table.Head>
               <Table.HeadCell>Name</Table.HeadCell>
               <Table.HeadCell>Email</Table.HeadCell>
-              <Table.HeadCell>
-                <span className="sr-only">Edit</span>
-              </Table.HeadCell>
+              <Table.HeadCell>Edit</Table.HeadCell>
             </Table.Head>
-            <Table.Body className="divide-y">
+            <Table.Body>
               {providers.map((user, index) => (
                 <Table.Row
                   key={index}
-                  className={`bg-white dark:border-gray-700 dark:bg-gray-800 table-row ${
-                    user.is_blocked ? "bg-red-200" : ""
+                  className={`dark:border-gray-700 dark:bg-gray-800 table-row ${
+                    user.is_blocked
+                      ? "bg-red-400 blocked-row"
+                      : "hover:bg-gray-200"
                   }`}
                 >
-                  <Table.Cell
-                    className="whitespace-nowrap font-medium text-gray-900 dark:text-white"
-                    onClick={() => handleProviderClick(user)}
-                  >
+                  <Table.Cell className="name" >
                     {user.first_name} {user.last_name}
                   </Table.Cell>
-                  <Table.Cell onClick={() => handleProviderClick(user)}>
-                    {user.email}
-                  </Table.Cell>
-                  <TableCell>
-                    <Dropdown arrowIcon={false} inline label="Edit">
+                  <Table.Cell>{user.email}</Table.Cell>
+                  <Table.Cell>
+                    <Dropdown
+                      arrowIcon={false}
+                      inline
+                      label={<HiDotsHorizontal />}
+                    >
                       <Dropdown.Item onClick={() => handleChatClick(user)}>
                         Chat
+                      </Dropdown.Item>
+                      <Dropdown.Item onClick={() => handleProviderClick(user)}>
+                        Details
                       </Dropdown.Item>
                       <Dropdown.Divider />
                       {user.is_blocked ? (
                         <Dropdown.Item
                           className="text-green-500"
-                          onClick={() => handleUnblock(user)} // Unblock function here
+                          onClick={() => handleUnblock(user)}
                         >
                           Unblock
                         </Dropdown.Item>
                       ) : (
                         <Dropdown.Item
                           className="text-red-500"
-                          onClick={() => handleBlock(user)} // Block function here
+                          onClick={() => handleBlock(user)}
                         >
                           Block
                         </Dropdown.Item>
                       )}
                     </Dropdown>
-                  </TableCell>
+                  </Table.Cell>
                 </Table.Row>
               ))}
             </Table.Body>
           </Table>
         </div>
-        <div className="table-2">
-          <h2 className="table-2-title">Clients</h2>
-          <Table hoverable>
+
+        <div className="table-1">
+          <h3 className="table-1-title">Clients</h3>
+          <Table>
             <Table.Head>
               <Table.HeadCell>Name</Table.HeadCell>
               <Table.HeadCell>Email</Table.HeadCell>
+              <Table.HeadCell>Edit</Table.HeadCell>
             </Table.Head>
-            <Table.Body className="divide-y">
+            <Table.Body>
               {clients.map((user, index) => (
                 <Table.Row
                   key={index}
-                  className={`bg-white dark:border-gray-700 dark:bg-gray-800 table-row ${
-                    user.is_blocked ? "bg-red-200" : ""
+                  className={`dark:border-gray-700 dark:bg-gray-800 table-row ${
+                    user.is_blocked
+                      ? "bg-red-400 blocked-row"
+                      : "hover:bg-gray-200"
                   }`}
                 >
-                  <Table.Cell
-                    className="whitespace-nowrap font-medium text-gray-900 dark:text-white"
-                    onClick={() => handleProviderClick(user)}
-                  >
+                  <Table.Cell>
                     {user.first_name} {user.last_name}
                   </Table.Cell>
-                  <Table.Cell onClick={() => handleProviderClick(user)}>
-                    {user.email}
-                  </Table.Cell>
-                  <TableCell>
-                    <Dropdown arrowIcon={false} inline label="Edit">
+                  <Table.Cell>{user.email}</Table.Cell>
+                  <Table.Cell>
+                    <Dropdown
+                      arrowIcon={false}
+                      inline
+                      label={<HiDotsHorizontal />}
+                    >
                       <Dropdown.Item onClick={() => handleChatClick(user)}>
                         Chat
+                      </Dropdown.Item>
+                      <Dropdown.Item onClick={() => handleProviderClick(user)}>
+                        Details
                       </Dropdown.Item>
                       <Dropdown.Divider />
                       {user.is_blocked ? (
                         <Dropdown.Item
                           className="text-green-500"
-                          onClick={() => handleUnblock(user)} // Unblock function here
+                          onClick={() => handleUnblock(user)}
                         >
                           Unblock
                         </Dropdown.Item>
                       ) : (
                         <Dropdown.Item
                           className="text-red-500"
-                          onClick={() => handleBlock(user)} // Block function here
+                          onClick={() => handleBlock(user)}
                         >
                           Block
                         </Dropdown.Item>
                       )}
                     </Dropdown>
-                  </TableCell>
+                  </Table.Cell>
                 </Table.Row>
               ))}
             </Table.Body>
@@ -392,16 +366,8 @@ function AdminPage() {
           />
         </div>
       )}
-      {blocked.length > 0 && (
-        <BlockedUsers
-          blocked={blocked}
-          onClose={handleBlockedClose}
-          click={handleBlockedProviderClick}
-        />
-      )}
     </div>
   );
 }
 
 export default AdminPage;
-
