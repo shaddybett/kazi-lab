@@ -12,6 +12,7 @@ import BlockedUsers from "./BlockedUsers";
 import AdminPage from "./AdminPage";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
+import './AdminPage.css'
 
 function AdminMain({ blocked, onclose, click }) {
   const currentUserId = localStorage.getItem("id");
