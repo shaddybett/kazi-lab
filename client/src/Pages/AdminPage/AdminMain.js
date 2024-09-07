@@ -62,6 +62,9 @@ function AdminMain({ blocked, onclose, click }) {
   useEffect(() => {
     handleUser();
   }, [handleUser]);
+  const handleProfile = ()=>{
+    navigate('/profile')
+  }
   const handleLogout = async () => {
     const result = await Swal.fire({
       title: "Are you sure?",
@@ -82,7 +85,7 @@ function AdminMain({ blocked, onclose, click }) {
       <Sidebar aria-label="Sidebar with logo branding example">
         <div
         >
-          <Avatar alt={Avatar} img={user.image} rounded />
+          <Avatar alt={Avatar} img={user.image} rounded onClick={handleProfile} />
           <>
             <span className="block text-sm text-black ">
               {user.first_name} {user.last_name}
