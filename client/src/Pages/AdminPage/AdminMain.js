@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Sidebar } from "flowbite-react";
 import {
   HiChartPie,
@@ -58,7 +58,9 @@ function AdminMain({blocked,onclose,click}) {
       setError('An error occurred, please try again later')
     }
   }
-  
+  useEffect(()=>{
+    handleUser();
+  },[handleUser])
   const handleLogout = async () => {
     const result = await Swal.fire({
       title: "Are you sure?",
