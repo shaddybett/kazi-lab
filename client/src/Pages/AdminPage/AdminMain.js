@@ -5,7 +5,6 @@ import {
   HiInbox,
   HiShoppingBag,
   HiUser,
-  HiViewBoards,
   HiArrowSmLeft,
 } from "react-icons/hi";
 import ServiceProviderChatBox from "../Chatbox/ServiceProviderChatbox";
@@ -17,7 +16,10 @@ import { useNavigate } from "react-router-dom";
 function AdminMain({blocked,onclose,click}) {
   const currentUserId = localStorage.getItem("id");
   const [activeComponent, setActiveComponent] = useState("dashboard");
+  const [user,setUser] = useState({})
+  const [error,setError] = useState('')
   const navigate = useNavigate();
+  const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
   const renderComponent = () => {
     switch (activeComponent) {
@@ -33,6 +35,30 @@ function AdminMain({blocked,onclose,click}) {
         return <AdminPage/>
     }
   };
+  const handleUser = async()=>{
+    try{
+      const token = localStorage.getItem('token');
+      const response = await fetch (`${backendUrl}/dashboard`,{
+        method:'GET',
+        headers:{
+          'Content-Type':'application/json',
+          Authorization:`Bearer ${token}`
+        }
+      })
+      if (response.ok){
+        const responseData = await response.json()
+        setUser(responseData)
+      }
+      else{
+        const errorMessage = await response.json()
+        setError(errorMessage.error)
+      }
+    }
+    catch (error){
+      setError('An error occurred, please try again later')
+    }
+  }
+  
   const handleLogout = async () => {
     const result = await Swal.fire({
       title: "Are you sure?",
@@ -61,12 +87,6 @@ function AdminMain({blocked,onclose,click}) {
               icon={HiChartPie}
             >
               Dashboard
-            </Sidebar.Item>
-            <Sidebar.Item
-              onClick={() => setActiveComponent("kanban")}
-              icon={HiViewBoards}
-            >
-              Kanban
             </Sidebar.Item>
             <Sidebar.Item
               onClick={() => setActiveComponent("chat")}
