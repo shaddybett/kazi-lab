@@ -58,6 +58,7 @@ th:nth-child(3), td:nth-child(3) {
   .table-row {
     text-align: left; /* For large screens, ensure left alignment */
     background-color: #cdd6d5;
+    
   }
 }
 
@@ -102,3 +103,4 @@ th:nth-child(3), td:nth-child(3) {
 .email{
   color: antiquewhite;
 }
+
