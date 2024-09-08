@@ -6,7 +6,6 @@ import ChatBox from "../Chatbox/ChatBox";
 import ServiceProviderChatBox from "../Chatbox/ServiceProviderChatbox";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
-import BlockedUsers from "./BlockedUsers";
 import { HiDotsHorizontal, HiDotsVertical } from "react-icons/hi";
 
 function AdminPage() {

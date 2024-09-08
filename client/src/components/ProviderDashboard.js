@@ -566,7 +566,7 @@ function ProviderDashboard() {
           <img src={selectedImage} alt="Enlarged" className="modal-image" />
         )}
         {selectedVideo && (
-          <>
+          <div className="modal-video-container" >
             {isVideoLoading && <Spinner aria-label="Loading" size="lg" />}
             <video
               controls
@@ -577,7 +577,7 @@ function ProviderDashboard() {
               <source src={selectedVideo} type="video/mp4" />
               Your browser does not support the video tag.
             </video>
-          </>
+          </div>
         )}
       </Modal>
       {chatUser && (
