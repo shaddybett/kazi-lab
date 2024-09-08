@@ -11,19 +11,33 @@ function AdminUsersPopup({ user, onClose }) {
         <Modal.Header>{`${user.first_name} ${user.last_name}`}</Modal.Header>
         <Modal.Body>
           <div className="flex flex-col items-center">
-            <img
-              src={user.image}
-              alt={`${user.first_name} ${user.last_name}`}
-              className="image mb-4"
-            />
-            <h3 className="text-xl font-semibold">{`${user.first_name} ${user.last_name}`}</h3>
-            <p className="text-black">{user.email}</p>
-            <p className="text-black">Phone Number: {user.phone_number}</p>
-            <p className="text-black">National ID: {user.national_id}</p>
-            <p className="text-black">Likes: {user.likes || 0}</p>
-            <p className="text-black">Jobs: {user.jobs || 0}</p>
+            <div className="user-details">
+              <div className="details-1">
+                <img
+                  src={user.image}
+                  alt={`${user.first_name} ${user.last_name}`}
+                  className="image-dt"
+                />
+                <h3 className="details-1-name">{`${user.first_name} ${user.last_name}`}</h3>
+                <p className="text-black details-1-email ">{user.email}</p>
+              </div>
+              <div className="details-2">
+                <div className="details-2-dt">
+                  
+                  <p className="text-black">
+                    Full Name: {user.first_name} {user.last_name}
+                  </p>
+                  <p className="text-black">
+                    Phone Number: {user.phone_number}
+                  </p>
+                  <p className="text-black">National ID: {user.national_id}</p>
+                  <p className="text-black">Likes: {user.likes || 0}</p>
+                  <p className="text-black">Jobs: {user.jobs || 0}</p>
+                </div>
+              </div>
+            </div>
             <div className="media-gallery">
-              <h4 className="text-lg font-semibold">Photos</h4>
+              <h4 className="text-lg font-semibold">Uploaded Photos</h4>
               <div className="photos">
                 {user.photos.map((photo, index) => (
                   <img
@@ -34,7 +48,7 @@ function AdminUsersPopup({ user, onClose }) {
                   />
                 ))}
               </div>
-              <h4 className="text-lg font-semibold mt-4">Videos</h4>
+              <h4 className="text-lg font-semibold mt-4">Uploaded Videos</h4>
               <div className="videos">
                 {user.videos.map((video, index) => (
                   <div key={index} className="video-thumbnail">

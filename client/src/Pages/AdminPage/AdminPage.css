@@ -109,3 +109,44 @@ th:nth-child(3), td:nth-child(3) {
 .email-i{
   color: rgb(55, 68, 80);
 }
+.image-dt{
+  border-radius: 50%;
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  margin-left: 20px;
+}
+.user-details{
+  display: flex;
+  width: 100%;
+  /* background-color: #f05050; */
+}
+.details-1{
+  width: 40%;
+  margin-left: 20px;
+}
+.details-2{
+  width: 70%;
+  /* background-color: aqua; */
+  /* margin-left: 40px; */
+}
+.details-1-name{
+  margin-left: 40px;
+  margin-top: 6px;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  font-weight: 600;
+}
+.details-1-email{
+  margin-left: 16px;
+}
+.details-2-dt{
+  /* margin-left: 100px; */
+  display: grid;
+  gap: 4px;
+  font-size: large;
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  font-weight: 600;
+}
+.media-gallery{
+  background-color: aqua;
+}
