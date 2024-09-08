@@ -1,41 +1,20 @@
-import React, { useState } from "react";
-import { Modal, Button, Spinner } from "flowbite-react"; // Ensure Spinner is imported
+import React from "react";
+import { Modal, Button } from "flowbite-react"; // Ensure Spinner is imported
 import "./AdminPage.css";
 
 function AdminUsersPopup({ user, onClose }) {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedImage, setSelectedImage] = useState(null);
-  const [selectedVideo, setSelectedVideo] = useState(null);
-  const [isVideoLoading, setIsVideoLoading] = useState(false);
-
   if (!user) return null;
-
-  const openModal = (media, type) => {
-    if (type === "image") {
-      setSelectedImage(media);
-      setSelectedVideo(null);
-    } else if (type === "video") {
-      setSelectedImage(null);
-      setSelectedVideo(media);
-      setIsVideoLoading(true);
-    }
-    setIsModalOpen(true);
-  };
-
-  const closeModal = () => {
-    setIsModalOpen(false);
-    setSelectedImage(null);
-    setSelectedVideo(null);
-    setIsVideoLoading(false);
-  };
 
   return (
     <div className="admin-user-popup">
       <Modal show={true} onClose={onClose}>
-        <Modal.Header>{`${user.first_name} ${user.last_name}`}</Modal.Header>
+        <Modal.Header className="modal-header">
+          <i className="fas fa-user-circle"></i>{" "}
+          <span className="ml-2" >{`${user.first_name} ${user.last_name}`}</span>
+        </Modal.Header>
+
         <Modal.Body>
           <div className="flex flex-col items-center">
-            {/* User Details */}
             <div className="user-details">
               <div className="details-1">
                 <img
@@ -48,33 +27,45 @@ function AdminUsersPopup({ user, onClose }) {
               </div>
               <div className="details-2">
                 <div className="details-2-dt">
-                  <p className="text-black">
-                    Full Name: {user.first_name} {user.last_name}
+                  {/* <p className="detail-item">
+                    <i className="fas fa-user"></i>
+                    <strong>Full Name:</strong> {user.first_name}{" "}
+                    {user.last_name}
+                  </p> */}
+                  <p className="detail-item">
+                    <i className="fas fa-phone"></i>
+                    <strong>Phone Number:</strong> {user.phone_number}
                   </p>
-                  <p className="text-black">
-                    Phone Number: {user.phone_number}
+                  <p className="detail-item">
+                    <i className="fas fa-id-card"></i>
+                    <strong>National ID:</strong> {user.national_id}
                   </p>
-                  <p className="text-black">National ID: {user.national_id}</p>
-                  <p className="text-black">Likes: {user.likes || 0}</p>
-                  <p className="text-black">Jobs: {user.jobs || 0}</p>
+                  <p className="detail-item">
+                    <i className="fas fa-thumbs-up"></i>
+                    <strong>Likes:</strong> {user.likes || 0}
+                  </p>
+                  <p className="detail-item">
+                    <i className="fas fa-briefcase"></i>
+                    <strong>Jobs:</strong> {user.jobs || 0}
+                  </p>
                 </div>
               </div>
             </div>
 
-            {/* Uploaded Media */}
             <div className="image-grid">
-              {/* Photos Section */}
               {user.photos.length > 0 && (
                 <>
-                  <h4 className="text-lg font-semibold">Uploaded Photos</h4>
+                  <h4 className="section-heading">
+                    <i className="fas fa-camera"></i> Uploaded Photos
+                  </h4>
+
                   <div className="grid-container">
                     {user.photos.map((photo, index) => (
                       <div key={index} className="grid-item-container">
                         <img
                           src={photo}
-                          alt={`User's photo ${index + 1}`}
+                          alt={`User's uploads ${index + 1}`}
                           className="grid-item"
-                          onClick={() => openModal(photo, "image")}
                         />
                       </div>
                     ))}
@@ -82,12 +73,12 @@ function AdminUsersPopup({ user, onClose }) {
                 </>
               )}
 
-              {/* Videos Section */}
               {user.videos.length > 0 && (
                 <>
-                  <h4 className="text-lg font-semibold mt-4">
-                    Uploaded Videos
+                  <h4 className="video-heading">
+                    <i className="fas fa-video"></i> Uploaded Videos
                   </h4>
+
                   <div className="grid-containers">
                     {user.videos.map((video, index) => (
                       <div key={index} className="grid-item-container">
@@ -96,7 +87,6 @@ function AdminUsersPopup({ user, onClose }) {
                           controls
                           className="grid-items"
                           preload="metadata"
-                          onClick={() => openModal(video, "video")}
                         >
                           <source src={video} type="video/mp4" />
                           Your browser does not support the video tag.
@@ -115,38 +105,6 @@ function AdminUsersPopup({ user, onClose }) {
           </Button>
         </Modal.Footer>
       </Modal>
-      {isModalOpen && (
-        <Modal
-          show={isModalOpen}
-          onRequestClose={closeModal}
-          className="modal"
-          overlayClassName="overlay"
-        >
-          {selectedImage && (
-            <img
-              src={selectedImage}
-              alt="Enlarged content"
-              className="modal-image"
-            />
-          )}
-          {selectedVideo && (
-            <div className="modal-video-container">
-              {isVideoLoading && (
-                <Spinner aria-label="Loading video" size="lg" />
-              )}
-              <video
-                controls
-                className="modal-video"
-                onLoadedData={() => setIsVideoLoading(false)}
-                preload="metadata"
-              >
-                <source src={selectedVideo} type="video/mp4" />
-                Your browser does not support the video tag.
-              </video>
-            </div>
-          )}
-        </Modal>
-      )}
     </div>
   );
 }
