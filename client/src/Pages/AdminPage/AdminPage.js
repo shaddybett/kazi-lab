@@ -6,8 +6,7 @@ import ChatBox from "../Chatbox/ChatBox";
 import ServiceProviderChatBox from "../Chatbox/ServiceProviderChatbox";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
-import BlockedUsers from "./BlockedUsers";
-import { HiDotsHorizontal, HiDotsVertical } from "react-icons/hi";
+import { HiDotsHorizontal } from "react-icons/hi";
 
 function AdminPage() {
   const [providers, setProviders] = useState([]);
@@ -18,7 +17,6 @@ function AdminPage() {
   const backendUrl = process.env.REACT_APP_BACKEND_URL;
   const [message, setMessage] = useState([]);
   const [chaty, setChaty] = useState(null);
-  const [blocked, setBlocked] = useState([]);
   const popupRef = useRef(null);
 
   const currentUserId = localStorage.getItem("id");
@@ -95,9 +93,6 @@ function AdminPage() {
     }
   };
 
-  const handleBlockedClose = () => {
-    setBlocked([]);
-  };
 
   const handleChatClick = (user) => {
     setChatUser(user);
