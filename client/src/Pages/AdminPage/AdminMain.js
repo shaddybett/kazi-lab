@@ -105,6 +105,12 @@ function AdminMain({ blocked, onclose, click }) {
               Dashboard
             </Sidebar.Item>
             <Sidebar.Item
+              onClick={handleProfile}
+              icon={HiInbox}
+            >
+              Profile
+            </Sidebar.Item>
+            <Sidebar.Item
               onClick={() => setActiveComponent("chat")}
               icon={HiInbox}
             >
