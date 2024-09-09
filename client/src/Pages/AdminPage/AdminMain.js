@@ -9,6 +9,7 @@ import {
 import ServiceProviderChatBox from "../Chatbox/ServiceProviderChatbox";
 import BlockedUsers from "./BlockedUsers";
 import AdminPage from "./AdminPage";
+import Profile from "../../components/Profile";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import "./AdminPage.css";
@@ -26,6 +27,8 @@ function AdminMain({ blocked, onclose, click }) {
         return <div>Dashboard content</div>;
       case "users":
         return <AdminPage />;
+      case "profile":
+        return <Profile />;
       case "blocked":
         return (
           <BlockedUsers blocked={blocked} onclose={onclose} click={click} />
@@ -105,7 +108,7 @@ function AdminMain({ blocked, onclose, click }) {
               Dashboard
             </Sidebar.Item>
             <Sidebar.Item
-              onClick={handleProfile}
+              onClick={() => setActiveComponent("profile")}
               icon={HiInbox}
             >
               Profile
