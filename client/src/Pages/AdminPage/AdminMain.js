@@ -88,7 +88,7 @@ function AdminMain({ blocked, onclose, click }) {
             src={user.image}
             alt={Avatar}
             onClick={handleProfile}
-          />
+          />  
           <span className="block text-sm text-black ml-4 ">
             {user.first_name} {user.last_name}
           </span>

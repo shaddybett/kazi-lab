@@ -13,9 +13,6 @@ import ServiceProviders from "./components/ServiceProviders";
 import Providers from "./components/Providers";
 import AdminPage from "./Pages/AdminPage/AdminPage";
 import ChatBox from "./Pages/Chatbox/ChatBox";
-import Sponsored from "./Pages/Sponsored";
-import Sponsor from "./Pages/Sponsor";
-import PayPopup from "./Pages/PayPopup";
 import AdminMain from "./Pages/AdminPage/AdminMain";
 
 function App() {
@@ -33,9 +30,6 @@ function App() {
       <Route path="/providers" element={<ServiceProviders />} />
       <Route path="/primes" element={<Providers />} />
       <Route path="/chat/:userId" element={<ChatBox />} />
-      <Route path="/sponsored" element={<Sponsored />} />
-      <Route path="/sponsor" element={<Sponsor />} />
-      <Route path="/payPopup" element={<PayPopup />} />
       <Route path="/adminMain" element={<AdminMain/>} />
     </Routes>
   );
