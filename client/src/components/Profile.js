@@ -189,7 +189,7 @@ function Profile() {
   };
 
   useEffect(() => {
-    if ((error, message)) {
+    if ((error)) {
       const timer = setTimeout(() => {
         setError("");
         setMessage("");

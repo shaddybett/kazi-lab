@@ -64,9 +64,6 @@ function AdminMain({ blocked, onclose, click }) {
   useEffect(() => {
     handleUser();
   }, [handleUser]);
-  const handleProfile = () => {
-    navigate("/profile");
-  };
   const handleLogout = async () => {
     const result = await Swal.fire({
       title: "Are you sure?",
@@ -83,54 +80,86 @@ function AdminMain({ blocked, onclose, click }) {
   };
 
   return (
-    <div className=" sidebar flex h-screen text-white">
-      <Sidebar className="items" >
-        <div className="ml-16 mb-2 items " >
-          <img
-            className="admipic "
-            src={user.image}
-            alt={Avatar}
-            onClick={handleProfile}
-          />  
-          <span className="block text-sm text-black ml-4 ">
+    <div className=" general-sidebar flex h-screen text-white">
+      <div className="sidebar bg-gray-800 h-screen p-6">
+        {/* User Avatar and Info */}
+        <div className="flex flex-col items-center mb-8">
+          <Avatar
+          size="xl" rounded={true}
+            // className="rounded-full w-24 h-24 object-cover mb-2 cursor-pointer hover:scale-105 transition-transform duration-300 "
+            className="avat"
+            img={user.image}
+            alt="user.first_name"
+            onClick={() => setActiveComponent("profile")}
+          />
+          <span className="admin-name">
             {user.first_name} {user.last_name}
           </span>
-          <span className="block truncate text-sm font-medium email-i ">
+          <span className="admin-email">
             {user.email}
           </span>
         </div>
-        <Sidebar.Items className="ml-4 items " >
-          <Sidebar.ItemGroup>
-            <Sidebar.Item
-              onClick={() => setActiveComponent("dashboard")}
-              icon={HiChartPie}
-            >
-              Dashboard
-            </Sidebar.Item>
-            <Sidebar.Item
-              onClick={() => setActiveComponent("profile")}
-              icon={HiInbox}
-            >
-              Profile
-            </Sidebar.Item>
-            <Sidebar.Item
-              onClick={() => setActiveComponent("chat")}
-              icon={HiInbox}
-            >
-              Inbox
-            </Sidebar.Item>
-            <Sidebar.Item
-              onClick={() => setActiveComponent("blocked")}
-              icon={HiShoppingBag}
-            >
-              Blocked
-            </Sidebar.Item>
-            <Sidebar.Item onClick={handleLogout} icon={HiArrowSmLeft}>
-              Logout
-            </Sidebar.Item>
-          </Sidebar.ItemGroup>
-        </Sidebar.Items>
-      </Sidebar>
+
+        {/* Sidebar Navigation */}
+        <div className=" board flex flex-col space-y-2">
+          <div
+            className={`flex items-center p-2 cursor-pointer hover:bg-blue-800 hover:text-white transition-colors ${
+              activeComponent === "dashboard"
+                ? "bg-blue-900 text-white"
+                : "text-white"
+            }`}
+            onClick={() => setActiveComponent("dashboard")}
+          >
+            <HiChartPie className="mr-3 text-xl" />
+            <span>Dashboard</span>
+          </div>
+
+          <div
+            className={`flex items-center p-2 rounded-lg cursor-pointer hover:bg-blue-800 hover:text-white transition-colors ${
+              activeComponent === "profile"
+                ? "bg-blue-900 text-white"
+                : "text-white"
+            }`}
+            onClick={() => setActiveComponent("profile")}
+          >
+            <HiInbox className="mr-3 text-xl" />
+            <span>Profile</span>
+          </div>
+
+          <div
+            className={`flex items-center p-2 rounded-lg cursor-pointer hover:bg-blue-800 hover:text-white transition-colors ${
+              activeComponent === "chat"
+                ? "bg-blue-900 text-white"
+                : "text-white"
+            }`}
+            onClick={() => setActiveComponent("chat")}
+          >
+            <HiInbox className="mr-3 text-xl" />
+            <span>Inbox</span>
+          </div>
+
+          <div
+            className={`flex items-center p-2 rounded-lg cursor-pointer hover:bg-blue-800 hover:text-white transition-colors ${
+              activeComponent === "blocked"
+                ? "bg-blue-900 text-white"
+                : "text-white"
+            }`}
+            onClick={() => setActiveComponent("blocked")}
+          >
+            <HiShoppingBag className="mr-3 text-xl" />
+            <span className="" >Blocked</span>
+          </div>
+
+          <div
+            className="flex items-center p-2 rounded-lg cursor-pointer hover:bg-red-600 hover:text-white text-red-600 transition-colors"
+            onClick={handleLogout}
+          >
+            <HiArrowSmLeft className="mr-3 text-2xl" />
+            <span >Logout</span>
+          </div>
+        </div>
+      </div>
+
       <div className="flex-grow p-4">{renderComponent()}</div>
       {error && <p style={{ color: "red" }}>{error}</p>}
     </div>
