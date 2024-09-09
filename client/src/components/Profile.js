@@ -196,18 +196,22 @@ function Profile() {
                   {data.email}
                 </p>
               </h3>
-              <h3 className="text-l font-bold tracking-tight text-gray-900 dark:text-white">
-                Phone Number:{" "}
-                <p className="font-normal text-gray-700 dark:text-gray-400">
-                  {data.phone_number}
-                </p>
-              </h3>
-              <h3 className="text-l font-bold tracking-tight text-gray-900 dark:text-white">
-                National Id:{" "}
-                <p className="font-normal text-gray-700 dark:text-gray-400">
-                  {data.national_id}
-                </p>
-              </h3>
+              {data.phone_number !== 0 && (
+                <h3 className="text-l font-bold tracking-tight text-gray-900 dark:text-white">
+                  Phone Number:{" "}
+                  <p className="font-normal text-gray-700 dark:text-gray-400">
+                    {data.phone_number}
+                  </p>
+                </h3>
+              )}
+              {data.national_id !== "" && (
+                <h3 className="text-l font-bold tracking-tight text-gray-900 dark:text-white">
+                  National Id:{" "}
+                  <p className="font-normal text-gray-700 dark:text-gray-400">
+                    {data.national_id}
+                  </p>
+                </h3>
+              )}
             </div>
           </div>
           <Button
@@ -316,7 +320,7 @@ function Profile() {
       </div>
       {error && <p className="mt-5 text-red-500">{error}</p>}
       {message && <p className="mt-5 text-green-500">{message}</p>}
-    </div>
+    </div>  
   );
 }
 
