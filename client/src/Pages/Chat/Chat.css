@@ -76,3 +76,10 @@
     border-radius: 0;
   }
 }
+.chatnav{
+  background-color: rgb(31, 34, 49);
+  border-radius: 6px;
+  /* width: 584px; */
+  height: 60px;
+  /* margin-right: 20px; */
+}
