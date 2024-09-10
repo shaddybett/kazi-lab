@@ -5,7 +5,7 @@ import MessageBubble from "./MessageBubble";
 import { IoMdChatbubbles } from "react-icons/io";
 import './Chat.css'
 
-const ChatWindow = ({ activeUser, messages, sendMessage, detailss }) => {
+const ChatWindow = ({ activeUser, messages, sendMessage, detailss, receiver }) => {
   console.log("ChatWindow: detailss", detailss);
 
   if (!activeUser) {
@@ -18,16 +18,16 @@ const ChatWindow = ({ activeUser, messages, sendMessage, detailss }) => {
   }
 
   return (
-    <div className="flex-grow bg-gray-900 p-4 flex flex-col justify-between">
+    <div className=" wind flex-grow bg-gray-900 p-4 flex flex-col justify-between">
       <div className="flex items-center justify-between mb-4">
       <div className="flex items-center">
           <img
-            src={activeUser.image || "default-avatar-img" }
+            src={activeUser.image || receiver.image }
             alt={activeUser.name}
             className="w-12 h-12 rounded-full mr-3"
           />
           <div>
-            <p className="text-white">{activeUser.name} </p>
+            <p className="text-white">{activeUser.name || `${receiver.first_name} ${receiver.last_name}` } </p>
             <p className="text-gray-400 text-sm">Online</p>
           </div>
         </div>
