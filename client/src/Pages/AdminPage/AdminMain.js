@@ -81,15 +81,15 @@ function AdminMain({ blocked, onclose, click }) {
 
   return (
     <div className=" general-sidebar flex h-screen text-white">
-      <div className="sidebar bg-gray-800 h-screen p-6">
+      <div className="sidebar bg-gray-800 h-screen p-2">
         {/* User Avatar and Info */}
         <div className="flex flex-col items-center mb-8">
           <Avatar
           size="xl" rounded={true}
             // className="rounded-full w-24 h-24 object-cover mb-2 cursor-pointer hover:scale-105 transition-transform duration-300 "
-            className="avat"
+            // className="avat"
             img={user.image}
-            alt="user.first_name"
+            // alt="user.first_name"
             onClick={() => setActiveComponent("profile")}
           />
           <span className="admin-name">
@@ -103,9 +103,9 @@ function AdminMain({ blocked, onclose, click }) {
         {/* Sidebar Navigation */}
         <div className=" board flex flex-col space-y-2">
           <div
-            className={`flex items-center p-2 cursor-pointer hover:bg-blue-800 hover:text-white transition-colors ${
+            className={`flex items-center p-2 rounded-sm cursor-pointer hover:bg-gray-500 hover:text-white transition-colors ${
               activeComponent === "dashboard"
-                ? "bg-blue-900 text-white"
+                ? "bg-gray-600 text-white"
                 : "text-white"
             }`}
             onClick={() => setActiveComponent("dashboard")}
@@ -115,9 +115,9 @@ function AdminMain({ blocked, onclose, click }) {
           </div>
 
           <div
-            className={`flex items-center p-2 rounded-lg cursor-pointer hover:bg-blue-800 hover:text-white transition-colors ${
+            className={`flex items-center p-2 rounded-sm cursor-pointer hover:bg-gray-600 hover:text-white transition-colors ${
               activeComponent === "profile"
-                ? "bg-blue-900 text-white"
+                ? "bg-gray-500 text-white"
                 : "text-white"
             }`}
             onClick={() => setActiveComponent("profile")}
@@ -127,9 +127,9 @@ function AdminMain({ blocked, onclose, click }) {
           </div>
 
           <div
-            className={`flex items-center p-2 rounded-lg cursor-pointer hover:bg-blue-800 hover:text-white transition-colors ${
+            className={`flex items-center p-2 rounded-sm cursor-pointer hover:bg-gray-600 hover:text-white transition-colors ${
               activeComponent === "chat"
-                ? "bg-blue-900 text-white"
+                ? "bg-gray-500 text-white"
                 : "text-white"
             }`}
             onClick={() => setActiveComponent("chat")}
@@ -139,9 +139,9 @@ function AdminMain({ blocked, onclose, click }) {
           </div>
 
           <div
-            className={`flex items-center p-2 rounded-lg cursor-pointer hover:bg-blue-800 hover:text-white transition-colors ${
+            className={`flex items-center p-2 rounded-sm cursor-pointer hover:bg-gray-600 hover:text-white transition-colors ${
               activeComponent === "blocked"
-                ? "bg-blue-900 text-white"
+                ? "bg-gray-500 text-white"
                 : "text-white"
             }`}
             onClick={() => setActiveComponent("blocked")}
@@ -151,7 +151,7 @@ function AdminMain({ blocked, onclose, click }) {
           </div>
 
           <div
-            className="flex items-center p-2 rounded-lg cursor-pointer hover:bg-red-600 hover:text-white text-red-600 transition-colors"
+            className="flex items-center p-2 rounded-sm cursor-pointer hover:bg-red-600 hover:text-white text-red-600 transition-colors"
             onClick={handleLogout}
           >
             <HiArrowSmLeft className="mr-3 text-2xl" />
