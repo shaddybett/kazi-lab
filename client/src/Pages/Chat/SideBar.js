@@ -3,7 +3,7 @@ import { FaSearch } from "react-icons/fa";
 import { MdMoreVert } from "react-icons/md";
 import ContactItem from "./ContactItem";
 
-const Sidebar = ({ contacts, setActiveUser }) => {
+const Sidebar = ({ contacts, setActiveUser, receiver }) => {
   return (
     <div className="w-full md:w-1/4 bg-gray-800 p-4">
       <div className="flex items-center justify-between mb-4">
@@ -24,6 +24,7 @@ const Sidebar = ({ contacts, setActiveUser }) => {
             key={index}
             contact={contact}
             setActiveUser={setActiveUser}
+            receiver={receiver}
           />
         ))}
       </div>

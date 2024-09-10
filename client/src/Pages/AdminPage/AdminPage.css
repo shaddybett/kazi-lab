@@ -364,7 +364,7 @@ th:nth-child(3), td:nth-child(3) {
   font-size: 2rem; /* Bigger icon for emphasis */
 }
 .sidebar{
-  background-color: #93a4aa;
+  background-color: #ccd4d6;
   width: 250px;
 }
 .admin-name{
@@ -379,6 +379,6 @@ th:nth-child(3), td:nth-child(3) {
 .board{
   background-color: #7c93a5;
   border-radius: 5px;
-  width: 226px;
+  width: 230px;
   /* padding: 3%; */
 }
