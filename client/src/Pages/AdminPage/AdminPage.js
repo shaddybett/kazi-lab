@@ -93,7 +93,6 @@ function AdminPage() {
     }
   };
 
-
   const handleChatClick = (user) => {
     setChatUser(user);
   };
@@ -245,7 +244,7 @@ function AdminPage() {
                       : "hover:bg-gray-200"
                   }`}
                 >
-                  <Table.Cell className="name" >
+                  <Table.Cell className="name">
                     {user.first_name} {user.last_name}
                   </Table.Cell>
                   <Table.Cell>{user.email}</Table.Cell>
@@ -313,9 +312,11 @@ function AdminPage() {
                       inline
                       label={<HiDotsHorizontal />}
                     >
-                      <Dropdown.Item onClick={() => handleChatClick(user)}>
-                        Chat
-                      </Dropdown.Item>
+                      {!user.is_blocked && (
+                        <Dropdown.Item onClick={() => handleChatClick(user)}>
+                          Chat
+                        </Dropdown.Item>
+                      )}
                       <Dropdown.Item onClick={() => handleProviderClick(user)}>
                         Details
                       </Dropdown.Item>

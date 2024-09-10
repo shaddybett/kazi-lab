@@ -135,7 +135,7 @@ const MessageInput = ({ sendMessage }) => {
                   {emoji}
                 </span>
               ))}
-              {["🌾", "🚜", "🌱", "🍅", "🌽", "🍆"].map((emoji) => (
+              {["🌾", "🚜", "🌱", "🍅", "🌽"].map((emoji) => (
                 <span
                   key={emoji}
                   className="cursor-pointer text-white text-2xl mr-2 mb-2"

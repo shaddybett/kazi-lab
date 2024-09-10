@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useCallback } from "react";
-import Sidebar from "../Chat/SideBar";
 import ChatWindow from "../Chat/ChatWindow";
 import './Chatbox.css'
 
@@ -117,26 +116,13 @@ const ChatBox = ({ senderId, receiver, onClose }) => {
 
   return (
     <div className="chat flex h-full">
-      {/* <Sidebar
-        contacts={Array.from(new Set(messages.map(msg => msg.sender_id === sedId ? msg.receiver_id : msg.sender_id)))
-          .map(contactId => ({
-            id: contactId,
-            name: details[contactId]
-              ? `${details[contactId].first_name} ${details[contactId].last_name}`
-              : "Unknown User",
-            status: "Online",
-            message: messages.find(msg => msg.sender_id === contactId || msg.receiver_id === contactId)?.content,
-            image: details[contactId] ? details[contactId].image : null,
-          }))}
-          receiver={receiver}
-        setActiveUser={(user) => { console.log("Setting active user in ChatBox:", user); fetchMessages(sedId, user); setActiveUser(user); }}
-      /> */}
       <ChatWindow
         activeUser={receiver}
         detailss={activeUser}
         messages={sortedMessages}
         sendMessage={handleSendMessage}
         receiver={receiver}
+        onClose={onClose}
       />
       {error && <p className="text-red-500">{error}</p>}
       {loading && <p>Loading...</p>}

@@ -45,6 +45,34 @@
 .window{
   max-width: 100px;
 }
-.wind{
-  border-radius: 6px;
+/* Chat overlay container to center the chat window */
+.chat-overlay {
+  position: fixed; /* Fixed positioning to always stay in the center */
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center; /* Vertically center */
+  justify-content: center; /* Horizontally center */
+  background-color: rgba(0, 0, 0, 0.5); /* Optional: Add a transparent black background */
+  z-index: 1000; /* Make sure it's above everything else */
+}
+
+/* Chat window container styles */
+.chat-window-container {
+  width: 100%;
+  width: 600px; /* Width of chat window */
+  height: 400px; /* Adjust height if necessary */
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Responsive for mobile */
+@media (max-width: 768px) {
+  .chat-window-container {
+    max-width: 100%;
+    height: 100vh; /* Fullscreen on mobile */
+    border-radius: 0;
+  }
 }
