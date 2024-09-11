@@ -5,7 +5,7 @@ import ContactItem from "./ContactItem";
 
 const Sidebar = ({ contacts, setActiveUser, receiver }) => {
   return (
-    <div className="w-full md:w-1/4 bg-gray-800 p-4">
+    <div className="w-full  md:w-1/4 bg-gray-800 p-4">
       <div className="flex items-center justify-between mb-4">
         <h1 className="text-white text-xl font-bold">Recent Chats</h1>
         <MdMoreVert className="text-white" />

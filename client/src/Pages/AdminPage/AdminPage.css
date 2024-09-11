@@ -90,6 +90,15 @@ th:nth-child(3), td:nth-child(3) {
   border-radius: 50%;
   margin-bottom: 10px; /* Add spacing under the avatar */
 }
+.avat{
+  width: 100px;
+  height: 100px;
+  /* object-fit: cover; */
+  border-radius: 50%;
+  margin-bottom: 10px;
+  background-color: #3776aa;
+
+}
 
 /* Sidebar */
 .general-sidebar {
@@ -380,5 +389,6 @@ th:nth-child(3), td:nth-child(3) {
   background-color: #7c93a5;
   border-radius: 5px;
   width: 230px;
+  /* gap: 6px; */
   /* padding: 3%; */
 }
