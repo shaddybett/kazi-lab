@@ -4,6 +4,7 @@ import {
   HiChartPie,
   HiInbox,
   HiShoppingBag,
+  HiUser,
   HiArrowSmLeft,
 } from "react-icons/hi";
 import ServiceProviderChatBox from "../Chatbox/ServiceProviderChatbox";
@@ -80,28 +81,26 @@ function AdminMain({ blocked, onclose, click }) {
   };
 
   return (
-    <div className=" general-sidebar flex h-full text-white">
-      <div className="sidebar bg-gray-800 h-screen p-2">
+    <div className="general-sidebar flex h-screen text-white">
+      {/* Sidebar */}
+      <div className="sidebar bg-gray-800 w-64 p-2 h-full flex flex-col">
         {/* User Avatar and Info */}
-        <div className="flex  flex-col items-center mb-4">
+        <div className="flex flex-col items-center mb-4">
           <Avatar
-           rounded={true}
-            className="rounded-full w-24 h-24 object-cover mb-2 cursor-pointer hover:scale-105 transition-transform duration-300 "
-            // className="avat"
             img={user.image}
-            alt={Avatar}
+            size="xl"
+            rounded={true}
+            className="object-cover cursor-pointer hover:scale-105 transition-transform duration-300"
             onClick={() => setActiveComponent("profile")}
           />
-          <span className="admin-name">
+          <span className="admin-name text-black">
             {user.first_name} {user.last_name}
           </span>
-          <span className="admin-email">
-            {user.email}
-          </span>
+          <span className="admin-email">{user.email}</span>
         </div>
 
         {/* Sidebar Navigation */}
-        <div className=" board flex  flex-col space-y-2">
+        <div className="board flex flex-col space-y-2 flex-grow">
           <div
             className={`flex items-center p-2 rounded-sm cursor-pointer hover:bg-gray-500 hover:text-white transition-colors ${
               activeComponent === "dashboard"
@@ -122,7 +121,7 @@ function AdminMain({ blocked, onclose, click }) {
             }`}
             onClick={() => setActiveComponent("profile")}
           >
-            <HiInbox className="mr-3 text-xl" />
+            <HiUser className="mr-3 text-xl" />
             <span>Profile</span>
           </div>
 
@@ -147,21 +146,24 @@ function AdminMain({ blocked, onclose, click }) {
             onClick={() => setActiveComponent("blocked")}
           >
             <HiShoppingBag className="mr-3 text-xl" />
-            <span className="" >Blocked</span>
+            <span>Blocked</span>
           </div>
 
           <div
-            className="flex items-center p-2 rounded-sm cursor-pointer hover:bg-red-600 hover:text-white text-red-600 transition-colors"
+            className="flex items-center p-2 rounded-sm cursor-pointer hover:bg-red-800 hover:text-white text-white transition-colors bg-red-600 "
             onClick={handleLogout}
           >
             <HiArrowSmLeft className="mr-3 text-2xl" />
-            <span >Logout</span>
+            <span>Logout</span>
           </div>
         </div>
       </div>
 
-      <div className="flex-grow p-4">{renderComponent()}</div>
-      {error && <p style={{ color: "red" }}>{error}</p>}
+      {/* Main Content */}
+      <div className="flex-grow p-4 overflow-auto">
+        {renderComponent()}
+        {error && <p style={{ color: "red" }}>{error}</p>}
+      </div>
     </div>
   );
 }

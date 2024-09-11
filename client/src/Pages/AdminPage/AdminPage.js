@@ -7,6 +7,7 @@ import ServiceProviderChatBox from "../Chatbox/ServiceProviderChatbox";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import { HiDotsHorizontal } from "react-icons/hi";
+import NewChatBox from "../Chat/NewChatBox";
 
 function AdminPage() {
   const [providers, setProviders] = useState([]);
@@ -254,9 +255,11 @@ function AdminPage() {
                       inline
                       label={<HiDotsHorizontal />}
                     >
-                      <Dropdown.Item onClick={() => handleChatClick(user)}>
-                        Chat
-                      </Dropdown.Item>
+                      {!user.is_blocked && (
+                        <Dropdown.Item onClick={() => handleChatClick(user)}>
+                          Chat
+                        </Dropdown.Item>
+                      )}
                       <Dropdown.Item onClick={() => handleProviderClick(user)}>
                         Details
                       </Dropdown.Item>
@@ -348,7 +351,7 @@ function AdminPage() {
         <AdminUsersPopup user={selectedUser} onClose={closePopup} />
       )}
       {chatUser && (
-        <ChatBox
+        <NewChatBox
           senderId={currentUserId}
           receiver={chatUser}
           onClose={closeChat}

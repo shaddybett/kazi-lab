@@ -138,7 +138,7 @@ const ServiceProviderChatBox = ({ providerId }) => {
   );
 
   return (
-    <div className="flex h-full">
+    <div className=" inbox  ">
       <Sidebar
         contacts={Array.from(
           new Set(
@@ -176,7 +176,7 @@ const ServiceProviderChatBox = ({ providerId }) => {
       />
       {error && <p className="text-red-500">{error}</p>}
       {loading && <p>Loading...</p>}
-    </div>
+    </div>  
   );
 };
 
