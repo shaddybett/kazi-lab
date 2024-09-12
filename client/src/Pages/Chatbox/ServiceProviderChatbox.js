@@ -3,7 +3,7 @@ import Sidebar from "../Chat/SideBar";
 import ChatWindow from "../Chat/ChatWindow";
 import './Chatbox.css'
 
-const ServiceProviderChatBox = ({ providerId }) => {
+const ServiceProviderChatBox = ({ providerId, minimize }) => {
   const [messages, setMessages] = useState([]);
   const [details, setDetails] = useState({});
   const [loading, setLoading] = useState(false);
