@@ -10,9 +10,9 @@ import {
 } from "flowbite-react";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
-import './Components.css'
+import "./Components.css";
 
-function Profile() {
+function Profile({minimize}) {
   const [data, setData] = useState({});
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
@@ -189,7 +189,7 @@ function Profile() {
   };
 
   useEffect(() => {
-    if ((error)) {
+    if (error) {
       const timer = setTimeout(() => {
         setError("");
         setMessage("");
@@ -199,54 +199,57 @@ function Profile() {
   }, [error]);
 
   return (
-    <div className="prof from-gray-100 to-gray-300 py-10">
-      {/* <div className="flex justify-center items-center"> */}
-        <div className="prof-1">
-          <div className=" max-w-sm ml-80 shadow-lg p-6 bg-white rounded-lg">
+    <div className="">
+      <div className="">
+        <div className={`${minimize ? "":"ml-40" } `}>
+          <div className="max-w-sm lg:max-w-md xl:max-w-lg mx-auto lg:mx-0 lg:ml-20 shadow-lg p-6 bg-white rounded-lg transition-all duration-300 hover:shadow-2xl ">
             {/* Center the image with avatar */}
-            <div className="flex flex-col items-center">
+            <div className="flex flex-col items-center space-y-4  ">
               <Avatar img={data.image} size="xl" rounded={true} />
 
               {/* Name Section */}
-              <div className="text-center ">
-                <p className=" prof-title text-lg text-gray-800">
+              <div className="text-center">
+                <p className="text-xl font-semibold text-gray-800">
                   {data.first_name} {data.last_name}
                 </p>
-                <p className="text-lg text-gray-600">{data.email}</p>
+                <p className="text-md text-gray-600">{data.email}</p>
               </div>
+
               {/* Phone Number Section */}
               {data.phone_number && (
-                <div className="text-center mt-2">
-                  <h3 className="text-xl font-bold text-gray-800">Phone:</h3>
-                  <p className="text-lg text-gray-600">{data.phone_number}</p>
+                <div className="text-center mt-4">
+                  <h3 className="text-lg font-bold text-gray-800">Phone:</h3>
+                  <p className="text-md text-gray-600">{data.phone_number}</p>
                 </div>
               )}
 
               {/* National ID Section */}
               {data.national_id && (
-                <div className="text-center mt-2">
-                  <h3 className="text-xl font-bold text-gray-800">
+                <div className="text-center mt-4">
+                  <h3 className="text-lg font-bold text-gray-800">
                     National ID:
                   </h3>
-                  <p className="text-lg text-gray-600">{data.national_id}</p>
+                  <p className="text-md text-gray-600">{data.national_id}</p>
                 </div>
               )}
             </div>
 
             {/* Buttons Section */}
-            <Button
-              className="mt-5 w-full bg-blue-900 text-white hover:bg-blue-400 transition duration-300 ease-in-out"
-              onClick={() => setIsModalOpen(true)} // Show modal when clicked
-            >
-              Update Profile
-            </Button>
+            <div className="flex flex-col space-y-3 mt-6">
+              <Button
+                className="w-full bg-blue-900 text-white py-2 rounded-lg hover:bg-blue-400 transition duration-300 ease-in-out"
+                onClick={() => setIsModalOpen(true)} // Show modal when clicked
+              >
+                Update Profile
+              </Button>
 
-            <Button
-              className="mt-5 w-full bg-red-600 text-white hover:bg-red-700 transition duration-300 ease-in-out"
-              onClick={handleDelete}
-            >
-              Delete Account
-            </Button>
+              <Button
+                className="w-full bg-red-600 text-white py-2 rounded-lg hover:bg-red-700 transition duration-300 ease-in-out"
+                onClick={handleDelete}
+              >
+                Delete Account
+              </Button>
+            </div>
           </div>
 
           {/* Modal for updating the profile */}
@@ -319,8 +322,8 @@ function Profile() {
                 )}
 
                 {/* Password Change Section */}
-                <h2 className="text-xl font-medium text-gray-700">
-                  Want to change your password?
+                <h2 className="text-lg font-medium text-gray-700 mt-5">
+                  Change Password
                 </h2>
 
                 <div>
@@ -376,7 +379,7 @@ function Profile() {
 
                 {/* Save Button */}
                 <Button
-                  className="mt-5 w-full bg-blue-900 text-white hover:bg-blue-700 transition-all duration-300"
+                  className="mt-5 w-full bg-blue-900 text-white hover:bg-blue-700 transition-all duration-300 py-2 rounded-lg"
                   type="submit"
                 >
                   Save Changes
@@ -384,10 +387,9 @@ function Profile() {
               </form>
             </Modal.Body>
 
-            <Modal.Footer className="bg-gray-300" >
+            <Modal.Footer className="bg-gray-100 py-3">
               <Button
-                color="black"
-                className="bg-gray-600 hover:bg-gray-700 text-white transition-all duration-300"
+                className="bg-gray-600 hover:bg-gray-700 text-white py-2 rounded-lg transition-all duration-300"
                 onClick={onClose}
               >
                 Close
@@ -395,9 +397,11 @@ function Profile() {
             </Modal.Footer>
           </Modal>
         </div>
-      {/* </div> */}
-      {error && <p className="mt-5 text-center text-red-500">{error}</p>}
-      {message && <p className="mt-5 text-center text-green-500">{message}</p>}
+        {error && <p className="mt-5 text-center text-red-500">{error}</p>}
+        {message && (
+          <p className="mt-5 text-center text-green-500">{message}</p>
+        )}
+      </div>
     </div>
   );
 }

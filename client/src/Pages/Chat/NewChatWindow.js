@@ -15,6 +15,7 @@ const NewChatWindow = ({
   setActiveUser,
   onClose,
   files,
+  onDelete
 }) => {
   const chatRef = useRef(null);
 
@@ -78,6 +79,7 @@ const NewChatWindow = ({
                 key={index}
                 message={message}
                 senderId={activeUser.id}
+                onDelete={onDelete}
               />
             ))}
           {messages.files && messages.files.length > 0 && (

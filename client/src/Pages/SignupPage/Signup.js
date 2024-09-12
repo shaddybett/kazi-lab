@@ -97,7 +97,7 @@ function Signup() {
 
   return (
     <>
-      <div className="sign-up-page">
+      <div className=" w-full  sign-up-page">
         <div className="sign-up-page-title">
           <h1>Sign Up</h1>
           <p>Please select your role to proceed.</p>

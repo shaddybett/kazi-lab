@@ -170,7 +170,6 @@
 
 // export default AdminMain;
 
-
 import React, { useCallback, useEffect, useState } from "react";
 import { Avatar } from "flowbite-react";
 import {
@@ -200,17 +199,17 @@ function AdminMain({ blocked, onclose, click }) {
   const renderComponent = () => {
     switch (activeComponent) {
       case "dashboard":
-        return <div>Dashboard content</div>;
+        return <AdminPage />;
       case "users":
         return <AdminPage />;
       case "profile":
-        return <Profile />;
+        return <Profile  minimize={isSidebarMinimized} />;
       case "blocked":
         return (
           <BlockedUsers blocked={blocked} onclose={onclose} click={click} />
         );
       case "chat":
-        return <ServiceProviderChatBox providerId={currentUserId} />;
+        return <ServiceProviderChatBox providerId={currentUserId} minimize={isSidebarMinimized} />;
       default:
         return <AdminPage />;
     }
@@ -238,7 +237,7 @@ function AdminMain({ blocked, onclose, click }) {
       setError("An error occurred, please try again later");
     }
   }, []);
-  
+
   useEffect(() => {
     handleUser();
   }, [handleUser]);
@@ -257,6 +256,24 @@ function AdminMain({ blocked, onclose, click }) {
       navigate("/login");
     }
   };
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 768) {
+        setIsSidebarMinimized(true); // Minimize sidebar on small screens
+      } else {
+        setIsSidebarMinimized(false); // Expand sidebar on larger screens
+      }
+    };
+
+    // Check screen size on initial load
+    handleResize();
+
+    // Add event listener for window resize
+    window.addEventListener("resize", handleResize);
+
+    // Cleanup event listener on component unmount
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   return (
     <div className="general-sidebar flex h-screen text-white">
@@ -264,12 +281,16 @@ function AdminMain({ blocked, onclose, click }) {
       <div
         className={` ${isSidebarMinimized ? "w-20" : "w-64"} 
         h-full p-2 flex flex-col transition-all duration-300 ease-in-out 
-        ${!isSidebarMinimized ? "bg-gray-200" : "bg-gray-800"}`}sidebar
+        ${!isSidebarMinimized ? "bg-gray-200" : "bg-gray-800"}`}
+        sidebar
       >
         {/* Sidebar Toggle Button */}
         <div className="flex justify-end ">
           <HiMenu
-            className="text-gray-900 text-xl cursor-pointer"
+            className={`text-xl cursor-pointer mb-2 ${
+              isSidebarMinimized ? "text-white" : "text-gray-900"
+            }`}
+            // className="text-gray-900 text-xl cursor-pointer mb-2"
             onClick={() => setIsSidebarMinimized(!isSidebarMinimized)} // Toggle sidebar state
           />
         </div>
@@ -295,63 +316,120 @@ function AdminMain({ blocked, onclose, click }) {
 
         {/* Sidebar Navigation (board) */}
         <div
-          className={` flex flex-col space-y-2 flex-grow transition-all duration-300 ${
+          className={` flex flex-col space-y-2 flex-grow transition-all duration-300 bg-gray-500 rounded-sm ${
             isSidebarMinimized ? "w-20" : "w-64"
           }board `}
         >
           <div
-            className={`flex items-center p-2 rounded-sm cursor-pointer hover:bg-gray-500 hover:text-white transition-colors ${
+            className={`relative group flex items-center p-2 rounded-sm cursor-pointer hover:bg-gray-600 hover:text-white transition-colors ${
               activeComponent === "dashboard"
-                ? "bg-gray-600 text-gray-400"
-                : "text-gray-600"
+                ? "bg-gray-600 text-white"
+                : "text-white"
             }`}
             onClick={() => setActiveComponent("dashboard")}
           >
-            <HiChartPie className="mr-3 text-xl" />
-            {!isSidebarMinimized && <span>Dashboard</span>}
-          </div>
+            <HiChartPie
+              className={`mr-3 ${
+                isSidebarMinimized ? "text-2xl ml-3 " : "text-xl"
+              }`}
+              //  className="mr-3 text-xl"
+            />
 
+            {/* Display name when sidebar is not minimized */}
+            {!isSidebarMinimized && <span>Dashboard</span>}
+
+            {/* Tooltip when sidebar is minimized */}
+            {isSidebarMinimized && (
+              <span className="absolute left-full ml-4 px-2 py-1 rounded bg-gray-700 text-white text-sm tooltip group-hover:opacity-100">
+                Dashboard
+              </span>
+            )}
+          </div>
           <div
-            className={`flex items-center p-2 rounded-sm cursor-pointer hover:bg-gray-500 hover:text-white transition-colors ${
+            className={`relative group flex items-center p-2 rounded-sm cursor-pointer hover:bg-gray-600 hover:text-white transition-colors ${
               activeComponent === "profile"
                 ? "bg-gray-600 text-white"
                 : "text-white"
             }`}
             onClick={() => setActiveComponent("profile")}
           >
-            <HiUser className="mr-3 text-xl" />
+            <HiUser
+              className={`mr-3 ${
+                isSidebarMinimized ? "text-2xl ml-3" : "text-xl"
+              } `}
+            />
+
+            {/* Display name when sidebar is not minimized */}
             {!isSidebarMinimized && <span>Profile</span>}
+
+            {/* Tooltip when sidebar is minimized */}
+            {isSidebarMinimized && (
+              <span className="absolute left-full ml-4 px-2 py-1 rounded bg-gray-700 text-white text-sm tooltip group-hover:opacity-100">
+                Profile
+              </span>
+            )}
           </div>
 
           <div
-            className={`flex items-center p-2 rounded-sm cursor-pointer hover:bg-gray-500 hover:text-white transition-colors ${
+            className={`relative group flex items-center p-2 rounded-sm cursor-pointer hover:bg-gray-600 hover:text-white transition-colors ${
               activeComponent === "chat"
                 ? "bg-gray-600 text-white"
                 : "text-white"
             }`}
             onClick={() => setActiveComponent("chat")}
           >
-            <HiInbox className="mr-3 text-xl" />
+            <HiInbox
+              className={`mr-3 ${
+                isSidebarMinimized ? "text-2xl ml-3 " : "text-xl"
+              } `}
+            />
+
+            {/* Display name when sidebar is not minimized */}
             {!isSidebarMinimized && <span>Inbox</span>}
+
+            {/* Tooltip when sidebar is minimized */}
+            {isSidebarMinimized && (
+              <span className="absolute left-full ml-4 px-2 py-1 rounded bg-gray-700 text-white text-sm tooltip group-hover:opacity-100">
+                Inbox
+              </span>
+            )}
           </div>
 
           <div
-            className={`flex items-center p-2 rounded-sm cursor-pointer hover:bg-gray-500 hover:text-white transition-colors ${
+            className={`relative group flex items-center p-2 rounded-sm cursor-pointer hover:bg-gray-600 hover:text-white transition-colors ${
               activeComponent === "blocked"
                 ? "bg-gray-600 text-white"
                 : "text-white"
             }`}
             onClick={() => setActiveComponent("blocked")}
           >
-            <HiShoppingBag className="mr-3 text-xl" />
+            <HiShoppingBag
+              className={`mr-3 ${
+                isSidebarMinimized ? "text-2xl ml-3" : "text-xl"
+              }`}
+            />
+
+            {/* Display name when sidebar is not minimized */}
             {!isSidebarMinimized && <span>Blocked</span>}
+
+            {/* Tooltip when sidebar is minimized */}
+            {isSidebarMinimized && (
+              <span className="absolute left-full ml-4 px-2 py-1 rounded bg-gray-700 text-white text-sm tooltip group-hover:opacity-100">
+                Blocked
+              </span>
+            )}
           </div>
 
           <div
             className="flex items-center p-2 rounded-sm cursor-pointer hover:bg-red-800 hover:text-white text-white transition-colors bg-red-600"
             onClick={handleLogout}
           >
-            <HiArrowSmLeft className="mr-3 text-2xl" />
+            <HiArrowSmLeft
+              className={`mr-3 ${
+                isSidebarMinimized ? "text-3xl ml-2 " : "text-2xl"
+              }`}
+            />
+            {/* Display name when sidebar is not minimized */}
             {!isSidebarMinimized && <span>Logout</span>}
           </div>
         </div>

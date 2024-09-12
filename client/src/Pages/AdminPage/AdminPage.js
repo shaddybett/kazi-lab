@@ -287,8 +287,8 @@ function AdminPage() {
           </Table>
         </div>
 
-        <div className="table-1">
-          <h3 className="table-1-title">Clients</h3>
+        <div className="table-1 ">
+          <h3 className="table-1-title ">Clients</h3>
           <Table>
             <Table.Head>
               <Table.HeadCell>Name</Table.HeadCell>

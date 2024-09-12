@@ -114,11 +114,27 @@ const NewChatBox = ({ senderId, receiver, onClose }) => {
   };
 
   const sortedMessages = [...messages].sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
+  const handleDeleteMessage = (messageId) => {
+    fetch(`${backendUrl}/delete_message/${messageId}`, {
+      method: 'DELETE',
+    })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Failed to delete message');
+        }
+        return response.json();
+      })
+      .then(() => {
+        setMessages(messages.filter(msg => msg.id !== messageId));
+      })
+      .catch(error => console.error("Error deleting message:", error));
+  };
 
   return (
     <div className="chat flex h-full">
       <NewChatWindow
         activeUser={receiver}
+        onDelete={handleDeleteMessage}
         detailss={activeUser}
         messages={sortedMessages}
         sendMessage={handleSendMessage}
