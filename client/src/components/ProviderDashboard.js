@@ -383,19 +383,20 @@ function ProviderDashboard() {
   };
 
   return (
-    <div>
-      <Navbar fluid rounded className="bg-black">
-        <div className="flex md:order-2">
+    <div className="min-h-screen bg-gray-50 flex flex-col items-center" >
+      <Navbar fluid rounded className="bg-blue-600 w-full flex justify-between p-4 text-white">
+      <h1 className="text-lg font-semibold">Welcome, {data.first_name}!</h1>
+        {/* <div className="avatar-container "> */}
           <Dropdown
             arrowIcon={false}
             inline
-            label={<Avatar alt="pic" img={data.image} rounded />}
+            label={<Avatar alt="pic" img={data.image} rounded className="w-10 h-10" />}
           >
             <Dropdown.Header>
-              <span className="block text-sm">
+              <span className="block text-sm font-bold">
                 {data.first_name} {data.last_name}
               </span>
-              <span className="block truncate text-sm font-medium">
+              <span className="block text-sm text-gray-200">
                 {data.email}
               </span>
             </Dropdown.Header>
@@ -409,15 +410,7 @@ function ProviderDashboard() {
             <Dropdown.Divider />
             <Dropdown.Item onClick={handleLogout}>Logout</Dropdown.Item>
           </Dropdown>
-          <Navbar.Toggle />
-        </div>
-        <Navbar.Collapse>
-          <Navbar.Link href="#" active></Navbar.Link>
-          <Navbar.Link href="#"></Navbar.Link>
-          <Navbar.Link href="#"></Navbar.Link>
-          <Navbar.Link href="#"></Navbar.Link>
-          <Navbar.Link href="#"></Navbar.Link>
-        </Navbar.Collapse>
+        {/* </div> */}
       </Navbar>
       <div className="card">
         <Card className="max-w-xl ">
@@ -566,7 +559,7 @@ function ProviderDashboard() {
           <img src={selectedImage} alt="Enlarged" className="modal-image" />
         )}
         {selectedVideo && (
-          <div className="modal-video-container" >
+          <div className="modal-video-container">
             {isVideoLoading && <Spinner aria-label="Loading" size="lg" />}
             <video
               controls

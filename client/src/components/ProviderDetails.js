@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef, useCallback } from "react";
-import { Card, Label, Select, Button, Spinner } from "flowbite-react";
+import { Card, Label, Select, Button, Spinner, Checkbox } from "flowbite-react";
 import { useNavigate } from "react-router-dom";
+import "./ProviderDetails.css"; // Assuming we add custom styles here
 
 function ProviderDetails() {
   const [error, setError] = useState("");
@@ -13,13 +14,24 @@ function ProviderDetails() {
   const [longitude, setLongitude] = useState(null);
   const [manualLocation, setManualLocation] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [dropdownOpen, setDropdownOpen] = useState(false);
-  const dropdownRef = useRef(null);
-  const [counties, setCounties] = useState([]); // Initialize as empty array
-  const [county, setCounty] = useState(""); // New state for county
+  const [counties, setCounties] = useState([]);
+  const [county, setCounty] = useState("");
+  const [token, setToken] = useState(null);
+  const [uuid, setUuid] = useState(null);
   const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
   useEffect(() => {
+    const storedToken = localStorage.getItem("token");
+    const storedUuid = localStorage.getItem("signupUUID");
+
+    if (storedToken) {
+      setToken(storedToken);
+    }
+    if (storedUuid) {
+      setUuid(storedUuid);
+    }
+
+    // Fetch geolocation coordinates when the component mounts
     navigator.geolocation.getCurrentPosition(
       (position) => {
         setLatitude(position.coords.latitude);
@@ -27,10 +39,10 @@ function ProviderDetails() {
       },
       (error) => {
         console.error(error);
-        setManualLocation(true);
+        setError("Could not retrieve location. Please enable location services.");
       }
     );
-  }, []);
+  }, []);  
 
   const fetchAllCounties = useCallback(async () => {
     try {
@@ -42,7 +54,6 @@ function ProviderDetails() {
       });
       if (response.ok) {
         const responseData = await response.json();
-        console.log("Counties data:", responseData); // Debugging line
         setCounties(responseData.all_counties || []);
       } else {
         setError("Error fetching all counties");
@@ -50,32 +61,11 @@ function ProviderDetails() {
     } catch (error) {
       setError("An error occurred. Please try again later.");
     }
-  }, [backendUrl]); 
+  }, [backendUrl]);
 
   useEffect(() => {
-    // Fetch counties when the component mounts
     fetchAllCounties();
   }, [fetchAllCounties]);
-
-  useEffect(() => {
-    // Add event listener for clicks outside the dropdown when the dropdown is open
-    if (dropdownOpen) {
-      document.addEventListener("mousedown", handleClickOutside);
-    } else {
-      document.removeEventListener("mousedown", handleClickOutside);
-    }
-
-    // Cleanup function to remove event listener
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [dropdownOpen]);
-
-  const handleClickOutside = (event) => {
-    if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-      setDropdownOpen(false);
-    }
-  };
 
   const handleServiceFormSubmit = async (e) => {
     setLoading(true);
@@ -84,7 +74,12 @@ function ProviderDetails() {
       const token = localStorage.getItem("token");
       const uuid = localStorage.getItem("signupUUID");
 
-      // Create FormData for image
+      if (!latitude || !longitude) {
+        setError("To be easily located by clients, please enable location then refresh the page.");
+        setLoading(false);  // Stop the loading spinner
+        return;  // Return early to stop execution
+      }
+
       const formImage = new FormData();
       formImage.append("image", image);
 
@@ -97,14 +92,13 @@ function ProviderDetails() {
       });
 
       if (userImageResponse.ok) {
-        const imageData = await userImageResponse.json();
-        setMessage(imageData.message);
+        // const imageData = await userImageResponse.json();
+        // setMessage(imageData.message);
       } else {
         const imageError = await userImageResponse.json();
         setError(imageError.error);
       }
 
-      // Create FormData for user details
       const formData = new FormData();
       formData.append("national_id", national_id);
       formData.append("phone_number", phone_number);
@@ -123,10 +117,7 @@ function ProviderDetails() {
 
       if (userDetailsResponse.ok) {
         const userDetailsData = await userDetailsResponse.json();
-        localStorage.setItem(
-          "userDetailsData",
-          JSON.stringify(userDetailsData)
-        );
+        localStorage.setItem("userDetailsData", JSON.stringify(userDetailsData));
       } else {
         const userDetailsErrors = await userDetailsResponse.json();
         setError(userDetailsErrors.error);
@@ -143,92 +134,69 @@ function ProviderDetails() {
   };
 
   return (
-    <div>
-      <h1>Fill the forms below to complete your signup</h1>
-      <form onSubmit={handleServiceFormSubmit}>
-        <input
-          type="text"
-          placeholder="0722000000"
-          value={phone_number}
-          onChange={(e) => setNumber(e.target.value)}
-        />
-        <input
-          type="text"
-          placeholder="12345678"
-          value={national_id}
-          onChange={(e) => setN_id(e.target.value)}
-        />
-        <div>
-          <label>
+    <div className="provider-details-container flex flex-col items-center justify-center py-10 px-4">
+      <Card className=" contain w-full max-w-lg">
+        <h1 className="text-xl font-semibold mb-4 text-center ">
+          Complete Your Signup
+        </h1>
+        <form onSubmit={handleServiceFormSubmit} className="space-y-4">
+          <div  >
+            <Label htmlFor="phone_number" className="text-white" value="Phone Number" />
             <input
-              type="checkbox"
-              checked={manualLocation}
-              onChange={() => setManualLocation(!manualLocation)}
+              id="phone_number"
+              type="text"
+              placeholder="0722000000"
+              value={phone_number}
+              onChange={(e) => setNumber(e.target.value)}
+              className="input-field "
             />
-            Manually enter location
-          </label>
-          {manualLocation && (
-            <>
-              <input
-                type="text"
-                placeholder="Latitude"
-                value={latitude || ""}
-                onChange={(e) => setLatitude(e.target.value)}
-              />
-              <input
-                type="text"
-                placeholder="Longitude"
-                value={longitude || ""}
-                onChange={(e) => setLongitude(e.target.value)}
-              />
-            </>
-          )}
-        </div>
-        <div className="mb-2 block">
-          <Label htmlFor="file-upload" value={image ? image.name : ""} />
-        </div>
-        <input
-          id="file-upload"
-          type="file"
-          onChange={(e) => setImage(e.target.files[0])}
-        />
-        <Button type="submit" disabled={loading}>
-          {loading ? (
-            <Spinner aria-label="Loading" size="sm" className="mr-2" />
-          ) : (
-            "Submit"
-          )}
-        </Button>
-      </form>
-      <Card className="max-w-sm">
-        <div className="max-w-md">
-          <div className="mb-2 block">
-            <Label htmlFor="counties" value="Select your county" />
           </div>
-          <Select
-            id="counties"
-            required
-            value={county}
-            onChange={(e) => setCounty(e.target.value)} // Update state on change
-            className="text-black" // Ensure the text is visible
-          >
-            <option value="" disabled>
-              Select your county
-            </option>
-            {counties.map((county) => (
-              <option
-                key={county.id}
-                value={county.name}
-                className="text-black"
-              >
-                {county.name}
+          <div>
+            <Label htmlFor="national_id" className="text-white" value="National ID" />
+            <input
+              id="national_id"
+              type="text"
+              placeholder="12345678"
+              value={national_id}
+              onChange={(e) => setN_id(e.target.value)}
+              className="input-field"
+            />
+          </div>
+          <div  >
+            <Label htmlFor="file-upload" className="text-white" value={image ? image.name : "Upload Profile Picture"} />
+            <input
+              id="file-upload"
+              type="file"
+              onChange={(e) => setImage(e.target.files[0])}
+              className="input-file border "
+            />
+          </div>
+          <div>
+            <Label htmlFor="counties" className="text-white" value="Select County" />
+            <Select
+              id="counties"
+              required
+              value={county}
+              onChange={(e) => setCounty(e.target.value)}
+              className="input-field"
+            >
+              <option value="" disabled>
+                Select your county
               </option>
-            ))}
-          </Select>
-        </div>
+              {counties.map((county) => (
+                <option key={county.id} value={county.name}>
+                  {county.name}
+                </option>
+              ))}
+            </Select>
+          </div>
+          <Button type="submit" disabled={loading} className="w-full">
+            {loading ? <Spinner aria-label="Loading" size="sm" className="mr-2" /> : "Submit"}
+          </Button>
+        </form>
+        {error && <p className="text-red-500 mt-4">{error}</p>}
+        {message && <p className="text-green-500 mt-4">{message}</p>}
       </Card>
-      {error && <p className="text-red-500">{error}</p>}
-      {message && <p>{message}</p>}
     </div>
   );
 }

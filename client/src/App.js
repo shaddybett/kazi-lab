@@ -14,6 +14,7 @@ import Providers from "./components/Providers";
 import AdminPage from "./Pages/AdminPage/AdminPage";
 import ChatBox from "./Pages/Chatbox/ChatBox";
 import AdminMain from "./Pages/AdminPage/AdminMain";
+import Sidebar from "./Pages/Chat/SideBar";
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
       <Route path="/primes" element={<Providers />} />
       <Route path="/chat/:userId" element={<ChatBox />} />
       <Route path="/adminMain" element={<AdminMain/>} />
+      <Route path="/sidebar" element={<Sidebar/>} />
     </Routes>
   );
 }

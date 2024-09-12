@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import Sidebar from "../Chat/SideBar";
 import ChatWindow from "../Chat/ChatWindow";
-import './Chatbox.css'
+import "./Chatbox.css";
 
 const ServiceProviderChatBox = ({ providerId, minimize }) => {
   const [messages, setMessages] = useState([]);
@@ -9,29 +9,32 @@ const ServiceProviderChatBox = ({ providerId, minimize }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [activeUser, setActiveUser] = useState(null);
-  const popupRef = useRef(null)
+  const popupRef = useRef(null);
 
   const backendUrl = process.env.REACT_APP_BACKEND_URL;
   const podId = Number(providerId);
 
-  const extractUserIds = useCallback((messages) => {
-    const userIds = new Set();
-    const numericPodId = Number(podId);
+  const extractUserIds = useCallback(
+    (messages) => {
+      const userIds = new Set();
+      const numericPodId = Number(podId);
 
-    messages.forEach((msg) => {
-      if (msg.sender_id !== numericPodId) {
-        userIds.add(msg.sender_id);
-      }
-      if (msg.receiver_id !== numericPodId) {
-        userIds.add(msg.receiver_id);
-      }
-    });
+      messages.forEach((msg) => {
+        if (msg.sender_id !== numericPodId) {
+          userIds.add(msg.sender_id);
+        }
+        if (msg.receiver_id !== numericPodId) {
+          userIds.add(msg.receiver_id);
+        }
+      });
 
-    return Array.from(userIds);
-  }, [podId]);
+      return Array.from(userIds);
+    },
+    [podId]
+  );
 
   useEffect(() => {
-    const handleClickOutside = (event)=>{
+    const handleClickOutside = (event) => {
       if (popupRef.current && !popupRef.current.contains(event.target)) {
         setActiveUser(null);
       }
@@ -39,63 +42,67 @@ const ServiceProviderChatBox = ({ providerId, minimize }) => {
     document.addEventListener("mousedown", handleClickOutside);
 
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside );
+      document.removeEventListener("mousedown", handleClickOutside);
     };
+  }, [popupRef]);
 
-  }, [popupRef] );
+  const fetchUserDetails = useCallback(
+    async (userIds) => {
+      setLoading(true);
+      try {
+        const requests = userIds.map((userId) =>
+          fetch(`${backendUrl}/details/${userId}`, {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          })
+        );
 
-  const fetchUserDetails = useCallback(async (userIds) => {
-    setLoading(true);
-    try {
-      const requests = userIds.map((userId) =>
-        fetch(`${backendUrl}/details/${userId}`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        })
-      );
+        const responses = await Promise.all(requests);
 
-      const responses = await Promise.all(requests);
+        const detailsData = await Promise.all(
+          responses.map((response) => {
+            if (response.ok) return response.json();
+            return null;
+          })
+        );
 
-      const detailsData = await Promise.all(
-        responses.map((response) => {
-          if (response.ok) return response.json();
-          return null;
-        })
-      );
+        const newDetails = detailsData.reduce((acc, detail, index) => {
+          if (detail) acc[userIds[index]] = detail;
+          return acc;
+        }, {});
 
-      const newDetails = detailsData.reduce((acc, detail, index) => {
-        if (detail) acc[userIds[index]] = detail;
-        return acc;
-      }, {});
-
-      setDetails((prevDetails) => ({ ...prevDetails, ...newDetails }));
-    } catch (error) {
-      setError("An error occurred, please try again later");
-    }
-    setLoading(false);
-  }, [backendUrl]);
-
-
-  const fetchMessages = useCallback(async (podId) => {
-    try {
-      const response = await fetch(
-        `${backendUrl}/get_messages_for_receiver/${podId}`
-      );
-      if (response.ok) {
-        const responseData = await response.json();
-        setMessages(responseData);
-        const userIds = extractUserIds(responseData);
-        fetchUserDetails(userIds);
-      } else {
-        throw new Error("Network response was not ok");
+        setDetails((prevDetails) => ({ ...prevDetails, ...newDetails }));
+      } catch (error) {
+        setError("An error occurred, please try again later");
       }
-    } catch (error) {
-      console.error("Error fetching messages:", error);
-      setError("Error fetching messages");
-    }
-  }, [backendUrl, extractUserIds, fetchUserDetails]);
+      setLoading(false);
+    },
+    [backendUrl]
+  );
+
+  const fetchMessages = useCallback(
+    async (podId) => {
+      try {
+        const response = await fetch(
+          `${backendUrl}/get_messages_for_receiver/${podId}`
+        );
+        if (response.ok) {
+          const responseData = await response.json();
+          setMessages(responseData);
+          const userIds = extractUserIds(responseData);
+          fetchUserDetails(userIds);
+        } else {
+          throw new Error("Network response was not ok");
+        }
+      } catch (error) {
+        console.error("Error fetching messages:", error);
+        setError("Error fetching messages");
+      }
+    },
+    [backendUrl, extractUserIds, fetchUserDetails]
+  );
 
   useEffect(() => {
     if (podId) {
@@ -136,47 +143,93 @@ const ServiceProviderChatBox = ({ providerId, minimize }) => {
   const sortedMessages = [...messages].sort(
     (a, b) => new Date(a.timestamp) - new Date(b.timestamp)
   );
-
+  const handleDeleteMessage = (messageId) => {
+    fetch(`${backendUrl}/delete_message/${messageId}`, {
+      method: 'DELETE',
+    })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Failed to delete message');
+        }
+        return response.json();
+      })
+      .then(() => {
+        setMessages(messages.filter(msg => msg.id !== messageId));
+      })
+      .catch(error => console.error("Error deleting message:", error));
+  };
+  
   return (
-    <div className=" inbox  ">
-      <Sidebar
-        contacts={Array.from(
-          new Set(
-            messages.map((msg) =>
-              msg.sender_id !== podId ? msg.sender_id : msg.receiver_id
+    <div className="inbox ">
+      {minimize && !activeUser ? (
+        // Show only Sidebar if minimize is true and no user is active
+        <Sidebar
+          contacts={Array.from(
+            new Set(
+              messages.map((msg) =>
+                msg.sender_id !== podId ? msg.sender_id : msg.receiver_id
+              )
             )
           )
-        )
-          .filter((contactId) => contactId !== podId)
-          .map((contactId) => ({
-            id: contactId,
-            name: details[contactId]
-              ? `${details[contactId].first_name} ${details[contactId].last_name}`
-              : "Unknown User",
-            status: "Online",
-            message: messages.find(
+            .filter((contactId) => contactId !== podId)
+            .map((contactId) => ({
+              id: contactId,
+              name: details[contactId]
+                ? `${details[contactId].first_name} ${details[contactId].last_name}`
+                : "Unknown User",
+              status: "Online",
+              message: messages.find(
+                (msg) =>
+                  msg.sender_id === contactId || msg.receiver_id === contactId
+              )?.content,
+              image: details[contactId] ? details[contactId].image : null,
+            }))}
+          setActiveUser={(user) => setActiveUser(user)}
+        />
+      ) : (
+        // Show ChatWindow if activeUser is set
+        <>
+          <Sidebar
+            contacts={Array.from(
+              new Set(
+                messages.map((msg) =>
+                  msg.sender_id !== podId ? msg.sender_id : msg.receiver_id
+                )
+              )
+            )
+              .filter((contactId) => contactId !== podId)
+              .map((contactId) => ({
+                id: contactId,
+                name: details[contactId]
+                  ? `${details[contactId].first_name} ${details[contactId].last_name}`
+                  : "Unknown User",
+                status: "Online",
+                message: messages.find(
+                  (msg) =>
+                    msg.sender_id === contactId || msg.receiver_id === contactId
+                )?.content,
+                image: details[contactId] ? details[contactId].image : null,
+              }))}
+            setActiveUser={(user) => setActiveUser(user)}
+          />
+          <ChatWindow
+            activeUser={activeUser}
+            setActiveUser={setActiveUser}
+            minimize={minimize}
+            onDelete={handleDeleteMessage}
+            messages={sortedMessages.filter(
               (msg) =>
-                msg.sender_id === contactId || msg.receiver_id === contactId
-            )?.content,
-            image: details[contactId] ? details[contactId].image : null,
-          }))}
-        setActiveUser={(user) => {
-          setActiveUser(user);
-        }}
-      />
-      <ChatWindow
-        activeUser={activeUser}
-        messages={sortedMessages.filter(
-          (msg) =>
-            msg.sender_id === activeUser?.id ||
-            msg.receiver_id === activeUser?.id
-        )}
-        sendMessage={handleSendMessage}
-        currentUserId={podId}
-      />
+                msg.sender_id === activeUser?.id ||
+                msg.receiver_id === activeUser?.id
+            )}
+            sendMessage={handleSendMessage}
+            currentUserId={podId}
+          />
+        </>
+      )}
       {error && <p className="text-red-500">{error}</p>}
-      {loading && <p>Loading...</p>}
-    </div>  
+      
+    </div>
   );
 };
 
