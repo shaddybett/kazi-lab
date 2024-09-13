@@ -96,16 +96,37 @@
 
 // export default ProviderUpdates;
 
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback, useRef } from "react";
 import { Card, Dropdown } from "flowbite-react";
 import ChatBox from "../Pages/Chatbox/ChatBox";
 
-function ProviderUpdates({ senderId, assigned, likes }) {
+function ProviderUpdates({ senderId, assigned, likes, className, onClose }) {
   const backendUrl = process.env.REACT_APP_BACKEND_URL;
   const [providerIds, setProviderIds] = useState([]);
   const [customerDetails, setCustomerDetails] = useState([]);
   const [openChat, setOpenChat] = useState(false);
   const [currentCustomer, setCurrentCustomer] = useState(null); // To store the customer to chat with
+
+  const chatBoxRef = useRef(null);
+
+  // Event handler for detecting clicks outside the chatbox
+  const handleClickOutside = (event) => {
+    if (chatBoxRef.current && !chatBoxRef.current.contains(event.target)) {
+      if (typeof onClose === "function") {
+        onClose(); // Call onClose only if it's a valid function
+      }
+    }
+  };
+
+  useEffect(() => {
+    // Add event listener for clicks when component is mounted
+    document.addEventListener("mousedown", handleClickOutside);
+
+    // Cleanup event listener when component is unmounted
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   const fetchAssignedIds = useCallback(async () => {
     try {
@@ -136,10 +157,11 @@ function ProviderUpdates({ senderId, assigned, likes }) {
       return;
     }
     const stringProviderIds = providerIds.map((id) => id.toString());
-
+  
     try {
+      // Modify the URL to include the IDs as query parameters
       const response = await fetch(
-        `${backendUrl}/recent_clients/${stringProviderIds.join(",")}`,
+        `${backendUrl}/recent_clients?ids=${stringProviderIds.join(",")}`,
         {
           method: "GET",
           headers: {
@@ -149,7 +171,7 @@ function ProviderUpdates({ senderId, assigned, likes }) {
       );
       const data = await response.json();
       if (response.ok) {
-        setCustomerDetails(data);
+        setCustomerDetails(data); 
         console.log("Customer details fetched:", data);
       } else {
         console.error(data.error);
@@ -173,7 +195,7 @@ function ProviderUpdates({ senderId, assigned, likes }) {
   }, [providerIds, fetchCustomerDetails]); // Now it has a stable reference
 
   return (
-    <div>
+    <div ref={chatBoxRef} className={`${className}`} >
       <Card>
         <h4 className="text-black">Recent Customers</h4>
         {customerDetails.length === 0 && (

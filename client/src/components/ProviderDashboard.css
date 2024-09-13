@@ -73,3 +73,43 @@ border-radius: 8px;
   justify-content: center;
   align-items: center;
 }
+.chatbox-popup {
+  position: fixed;
+  top: 50%;  /* Position it at the center vertically */
+  left: 50%; /* Position it at the center horizontally */
+  transform: translate(-50%, -50%); /* Adjust to make the element perfectly centered */
+  width: 60%; 
+  height: auto; 
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* Add shadow for a popup effect */
+  z-index: 9999; /* Ensure it's on top of other elements */
+  overflow: hidden;
+}
+.min-pop{
+  position: fixed;
+  top: 50%;  /* Position it at the center vertically */
+  left: 50%; /* Position it at the center horizontally */
+  transform: translate(-50%, -50%); /* Adjust to make the element perfectly centered */
+  width: auto; 
+  height: auto; 
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* Add shadow for a popup effect */
+  z-index: 9999; /* Ensure it's on top of other elements */
+  overflow: hidden;
+}
+
+.updates{
+  position: fixed;
+  top: 50%;  /* Position it at the center vertically */
+  left: 50%; /* Position it at the center horizontally */
+  transform: translate(-50%, -50%); /* Adjust to make the element perfectly centered */
+  width: auto; 
+  height: auto; 
+  /* background-color: white; */
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* Add shadow for a popup effect */
+  z-index: 9999; /* Ensure it's on top of other elements */
+  overflow: hidden;
+}

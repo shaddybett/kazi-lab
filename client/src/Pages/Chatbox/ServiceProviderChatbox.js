@@ -3,7 +3,7 @@ import Sidebar from "../Chat/SideBar";
 import ChatWindow from "../Chat/ChatWindow";
 import "./Chatbox.css";
 
-const ServiceProviderChatBox = ({ providerId, minimize }) => {
+const ServiceProviderChatBox = ({ providerId, minimize, className, onClose }) => {
   const [messages, setMessages] = useState([]);
   const [details, setDetails] = useState({});
   const [loading, setLoading] = useState(false);
@@ -13,6 +13,27 @@ const ServiceProviderChatBox = ({ providerId, minimize }) => {
 
   const backendUrl = process.env.REACT_APP_BACKEND_URL;
   const podId = Number(providerId);
+
+  const chatBoxRef = useRef(null);
+
+  // Event handler for detecting clicks outside the chatbox
+  const handleClickOutside = (event) => {
+    if (chatBoxRef.current && !chatBoxRef.current.contains(event.target)) {
+      if (typeof onClose === "function") {
+        onClose(); // Call onClose only if it's a valid function
+      }
+    }
+  };
+
+  useEffect(() => {
+    // Add event listener for clicks when component is mounted
+    document.addEventListener("mousedown", handleClickOutside);
+
+    // Cleanup event listener when component is unmounted
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   const extractUserIds = useCallback(
     (messages) => {
@@ -160,7 +181,7 @@ const ServiceProviderChatBox = ({ providerId, minimize }) => {
   };
   
   return (
-    <div className="inbox ">
+    <div ref={chatBoxRef} className={`inbox ${className} `}>
       {minimize && !activeUser ? (
         // Show only Sidebar if minimize is true and no user is active
         <Sidebar
@@ -185,6 +206,7 @@ const ServiceProviderChatBox = ({ providerId, minimize }) => {
               image: details[contactId] ? details[contactId].image : null,
             }))}
           setActiveUser={(user) => setActiveUser(user)}
+          className="sidebar-pop"
         />
       ) : (
         // Show ChatWindow if activeUser is set

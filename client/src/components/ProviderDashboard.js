@@ -41,6 +41,7 @@ function ProviderDashboard() {
   const [openClientsPage, setOpenClientsPage] = useState(false);
   const dropdownRef = useRef(null);
   const navigate = useNavigate();
+  const [isSidebarMinimized, setIsSidebarMinimized] = useState(false);
   const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
   const currentUserId = localStorage.getItem("id");
@@ -378,6 +379,10 @@ function ProviderDashboard() {
     setChatUser(null);
   };
 
+  const closeUpdates = ()=>{
+    setOpenClientsPage(false)
+  }
+
   const handleClientsClick = () => {
     setOpenClientsPage(true);
   };
@@ -389,6 +394,24 @@ function ProviderDashboard() {
       return () => clearTimeout(timer);
     }
   }, [error]);
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 768) {
+        setIsSidebarMinimized(true); // Minimize sidebar on small screens
+      } else {
+        setIsSidebarMinimized(false); // Expand sidebar on larger screens
+      }
+    };
+
+    // Check screen size on initial load
+    handleResize();
+
+    // Add event listener for window resize
+    window.addEventListener("resize", handleResize);
+
+    // Cleanup event listener on component unmount
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col items-center overflow-x-hidden">
@@ -396,13 +419,13 @@ function ProviderDashboard() {
       <Navbar
         fluid
         rounded
-        className="bg-blue-600 w-full sticky top-0 text-white flex justify-end items-center px-4"
+        className="bg-blue-600 w-full sticky top-0 text-white flex items-center px-4"
       >
         {/* Left side with heading */}
-        <h1 className="text-lg font-semibold">Welcome, {data.first_name}!</h1>
+        {/* <h1 className="text-lg font-semibold">Welcome, {data.first_name}!</h1> */}
 
         {/* Right side with profile avatar and dropdown */}
-        <div className="flex items-center">
+        <div className="ml-auto flex items-center ">
           <Dropdown
             arrowIcon={false}
             inline
@@ -411,7 +434,7 @@ function ProviderDashboard() {
                 alt="Profile picture"
                 img={data.image}
                 rounded
-                className="w-10 h-10"
+                className="w-10 h-10 "
               />
             }
           >
@@ -433,7 +456,6 @@ function ProviderDashboard() {
           </Dropdown>
         </div>
       </Navbar>
-
       {/* Main Content */}
       <div className="flex flex-col items-center w-full px-4 py-6 md:px-2 lg:px-0 overflow-hidden main-page">
         <Card className="w-full max-w-xl bg-white shadow-lg rounded-lg p-6 main-card ">
@@ -496,6 +518,15 @@ function ProviderDashboard() {
                 </div>
               )}
             </p>
+          )}
+          {chatUser && (
+            <ServiceProviderChatBox
+              providerId={currentUserId}
+              receiverId={chatUser.id}
+              onClose={closeChat}
+              minimize={isSidebarMinimized}
+              className={isSidebarMinimized ? "" : "chatbox-popup"}
+            />
           )}
 
           {/* File Upload Section */}
@@ -604,13 +635,6 @@ function ProviderDashboard() {
       </Modal>
 
       {/* Chat Box */}
-      {chatUser && (
-        <ServiceProviderChatBox
-          providerId={currentUserId}
-          receiverId={chatUser.id}
-          onClose={closeChat}
-        />
-      )}
 
       {/* Provider Updates */}
       {openClientsPage && (
@@ -618,6 +642,8 @@ function ProviderDashboard() {
           senderId={data.id}
           assigned={data.jobs || 0}
           likes={data.likes || 0}
+          className="updates"
+          onClose={closeUpdates}
         />
       )}
     </div>
