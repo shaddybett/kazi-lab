@@ -41,6 +41,7 @@ function ProviderDashboard() {
   const [openClientsPage, setOpenClientsPage] = useState(false);
   const dropdownRef = useRef(null);
   const navigate = useNavigate();
+  const [isSidebarMinimized, setIsSidebarMinimized] = useState(false);
   const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
   const currentUserId = localStorage.getItem("id");
@@ -378,27 +379,70 @@ function ProviderDashboard() {
     setChatUser(null);
   };
 
+  const closeUpdates = ()=>{
+    setOpenClientsPage(false)
+  }
+
   const handleClientsClick = () => {
     setOpenClientsPage(true);
   };
+  useEffect(() => {
+    if (error) {
+      const timer = setTimeout(() => {
+        setError("");
+      }, 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [error]);
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 768) {
+        setIsSidebarMinimized(true); // Minimize sidebar on small screens
+      } else {
+        setIsSidebarMinimized(false); // Expand sidebar on larger screens
+      }
+    };
+
+    // Check screen size on initial load
+    handleResize();
+
+    // Add event listener for window resize
+    window.addEventListener("resize", handleResize);
+
+    // Cleanup event listener on component unmount
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col items-center" >
-      <Navbar fluid rounded className="bg-blue-600 w-full flex justify-between p-4 text-white">
-      <h1 className="text-lg font-semibold">Welcome, {data.first_name}!</h1>
-        {/* <div className="avatar-container "> */}
+    <div className="min-h-screen bg-gray-100 flex flex-col items-center overflow-x-hidden">
+      {/* Navbar */}
+      <Navbar
+        fluid
+        rounded
+        className="bg-blue-600 w-full sticky top-0 text-white flex items-center px-4"
+      >
+        {/* Left side with heading */}
+        {/* <h1 className="text-lg font-semibold">Welcome, {data.first_name}!</h1> */}
+
+        {/* Right side with profile avatar and dropdown */}
+        <div className="ml-auto flex items-center ">
           <Dropdown
             arrowIcon={false}
             inline
-            label={<Avatar alt="pic" img={data.image} rounded className="w-10 h-10" />}
+            label={
+              <Avatar
+                alt="Profile picture"
+                img={data.image}
+                rounded
+                className="w-10 h-10 "
+              />
+            }
           >
             <Dropdown.Header>
               <span className="block text-sm font-bold">
                 {data.first_name} {data.last_name}
               </span>
-              <span className="block text-sm text-gray-200">
-                {data.email}
-              </span>
+              <span className="block text-sm text-gray-200">{data.email}</span>
             </Dropdown.Header>
             <Dropdown.Item onClick={handleProfile}>Profile</Dropdown.Item>
             <Dropdown.Divider />
@@ -410,18 +454,61 @@ function ProviderDashboard() {
             <Dropdown.Divider />
             <Dropdown.Item onClick={handleLogout}>Logout</Dropdown.Item>
           </Dropdown>
-        {/* </div> */}
+        </div>
       </Navbar>
-      <div className="card">
-        <Card className="max-w-xl ">
-          <h2>Hello, {data.first_name} welcome! </h2>
-          <h1 className="text-xl font-bold leading-none text-gray-900 dark:text-white">
-            Services you offer
-          </h1>
-          <div ref={dropdownRef}>
-            {error &&
-              error ===
-                "Service entered already exists,please mark from the list provided" && (
+      {/* Main Content */}
+      <div className="flex flex-col items-center w-full px-4 py-6 md:px-2 lg:px-0 overflow-hidden main-page">
+        <Card className="w-full max-w-xl bg-white shadow-lg rounded-lg p-6 main-card ">
+          <h2 className="text-xl font-bold text-gray-900 text-white ">
+            Hello, {data.first_name}!
+          </h2>
+          <div>
+            <p className="text-white  text-lg underline ">Services you offer</p>
+            {/* Services Section */}
+            {services.length > 0 ? (
+              <ul className="divide-y divide-gray-200">
+                {services.map((service) => (
+                  <li
+                    key={service.id}
+                    className="flex justify-between items-center py-2"
+                  >
+                    <span>{service.name}</span>
+                    <button
+                      className="text-red-500    "
+                      onClick={() => handleDeleteService(service.id)}
+                    >
+                      <FontAwesomeIcon icon={faTrash} />
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p className="text-red-500">No services added</p>
+            )}
+          </div>
+
+          {/* Add Service */}
+          <div className="mt-4 flex w-full">
+            <input
+              className="rounded border border-blue-300 p-2 flex-grow"
+              type="text"
+              value={newService}
+              onChange={(e) => setNewService(e.target.value)}
+              placeholder="Add new service"
+            />
+            <button
+              className=" ml-4 text-4xl text-white rounded  transition"
+              onClick={handleAddService}
+            >
+              <FontAwesomeIcon icon={faSquarePlus} />
+            </button>
+          </div>
+
+          {/* Error Handling */}
+          {error && (
+            <p className="text-red-500 mt-2">
+              {error ===
+                "Service entered already exists, please mark from the list provided" && (
                 <div>
                   <ServiceDropdown
                     services={allServices}
@@ -430,58 +517,34 @@ function ProviderDashboard() {
                   />
                 </div>
               )}
-          </div>
-          {services.length > 0 ? (
-            <ul className="divide-y divide-gray-200 dark:divide-gray-700 ">
-              {services.map((service) => (
-                <li
-                  key={service.id}
-                  className="flex justify-between items-center"
-                >
-                  <span>{service.name}</span>
-                  <button
-                    className="text-red-500"
-                    onClick={() => handleDeleteService(service.id)}
-                  >
-                    <FontAwesomeIcon icon={faTrash} />
-                  </button>
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <p className="text-red-500">No services found</p>
+            </p>
           )}
-          <div className="serve">
-            <input
-              className="rounded border border-blue-300 p-2"
-              type="text"
-              value={newService}
-              onChange={(e) => setNewService(e.target.value)}
-              placeholder="Add new service"
+          {chatUser && (
+            <ServiceProviderChatBox
+              providerId={currentUserId}
+              receiverId={chatUser.id}
+              onClose={closeChat}
+              minimize={isSidebarMinimized}
+              className={isSidebarMinimized ? "" : "chatbox-popup"}
             />
-            <button
-              gradientDuoTone="purpleToBlue"
-              className="w-20 ml-10"
-              onClick={handleAddService}
-            >
-              <FontAwesomeIcon className="plus" icon={faSquarePlus} />
-            </button>
-          </div>
-          <p className="text-black">Upload photos or videos of your work</p>
-          <div>
-            <div>
-              <Label htmlFor="file-upload-helper-text" />
-            </div>
+          )}
+
+          {/* File Upload Section */}
+          <div className="mt-6 w-full">
+            <p className="text-white mb-2">
+              Upload photos or videos of your work
+            </p>
             <FileInput
               id="file-upload-helper-text"
               type="file"
               multiple
               onChange={handleFileChange}
-              helperText="max 4 photos and 2 videos"
+              className="mb-4 w-full"
             />
-            <Button
-              gradientDuoTone="purpleToBlue"
-              className="max-w-20 ml-40 "
+            <button
+              className={`w-full p-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition ${
+                loading ? "opacity-50 cursor-not-allowed" : ""
+              }`}
               onClick={handleUpload}
               disabled={loading}
             >
@@ -490,26 +553,26 @@ function ProviderDashboard() {
               ) : (
                 "Upload"
               )}
-            </Button>
+            </button>
+            <p className="text-xs text-white mt-2">Max 4 photos and 2 videos</p>
           </div>
+          {error && <p style={{ color: "red" }}>{error}</p>}
 
-          {error && <p className="text-red-500 mt-2">{error}</p>}
-          <div className="image-grid">
+          {/* Display Uploaded Images/Videos */}
+          <div className="image-grid mt-6">
             {photos.length > 0 && (
               <div>
-                <h3>Uploaded Photos:</h3>
-                <div className="grid-container">
+                <h3 className="text-lg font-semibold">Uploaded Photos:</h3>
+                <div className=" grid grid-cols-2 gap-2 mt-2">
                   {photos.map((photo, index) => (
-                    <div key={index} className="grid-item-container">
+                    <div key={index} className="relative grid-item ">
                       <img
-                        key={index}
                         src={photo}
                         alt={`Uploaded ${index + 1}`}
-                        className="grid-item"
                         onClick={() => openModal(photo, "image")}
                       />
                       <button
-                        className="text-red-500 delete-button"
+                        className="absolute top-2 right-2 text-red-500"
                         onClick={() => handlePhotoDelete(photo)}
                       >
                         <FontAwesomeIcon icon={faTrash} />
@@ -520,23 +583,23 @@ function ProviderDashboard() {
               </div>
             )}
             {videos.length > 0 && (
-              <div>
-                <h3>Uploaded Videos:</h3>
-                <div className="grid-containers">
+              <div className="mt-6 ">
+                <h3 className="text-lg font-semibold mb-2 ">
+                  Uploaded Videos:
+                </h3>
+                <div className="grid grid-cols-1 gap-2">
                   {videos.map((video, index) => (
-                    <div key={index} className="grid-item-container">
+                    <div key={index} className="relative">
                       <video
-                        key={index}
                         controls
-                        className="grid-items"
+                        className="w-full h-auto rounded shadow-md"
                         preload="metadata"
-                        onClick={() => openModal(video, "video")}
                       >
                         <source src={video} type="video/mp4" />
                         Your browser does not support the video tag.
                       </video>
                       <button
-                        className="text-red-500 delete-button"
+                        className="absolute top-2 right-2 text-red-500"
                         onClick={() => handleVideoDelete(video)}
                       >
                         <FontAwesomeIcon icon={faTrash} />
@@ -549,6 +612,8 @@ function ProviderDashboard() {
           </div>
         </Card>
       </div>
+
+      {/* Modal for Image/Video */}
       <Modal
         isOpen={isModalOpen}
         onRequestClose={closeModal}
@@ -561,30 +626,24 @@ function ProviderDashboard() {
         {selectedVideo && (
           <div className="modal-video-container">
             {isVideoLoading && <Spinner aria-label="Loading" size="lg" />}
-            <video
-              controls
-              className="modal-video"
-              onLoadedData={() => setIsVideoLoading(false)}
-              preload="metadata"
-            >
+            <video controls className="modal-video" preload="metadata">
               <source src={selectedVideo} type="video/mp4" />
               Your browser does not support the video tag.
             </video>
           </div>
         )}
       </Modal>
-      {chatUser && (
-        <ServiceProviderChatBox
-          providerId={currentUserId}
-          receiverId={chatUser.id}
-          onClose={closeChat}
-        />
-      )}
+
+      {/* Chat Box */}
+
+      {/* Provider Updates */}
       {openClientsPage && (
         <ProviderUpdates
           senderId={data.id}
           assigned={data.jobs || 0}
           likes={data.likes || 0}
+          className="updates"
+          onClose={closeUpdates}
         />
       )}
     </div>
