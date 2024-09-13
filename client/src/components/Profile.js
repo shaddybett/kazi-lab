@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import {
   Card,
   Avatar,
@@ -7,16 +7,18 @@ import {
   Label,
   Checkbox,
   Modal,
+  Select,
 } from "flowbite-react";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import "./Components.css";
 
-function Profile({minimize}) {
+function Profile({ minimize }) {
   const [data, setData] = useState({});
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
   const [image, setImage] = useState(null);
+  const [counties, setCounties] = useState([]); // Counties list
   const [form, setForm] = useState({
     first_name: "",
     last_name: "",
@@ -24,6 +26,7 @@ function Profile({minimize}) {
     phone_number: "",
     new_password: "",
     old_password: "",
+    county: "", // County now managed here
   });
   const [showPassword, setShowPassword] = useState(false);
   const [refresh, setRefresh] = useState(false);
@@ -32,6 +35,7 @@ function Profile({minimize}) {
   const navigate = useNavigate();
   const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
+  // Fetch user data
   useEffect(() => {
     const handleEntry = async () => {
       try {
@@ -54,6 +58,7 @@ function Profile({minimize}) {
             last_name: responseData.last_name || "",
             national_id: responseData.national_id || "",
             phone_number: responseData.phone_number || "",
+            county: responseData.county || "", // Populate county from user data
             old_password: "",
             new_password: "",
           });
@@ -68,6 +73,7 @@ function Profile({minimize}) {
     handleEntry();
   }, [refresh, backendUrl]);
 
+  // Handle form input changes
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm({
@@ -79,6 +85,7 @@ function Profile({minimize}) {
     }
   };
 
+  // Delete account
   const handleDelete = async () => {
     const result = await Swal.fire({
       title: "Are you sure?",
@@ -117,6 +124,31 @@ function Profile({minimize}) {
     }
   };
 
+  // Fetch all counties
+  const fetchAllCounties = useCallback(async () => {
+    try {
+      const response = await fetch(`${backendUrl}/county`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      if (response.ok) {
+        const responseData = await response.json();
+        setCounties(responseData.all_counties || []);
+      } else {
+        setError("Error fetching all counties");
+      }
+    } catch (error) {
+      setError("An error occurred. Please try again later.");
+    }
+  }, [backendUrl]);
+
+  useEffect(() => {
+    fetchAllCounties();
+  }, [fetchAllCounties]);
+
+  // Handle form submission (profile update)
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -128,7 +160,7 @@ function Profile({minimize}) {
       const updatedFields = {};
       Object.keys(form).forEach((key) => {
         if (form[key]) {
-          updatedFields[key] = form[key];
+          updatedFields[key] = form[key]; // Collect form data
         }
       });
 
@@ -160,9 +192,8 @@ function Profile({minimize}) {
         body: JSON.stringify(updatedFields),
       });
 
-      // Check for errors in both the profile update and image upload
+      // Handle potential errors
       if (!response.ok) {
-        // If the response is not ok, extract the error message
         const errorResponse = await response.json();
         setError(errorResponse.error || "An error occurred");
         return;
@@ -180,14 +211,16 @@ function Profile({minimize}) {
       setRefresh(!refresh);
       setIsModalOpen(false); // Close modal on success
     } catch (error) {
-      // General error fallback
       setError("An error occurred. Please try again later.");
     }
   };
+
+  // Close modal
   const onClose = () => {
     setIsModalOpen(false);
   };
 
+  // Auto-clear error messages
   useEffect(() => {
     if (error) {
       const timer = setTimeout(() => {
@@ -201,7 +234,7 @@ function Profile({minimize}) {
   return (
     <div className="">
       <div className="">
-        <div className={`${minimize ? "":"ml-40" } `}>
+        <div className={`${minimize ? "" : "ml-40"} `}>
           <div className="max-w-sm lg:max-w-md xl:max-w-lg mx-auto lg:mx-0 lg:ml-20 shadow-lg p-6 bg-white rounded-lg transition-all duration-300 hover:shadow-2xl ">
             {/* Center the image with avatar */}
             <div className="flex flex-col items-center space-y-4  ">
@@ -214,24 +247,6 @@ function Profile({minimize}) {
                 </p>
                 <p className="text-md text-gray-600">{data.email}</p>
               </div>
-
-              {/* Phone Number Section */}
-              {data.phone_number && (
-                <div className="text-center mt-4">
-                  <h3 className="text-lg font-bold text-gray-800">Phone:</h3>
-                  <p className="text-md text-gray-600">{data.phone_number}</p>
-                </div>
-              )}
-
-              {/* National ID Section */}
-              {data.national_id && (
-                <div className="text-center mt-4">
-                  <h3 className="text-lg font-bold text-gray-800">
-                    National ID:
-                  </h3>
-                  <p className="text-md text-gray-600">{data.national_id}</p>
-                </div>
-              )}
             </div>
 
             {/* Buttons Section */}
@@ -321,6 +336,34 @@ function Profile({minimize}) {
                   </div>
                 )}
 
+                {form.county && (
+                  <div>
+                    <h2 className="text-lg font-medium text-gray-700 mt-5">
+                      Change County
+                    </h2>
+                    <Label
+                      htmlFor="counties"
+                      className="text-white"
+                      value={form.county}
+                    />
+                    <Select
+                      id="counties"
+                      required
+                      value={form.county} // Directly tied to form.county
+                      onChange={(e) =>
+                        setForm({ ...form, county: e.target.value })
+                      } // Updates form.county
+                      className="input-field"
+                    >
+                      <option value={form.county}>{form.county} County</option>
+                      {counties.map((county) => (
+                        <option key={county.id} value={county.name}>
+                          {county.name}
+                        </option>
+                      ))}
+                    </Select>
+                  </div>
+                )}
                 {/* Password Change Section */}
                 <h2 className="text-lg font-medium text-gray-700 mt-5">
                   Change Password
@@ -365,11 +408,13 @@ function Profile({minimize}) {
 
                 {/* File Upload Field */}
                 <div>
-                  <Label htmlFor="file-upload" value="Change image" />
+                <h2 className="text-lg font-medium text-gray-700 mt-5">
+                  Change Password
+                </h2>
                   <input
                     id="file-upload"
                     type="file"
-                    className="mt-1 w-full bg-gray-50 border border-gray-300 rounded-md p-2"
+                    className="mt-1 w-full bg-gray-50 border border-gray-300 rounded-md "
                     onChange={(e) => setImage(e.target.files[0])}
                   />
                   {image && (
@@ -389,7 +434,7 @@ function Profile({minimize}) {
 
             <Modal.Footer className="bg-gray-100 py-3">
               <Button
-                className="bg-gray-600 hover:bg-gray-700 text-white py-2 rounded-lg transition-all duration-300"
+                className="bg-gray-600 hover:bg-gray-700 text-white  rounded-lg transition-all duration-300"
                 onClick={onClose}
               >
                 Close

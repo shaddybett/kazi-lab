@@ -1,88 +1,75 @@
-.grid-container {
-    display: flex;
-    grid-template-columns: no-repeat(2, 1fr);
-    gap: 40px;
-  }
-  .grid-item-container {
-    position: relative;
-  }
-  
-  .grid-item {
-    width: 100px;
-    height: 100px;
-    cursor: pointer;
-    border-radius: 10px;
-    margin-bottom: 20px;
-  }
-  .delete-button {
-    position: absolute;
-    top: 5px;
-    right: 5px;
-    background-color: rgba(255, 255, 255, 0.7);
-    border: none;
-    cursor: pointer;
-    padding: 5px;
-    border-radius: 50%;
-  }
-  .modal {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    right: auto;
-    bottom: auto;
-    margin-right: -50%;
-    transform: translate(-50%, -50%);
-    max-width: 400px;
-    max-height: auto;
-    background: white;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    border-radius: 10px;
-  }
-  
-  .modal-image {
-    max-width: 400px;
-    max-height: auto;
-  }
-  
-  .overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.75);
-  }
-  .grid-containers {
-    display: flex;
-    grid-template-columns: no-repeat(2, 1fr);
-    gap: 10px;
-  }
-  
-  .grid-items {
-    width: auto;
-    height: auto;
-    cursor: pointer;
-    border-radius: 10px;
-    margin-bottom: 20px;
-  }
-  .serve{
-    display: flex;
-  }
-  .file{
-    display: flex;
-    margin-right: 40px;
-  }
-  .plus{
-    color: rgb(55, 118, 170);
-    font-size: 2.5em;
-  }
-  .card{
-    display: flex;
-    justify-content: center;
-  }
-  .cardss{
-    display: flex;
-    justify-content: center;
-    margin-bottom: 100px;
 
-  }
+.delete-button {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background-color: rgba(255, 255, 255, 0.7);
+  border: none;
+  cursor: pointer;
+  padding: 5px;
+  border-radius: 50%;
+}
+.main-page{
+  background-color: linear-gradient(to bottom, var(--top-gradient-color), var(--bottom-gradient-color));
+}
+.main-card{
+  background: linear-gradient(to bottom, var(--top-gradient-color), var(--bottom-gradient-color));
+  color: white;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.75);
+}
+/* CSS Example */
+.grid-item img {
+height: 200px;
+object-fit: cover; /* Ensures the image doesn't stretch */
+width: 100%;
+border-radius: 8px;
+}
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  z-index: 1001;
+  max-width: 90%; /* Responsive limit */
+  max-height: 90%;
+  overflow: auto; /* Allow scrolling if content is large */
+}
+
+/* Image inside the modal */
+.modal-image {
+  max-width: none; /* Disable width constraint */
+  max-height: none; /* Disable height constraint */
+  width: auto; /* Use original width */
+  height: auto; /* Use original height */
+  display: block;
+  margin: 0 auto; /* Center the image */
+}
+
+/* Video inside the modal */
+.modal-video {
+  width: 100%; /* Video should scale responsively */
+  height: auto;
+}
+
+/* Video container for modal */
+.modal-video-container {
+  position: relative;
+  width: 100%;
+  max-height: 90vh; /* Limit video height */
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
