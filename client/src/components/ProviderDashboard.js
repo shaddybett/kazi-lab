@@ -18,6 +18,7 @@ import ServiceDropdown from "./ServiceDropdown";
 import "./ProviderDashboard.css";
 import ServiceProviderChatBox from "../Pages/Chatbox/ServiceProviderChatbox";
 import ProviderUpdates from "./ProviderUpdates";
+import Profile from "./Profile";
 
 Modal.setAppElement("#root");
 
@@ -39,21 +40,26 @@ function ProviderDashboard() {
   const [isVideoLoading, setIsVideoLoading] = useState(false);
   const [chatUser, setChatUser] = useState(null);
   const [openClientsPage, setOpenClientsPage] = useState(false);
+  const [isFull,setIsFull] = useState(false)
   const dropdownRef = useRef(null);
   const navigate = useNavigate();
   const [isSidebarMinimized, setIsSidebarMinimized] = useState(false);
   const backendUrl = process.env.REACT_APP_BACKEND_URL;
+  const [profileOpen,setProfileOpen] = useState(false)
 
   const currentUserId = localStorage.getItem("id");
 
   const handleProfile = () => {
-    navigate("/profile");
+    setProfileOpen(true)
   };
 
   const handleFileChange = (event) => {
     const selectedFiles = event.target.files;
     setFiles(selectedFiles);
   };
+  const handleFull = ()=>{
+    setIsFull(true)
+  }
 
   const handleUpload = async () => {
     const result = await Swal.fire({
@@ -419,10 +425,10 @@ function ProviderDashboard() {
       <Navbar
         fluid
         rounded
-        className="bg-blue-600 w-full sticky top-0 text-white flex items-center px-4"
+        className="bg-gradient-to-r from-blue-500 to-indigo-600 w-full sticky top-0 text-white flex items-center px-4"
       >
         {/* Left side with heading */}
-        {/* <h1 className="text-lg font-semibold">Welcome, {data.first_name}!</h1> */}
+        <h1 className="text-lg font-semibold">Kazi-Qonnect</h1>
 
         {/* Right side with profile avatar and dropdown */}
         <div className="ml-auto flex items-center ">
@@ -526,11 +532,12 @@ function ProviderDashboard() {
               onClose={closeChat}
               minimize={isSidebarMinimized}
               className={isSidebarMinimized ? "" : "chatbox-popup"}
+              full={handleFull}
             />
           )}
 
           {/* File Upload Section */}
-          <div className="mt-6 w-full">
+          <div className="mt-6 w-full ">
             <p className="text-white mb-2">
               Upload photos or videos of your work
             </p>
@@ -642,10 +649,12 @@ function ProviderDashboard() {
           senderId={data.id}
           assigned={data.jobs || 0}
           likes={data.likes || 0}
-          className="updates"
+          minimized={isSidebarMinimized}
+          className={isSidebarMinimized ? "min-updates" : "updates"}
           onClose={closeUpdates}
         />
       )}
+      {profileOpen && (<Profile full={handleFull} />)}
     </div>
   );
 }

@@ -13,7 +13,7 @@ import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import "./Components.css";
 
-function Profile({ minimize }) {
+function Profile({ minimize, full }) {
   const [data, setData] = useState({});
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
@@ -234,7 +234,7 @@ function Profile({ minimize }) {
   return (
     <div className="">
       <div className="">
-        <div className={`${minimize ? "" : "ml-40"} `}>
+        <div className={`${minimize && !full ? "" : "ml-40"} `}>
           <div className="max-w-sm lg:max-w-md xl:max-w-lg mx-auto lg:mx-0 lg:ml-20 shadow-lg p-6 bg-white rounded-lg transition-all duration-300 hover:shadow-2xl ">
             {/* Center the image with avatar */}
             <div className="flex flex-col items-center space-y-4  ">

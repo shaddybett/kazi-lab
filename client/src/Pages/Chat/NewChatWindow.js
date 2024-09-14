@@ -15,7 +15,8 @@ const NewChatWindow = ({
   setActiveUser,
   onClose,
   files,
-  onDelete
+  onDelete,
+  className
 }) => {
   const chatRef = useRef(null);
 

@@ -8,9 +8,29 @@ const ChatBox = ({ senderId, receiver, onClose }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [activeUser, setActiveUser] = useState(null);
+  const [isSidebarMinimized, setIsSidebarMinimized] = useState(false);
 
   const backendUrl = process.env.REACT_APP_BACKEND_URL;
   const sedId = Number(senderId);
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 768) {
+        setIsSidebarMinimized(true); // Minimize sidebar on small screens
+      } else {
+        setIsSidebarMinimized(false); // Expand sidebar on larger screens
+      }
+    };
+
+    // Check screen size on initial load
+    handleResize();
+
+    // Add event listener for window resize
+    window.addEventListener("resize", handleResize);
+
+    // Cleanup event listener on component unmount
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   // Move fetchUserDetails above fetchMessages
   const fetchUserDetails = useCallback(async (userIds) => {
@@ -123,6 +143,7 @@ const ChatBox = ({ senderId, receiver, onClose }) => {
         sendMessage={handleSendMessage}
         receiver={receiver}
         onClose={onClose}
+        className={isSidebarMinimized ? "mini-recents" : "recents"}
       />
       {error && <p className="text-red-500">{error}</p>}
       {loading && <p>Loading...</p>}
