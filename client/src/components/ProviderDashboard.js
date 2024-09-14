@@ -419,10 +419,10 @@ function ProviderDashboard() {
       <Navbar
         fluid
         rounded
-        className="bg-blue-600 w-full sticky top-0 text-white flex items-center px-4"
+        className="bg-gradient-to-r from-blue-500 to-indigo-600 w-full sticky top-0 text-white flex items-center px-4"
       >
         {/* Left side with heading */}
-        {/* <h1 className="text-lg font-semibold">Welcome, {data.first_name}!</h1> */}
+        <h1 className="text-lg font-semibold">Kazi-Qonnect</h1>
 
         {/* Right side with profile avatar and dropdown */}
         <div className="ml-auto flex items-center ">
@@ -530,7 +530,7 @@ function ProviderDashboard() {
           )}
 
           {/* File Upload Section */}
-          <div className="mt-6 w-full">
+          <div className="mt-6 w-full ">
             <p className="text-white mb-2">
               Upload photos or videos of your work
             </p>
@@ -642,7 +642,8 @@ function ProviderDashboard() {
           senderId={data.id}
           assigned={data.jobs || 0}
           likes={data.likes || 0}
-          className="updates"
+          minimized={isSidebarMinimized}
+          className={isSidebarMinimized ? "min-updates" : "updates"}
           onClose={closeUpdates}
         />
       )}

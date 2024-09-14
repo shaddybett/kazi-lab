@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import ChatWindow from "./ChatWindow";
 import NewChatWindow from "./NewChatWindow";
-// import './Chatbox.css'
+import './Chat.css'
 
 const NewChatBox = ({ senderId, receiver, onClose }) => {
   const [messages, setMessages] = useState([]);
@@ -140,6 +140,7 @@ const NewChatBox = ({ senderId, receiver, onClose }) => {
         sendMessage={handleSendMessage}
         receiver={receiver}
         onClose={onClose}
+        className="mini-chat"                                                 
       />
       {error && <p className="text-red-500">{error}</p>}
       {loading && <p>Loading...</p>}

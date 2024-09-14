@@ -181,7 +181,7 @@ const ServiceProviderChatBox = ({ providerId, minimize, className, onClose }) =>
   };
   
   return (
-    <div ref={chatBoxRef} className={`inbox ${className} `}>
+    <div ref={chatBoxRef} className={`inbox  `}>
       {minimize && !activeUser ? (
         // Show only Sidebar if minimize is true and no user is active
         <Sidebar

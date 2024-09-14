@@ -82,7 +82,7 @@ import { IoMdChatbubbles, IoMdArrowBack } from "react-icons/io"; // Icons for ch
 import { Avatar } from "flowbite-react";
 import './Chat.css';
 
-const ChatWindow = ({ activeUser, messages, sendMessage, receiver, setActiveUser, minimize, onClose, onDelete }) => {
+const ChatWindow = ({ activeUser, messages, sendMessage, receiver, setActiveUser, minimize, onClose, onDelete, className }) => {
   const chatRef = useRef(null);
 
   useEffect(() => {
@@ -154,7 +154,7 @@ const ChatWindow = ({ activeUser, messages, sendMessage, receiver, setActiveUser
   // When minimize is false, display the chat next to the sidebar
   return (
     <div
-      className="flex-grow bg-gray-900 p-4 flex flex-col justify-between"
+      className={`flex-grow bg-gray-900 p-4 flex flex-col justify-between ${className} `}
       ref={chatRef}
     >
       {/* Back arrow for mobile */}
