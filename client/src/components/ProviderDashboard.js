@@ -18,6 +18,7 @@ import ServiceDropdown from "./ServiceDropdown";
 import "./ProviderDashboard.css";
 import ServiceProviderChatBox from "../Pages/Chatbox/ServiceProviderChatbox";
 import ProviderUpdates from "./ProviderUpdates";
+import Profile from "./Profile";
 
 Modal.setAppElement("#root");
 
@@ -39,21 +40,26 @@ function ProviderDashboard() {
   const [isVideoLoading, setIsVideoLoading] = useState(false);
   const [chatUser, setChatUser] = useState(null);
   const [openClientsPage, setOpenClientsPage] = useState(false);
+  const [isFull,setIsFull] = useState(false)
   const dropdownRef = useRef(null);
   const navigate = useNavigate();
   const [isSidebarMinimized, setIsSidebarMinimized] = useState(false);
   const backendUrl = process.env.REACT_APP_BACKEND_URL;
+  const [profileOpen,setProfileOpen] = useState(false)
 
   const currentUserId = localStorage.getItem("id");
 
   const handleProfile = () => {
-    navigate("/profile");
+    setProfileOpen(true)
   };
 
   const handleFileChange = (event) => {
     const selectedFiles = event.target.files;
     setFiles(selectedFiles);
   };
+  const handleFull = ()=>{
+    setIsFull(true)
+  }
 
   const handleUpload = async () => {
     const result = await Swal.fire({
@@ -526,6 +532,7 @@ function ProviderDashboard() {
               onClose={closeChat}
               minimize={isSidebarMinimized}
               className={isSidebarMinimized ? "" : "chatbox-popup"}
+              full={handleFull}
             />
           )}
 
@@ -647,6 +654,7 @@ function ProviderDashboard() {
           onClose={closeUpdates}
         />
       )}
+      {profileOpen && (<Profile full={handleFull} />)}
     </div>
   );
 }

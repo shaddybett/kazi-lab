@@ -3,7 +3,7 @@ import Sidebar from "../Chat/SideBar";
 import ChatWindow from "../Chat/ChatWindow";
 import "./Chatbox.css";
 
-const ServiceProviderChatBox = ({ providerId, minimize, className, onClose }) => {
+const ServiceProviderChatBox = ({ providerId, minimize, className, onClose, full }) => {
   const [messages, setMessages] = useState([]);
   const [details, setDetails] = useState({});
   const [loading, setLoading] = useState(false);
@@ -181,7 +181,7 @@ const ServiceProviderChatBox = ({ providerId, minimize, className, onClose }) =>
   };
   
   return (
-    <div ref={chatBoxRef} className={`inbox  `}>
+    <div ref={chatBoxRef} className={`${className} inbox`}>
       {minimize && !activeUser ? (
         // Show only Sidebar if minimize is true and no user is active
         <Sidebar
@@ -192,7 +192,7 @@ const ServiceProviderChatBox = ({ providerId, minimize, className, onClose }) =>
               )
             )
           )
-            .filter((contactId) => contactId !== podId)
+            .filter((contactId) => contactId !== podId) 
             .map((contactId) => ({
               id: contactId,
               name: details[contactId]
@@ -206,7 +206,7 @@ const ServiceProviderChatBox = ({ providerId, minimize, className, onClose }) =>
               image: details[contactId] ? details[contactId].image : null,
             }))}
           setActiveUser={(user) => setActiveUser(user)}
-          className="sidebar-pop"
+          className={full ? 'sidebar-pop' : '' }
         />
       ) : (
         // Show ChatWindow if activeUser is set
