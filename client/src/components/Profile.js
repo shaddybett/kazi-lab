@@ -13,7 +13,7 @@ import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import "./Components.css";
 
-function Profile({ minimize }) {
+function Profile({ minimize, full }) {
   const [data, setData] = useState({});
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
