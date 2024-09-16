@@ -16,6 +16,8 @@ function ClientDashboard() {
   const [providers, setProviders] = useState([]);
   const [loading, setLoading] = useState(false);
   const [chatUser, setChatUser] = useState(null);
+  const [isSidebarMinimized, setIsSidebarMinimized] = useState(false);
+  const [activeComponent, setActiveComponent] = useState("dashboard");
   const [clientLocation, setClientLocation] = useState({
     latitude: null,
     longitude: null,
