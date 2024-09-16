@@ -45,13 +45,11 @@ function ProviderDashboard() {
   const navigate = useNavigate();
   const [isSidebarMinimized, setIsSidebarMinimized] = useState(false);
   const backendUrl = process.env.REACT_APP_BACKEND_URL;
-  const [profileOpen,setProfileOpen] = useState(false)
+  const [profileOpen,setProfileOpen] = useState(false);
 
   const currentUserId = localStorage.getItem("id");
 
-  const handleProfile = () => {
-    setProfileOpen(true)
-  };
+
 
   const handleFileChange = (event) => {
     const selectedFiles = event.target.files;
@@ -60,7 +58,9 @@ function ProviderDashboard() {
   const handleFull = ()=>{
     setIsFull(true)
   }
-
+  const handleProfile = () => {
+    navigate('/profile', { state: { isFull: true, isSidebarMinimized  } })
+  };  
   const handleUpload = async () => {
     const result = await Swal.fire({
       title: "Are you sure?",
@@ -445,10 +445,11 @@ function ProviderDashboard() {
             }
           >
             <Dropdown.Header>
-              <span className="block text-sm font-bold">
+        
+              <span className="block text-sm flex justify-center font-bold">
                 {data.first_name} {data.last_name}
               </span>
-              <span className="block text-sm text-gray-200">{data.email}</span>
+              <span className="block text-sm text-gray-500">{data.email}</span>
             </Dropdown.Header>
             <Dropdown.Item onClick={handleProfile}>Profile</Dropdown.Item>
             <Dropdown.Divider />
@@ -654,9 +655,131 @@ function ProviderDashboard() {
           onClose={closeUpdates}
         />
       )}
-      {profileOpen && (<Profile full={handleFull} />)}
     </div>
   );
 }
 
 export default ProviderDashboard;
+
+
+
+{/* <div>
+<Navbar
+  fluid
+  rounded
+  className="bg-gradient-to-r from-blue-500 to-indigo-600 w-full sticky top-0 text-white flex items-center px-4"
+>
+  <h1 className="text-lg font-semibold">Kazi-Qonnect</h1>
+  <div className="ml-auto flex items-center">
+    <Dropdown
+      arrowIcon={false}
+      inline
+      label={
+        <Avatar
+          alt="User settings"
+          img={data.image}
+          rounded
+          className="w-10 h-10"
+        />
+      }
+    >
+      <Dropdown.Header>
+        <span className="block text-sm font-bold">
+          {data.first_name} {data.last_name}
+        </span>
+        <span className="block text-sm text-gray-500">{data.email}</span>
+      </Dropdown.Header>
+      <Dropdown.Item onClick={handleProfile}>Profile</Dropdown.Item>
+      <Dropdown.Item onClick={handleChat}>Chat</Dropdown.Item>
+      <Dropdown.Divider />
+      <Dropdown.Item onClick={handleLogout}>Logout</Dropdown.Item>
+    </Dropdown>
+  </div>
+</Navbar>
+<div className="min-h-screen flex">
+
+  <div className="w-64 bg-gray-800 text-white p-6 hidden md:block">
+    <h2 className="text-2xl font-bold mb-6">Filters & Actions</h2>
+
+
+    <input
+      type="text"
+      placeholder="Search services..."
+      value={searchQuery}
+      onChange={(e) => setSearchQuery(e.target.value)}
+      className="w-full p-2 mb-4 bg-gray-700 border border-gray-600 rounded text-gray-100"
+    />
+
+
+    <select
+      value={selectedCounty}
+      onChange={(e) => setSelectedCounty(e.target.value)}
+      className="w-full p-2 mb-4 bg-gray-700 border border-gray-600 rounded text-gray-100"
+    >
+      <option value="">Select county...</option>
+      {counties.map((county) => (
+        <option key={county.id} value={county.name}>
+          {county.name}
+        </option>
+      ))}
+    </select>
+
+
+    <div className="mt-6">
+      <h3 className="font-semibold mb-2">Quick Links</h3>
+      <ul className="space-y-2">
+        <li>
+          <button
+            onClick={handleProfile}
+            className="w-full bg-indigo-600 p-2 rounded hover:bg-indigo-700"
+          >
+            Profile
+          </button>
+        </li>
+        <li>
+          <button
+            onClick={handleLogout}
+            className="w-full bg-red-600 p-2 rounded hover:bg-red-700"
+          >
+            Logout
+          </button>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+
+  <div className="flex-grow p-6 bg-gray-100">
+  {error && <p style={{color: "red"}} >{error}</p> }
+
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-6">
+      {filteredServices.map((service) => (
+        <div
+          key={service.id}
+          className="bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition-transform "
+        >
+          <img
+            src={service.image || "https://via.placeholder.com/150"}
+            alt={service.name}
+            className="w-full h-32 object-cover rounded-lg"
+          />
+          <h3 className="mt-4 text-lg font-semibold text-gray-900">
+            {service.name}
+          </h3>
+          <p className="text-sm text-gray-600 mt-2">
+            {service.description || "No description provided."}
+          </p>
+          <button
+            onClick={() => handleProviders(service)}
+            className="mt-4 w-full bg-indigo-600 text-white p-2 rounded-lg hover:bg-indigo-700"
+          >
+            Request Service
+          </button>
+        </div>
+      ))}
+      
+    </div>
+    
+  </div>
+</div>
+</div> */}
