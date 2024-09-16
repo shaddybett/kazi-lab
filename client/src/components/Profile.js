@@ -9,11 +9,11 @@ import {
   Modal,
   Select,
 } from "flowbite-react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import Swal from "sweetalert2";
 import "./Components.css";
 
-function Profile({ minimize, full }) {
+function Profile({ minimize }) {
   const [data, setData] = useState({});
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
@@ -34,6 +34,8 @@ function Profile({ minimize, full }) {
   const [isModalOpen, setIsModalOpen] = useState(false); // For modal visibility
   const navigate = useNavigate();
   const backendUrl = process.env.REACT_APP_BACKEND_URL;
+  const location = useLocation()
+  const { isFull, isSidebarMinimized = false } = location.state || {};
 
   // Fetch user data
   useEffect(() => {
@@ -234,7 +236,7 @@ function Profile({ minimize, full }) {
   return (
     <div className="">
       <div className="">
-        <div className={`${minimize && !full ? "" : "ml-40"} `}>
+        <div className={`${minimize || isSidebarMinimized ? " " : ""}`}>
           <div className="max-w-sm lg:max-w-md xl:max-w-lg mx-auto lg:mx-0 lg:ml-20 shadow-lg p-6 bg-white rounded-lg transition-all duration-300 hover:shadow-2xl ">
             {/* Center the image with avatar */}
             <div className="flex flex-col items-center space-y-4  ">

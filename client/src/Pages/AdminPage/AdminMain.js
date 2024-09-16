@@ -434,7 +434,6 @@ function AdminMain({ blocked, onclose, click }) {
           </div>
         </div>
       </div>
-
       {/* Main Content */}
       <div className="flex-grow p-4 overflow-auto">
         {renderComponent()}
