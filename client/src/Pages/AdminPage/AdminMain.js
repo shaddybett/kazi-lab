@@ -199,9 +199,9 @@ function AdminMain({ blocked, onclose, click }) {
   const renderComponent = () => {
     switch (activeComponent) {
       case "dashboard":
-        return <AdminPage />;
+        return <AdminPage minimize={isSidebarMinimized} />;
       case "users":
-        return <AdminPage />;
+        return <AdminPage minimize={isSidebarMinimized} />;
       case "profile":
         return <Profile  minimize={isSidebarMinimized} />;
       case "blocked":
@@ -211,7 +211,7 @@ function AdminMain({ blocked, onclose, click }) {
       case "chat":
         return <ServiceProviderChatBox providerId={currentUserId} minimize={isSidebarMinimized} />;
       default:
-        return <AdminPage />;
+        return <AdminPage minimize={isSidebarMinimized} />;
     }
   };
 

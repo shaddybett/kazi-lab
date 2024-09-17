@@ -259,7 +259,6 @@ function Profile({ minimize }) {
               >
                 Update Profile
               </Button>
-
               <Button
                 className="w-full bg-red-600 text-white py-2 rounded-lg hover:bg-red-700 transition duration-300 ease-in-out"
                 onClick={handleDelete}

@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 import { HiDotsHorizontal } from "react-icons/hi";
 import NewChatBox from "../Chat/NewChatBox";
 
-function AdminPage() {
+function AdminPage( {minimize} ) {
   const [providers, setProviders] = useState([]);
   const [clients, setClients] = useState([]);
   const [error, setError] = useState(null);
@@ -348,7 +348,7 @@ function AdminPage() {
         </div>
       </div>
       {selectedUser && (
-        <AdminUsersPopup user={selectedUser} onClose={closePopup} />
+        <AdminUsersPopup minimize={minimize} user={selectedUser} onClose={closePopup} />
       )}
       {chatUser && (
         <NewChatBox

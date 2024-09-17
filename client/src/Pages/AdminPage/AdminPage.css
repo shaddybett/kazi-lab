@@ -164,7 +164,7 @@ th:nth-child(3), td:nth-child(3) {
 
 .grid-item {
   width: 140px;
-  height: 120px;
+  height: 100px;
   cursor: pointer;
   border-radius: 10px;
   margin-bottom: 20px;
@@ -253,7 +253,7 @@ th:nth-child(3), td:nth-child(3) {
 
 
 /* Default user-details container */
-.user-details {
+.user-detail {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
@@ -262,7 +262,18 @@ th:nth-child(3), td:nth-child(3) {
   border-radius: 10px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
   margin-top: 20px;
-  gap: 80px;
+  gap: 160px;
+}
+.mini-user-detail {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 20px;
+  background-color: #f9f9f9; /* Light background for the details section */
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+  margin-top: 20px;
+  gap: 20px;
 }
 
 /* Center the profile image and email if optional fields are missing */
@@ -294,6 +305,7 @@ th:nth-child(3), td:nth-child(3) {
   height: 100px;
   object-fit: cover;
   background-color: #93a3b1;
+  
 }
 
 /* Detail items for additional information */
