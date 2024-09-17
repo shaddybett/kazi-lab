@@ -267,18 +267,17 @@ function ClientDashboard() {
       });
       if (response.ok) {
         const responseData = await response.json();
-        localStorage.setItem(
-          "providerIds",
-          JSON.stringify(responseData.provider_ids)
-        );
-        const providerIds = responseData.provider_ids.join(",");
-        localStorage.setItem("providerIds", providerIds);
+        const providerIdsArray = responseData.provider_ids;
+
+        // Save both formats to localStorage
+        localStorage.setItem("providerIds", JSON.stringify(providerIdsArray)); // As JSON array
+        const providerIdsString = providerIdsArray.join(",");
+        localStorage.setItem("providerIdsString", providerIdsString);
         const sorted = selectedCounty !== "";
         if (sorted) {
           setActiveComponent("providers");
           // navigate(`/primes?provider_ids=${providerIds}`);
         } else {
-          localStorage.setItem("providerIds", providerIds);
           setActiveComponent("serviceProviders");
           // navigate(`/providers?provider_ids=${providerIds}`);
         }
@@ -332,8 +331,7 @@ function ClientDashboard() {
   const onClose = () => {
     setChatUser(null);
   };
-  const provIds = localStorage.getItem("providerIds");
-
+  const provIds = localStorage.getItem("providerIdsString");
   return (
     // <div className="clients" >
     <div className="general-sidebar flex h-screen text-white  ">
@@ -476,85 +474,89 @@ function ClientDashboard() {
       </div>
 
       <div className="flex-grow p-2 overflow-auto ">
-        {/* Navbar */}
-        {/* <Navbar
-          fluid
-          rounded
-          className="bg-gradient-to-r from-blue-500 to-indigo-600 w-full sticky top-0 text-white flex items-center px-4"
-        >
-          <h1 className="text-lg font-semibold">Kazi-Qonnect</h1>
-          <div className="ml-auto flex items-center">
-            <Dropdown
-              arrowIcon={false}
-              inline
-              label={
-                <Avatar
-                  alt="User settings"
-                  img={data.image}
-                  rounded
-                  className="w-10 h-10"
-                />
-              }
-            >
-              <Dropdown.Header>
-                <span className="block text-sm font-bold">
-                  {data.first_name} {data.last_name}
-                </span>
-                <span className="block text-sm text-gray-500">
-                  {data.email}
-                </span>
-              </Dropdown.Header>
-              <Dropdown.Item onClick={handleProfile}>Profile</Dropdown.Item>
-              <Dropdown.Item onClick={handleChat}>Chat</Dropdown.Item>
-              <Dropdown.Divider />
-              <Dropdown.Item onClick={handleLogout}>Logout</Dropdown.Item>
-            </Dropdown>
-          </div>
-        </Navbar> */}
-
-        {/* Service Cards Grid */}
-        {/* <div> */}
-          {/* <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-6"> */}
-            {activeComponent === "dashboard" &&
-              filteredServices.map((service) => (
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-6">
-                <div
-                  key={service.id}
-                  className="bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition-transform transform hover:scale-105"
-                >
-                  <img
-                    src={service.image || "https://via.placeholder.com/150"}
-                    alt={service.name}
-                    className="w-full h-32 object-cover rounded-lg"
+        {activeComponent === "dashboard" && (
+          <Navbar
+            fluid
+            rounded
+            className="bg-gradient-to-r from-blue-500 to-indigo-600 w-full sticky top-0 text-white flex items-center px-4"
+          >
+            <h1 className="text-lg font-semibold">Kazi-Qonnect</h1>
+            <div className="ml-auto flex items-center">
+              <Dropdown
+                arrowIcon={false}
+                inline
+                label={
+                  <Avatar
+                    alt="User settings"
+                    img={data.image}
+                    rounded
+                    className="w-10 h-10"
                   />
-                  <h3 className="mt-4 text-lg font-semibold text-gray-900">
+                }
+              >
+                <Dropdown.Header>
+                  <span className="block text-sm font-bold">
+                    {data.first_name} {data.last_name}
+                  </span>
+                  <span className="block text-sm text-gray-500">
+                    {data.email}
+                  </span>
+                </Dropdown.Header>
+                <Dropdown.Item onClick={handleProfile}>Profile</Dropdown.Item>
+                <Dropdown.Item onClick={handleChat}>Chat</Dropdown.Item>
+                <Dropdown.Divider />
+                <Dropdown.Item onClick={handleLogout}>Logout</Dropdown.Item>
+              </Dropdown>
+            </div>
+          </Navbar>
+        )}
+
+        {activeComponent === "dashboard" && (
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6 p-6">
+            {filteredServices.map((service) => (
+              <div
+                key={service.id}
+                className="p-4 bg-white shadow-md rounded-lg hover:shadow-lg transform hover:scale-105 transition-all duration-300 ease-in-out"
+              >
+                {/* Service Icon */}
+                {/* <img
+                  src={service.image || "https://via.placeholder.com/100"}
+                  alt={service.name}
+                  className="w-full h-32 object-cover rounded-t-md"
+                /> */}
+                <div className={isSidebarMinimized ? "mt-2" : ""}>
+                  <h5 className="text-xl font-bold tracking-tight text-gray-900">
                     {service.name}
-                  </h3>
-                  <p className="text-sm text-gray-600 mt-2">
-                    {service.description || "No description provided."}
-                  </p>
+                  </h5>
+                  {/* <p className="text-sm text-gray-600 mt-2">
+                    {service.description || "No description provided"  }
+                  </p> */}
                   <button
                     onClick={() => handleProviders(service)}
-                    className="mt-4 w-full bg-indigo-600 text-white p-2 rounded-lg hover:bg-indigo-700"
+                    className="mt-2 w-full bg-indigo-600 text-white p-2 rounded-md hover:bg-indigo-700"
                   >
-                    Request Service
+                    Providers
                   </button>
                 </div>
-                </div>
-              ))}
-          {/* </div> */}
-          
-          {activeComponent === "profile" && (
-            <Profile minimize={isSidebarMinimized} />
-          )}
-          {activeComponent === "chat" && (
-            <ServiceProviderChatBox
-              minimize={isSidebarMinimized}
-              providerId={currentUserId}
-            />
-          )}
-          {/* {activeComponent === ''} */}
-        {/* </div> */}
+              </div>
+            ))}
+          </div>
+        )}
+        {activeComponent === "profile" && (
+          <Profile minimize={isSidebarMinimized} />
+        )}
+        {activeComponent === "chat" && (
+          <ServiceProviderChatBox
+            minimize={isSidebarMinimized}
+            providerId={currentUserId}
+          />
+        )}
+        {activeComponent === "providers" && (
+          <Providers provider_ids={provIds} />
+        )}
+        {activeComponent === "serviceProviders" && (
+          <ServiceProviders minimized={isSidebarMinimized} provider_ids={provIds} />
+        )}
       </div>
     </div>
     // </div>

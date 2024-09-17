@@ -2,11 +2,11 @@ import React from "react";
 import { Modal, Button, Avatar } from "flowbite-react"; // Ensure Spinner is imported
 import "./AdminPage.css";
 
-function AdminUsersPopup({ user, onClose }) {
+function AdminUsersPopup({ user, onClose, minimize }) {
   if (!user) return null;
 
   return (
-    <div className="admin-user-popup">
+    <div className="admin-user-popup ">
       <Modal show={true} onClose={onClose}>
         <Modal.Header className="modal-header">
           <i className="fas fa-user-circle"></i>{" "}
@@ -16,7 +16,7 @@ function AdminUsersPopup({ user, onClose }) {
         <Modal.Body>
           <div className="flex flex-col items-center items2 ">
             <div
-              className={`user-details ${
+              className={` ${minimize ? "mini-user-detail" : "user-detail"} ${
                 !user.phone_number &&
                 !user.national_id &&
                 !user.likes &&
@@ -24,8 +24,8 @@ function AdminUsersPopup({ user, onClose }) {
                   ? "centered"
                   : ""
               }`}
-            >
-              <div className="details-1">
+              >
+              <div className={`${minimize ? "mini-details-1" : "details-1" }`}>
                 <img
                   src={user.image}
                   alt={Avatar}
