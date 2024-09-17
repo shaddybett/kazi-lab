@@ -373,23 +373,47 @@
 
 
 
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { Avatar, Button, Spinner, Modal } from "flowbite-react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEnvelope, faThumbsUp, faBriefcase, faPhone, faIdCard, faHeartBroken } from "@fortawesome/free-solid-svg-icons";
+import { faEnvelope, faThumbsUp, faBriefcase, faPhone, faIdCard, faHeartBroken, faHeart } from "@fortawesome/free-solid-svg-icons";
 import PhoneNumberPopup from "./PhoneNumberPopup";
 import './UserDetails.css';
 
 function UserDetailsPopup({ user, onClose, minimized, details }) {
   const popupRef = useRef();
   const [jobsDone, setJobsDone] = useState(user.jobs || 0);
-  const [likes, setLikes] = useState(user.likes || 0);
-  const [liked, setHasLiked] = useState(false);  // Track if thumbs-up was clicked
+  const [likes, setLikes] = useState(0);
+  const [liked, setLiked] = useState(false);  // Track if thumbs-up was clicked
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [showPhonePopup, setShowPhonePopup] = useState(false);
 
   const backendUrl = process.env.REACT_APP_BACKEND_URL;
+  const likeKey = `liked_${user.id}`;
+
+  useEffect(() => {
+    const fetchLikes = async () => {
+      try {
+        const response = await fetch(`${backendUrl}/get_likes/${user.id}`);
+        if (!response.ok) {
+          throw new Error(`Failed to fetch likes: ${response.statusText}`);
+        }
+        const data = await response.json();
+        setLikes(data.likes);  // Set the total likes from the backend
+      } catch (error) {
+        console.error("Error fetching likes:", error);
+      }
+    };
+
+    fetchLikes();
+
+    // Check if the client has already liked this service provider
+    const storedLiked = localStorage.getItem(likeKey);
+    if (storedLiked) {
+      setLiked(JSON.parse(storedLiked));  // Restore liked state from localStorage
+    }
+  }, [backendUrl, user.id]);
 
   // Assign job function
   const assignJob = async () => {
@@ -423,35 +447,34 @@ function UserDetailsPopup({ user, onClose, minimized, details }) {
   };
 
   // Like job function
-  const likeJob = async () => {
-    if (liked) return;  // Prevent multiple clicks
+      const likeJob = async () => {
+        if (liked) return;  
 
-    setLoading(true);
-    setError(null);
-    try {
-      const response = await fetch(`${backendUrl}/like_job/${user.id}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+        setLoading(true);
+        setError(null);
+        try {
+          const response = await fetch(`${backendUrl}/like_job/${user.id}`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          });
 
-      if (!response.ok) {
-        throw new Error(`Network response was not ok: ${response.statusText}`);
-      }
-
-      // Update the likes count after successfully liking the job
-      setHasLiked(true);  // Disable further clicks
-      setLikes(likes + 1);  // Increment the likes
-      details();  // Refetch to update details if needed
-
-    } catch (error) {
-      setError("Error liking job");
-      console.error("Error liking job:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
+          if (!response.ok) {
+            throw new Error(`Network response was not ok: ${response.statusText}`);
+          }
+          const data = await response.json();
+          setLiked(true);  // Toggle to liked
+          setLikes(data.likes);  // Update the likes count from the backend response
+          localStorage.setItem(likeKey, true);  // Store the liked state in localStorage
+    
+        } catch (error) {
+          setError("Error liking job");
+          console.error("Error liking job:", error);
+        } finally {
+          setLoading(false);
+        }
+      };
 
   if (!user) return null;
 
@@ -493,6 +516,7 @@ function UserDetailsPopup({ user, onClose, minimized, details }) {
                           icon={faPhone}
                           className="icon"
                           onClick={assignJob}
+                          href={`tel:${user.phone_number}`}
                         />{" "}
                         <strong>Phone Number:</strong> {user.phone_number}
                       </p>
@@ -506,11 +530,12 @@ function UserDetailsPopup({ user, onClose, minimized, details }) {
                     {user.likes !== undefined && (
                       <p className="detail-item">
                         <FontAwesomeIcon
-                          icon={faHeartBroken}
+                          icon={liked ? faHeart : faHeartBroken}
                           className={`like-button-icon ${
-                            liked ? "liked" : ""
+                            liked ? "liked animate-pulse " : "  "
                           }`}  // Conditional styling
                           onClick={likeJob}
+                          disabled={loading}
                         />{" "}
                         <strong>Likes:</strong> {likes}
                       </p>
