@@ -320,12 +320,6 @@ th:nth-child(3), td:nth-child(3) {
 .detail-item:hover {
   background-color: #f0f0f0;
 }
-
-
-
-
-
-
 /* Icon library styling */
 @import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css");
 

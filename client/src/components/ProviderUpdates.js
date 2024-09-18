@@ -389,7 +389,7 @@ function ProviderUpdates({ senderId, assigned, likes, className, onClose, minimi
   return (
     <div ref={chatBoxRef} className={`provider-updates-popup ${className}`}>
       <div className={minimized ? "mini-updates" : ""}>
-        <Card className="rounded-lg shadow-lg p-6 bg-gradient-to-r from-blue-500 to-indigo-600">
+        <Card className="rounded-lg shadow-lg p-2 bg-gradient-to-r from-blue-500 to-indigo-600">
           <h4 className="text-xl font-bold text-white mb-4 text-center">Recent Clients</h4>
           {customerDetails.length === 0 && (
             <p className="text-gray-200 text-center">No customers available.</p>
