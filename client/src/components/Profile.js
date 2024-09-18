@@ -34,7 +34,7 @@ function Profile({ minimize }) {
   const [isModalOpen, setIsModalOpen] = useState(false); // For modal visibility
   const navigate = useNavigate();
   const backendUrl = process.env.REACT_APP_BACKEND_URL;
-  const location = useLocation()
+  const location = useLocation();
   const { isFull, isSidebarMinimized = false } = location.state || {};
 
   // Fetch user data
@@ -234,220 +234,213 @@ function Profile({ minimize }) {
   }, [error]);
 
   return (
-    <div className="">
-      <div className="">
-        <div className={`${minimize || isSidebarMinimized ? " " : ""}`}>
-          <div className="max-w-sm lg:max-w-md xl:max-w-lg mx-auto lg:mx-0 lg:ml-20 shadow-lg p-6 bg-white rounded-lg transition-all duration-300 hover:shadow-2xl ">
-            {/* Center the image with avatar */}
-            <div className="flex flex-col items-center space-y-4  ">
-              <Avatar img={data.image} size="xl" rounded={true} />
+    <div>
+      <div className={`${minimize ? " " : " profile "}`}>
+        <div className="max-w-sm lg:max-w-md xl:max-w-lg mx-auto lg:mx-0 lg:ml-20 shadow-lg p-6 bg-white rounded-lg transition-all duration-300 hover:shadow-2xl ">
+          {/* Center the image with avatar */}
+          <div className="flex flex-col items-center space-y-4  ">
+            <Avatar img={data.image} size="xl" rounded={true} />
 
-              {/* Name Section */}
-              <div className="text-center">
-                <p className="text-xl font-semibold text-gray-800">
-                  {data.first_name} {data.last_name}
-                </p>
-                <p className="text-md text-gray-600">{data.email}</p>
-              </div>
-            </div>
-
-            {/* Buttons Section */}
-            <div className="flex flex-col space-y-3 mt-6">
-              <Button
-                className="w-full bg-blue-900 text-white py-2 rounded-lg hover:bg-blue-400 transition duration-300 ease-in-out"
-                onClick={() => setIsModalOpen(true)} // Show modal when clicked
-              >
-                Update Profile
-              </Button>
-              <Button
-                className="w-full bg-red-600 text-white py-2 rounded-lg hover:bg-red-700 transition duration-300 ease-in-out"
-                onClick={handleDelete}
-              >
-                Delete Account
-              </Button>
+            {/* Name Section */}
+            <div className="text-center">
+              <p className="text-xl font-semibold text-gray-800">
+                {data.first_name} {data.last_name}
+              </p>
+              <p className="text-md text-gray-600">{data.email}</p>
             </div>
           </div>
 
-          {/* Modal for updating the profile */}
-          <Modal
-            show={isModalOpen}
-            size="lg"
-            popup={true}
-            onClose={() => setIsModalOpen(false)}
-            className="rounded-lg shadow-lg"
-          >
-            {/* Modal Header with Title */}
-            <Modal.Header>
-              <h2 className="text-2xl font-semibold text-gray-800">
-                Edit User Details
-              </h2>
-            </Modal.Header>
-
-            <Modal.Body>
-              <form onSubmit={handleSubmit} className="space-y-6">
-                {/* First Name Field */}
-                <div>
-                  <Label htmlFor="first_name" value="First Name" />
-                  <TextInput
-                    id="first_name"
-                    name="first_name"
-                    value={form.first_name}
-                    onChange={handleChange}
-                    className="mt-1 w-full"
-                    required
-                  />
-                </div>
-
-                {/* Last Name Field */}
-                <div>
-                  <Label htmlFor="last_name" value="Last Name" />
-                  <TextInput
-                    id="last_name"
-                    name="last_name"
-                    value={form.last_name}
-                    onChange={handleChange}
-                    className="mt-1 w-full"
-                    required
-                  />
-                </div>
-
-                {/* Conditionally render National ID and Phone Number */}
-                {form.national_id && (
-                  <div>
-                    <Label htmlFor="national_id" value="National ID" />
-                    <TextInput
-                      id="national_id"
-                      name="national_id"
-                      value={form.national_id}
-                      onChange={handleChange}
-                      className="mt-1 w-full"
-                    />
-                  </div>
-                )}
-                {form.phone_number && (
-                  <div>
-                    <Label htmlFor="phone_number" value="Phone Number" />
-                    <TextInput
-                      id="phone_number"
-                      name="phone_number"
-                      value={form.phone_number}
-                      onChange={handleChange}
-                      className="mt-1 w-full"
-                    />
-                  </div>
-                )}
-
-                {form.county && (
-                  <div>
-                    <h2 className="text-lg font-medium text-gray-700 mt-5">
-                      Change County
-                    </h2>
-                    <Label
-                      htmlFor="counties"
-                      className="text-white"
-                      value={form.county}
-                    />
-                    <Select
-                      id="counties"
-                      required
-                      value={form.county} // Directly tied to form.county
-                      onChange={(e) =>
-                        setForm({ ...form, county: e.target.value })
-                      } // Updates form.county
-                      className="input-field"
-                    >
-                      <option value={form.county}>{form.county} County</option>
-                      {counties.map((county) => (
-                        <option key={county.id} value={county.name}>
-                          {county.name}
-                        </option>
-                      ))}
-                    </Select>
-                  </div>
-                )}
-                {/* Password Change Section */}
-                <h2 className="text-lg font-medium text-gray-700 mt-5">
-                  Change Password
-                </h2>
-
-                <div>
-                  <Label htmlFor="old_password" value="Old Password" />
-                  <TextInput
-                    id="old_password"
-                    name="old_password"
-                    type={showPassword ? "text" : "password"}
-                    value={form.old_password}
-                    onChange={handleChange}
-                    className="mt-1 w-full"
-                  />
-                </div>
-
-                <div>
-                  <Label htmlFor="new_password" value="New Password" />
-                  <TextInput
-                    id="new_password"
-                    name="new_password"
-                    type={showPassword ? "text" : "password"}
-                    value={form.new_password}
-                    onChange={handleChange}
-                    className="mt-1 w-full"
-                  />
-                  <div className="mt-2 flex items-center">
-                    <Checkbox
-                      id="show_password"
-                      checked={showPassword}
-                      onChange={() => setShowPassword(!showPassword)}
-                    />
-                    <Label
-                      htmlFor="show_password"
-                      className="ml-2 text-gray-600"
-                    >
-                      Show Password
-                    </Label>
-                  </div>
-                </div>
-
-                {/* File Upload Field */}
-                <div>
-                <h2 className="text-lg font-medium text-gray-700 mt-5">
-                  Change Password
-                </h2>
-                  <input
-                    id="file-upload"
-                    type="file"
-                    className="mt-1 w-full bg-gray-50 border border-gray-300 rounded-md "
-                    onChange={(e) => setImage(e.target.files[0])}
-                  />
-                  {image && (
-                    <p className="text-sm text-gray-500 mt-2">{image.name}</p>
-                  )}
-                </div>
-
-                {/* Save Button */}
-                <Button
-                  className="mt-5 w-full bg-blue-900 text-white hover:bg-blue-700 transition-all duration-300 py-2 rounded-lg"
-                  type="submit"
-                >
-                  Save Changes
-                </Button>
-              </form>
-            </Modal.Body>
-
-            <Modal.Footer className="bg-gray-100 py-3">
-              <Button
-                className="bg-gray-600 hover:bg-gray-700 text-white  rounded-lg transition-all duration-300"
-                onClick={onClose}
-              >
-                Close
-              </Button>
-            </Modal.Footer>
-          </Modal>
+          {/* Buttons Section */}
+          <div className="flex flex-col space-y-3 mt-6">
+            <Button
+              className="w-full bg-blue-900 text-white py-2 rounded-lg hover:bg-blue-400 transition duration-300 ease-in-out"
+              onClick={() => setIsModalOpen(true)} // Show modal when clicked
+            >
+              Update Profile
+            </Button>
+            <Button
+              className="w-full bg-red-600 text-white py-2 rounded-lg hover:bg-red-700 transition duration-300 ease-in-out"
+              onClick={handleDelete}
+            >
+              Delete Account
+            </Button>
+          </div>
         </div>
-        {error && <p className="mt-5 text-center text-red-500">{error}</p>}
-        {message && (
-          <p className="mt-5 text-center text-green-500">{message}</p>
-        )}
+
+        {/* Modal for updating the profile */}
+        <Modal
+          show={isModalOpen}
+          size="lg"
+          popup={true}
+          onClose={() => setIsModalOpen(false)}
+          className="rounded-lg shadow-lg"
+        >
+          {/* Modal Header with Title */}
+          <Modal.Header>
+            <h2 className="text-2xl font-semibold text-gray-800">
+              Edit User Details
+            </h2>
+          </Modal.Header>
+
+          <Modal.Body>
+            <form onSubmit={handleSubmit} className="space-y-6">
+              {/* First Name Field */}
+              <div>
+                <Label htmlFor="first_name" value="First Name" />
+                <TextInput
+                  id="first_name"
+                  name="first_name"
+                  value={form.first_name}
+                  onChange={handleChange}
+                  className="mt-1 w-full"
+                  required
+                />
+              </div>
+
+              {/* Last Name Field */}
+              <div>
+                <Label htmlFor="last_name" value="Last Name" />
+                <TextInput
+                  id="last_name"
+                  name="last_name"
+                  value={form.last_name}
+                  onChange={handleChange}
+                  className="mt-1 w-full"
+                  required
+                />
+              </div>
+
+              {/* Conditionally render National ID and Phone Number */}
+              {form.national_id && (
+                <div>
+                  <Label htmlFor="national_id" value="National ID" />
+                  <TextInput
+                    id="national_id"
+                    name="national_id"
+                    value={form.national_id}
+                    onChange={handleChange}
+                    className="mt-1 w-full"
+                  />
+                </div>
+              )}
+              {form.phone_number && (
+                <div>
+                  <Label htmlFor="phone_number" value="Phone Number" />
+                  <TextInput
+                    id="phone_number"
+                    name="phone_number"
+                    value={form.phone_number}
+                    onChange={handleChange}
+                    className="mt-1 w-full"
+                  />
+                </div>
+              )}
+
+              {form.county && (
+                <div>
+                  <h2 className="text-lg font-medium text-gray-700 mt-5">
+                    Change County
+                  </h2>
+                  <Label
+                    htmlFor="counties"
+                    className="text-white"
+                    value={form.county}
+                  />
+                  <Select
+                    id="counties"
+                    required
+                    value={form.county} // Directly tied to form.county
+                    onChange={(e) =>
+                      setForm({ ...form, county: e.target.value })
+                    } // Updates form.county
+                    className="input-field"
+                  >
+                    <option value={form.county}>{form.county} County</option>
+                    {counties.map((county) => (
+                      <option key={county.id} value={county.name}>
+                        {county.name}
+                      </option>
+                    ))}
+                  </Select>
+                </div>
+              )}
+              {/* Password Change Section */}
+              <h2 className="text-lg font-medium text-gray-700 mt-5">
+                Change Password
+              </h2>
+
+              <div>
+                <Label htmlFor="old_password" value="Old Password" />
+                <TextInput
+                  id="old_password"
+                  name="old_password"
+                  type={showPassword ? "text" : "password"}
+                  value={form.old_password}
+                  onChange={handleChange}
+                  className="mt-1 w-full"
+                />
+              </div>
+
+              <div>
+                <Label htmlFor="new_password" value="New Password" />
+                <TextInput
+                  id="new_password"
+                  name="new_password"
+                  type={showPassword ? "text" : "password"}
+                  value={form.new_password}
+                  onChange={handleChange}
+                  className="mt-1 w-full"
+                />
+                <div className="mt-2 flex items-center">
+                  <Checkbox
+                    id="show_password"
+                    checked={showPassword}
+                    onChange={() => setShowPassword(!showPassword)}
+                  />
+                  <Label htmlFor="show_password" className="ml-2 text-gray-600">
+                    Show Password
+                  </Label>
+                </div>
+              </div>
+
+              {/* File Upload Field */}
+              <div>
+                <h2 className="text-lg font-medium text-gray-700 mt-5">
+                  Change Password
+                </h2>
+                <input
+                  id="file-upload"
+                  type="file"
+                  className="mt-1 w-full bg-gray-50 border border-gray-300 rounded-md "
+                  onChange={(e) => setImage(e.target.files[0])}
+                />
+                {image && (
+                  <p className="text-sm text-gray-500 mt-2">{image.name}</p>
+                )}
+              </div>
+
+              {/* Save Button */}
+              <Button
+                className="mt-5 w-full bg-blue-900 text-white hover:bg-blue-700 transition-all duration-300 py-2 rounded-lg"
+                type="submit"
+              >
+                Save Changes
+              </Button>
+            </form>
+          </Modal.Body>
+
+          <Modal.Footer className="bg-gray-100 py-3">
+            <Button
+              className="bg-gray-600 hover:bg-gray-700 text-white  rounded-lg transition-all duration-300"
+              onClick={onClose}
+            >
+              Close
+            </Button>
+          </Modal.Footer>
+        </Modal>
       </div>
+      {error && <p className="mt-5 text-center text-red-500">{error}</p>}
+      {message && <p className="mt-5 text-center text-green-500">{message}</p>}
     </div>
   );
 }

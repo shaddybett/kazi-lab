@@ -341,11 +341,6 @@ th:nth-child(3), td:nth-child(3) {
   background-color: #f0f0f0;
 }
 
-
-
-
-
-
 /* Icon library styling */
 @import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css");
 
@@ -369,7 +364,7 @@ th:nth-child(3), td:nth-child(3) {
   font-size: 1.5rem; /* Increase icon size */
 }
 
-.section-heading::after {
+.section-heading::after { 
   content: "";
   position: absolute;
   bottom: 0;
@@ -384,10 +379,10 @@ th:nth-child(3), td:nth-child(3) {
 .section-heading:hover::after {
   width: 100%; /* Expand underline on hover */
 }
-.video-heading {
+.video-headin {
   font-size: 1.5rem; /* Similar to photos heading */
   font-weight: 600; /* Bold */
-  color: #3776aa; /* A green color to differentiate videos */
+  color: white; /* A green color to differentiate videos */
   display: flex;
   align-items: center; /* Align icon and text */
   gap: 10px; /* Space between icon and text */
@@ -399,24 +394,24 @@ th:nth-child(3), td:nth-child(3) {
   border-radius: 8px;
 }
 
-.video-heading i {
-  color: #3776aa; /* Green for the video icon */
+.video-headin i {
+  color: white; /* Green for the video icon */
   font-size: 1.5rem;
 }
 
-.video-heading::after {
+.video-headin::after {
   content: "";
   position: absolute;
   bottom: 0;
   left: 0;
   width: 50px; /* Length of the underline */
   height: 4px;
-  background-color: #3776aa; /* Green underline */
+  background-color: white; /* Green underline */
   border-radius: 4px;
   transition: width 0.3s ease; /* Smooth hover */
 }
 
-.video-heading:hover::after {
+.video-headin:hover::after {
   width: 100%;
 }
 .modal-header {
@@ -512,4 +507,30 @@ th:nth-child(3), td:nth-child(3) {
 
 .tooltip-container:hover .tooltip {
   opacity: 1; /* Visible when hovering */
+}
+video {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+video:fullscreen {
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover;
+  background-color: black;
+}
+video:-webkit-full-screen {
+  width: 100%;
+  height: auto;
+}
+
+video:-moz-full-screen {
+  width: 100%;
+  height: auto;
+}
+
+video:fullscreen {
+  width: 100%;
+  height: auto;
 }
