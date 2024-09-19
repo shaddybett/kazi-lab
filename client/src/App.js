@@ -16,7 +16,6 @@ import ChatBox from "./Pages/Chatbox/ChatBox";
 import AdminMain from "./Pages/AdminPage/AdminMain";
 import Sidebar from "./Pages/Chat/SideBar";
 import Uploads from "./components/Uploads";
-
 function App() {
   return (
     <Routes>

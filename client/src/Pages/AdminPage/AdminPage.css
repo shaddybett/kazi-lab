@@ -15,32 +15,51 @@ body {
 
 .table-1, .table-2 {
   width: 100%;
-  max-width: 600px; /* Set a max-width for better centering */
-  margin: 0 auto 20px; /* Center the tables horizontally */
+  max-width: 700px; /* Set a max-width for better centering */
+  margin: 20px auto; /* Center the tables horizontally */
   box-sizing: border-box;
+  border: 1px solid #d1d5db; /* Light border around tables */
+  border-radius: 8px; /* Rounded corners for a modern look */
+  background-color: #ffffff; /* White background for contrast */
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
 }
 
 /* Table Title Styling */
 .table-1-title, .table-2-title {
   font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-  font-weight: 500;
+  font-weight: 600;
   font-size: 1.5rem;
   text-align: center;
-  margin-bottom: 10px;
+  margin: 20px 0;
+  color: #333;
 }
 
 /* Table Styling */
 table {
   width: 100%;
   border-collapse: collapse; /* No extra spacing between cells */
-  table-layout: fixed; /* Fix column widths based on header */
+  table-layout: auto; /* Fix column widths based on header */
 }
 
 /* Header Styling */
-th, td {
+th {
+  background-color: #f7fafc; /* Light gray background for headers */
+  color: #333; /* Darker text for readability */
+  text-transform: uppercase; /* Uppercase for header text */
+  letter-spacing: 0.05em; /* Slightly increased spacing */
   padding: 12px;
+  border-bottom: 2px solid #e2e8f0; /* Light border for headers */
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+/* Data Cells Styling */
+td {
+  padding: 15px;
   text-align: left;
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid #e2e8f0; /* Light border for rows */
+  color: #555; /* Slightly softer text for data */
+  font-size: 0.95rem;
 }
 
 /* Adjust header widths to ensure alignment */
@@ -58,30 +77,106 @@ th:nth-child(3), td:nth-child(3) {
 
 /* Ensure table rows align properly */
 .table-row {
-  text-align: left; /* Ensure all content is left-aligned */
-  background-color: #cdd6d5;
-}
-
-@media (min-width: 768px) {
-  .table-row {
-    text-align: left; /* For large screens, ensure left alignment */
-    background-color: #cdd6d5;
-    
-  }
+  background-color: #f9f9f9; /* Light background for table rows */
+  transition: background-color 0.2s ease;
 }
 
 /* Hover effect for table rows */
-/* General hover effect for unblocked rows */
 .table-row:hover {
-  background-color: #b5b8bb; /* Gray hover background for unblocked rows */
-}
-.blocked-row{
-  background-color: #f05050;
+  background-color: #e6f7ff; /* Soft blue hover background for rows */
 }
 
-/* Disable hover effect for blocked rows */
+/* Blocked Row Styling */
+.blocked-row {
+  background-color: #e66969; /* Light red for blocked users */
+  color: #e90b07; /* Darker red text */
+}
+
 .blocked-row:hover {
-  background-color: #f87171 !important; /* Red background persists on hover */
+  background-color: #e93446 !important; /* Darker red on hover */
+}
+
+.dropdown-item {
+  font-size: 0.9rem;
+  padding: 10px;
+  color: #333;
+  transition: background-color 0.2s;
+}
+
+.dropdown-item:hover {
+  background-color: #f0f0f0; /* Light background on hover */
+}
+
+/* Blocked and Unblock Button Styling */
+.text-green-500 {
+  color: #38a169; /* Green color for unblock option */
+}
+
+.text-red-500 {
+  color: #e53e3e; /* Red color for block option */
+}
+/* Hover effect for table rows */
+/* General hover effect for unblocked rows */
+
+@media (max-width: 768px) {
+  table {
+    display: block; /* Make the table a block element for better stacking */
+  }
+
+  thead {
+    display: none; /* Hide table headers on small screens */
+  }
+
+  tr {
+    display: block; /* Stack rows as blocks */
+    margin-bottom: 20px; /* Add space between rows */
+    border-bottom: 2px solid #e2e8f0;
+  }
+
+  td {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 5px;
+    font-size: 0.9rem;
+    text-align: right;
+    border: none; /* Remove inner borders */
+  }
+
+  td::before {
+    content: attr(data-label); /* Use data-label attribute to simulate headers */
+    font-weight: bold;
+    text-transform: uppercase;
+    color: #333;
+    flex: 1;
+    text-align: left;
+  }
+
+  td:last-child {
+    text-align: right; /* Align the last column (actions) to the right */
+  }
+
+  /* Make buttons and dropdowns responsive */
+  .dropdown-item {
+    font-size: 0.85rem;
+  }
+
+  .text-green-500, .text-red-500 {
+    font-size: 0.9rem;
+  }
+}
+
+/* Hover Effects */
+.table-row:hover {
+  background-color: #e6f7ff;
+}
+
+.blocked-row {
+  background-color: #ffe6e6;
+}
+
+.blocked-row:hover {
+  background-color: #f5c6cb !important;
 }
 
 
@@ -96,7 +191,6 @@ th:nth-child(3), td:nth-child(3) {
   margin: 20px auto; /* Center avatar */
 }
 
-/* Avatar styling */
 .admipic {
   width: 100px;
   height: 100px;
@@ -153,18 +247,18 @@ th:nth-child(3), td:nth-child(3) {
 .media-gallery{
   background-color: aqua;
 }
-.grid-container {
+.admin-grid-container {
   display: flex;
   grid-template-columns: no-repeat(2, 1fr);
   gap: 40px;
 }
-.grid-item-container {
+.admin-grid-item-container {
   position: relative;
 }
 
-.grid-item {
-  width: 140px;
-  height: 100px;
+.admin-grid-item {
+  width: 300px;
+  height: 100%;
   cursor: pointer;
   border-radius: 10px;
   margin-bottom: 20px;
@@ -206,14 +300,21 @@ th:nth-child(3), td:nth-child(3) {
 }
 
 /* Flex grid for media */
-.grid-container, .grid-containers {
+.admin-grid-container, .admin-grid-containers {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 20px;
   margin-top: 10px;
 }
 
-.grid-item, .grid-items {
+.admin-grid-item {
+  width: 300px;
+  height: 100%;
+  cursor: pointer;
+  border-radius: 10px;
+  transition: transform 0.3s ease-in-out;
+}
+.admin-grid-items{
   width: 100%;
   height: 100%;
   cursor: pointer;
@@ -221,7 +322,7 @@ th:nth-child(3), td:nth-child(3) {
   transition: transform 0.3s ease-in-out;
 }
 
-.grid-item:hover, .grid-items:hover {
+.admin-grid-item:hover, .admin-grid-items:hover {
   transform: scale(1.05); /* Slight zoom on hover */
 }
 
@@ -294,18 +395,17 @@ th:nth-child(3), td:nth-child(3) {
   font-weight: 600;
 }
 
+
 .details-1-email {
   color: #494646;
   font-size: 0.9rem;
 }
-
 .image-dt {
   border-radius: 50%;
   width: 100px;
   height: 100px;
   object-fit: cover;
   background-color: #93a3b1;
-  
 }
 
 /* Detail items for additional information */
@@ -344,7 +444,7 @@ th:nth-child(3), td:nth-child(3) {
 /* Icon library styling */
 @import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css");
 
-.section-heading {
+.image-section-heading {
   font-size: 1.5rem; /* Increase font size for emphasis */
   font-weight: 600; /* Make it bold */
   color: #3776aa; /* A nice blue color for the heading */
@@ -359,12 +459,12 @@ th:nth-child(3), td:nth-child(3) {
   border-radius: 8px; /* Rounded corners */
 }
 
-.section-heading i {
+.image-section-heading i {
   color: #3776aa; /* Icon color */
   font-size: 1.5rem; /* Increase icon size */
 }
 
-.section-heading::after { 
+.image-section-heading::after { 
   content: "";
   position: absolute;
   bottom: 0;
@@ -376,44 +476,50 @@ th:nth-child(3), td:nth-child(3) {
   transition: width 0.3s ease; /* Smooth underline animation */
 }
 
-.section-heading:hover::after {
+.image-section-heading:hover::after {
   width: 100%; /* Expand underline on hover */
 }
-.video-headin {
+.admin-video-heading {
   font-size: 1.5rem; /* Similar to photos heading */
   font-weight: 600; /* Bold */
-  color: white; /* A green color to differentiate videos */
+  color: #37aa6f; /* Softer green for better readability */
   display: flex;
   align-items: center; /* Align icon and text */
   gap: 10px; /* Space between icon and text */
   padding-bottom: 10px;
   position: relative; /* For the underline effect */
   margin-top: 30px;
-  background: linear-gradient(90deg, rgba(40, 167, 69, 0.15), rgba(40, 167, 69, 0)); /* Green gradient */
+  background: linear-gradient(90deg, rgba(22, 95, 57, 0.15), rgba(4, 99, 50, 0)); /* Softer green gradient */
   padding: 15px;
   border-radius: 8px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.05); /* Subtle shadow for depth */
 }
 
-.video-headin i {
-  color: white; /* Green for the video icon */
+.admin-video-heading i {
+  color: #32a852; /* Slightly darker green for the icon */
   font-size: 1.5rem;
 }
 
-.video-headin::after {
+.admin-video-heading::after {
   content: "";
   position: absolute;
   bottom: 0;
   left: 0;
   width: 50px; /* Length of the underline */
   height: 4px;
-  background-color: white; /* Green underline */
+  background-color: #32a852; /* Green underline, matching icon */
   border-radius: 4px;
   transition: width 0.3s ease; /* Smooth hover */
 }
 
-.video-headin:hover::after {
-  width: 100%;
+.admin-video-heading:hover::after {
+  width: 100%; /* Expand underline on hover */
 }
+
+.admin-video-heading:hover {
+  background: linear-gradient(90deg, rgba(55, 170, 111, 0.25), rgba(55, 170, 111, 0.05)); /* Slightly more prominent background on hover */
+}
+
 .modal-header {
   font-size: 1.75rem; /* Slightly bigger for prominence */
   font-weight: 700; /* Bold for emphasis */

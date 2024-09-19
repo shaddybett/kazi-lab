@@ -387,9 +387,9 @@ function ProviderUpdates({ senderId, assigned, likes, className, onClose, minimi
   }, [providerIds, fetchCustomerDetails]);
 
   return (
-    <div ref={chatBoxRef} className={`provider-updates-popup ${className}`}>
+    <div ref={chatBoxRef} className={`provider-updates-popup `}>
       <div className={minimized ? "mini-updates" : ""}>
-        <Card className="rounded-lg shadow-lg p-2 bg-gradient-to-r from-blue-500 to-indigo-600">
+        <div className="rounded-lg shadow-lg p-2 bg-gradient-to-r from-blue-500 to-indigo-600">
           <h4 className="text-xl font-bold text-white mb-4 text-center">Recent Clients</h4>
           {customerDetails.length === 0 && (
             <p className="text-gray-200 text-center">No customers available.</p>
@@ -422,7 +422,7 @@ function ProviderUpdates({ senderId, assigned, likes, className, onClose, minimi
               </div>
             </div>
           </div>
-        </Card>
+        </div>
         {openChat && <NewChatBox senderId={senderId} receiver={currentCustomer} onClose={handleClose} />}
       </div>
     </div>

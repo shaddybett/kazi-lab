@@ -544,7 +544,7 @@ function ProviderDashboard() {
           </div>
           <div
             className={`relative group flex items-center p-2 rounded-sm cursor-pointer hover:bg-gray-600 hover:text-white transition-colors ${
-              activeComponent === "blocked"
+              activeComponent === "uploads"
                 ? "bg-gray-600 text-white"
                 : "text-white"
             }`}
@@ -575,7 +575,7 @@ function ProviderDashboard() {
             }`}
             onClick={() => setActiveComponent("clients")}
           >
-            <HiShoppingBag
+            <HiUser
               className={`mr-3 ${
                 isSidebarMinimized ? "text-2xl ml-3" : "text-xl"
               }`}
@@ -645,19 +645,19 @@ function ProviderDashboard() {
             </div>
 
             {/* Add New Service Section */}
-            <div className="flex items-center">
+            <div className="">
               <input
-                className="rounded-lg border border-blue-300 p-3 text-gray-900 flex-grow shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="rounded-lg border border-blue-300 p-3 w-full mb-4 text-gray-900 flex-grow shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                 type="text"
                 value={newService}
                 onChange={(e) => setNewService(e.target.value)}
                 placeholder="Add a new service"
               />
               <button
-                className="ml-4 bg-blue-600 text-white text-2xl p-3 rounded-full hover:bg-blue-700 transition-all shadow-lg"
+                className="upload-btn size-sm "
                 onClick={handleAddService}
               >
-                <FontAwesomeIcon icon={faSquarePlus} />
+                Add
               </button>
             </div>
           </div>
@@ -672,7 +672,7 @@ function ProviderDashboard() {
             providerId={currentUserId}
           />
         )}
-        {activeComponent === "uploads" && <Uploads />}
+        {activeComponent === "uploads" && <Uploads minimized={isSidebarMinimized} />}
         {activeComponent === "clients" && (
           <ProviderUpdates
             senderId={data.id}
