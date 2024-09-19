@@ -13,7 +13,7 @@ function AdminUsersPopup({ user, onClose, minimize }) {
           <span className="ml-2">{`${user.first_name} ${user.last_name}`}</span>
         </Modal.Header>
 
-        <Modal.Body>
+         <Modal.Body>
           <div className="flex flex-col items-center items2 ">
             <div
               className={` ${minimize ? "mini-user-detail" : "user-detail"} ${
@@ -92,7 +92,6 @@ function AdminUsersPopup({ user, onClose, minimize }) {
                   </div>
                 </>
               )}
-
               {user.videos.length > 0 && (
                 <>
                   <h4 className="admin-video-heading">
