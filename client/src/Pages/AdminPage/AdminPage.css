@@ -153,16 +153,16 @@ th:nth-child(3), td:nth-child(3) {
 .media-gallery{
   background-color: aqua;
 }
-.grid-container {
+.admin-grid-container {
   display: flex;
   grid-template-columns: no-repeat(2, 1fr);
   gap: 40px;
 }
-.grid-item-container {
+.admin-grid-item-container {
   position: relative;
 }
 
-.grid-item {
+.admin-grid-item {
   width: 140px;
   height: 100px;
   cursor: pointer;
@@ -206,14 +206,14 @@ th:nth-child(3), td:nth-child(3) {
 }
 
 /* Flex grid for media */
-.grid-container, .grid-containers {
+.admin-grid-container, .admin-grid-containers {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 20px;
   margin-top: 10px;
 }
 
-.grid-item, .grid-items {
+.admin-grid-item, .admin-grid-items {
   width: 100%;
   height: 100%;
   cursor: pointer;
@@ -221,7 +221,7 @@ th:nth-child(3), td:nth-child(3) {
   transition: transform 0.3s ease-in-out;
 }
 
-.grid-item:hover, .grid-items:hover {
+.admin-grid-item:hover, .admin-grid-items:hover {
   transform: scale(1.05); /* Slight zoom on hover */
 }
 
@@ -298,7 +298,6 @@ th:nth-child(3), td:nth-child(3) {
   color: #494646;
   font-size: 0.9rem;
 }
-
 .image-dt {
   border-radius: 50%;
   width: 100px;
@@ -344,7 +343,7 @@ th:nth-child(3), td:nth-child(3) {
 /* Icon library styling */
 @import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css");
 
-.section-heading {
+.image-section-heading {
   font-size: 1.5rem; /* Increase font size for emphasis */
   font-weight: 600; /* Make it bold */
   color: #3776aa; /* A nice blue color for the heading */
@@ -359,12 +358,12 @@ th:nth-child(3), td:nth-child(3) {
   border-radius: 8px; /* Rounded corners */
 }
 
-.section-heading i {
+.image-section-heading i {
   color: #3776aa; /* Icon color */
   font-size: 1.5rem; /* Increase icon size */
 }
 
-.section-heading::after { 
+.image-section-heading::after { 
   content: "";
   position: absolute;
   bottom: 0;
@@ -376,10 +375,10 @@ th:nth-child(3), td:nth-child(3) {
   transition: width 0.3s ease; /* Smooth underline animation */
 }
 
-.section-heading:hover::after {
+.image-section-heading:hover::after {
   width: 100%; /* Expand underline on hover */
 }
-.video-headin {
+.admin-video-heading {
   font-size: 1.5rem; /* Similar to photos heading */
   font-weight: 600; /* Bold */
   color: white; /* A green color to differentiate videos */
@@ -394,12 +393,12 @@ th:nth-child(3), td:nth-child(3) {
   border-radius: 8px;
 }
 
-.video-headin i {
+.admin-video-heading i {
   color: white; /* Green for the video icon */
   font-size: 1.5rem;
 }
 
-.video-headin::after {
+.admin-video-heading::after {
   content: "";
   position: absolute;
   bottom: 0;
@@ -411,7 +410,7 @@ th:nth-child(3), td:nth-child(3) {
   transition: width 0.3s ease; /* Smooth hover */
 }
 
-.video-headin:hover::after {
+.admin-video-heading:hover::after {
   width: 100%;
 }
 .modal-header {

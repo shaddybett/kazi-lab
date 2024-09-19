@@ -5,7 +5,7 @@ import { Spinner, FileInput } from "flowbite-react";
 import Swal from "sweetalert2";
 import "./ProviderDashboard.css";
 
-function Uploads() {
+function Uploads({minimized}) {
   const [files, setFiles] = useState([]);
   const [data, setData] = useState({});
   const [photos, setPhotos] = useState([]);
@@ -141,79 +141,77 @@ function Uploads() {
   const handlePhotoDelete = (photoUrl) => handleDelete(photoUrl, "photo");
   const handleVideoDelete = (videoUrl) => handleDelete(videoUrl, "video");
   return (
-<div className="mt-6 w-full">
-  <div>
-    <p className="text-white mb-2">Upload photos or videos of your work</p>
-    <FileInput
-      id="file-upload-helper-text"
-      type="file"
-      multiple
-      onChange={handleFileChange}
-      className="mb-4 w-full"
-    />
-    <button
-      className={`upload-btn ${loading ? "opacity-50 cursor-not-allowed" : ""}`}
-      onClick={handleUpload}
-      disabled={loading}
-    >
-      {loading ? (
-        <Spinner aria-label="Loading" size="sm" className="mr-2" />
-      ) : (
-        "Upload"
+    <div className="mt-6 w-full uploads-container">
+    <div>
+      <p className="text-white mb-2">Upload photos or videos of your work</p>
+      <FileInput
+        id="file-upload-helper-text"
+        type="file"
+        multiple
+        onChange={handleFileChange}
+        className="mb-4 w-full"
+      />
+      <button
+        className={`upload-btn ${loading ? "opacity-50 cursor-not-allowed" : ""}`}
+        onClick={handleUpload}
+        disabled={loading}
+      >
+        {loading ? (
+          <Spinner aria-label="Loading" size="sm" className="mr-2" />
+        ) : (
+          "Upload"
+        )}
+      </button>
+      <p className="text-xs text-white mt-2">Max 4 photos and 2 videos</p>
+    </div>
+
+    {error && <p style={{ color: "red" }}>{error}</p>}
+
+    <div className="media-grid mt-6">
+      {photos.length > 0 && (
+        <div>
+          <h4 className="image-heading">
+            <i className="fas fa-camera"></i> Uploaded Photos
+          </h4>
+          <div className={minimized ? "mini-photos-grid" : "photos-grid"}>
+            {photos.map((photo, index) => (
+              <div key={index} className={minimized ? "mini-grid-item-container" : "grid-item-container" }>
+                <img
+                  src={photo}
+                  alt={`Uploaded ${index + 1}`}
+                  className="grid-item"
+                />
+                <button onClick={() => handlePhotoDelete(photo)}>
+                  <FontAwesomeIcon icon={faTrash} />
+                </button>
+              </div>
+            ))}
+          </div>
+        </div>
       )}
-    </button>
-    <p className="text-xs text-white mt-2">Max 4 photos and 2 videos</p>
-  </div>
 
-  {error && <p style={{ color: "red" }}>{error}</p>}
-
-  <div className="media-grid mt-6">
-    {photos.length > 0 && (
-      <div>
-        <h4 className="section-heading">
-          <i className="fas fa-camera"></i> Uploaded Photos
-        </h4>
-        <div className="photos-grid">
-          {photos.map((photo, index) => (
-            <div key={index} className="grid-item-container">
-              <img
-                src={photo}
-                alt={`Uploaded ${index + 1}`}
-                className="grid-item"
-              />
-              <button onClick={() => handlePhotoDelete(photo)}>
-                <FontAwesomeIcon icon={faTrash} />
-              </button>
-            </div>
-          ))}
+      {videos.length > 0 && (
+        <div className="mt-6">
+          <h4 className="vid-heading">
+            <i className="fas fa-video text-white "></i> Uploaded Videos
+          </h4>
+          <div className="videos-grid">
+            {videos.map((video, index) => (
+              <div key={index} className={minimized ? "mini-grid-video-container" : "grid-video-container" }>
+                <video controls className="grid-video-item" preload="metadata">
+                  <source src={video} type="video/mp4" />
+                  Your browser does not support the video tag.
+                </video>
+                <button onClick={() => handleVideoDelete(video)}>
+                  <FontAwesomeIcon icon={faTrash} />
+                </button>
+              </div>
+            ))}
+          </div>
         </div>
-      </div>
-    )}
-
-    {videos.length > 0 && (
-      <div className="mt-6">
-        <h4 className="video-heading">
-          <i className="fas fa-video"></i> Uploaded Videos
-        </h4>
-        <div className="videos-grid">
-          {videos.map((video, index) => (
-            <div key={index} className="grid-item-containers">
-              <video controls className="grid-video-item" preload="metadata">
-                <source src={video} type="video/mp4" />
-                Your browser does not support the video tag.
-              </video>
-              <button onClick={() => handleVideoDelete(video)}>
-                <FontAwesomeIcon icon={faTrash} />
-              </button>
-            </div>
-          ))}
-        </div>
-      </div>
-    )}
+      )}
+    </div>
   </div>
-</div>
-
-
   );
 }
 

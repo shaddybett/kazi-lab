@@ -75,17 +75,17 @@ function AdminUsersPopup({ user, onClose, minimize }) {
             <div className="image-grid">
               {user.photos.length > 0 && (
                 <>
-                  <h4 className="section-heading">
+                  <h4 className="image-section-heading">
                     <i className="fas fa-camera"></i> Uploaded Photos
                   </h4>
 
                   <div className="grid-container">
                     {user.photos.map((photo, index) => (
-                      <div key={index} className="grid-item-container">
+                      <div key={index} className="admin-grid-item-container">
                         <img
                           src={photo}
                           alt={`User's uploads ${index + 1}`}
-                          className="grid-item"
+                          className="admin-grid-item"
                         />
                       </div>
                     ))}
@@ -95,17 +95,17 @@ function AdminUsersPopup({ user, onClose, minimize }) {
 
               {user.videos.length > 0 && (
                 <>
-                  <h4 className="video-heading">
+                  <h4 className="admin-video-heading">
                     <i className="fas fa-video"></i> Uploaded Videos
                   </h4>
 
-                  <div className="grid-containers">
+                  <div className="admin-grid-containers">
                     {user.videos.map((video, index) => (
-                      <div key={index} className="grid-item-container">
+                      <div key={index} className="admin-grid-item-container">
                         <video
                           src={video}
                           controls
-                          className="grid-items"
+                          className="admin-grid-items"
                           preload="metadata"
                         >
                           <source src={video} type="video/mp4" />
