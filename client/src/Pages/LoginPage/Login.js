@@ -65,6 +65,9 @@ function Login() {
       localStorage.removeItem("password");
     }
   };
+  const closePopup = ()=>{
+    setOpenBlockedUserPage(false);
+  }
 
   useEffect(() => {
     if (error) {
@@ -127,7 +130,7 @@ function Login() {
           </div>
         </form>
       </div>
-      {openBlockedUserPage && <BlockedUser details={blockedUserDetails} />}
+      {openBlockedUserPage && <BlockedUser details={blockedUserDetails} close={closePopup} />}
     </div>
   );
 }
