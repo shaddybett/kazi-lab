@@ -98,6 +98,7 @@
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   margin-bottom: 0.6rem;
   position: relative;
+  text-align: left;
 }
 
 /* Sender (admin) bubble */
@@ -106,6 +107,7 @@
   color: white;
   align-self: flex-start;
   margin-left: 1rem;
+  text-align: left;
 }
 
 /* Receiver bubble */
@@ -114,6 +116,7 @@
   color: white;
   align-self: flex-end;
   margin-right: 1rem;
+  text-align: left;
 }
 
 /* Tail for receiver */
@@ -142,12 +145,14 @@
 @media (max-width: 640px) {
   .bubble {
     max-width: 50%;
+    text-align: left;
   }
 }
 
 @media (min-width: 641px) and (max-width: 1024px) {
   .bubble {
     max-width: 75%;
+    text-align: left;
   }
 }
 
@@ -157,3 +162,4 @@
 .delete-btn:hover {
   background-color: darkred;
 }
+  
