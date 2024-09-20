@@ -139,9 +139,17 @@ border-radius: 8px;
 /* Heading Styles */
 /* General styles for upload container */
 /* Uploads Card Container */
-/* Uploads Card Container */
 .uploads-card {
   padding: 30px; /* Increased padding */
+  background-color: #334155; /* Dark gray */
+  border-radius: 10px;
+  width: 100%;
+  max-width: 800px; /* Increased max width */
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.mini-uploads-card {
+  padding: 30px;
   background-color: #1f2937; /* Dark gray */
   border-radius: 10px;
   width: 100%;
@@ -171,8 +179,18 @@ button.upload-btn:disabled {
 }
 
 /* Centered heading */
-p, .section-heading, .video-heading {
+p, .mini-section-heading, .mini-video-heading {
   text-align: center;
+}
+
+.mini-section-heading, .mini-video-heading {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: white;
+  margin-bottom: 20px;
+  padding: 10px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.1);
 }
 
 /* Card-like headings */
@@ -180,12 +198,20 @@ p, .section-heading, .video-heading {
   font-size: 1.5rem;
   font-weight: 600;
   color: white;
+  display: flex;
+  align-items: center;
+  gap: 10px;
   margin-bottom: 20px;
-  padding: 10px;
+  padding: 15px;
   border-radius: 8px;
   background: linear-gradient(90deg, rgba(238, 242, 245, 0.15), rgba(114, 141, 163, 0));
 }
 
+.section-heading i, .video-heading i {
+  font-size: 1.5rem;
+}
+
+/* After Hover Effects */
 .section-heading::after, .video-heading::after {
   content: "";
   position: absolute;
@@ -200,7 +226,7 @@ p, .section-heading, .video-heading {
 
 .section-heading:hover::after, .video-heading:hover::after {
   width: 100%;
-} 
+}
 
 /* Grid layout for photos */
 .photos-grid {

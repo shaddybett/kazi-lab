@@ -250,28 +250,7 @@
   
   
   /* Default user-details container */
-  .user-detai {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    padding: 20px;
-    background-color: #f9f9f9; /* Light background for the details section */
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
-    margin-top: 20px;
-    gap: 120px;
-  }
-  .mini-user-detail {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    padding: 20px;
-    background-color: #f9f9f9; /* Light background for the details section */
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
-    margin-top: 20px;
-    gap: 20px;
-  }
+
   /* Center the profile image and email if optional fields are missing */
   .user-details.centered {
     justify-content: center;
@@ -311,7 +290,7 @@
     gap: 15px;
   }
   
-  .detail-item {
+  .detail-items {
     font-size: 1rem;
     color: #333;
     display: flex;
@@ -323,10 +302,7 @@
     transition: background-color 0.3s ease-in-out;
   }
   
-  .detail-item i {
-    color: #3776aa;
-    font-size: 1.2rem;
-  }
+
   
   .detail-item strong {
     font-weight: 600;
@@ -336,16 +312,66 @@
   .detail-item:hover {
     background-color: #f0f0f0;
   }
+
+  .chat-item {
+    font-size: 1rem;
+    color: #333;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: linear-gradient(135deg, #f0f0f0, #ffffff);
+    padding: 12px;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+
+  }
+  
+  .chat-i {
+    color: #0084ff; /* Messenger-like chat bubble blue */
+    font-size: 1.2rem;
+  }
+  
+  .chat strong {
+    font-weight: 700;
+  }
+  
+  .chat-item:hover {
+    background-color: #e3f2fd; /* Light blue on hover */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  }
   
   
   
   
   
   
+  .user-detail {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 20px;
+    background-color: #f9f9f9; /* Light background for the details section */
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+    margin-top: 20px;
+    gap: 120px;
+  }
+  .mini-user-detail {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 20px;
+    background-color: #f9f9f9; /* Light background for the details section */
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+    margin-top: 20px;
+    gap: 20px;
+  }
   /* Icon library styling */
   @import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css");
   
-  .section-heading {
+  .image-heading {
     font-size: 1.5rem; /* Increase font size for emphasis */
     font-weight: 600; /* Make it bold */
     color: #3776aa; /* A nice blue color for the heading */
@@ -360,12 +386,12 @@
     border-radius: 8px; /* Rounded corners */
   }
   
-  .section-heading i {
+  .image-heading i {
     color: #3776aa; /* Icon color */
     font-size: 1.5rem; /* Increase icon size */
   }
   
-  .section-heading::after {
+  .image-heading::after {
     content: "";
     position: absolute;
     bottom: 0;
@@ -377,10 +403,10 @@
     transition: width 0.3s ease; /* Smooth underline animation */
   }
   
-  .section-heading:hover::after {
+  .image-heading:hover::after {
     width: 100%; /* Expand underline on hover */
   }
-  .video-heading {
+  .vid-heading {
     font-size: 1.5rem; /* Similar to photos heading */
     font-weight: 600; /* Bold */
     color: #3776aa; /* A green color to differentiate videos */
@@ -395,12 +421,12 @@
     border-radius: 8px;
   }
   
-  .video-heading i {
+  .vid-heading i {
     color: #3776aa; /* Green for the video icon */
     font-size: 1.5rem;
   }
   
-  .video-heading::after {
+  .vid-heading::after {
     content: "";
     position: absolute;
     bottom: 0;
@@ -412,7 +438,7 @@
     transition: width 0.3s ease; /* Smooth hover */
   }
   
-  .video-heading:hover::after {
+  .vid-heading:hover::after {
     width: 100%;
   }
   .modal-header {
@@ -460,6 +486,31 @@
     text-align: center;
     font-weight: 500;
     font-size: 1rem;
+  }
+  .admin-grid-container, .admin-grid-containers {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    margin-top: 10px;
+  }
+  
+  .admin-grid-item {
+    width: 300px;
+    height: 100%;
+    cursor: pointer;
+    border-radius: 10px;
+    transition: transform 0.3s ease-in-out;
+  }
+  .admin-grid-items{
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+    border-radius: 10px;
+    transition: transform 0.3s ease-in-out;
+  }
+  
+  .admin-grid-item:hover, .admin-grid-items:hover {
+    transform: scale(1.05); /* Slight zoom on hover */
   }
   
   .admin-email {
@@ -514,7 +565,8 @@
   .icon {
     cursor: pointer;
     transition: transform 0.2s, color 0.2s;
-    color: rgb(91, 91, 207);
+    color: #0084ff;
+    font-size: 1.2rem;
   }
 .iconic {
   cursor: pointer;
@@ -551,4 +603,22 @@
 
 .like-button-container:hover {
   border-color: #666; /* Change border color slightly when hovered */
+}
+
+.message-input-section {
+  margin-top: 20px;
+  padding: 15px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  background-color: #f3f4f6;
+  width: 100%;
+  max-width: 600px;
+}
+
+.message-input-section input {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  margin-bottom: 10px;
 }

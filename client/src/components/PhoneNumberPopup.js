@@ -103,7 +103,7 @@ function PhoneNumberPopup({ phoneNumber, onClose }) {
     setChatUser(null);
   };
 
-  const admins = [4,5];
+  const admins = [1];
 
   const handleSendMessage = async () => {
     if (messageContent === "") {
