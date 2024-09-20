@@ -165,7 +165,7 @@ button.upload-btn:disabled {
   cursor: not-allowed;
 }
 
-.image-heading, .vid-heading {
+.section-heading, .video-heading {
   font-size: 1.5rem;
   font-weight: 600;
   color: white;

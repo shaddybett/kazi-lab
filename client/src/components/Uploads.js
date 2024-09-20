@@ -170,8 +170,8 @@ function Uploads({minimized}) {
     <div className="media-grid mt-6">
       {photos.length > 0 && (
         <div>
-          <h4 className="image-heading">
-            <i className="fas fa-camera"></i> Uploaded Photos
+          <h4 className="section-heading">
+            <i className="fas fa-camera "></i> Uploaded Photos
           </h4>
           <div className={minimized ? "mini-photos-grid" : "photos-grid"}>
             {photos.map((photo, index) => (
@@ -192,7 +192,7 @@ function Uploads({minimized}) {
 
       {videos.length > 0 && (
         <div className="mt-6">
-          <h4 className="vid-heading">
+          <h4 className="video-heading">
             <i className="fas fa-video text-white "></i> Uploaded Videos
           </h4>
           <div className="videos-grid">
