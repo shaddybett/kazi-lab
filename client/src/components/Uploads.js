@@ -5,7 +5,7 @@ import { Spinner, FileInput } from "flowbite-react";
 import Swal from "sweetalert2";
 import "./ProviderDashboard.css";
 
-function Uploads({minimized}) {
+function Uploads({ minimized }) {
   const [files, setFiles] = useState([]);
   const [data, setData] = useState({});
   const [photos, setPhotos] = useState([]);
@@ -141,15 +141,16 @@ function Uploads({minimized}) {
   const handlePhotoDelete = (photoUrl) => handleDelete(photoUrl, "photo");
   const handleVideoDelete = (videoUrl) => handleDelete(videoUrl, "video");
   return (
-    <div className="mt-6 w-full uploads-container">
+<div className="mt-6 w-full flex justify-center">
+  <div className="uploads-card bg-gray-900 text-white shadow-lg rounded-lg p-8 w-full max-w-2xl">
     <div>
-      <p className="text-white mb-2">Upload photos or videos of your work</p>
+      <p className="mb-2 text-center">Upload photos or videos of your work</p>
       <FileInput
         id="file-upload-helper-text"
         type="file"
         multiple
         onChange={handleFileChange}
-        className="mb-4 w-full"
+        className="mb-4 w-full file-input"
       />
       <button
         className={`upload-btn ${loading ? "opacity-50 cursor-not-allowed" : ""}`}
@@ -162,7 +163,7 @@ function Uploads({minimized}) {
           "Upload"
         )}
       </button>
-      <p className="text-xs text-white mt-2">Max 4 photos and 2 videos</p>
+      <p className="text-xs text-center mt-2">Max 4 photos and 2 videos</p>
     </div>
 
     {error && <p style={{ color: "red" }}>{error}</p>}
@@ -171,11 +172,11 @@ function Uploads({minimized}) {
       {photos.length > 0 && (
         <div>
           <h4 className="section-heading">
-            <i className="fas fa-camera "></i> Uploaded Photos
+            <i className="fas fa-camera"></i> Uploaded Photos
           </h4>
           <div className={minimized ? "mini-photos-grid" : "photos-grid"}>
             {photos.map((photo, index) => (
-              <div key={index} className={minimized ? "mini-grid-item-container" : "grid-item-container" }>
+              <div key={index} className={minimized ? "mini-grid-item-container" : "grid-item-container"}>
                 <img
                   src={photo}
                   alt={`Uploaded ${index + 1}`}
@@ -193,11 +194,11 @@ function Uploads({minimized}) {
       {videos.length > 0 && (
         <div className="mt-6">
           <h4 className="video-heading">
-            <i className="fas fa-video text-white "></i> Uploaded Videos
+            <i className="fas fa-video"></i> Uploaded Videos
           </h4>
           <div className="videos-grid">
             {videos.map((video, index) => (
-              <div key={index} className={minimized ? "mini-grid-video-container" : "grid-video-container" }>
+              <div key={index} className={minimized ? "mini-grid-video-container" : "grid-video-container"}>
                 <video controls className="grid-video-item" preload="metadata">
                   <source src={video} type="video/mp4" />
                   Your browser does not support the video tag.
@@ -212,6 +213,8 @@ function Uploads({minimized}) {
       )}
     </div>
   </div>
+</div>
+
   );
 }
 

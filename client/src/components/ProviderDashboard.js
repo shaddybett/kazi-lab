@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import Modal from "react-modal";
-import {
-  Avatar} from "flowbite-react";
+import { Avatar } from "flowbite-react";
 import {
   HiChartPie,
   HiInbox,
@@ -600,66 +599,67 @@ function ProviderDashboard() {
       </div>
 
       <div className="flex-grow p-4 overflow-auto  rounded-lg shadow-md">
-      {activeComponent === "dashboard" && (
-  <div>
-    <h2 className="text-3xl font-bold text-white mb-6 text-center">
-      Hello, {data.first_name}!
-    </h2>
+        {activeComponent === "dashboard" && (
+          <div>
+            <h2 className="text-3xl font-bold text-white mb-6 text-center">
+              Hello, {data.first_name}!
+            </h2>
 
-    {/* Centered Card Container */}
-    <div className="flex justify-center">
-      <div className="bg-white shadow-lg rounded-lg p-6 w-full max-w-lg">
-        {/* Service List Section */}
-        <div className="mb-8">
-          <p className="text-xl font-semibold text-gray-900 underline mb-4 text-center">
-            Services You Offer
-          </p>
+            {/* Centered Card Container */}
+            <div className="flex justify-center">
+              <div className="bg-white shadow-lg rounded-lg p-6 w-full max-w-lg">
+                {/* Service List Section */}
+                <div className="mb-8">
+                  <p className="text-xl font-semibold text-gray-900 underline mb-4 text-center">
+                    Services You Offer
+                  </p>
 
-          {services.length > 0 ? (
-            <ul className="space-y-4">
-              {services.map((service) => (
-                <li
-                  key={service.id}
-                  className="bg-gray-200 shadow-md p-4 rounded-lg flex justify-between items-center"
-                >
-                  <span className="font-medium text-lg text-gray-800">
-                    {service.name}
-                  </span>
+                  {services.length > 0 ? (
+                    <ul className="space-y-4">
+                      {services.map((service) => (
+                        <li
+                          key={service.id}
+                          className="bg-gray-200 shadow-md p-4 rounded-lg flex justify-between items-center"
+                        >
+                          <span className="font-medium text-lg text-gray-800">
+                            {service.name}
+                          </span>
+                          <button
+                            className="text-red-500 hover:text-red-700 transition-colors"
+                            onClick={() => handleDeleteService(service.id)}
+                          >
+                            <FontAwesomeIcon icon={faTrash} />
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <p className="text-red-500 text-lg text-center">
+                      No services registered
+                    </p>
+                  )}
+                </div>
+
+                {/* Add New Service Section */}
+                <div className="mb-4">
+                  <input
+                    className="rounded-lg border border-blue-300 p-3 w-full mb-4 text-gray-900 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    type="text"
+                    value={newService}
+                    onChange={(e) => setNewService(e.target.value)}
+                    placeholder="Add a new service"
+                  />
                   <button
-                    className="text-red-500 hover:text-red-700 transition-colors"
-                    onClick={() => handleDeleteService(service.id)}
+                    className="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition-colors w-full"
+                    onClick={handleAddService}
                   >
-                    <FontAwesomeIcon icon={faTrash} />
+                    Add
                   </button>
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <p className="text-red-500 text-lg text-center">No services registered</p>
-          )}
-        </div>
-
-        {/* Add New Service Section */}
-        <div className="mb-4">
-          <input
-            className="rounded-lg border border-blue-300 p-3 w-full mb-4 text-gray-900 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-            type="text"
-            value={newService}
-            onChange={(e) => setNewService(e.target.value)}
-            placeholder="Add a new service"
-          />
-          <button
-            className="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition-colors w-full"
-            onClick={handleAddService}
-          >
-            Add
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-)}
-
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
 
         {activeComponent === "profile" && (
           <Profile minimize={isSidebarMinimized} />
@@ -670,7 +670,9 @@ function ProviderDashboard() {
             providerId={currentUserId}
           />
         )}
-        {activeComponent === "uploads" && <Uploads minimized={isSidebarMinimized} />}
+        {activeComponent === "uploads" && (
+          <Uploads minimized={isSidebarMinimized} />
+        )}
         {activeComponent === "clients" && (
           <ProviderUpdates
             senderId={data.id}
