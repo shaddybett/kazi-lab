@@ -1,5 +1,5 @@
-import React, { useEffect, useState, useRef, useCallback } from "react";
-import { Card, Label, Select, Button, Spinner, Checkbox } from "flowbite-react";
+import React, { useEffect, useState, useCallback } from "react";
+import { Card, Label, Select, Button, Spinner } from "flowbite-react";
 import { useNavigate } from "react-router-dom";
 import "./ProviderDetails.css"; // Assuming we add custom styles here
 
@@ -12,7 +12,6 @@ function ProviderDetails() {
   const navigate = useNavigate();
   const [latitude, setLatitude] = useState(null);
   const [longitude, setLongitude] = useState(null);
-  const [manualLocation, setManualLocation] = useState(false);
   const [loading, setLoading] = useState(false);
   const [counties, setCounties] = useState([]);
   const [county, setCounty] = useState("");

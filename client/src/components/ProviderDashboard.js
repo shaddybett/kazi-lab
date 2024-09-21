@@ -29,86 +29,14 @@ function ProviderDashboard() {
   const [newService, setNewService] = useState("");
   const [selectedServices, setSelectedServices] = useState([]);
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [files, setFiles] = useState([]);
-  const [photos, setPhotos] = useState([]);
-  const [videos, setVideos] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedImage, setSelectedImage] = useState(null);
-  const [selectedVideo, setSelectedVideo] = useState(null);
-  const [isVideoLoading, setIsVideoLoading] = useState(false);
-  const [chatUser, setChatUser] = useState(null);
   const [openClientsPage, setOpenClientsPage] = useState(false);
-  const [isFull, setIsFull] = useState(false);
   const dropdownRef = useRef(null);
   const navigate = useNavigate();
   const [activeComponent, setActiveComponent] = useState("dashboard");
   const [isSidebarMinimized, setIsSidebarMinimized] = useState(false);
   const backendUrl = process.env.REACT_APP_BACKEND_URL;
-  const [profileOpen, setProfileOpen] = useState(false);
 
   const currentUserId = localStorage.getItem("id");
-
-  const handleFileChange = (event) => {
-    const selectedFiles = event.target.files;
-    setFiles(selectedFiles);
-  };
-  const handleFull = () => {
-    setIsFull(true);
-  };
-  const handleProfile = () => {
-    navigate("/profile", { state: { isFull: true, isSidebarMinimized } });
-  };
-  const handleUpload = async () => {
-    const result = await Swal.fire({
-      title: "Are you sure?",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, Upload!",
-    });
-    if (result.isConfirmed) {
-      setLoading(true);
-      const token = localStorage.getItem("token");
-      const formData = new FormData();
-      const imageExtensions = ["png", "jpg", "jpeg", "webp"];
-
-      for (const file of files) {
-        const fileExtension = file.name.split(".").pop().toLowerCase();
-        if (imageExtensions.includes(fileExtension)) {
-          formData.append("photos", file);
-        } else {
-          formData.append("videos", file);
-        }
-      }
-
-      try {
-        const response = await fetch(`${backendUrl}/upload`, {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-          body: formData,
-        });
-        if (response.ok) {
-          const responseData = await response.json();
-          Swal.fire("Success", "Upload successful", "success");
-          setPhotos(responseData.photos || []);
-          setVideos(responseData.videos || []);
-          setError("");
-          handleEntry();
-        } else {
-          const errorMessage = await response.json();
-          setError(errorMessage.error || "An error occurred");
-        }
-      } catch (error) {
-        setError("An error occurred. Please try again later.");
-      }
-      setLoading(false);
-    }
-  };
-
 
   const handleLogout = async () => {
     const result = await Swal.fire({
@@ -168,80 +96,10 @@ function ProviderDashboard() {
     }
   }, [backendUrl]);
 
-  const handleEntry = useCallback(async () => {
-    const token = localStorage.getItem("token");
-    try {
-      const response = await fetch(`${backendUrl}/dashboard`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      if (response.ok) {
-        const responseData = await response.json();
-        setData(responseData);
-        setPhotos(responseData.photos || []);
-        setVideos(responseData.videos || []);
-      } else {
-        const errorMessage = await response.json();
-        setError(errorMessage.error || "An error occurred");
-      }
-      if (response.status === 422 || response.status === 401) {
-        setError("Your session has expired. Please log in again.");
-        setTimeout(() => {
-          window.location.href = "/login";
-        }, 5000);
-        return;
-      }
-    } catch (error) {
-      setError("An error occurred. Please try again later");
-    }
-  }, [backendUrl]);
-
   useEffect(() => {
     fetchData();
     fetchAllServices();
-    handleEntry();
-  }, [fetchData, fetchAllServices, handleEntry]);
-  const handleDelete = async (fileUrl, fileType) => {
-    const result = await Swal.fire({
-      title: "Are you sure?",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, Delete!",
-    });
-    if (result.isConfirmed) {
-      try {
-        const token = localStorage.getItem("token");
-        const fileName = fileUrl.split("/").pop();
-        const deleteResponse = await fetch(
-          `${backendUrl}/delete-upload/${fileType}/${fileName}`,
-          {
-            method: "DELETE",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-        if (deleteResponse.ok) {
-          Swal.fire("Success", "File deleted successfully", "success");
-          handleEntry();
-        } else {
-          const errorMessage = await deleteResponse.json();
-          setError(errorMessage.error || "An error occurred");
-        }
-      } catch (error) {
-        setError("An error occurred. Please try again later");
-      }
-    }
-  };
-
-  const handlePhotoDelete = (photoUrl) => handleDelete(photoUrl, "photo");
-  const handleVideoDelete = (videoUrl) => handleDelete(videoUrl, "video");
+  }, [fetchData, fetchAllServices]);
 
   const handleAddService = async () => {
     const result = await Swal.fire({
@@ -329,17 +187,6 @@ function ProviderDashboard() {
     }
   };
 
-  const handleCheckboxChange = (service) => {
-    const selectedIndex = selectedServices.findIndex(
-      (s) => s.id === service.id
-    );
-    if (selectedIndex === -1) {
-      setSelectedServices([...selectedServices, service]);
-    } else {
-      setSelectedServices(selectedServices.filter((s) => s.id !== service.id));
-    }
-  };
-
   useEffect(() => {
     if (dropdownOpen) {
       document.addEventListener("mousedown", handleClickOutside);
@@ -357,39 +204,8 @@ function ProviderDashboard() {
     }
   };
 
-  const openModal = (media, type) => {
-    if (type === "image") {
-      setSelectedImage(media);
-      setSelectedVideo(null);
-    } else if (type === "video") {
-      setSelectedImage(null);
-      setSelectedVideo(media);
-      setIsVideoLoading(true);
-    }
-    setIsModalOpen(true);
-  };
-
-  const closeModal = () => {
-    setIsModalOpen(false);
-    setSelectedImage(null);
-    setSelectedVideo(null);
-    setIsVideoLoading(false);
-  };
-
-  const handleChatClick = (data) => {
-    setChatUser(data);
-  };
-
-  const closeChat = () => {
-    setChatUser(null);
-  };
-
   const closeUpdates = () => {
     setOpenClientsPage(false);
-  };
-
-  const handleClientsClick = () => {
-    setOpenClientsPage(true);
   };
   useEffect(() => {
     if (error) {
