@@ -20,7 +20,7 @@ const ContactItem = ({ contact, setActiveUser, receiver }) => {
           />
           <div>
             <p className="text-white">{contact.name}</p>
-            <p className="text-gray-400 text-sm mr-14 ">{contact.message}</p>
+            <p className="text-gray-400 text-sm  ">{contact.message}</p>
           </div>
         </div>
       ) : (
