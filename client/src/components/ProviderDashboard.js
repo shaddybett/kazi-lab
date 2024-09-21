@@ -607,7 +607,7 @@ function ProviderDashboard() {
 
             {/* Centered Card Container */}
             <div className="flex justify-center">
-              <div className="bg-white shadow-lg rounded-lg p-6 w-full max-w-lg">
+              <div className="bg-white shadow-lg rounded-lg p-6 w-full max-w-2xl ">
                 {/* Service List Section */}
                 <div className="mb-8">
                   <p className="text-xl font-semibold text-gray-900 underline mb-4 text-center">
@@ -655,6 +655,7 @@ function ProviderDashboard() {
                   >
                     Add
                   </button>
+                  {error && <p className="text-red-500" >{error}</p>}
                 </div>
               </div>
             </div>

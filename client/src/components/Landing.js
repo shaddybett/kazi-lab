@@ -1,7 +1,6 @@
 import React from "react";
 import "./Landing.css";
 import { Link } from "react-router-dom";
-// import { Button } from "flowbite-react";
 import LandingPageImage from "../../assets/LandingPageImage.png";
 
 function Landing() {

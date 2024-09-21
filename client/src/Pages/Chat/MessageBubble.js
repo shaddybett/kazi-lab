@@ -26,7 +26,7 @@ const MessageBubble = ({ message, senderId, onDelete }) => {
 
   return (
     <div className={bubbleClass} onClick={() => setShowDelete(!showDelete)}>
-      <p className="mr-40" >{message.content}</p>
+      <p className="" >{message.content}</p>
       {showDelete && (
           <FontAwesomeIcon icon={faTrash} onClick={handleDelete}  className="text-red-600 "  />
       )}

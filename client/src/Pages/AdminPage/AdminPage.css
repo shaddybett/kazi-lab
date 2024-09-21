@@ -88,7 +88,7 @@ th:nth-child(3), td:nth-child(3) {
 
 /* Blocked Row Styling */
 .blocked-row {
-  background-color: #e66969; /* Light red for blocked users */
+  background-color: #ec0505; /* Light red for blocked users */
   color: #e90b07; /* Darker red text */
 }
 
@@ -172,11 +172,11 @@ th:nth-child(3), td:nth-child(3) {
 }
 
 .blocked-row {
-  background-color: #ffe6e6;
+  background-color: #f15d5d;
 }
 
 .blocked-row:hover {
-  background-color: #f5c6cb !important;
+  background-color: #e77e89 !important;
 }
 
 
