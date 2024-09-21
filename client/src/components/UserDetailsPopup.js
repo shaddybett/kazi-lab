@@ -128,7 +128,7 @@ function UserDetailsPopup({ user, onClose, minimized, details }) {
       setLoading(false);
     }
   };
-  const admins = [1];
+  const admins = [4];
 
   const handleSendMessage = async () => {
     if (messageContent === "") {
