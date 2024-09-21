@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Avatar, Dropdown, Navbar, Button, Card, Select } from "flowbite-react";
+import { Avatar, Dropdown, Navbar } from "flowbite-react";
 import Swal from "sweetalert2";
 import { getDistance } from "geolib";
 import ServiceProviderChatBox from "../Pages/Chatbox/ServiceProviderChatbox";
@@ -10,7 +10,6 @@ import "./Client.css";
 import {
   HiChartPie,
   HiInbox,
-  HiShoppingBag,
   HiUser,
   HiArrowSmLeft,
   HiMenu,
@@ -27,10 +26,8 @@ function ClientDashboard() {
   const navigate = useNavigate();
   const [providers, setProviders] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [chatUser, setChatUser] = useState(null);
   const [isSidebarMinimized, setIsSidebarMinimized] = useState(false);
   const [activeComponent, setActiveComponent] = useState("dashboard");
-  const [openDashboard, setOpenDashboard] = useState(true);
   const [clientLocation, setClientLocation] = useState({
     latitude: null,
     longitude: null,
@@ -161,6 +158,7 @@ function ClientDashboard() {
       }
     };
 
+  
     fetchServicesByCounty();
   }, [selectedCounty, backendUrl]);
 
@@ -288,10 +286,6 @@ function ClientDashboard() {
     }
   };
 
-  const handleProfile = () => {
-    navigate("/profile");
-  };
-
   useEffect(() => {
     if (error) {
       const timer = setTimeout(() => {
@@ -305,13 +299,6 @@ function ClientDashboard() {
     service.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  const handleChat = () => {
-    setChatUser(currentUserId);
-  };
-
-  const onClose = () => {
-    setChatUser(null);
-  };
   const provIds = localStorage.getItem("providerIdsString");
   return (
     <div className="general-sidebar flex h-screen text-white  ">
@@ -571,234 +558,3 @@ function ClientDashboard() {
 }
 
 export default ClientDashboard;
-
-{
-  /* <div className="general-sidebar flex h-screen text-white  ">
-  <div
-    className={` ${isSidebarMinimized ? "w-20" : "w-64"}
-    h-full p-2 flex flex-col transition-all duration-300 ease-in-out
-    ${!isSidebarMinimized ? "bg-gray-200" : "bg-gray-800"}`}
-    sidebar
-  >
-    <div className="flex justify-end ">
-      <HiMenu
-        className={`text-xl cursor-pointer mb-2 ${
-          isSidebarMinimized ? "text-white" : "text-gray-900"
-        }`}
-        // className="text-gray-900 text-xl cursor-pointer mb-2"
-        onClick={() => setIsSidebarMinimized(!isSidebarMinimized)} // Toggle sidebar state
-      />
-    </div>
-    <div
-      className={`flex flex-col items-center mb-4 transition-all duration-300 ${
-        isSidebarMinimized ? "hidden" : "block"
-      }`}
-    >
-      <Avatar
-        img={data.image}
-        size="xl"
-        rounded={true}
-        className="object-cover cursor-pointer hover:scale-105 transition-transform duration-300"
-        onClick={() => setActiveComponent("profile")}
-      />
-      <span className="admin-name text-black ">
-        {data.first_name} {data.last_name}
-      </span>
-      <span className="admin-email">{data.email}</span>
-    </div>
-
-    <div
-      className={` flex flex-col space-y-2 flex-grow transition-all duration-300 bg-gray-500 rounded-sm ${
-        isSidebarMinimized ? "w-20" : "w-64"
-      }board `}
-    >
-      <div
-        className={`relative group flex items-center p-2 rounded-sm cursor-pointer hover:bg-gray-600 hover:text-white transition-colors ${
-          activeComponent === "dashboard"
-            ? "bg-gray-600 text-white"
-            : "text-white"
-        }`}
-        onClick={() => setActiveComponent("dashboard")}
-      >
-        <HiChartPie
-          className={`mr-3 ${
-            isSidebarMinimized ? "text-2xl ml-3 " : "text-xl"
-          }`}
-        />
-
-        {!isSidebarMinimized && <span>Dashboard</span>}
-
-        {isSidebarMinimized && (
-          <span className="absolute left-full ml-4 px-2 py-1 rounded bg-gray-700 text-white text-sm tooltip group-hover:opacity-100">
-            Dashboard
-          </span>
-        )}
-      </div>
-      <div
-        className={`relative group flex items-center p-2 rounded-sm cursor-pointer hover:bg-gray-600 hover:text-white transition-colors ${
-          activeComponent === "profile"
-            ? "bg-gray-600 text-white"
-            : "text-white"
-        }`}
-        onClick={() => setActiveComponent("profile")}
-      >
-        <HiUser
-          className={`mr-3 ${
-            isSidebarMinimized ? "text-2xl ml-3" : "text-xl"
-          } `}
-        />
-
-        {!isSidebarMinimized && <span>Profile</span>}
-
-        {isSidebarMinimized && (
-          <span className="absolute left-full ml-4 px-2 py-1 rounded bg-gray-700 text-white text-sm tooltip group-hover:opacity-100">
-            Profile
-          </span>
-        )}
-      </div>
-
-      <div
-        className={`relative group flex items-center p-2 rounded-sm cursor-pointer hover:bg-gray-600 hover:text-white transition-colors ${
-          activeComponent === "chat"
-            ? "bg-gray-600 text-white"
-            : "text-white"
-        }`}
-        onClick={() => setActiveComponent("chat")}
-      >
-        <HiInbox
-          className={`mr-3 ${
-            isSidebarMinimized ? "text-2xl ml-3 " : "text-xl"
-          } `}
-        />
-
-        {!isSidebarMinimized && <span>Inbox</span>}
-
-        {isSidebarMinimized && (
-          <span className="absolute left-full ml-4 px-2 py-1 rounded bg-gray-700 text-white text-sm tooltip group-hover:opacity-100">
-            Inbox
-          </span>
-        )}
-      </div>
-
-      <div
-        className="flex items-center p-2 rounded-sm cursor-pointer hover:bg-red-800 hover:text-white text-white transition-colors bg-red-600"
-        onClick={handleLogout}
-      >
-        <HiArrowSmLeft
-          className={`mr-3 ${
-            isSidebarMinimized ? "text-3xl ml-2 " : "text-2xl"
-          }`}
-        />
-        {!isSidebarMinimized && <span>Logout</span>}
-      </div>
-    </div>
-  </div>
-
-  <div className="flex-grow p-2 overflow-auto ">
-    {activeComponent === "dashboard" && (
-      <Navbar
-        fluid
-        rounded
-        className="bg-gradient-to-r from-blue-500 to-indigo-600 w-full sticky top-0 text-white flex items-center px-4"
-      >
-        <h1 className="text-lg font-semibold">Kazi-Qonnect</h1>
-        <div className="ml-auto flex items-center">
-          <Dropdown
-            arrowIcon={false}
-            inline
-            label={
-              <Avatar
-                alt="User settings"
-                img={data.image}
-                rounded
-                className="w-10 h-10"
-              />
-            }
-          >
-            <Dropdown.Header>
-              <span className="block text-sm font-bold">
-                {data.first_name} {data.last_name}
-              </span>
-              <span className="block text-sm text-gray-500">
-                {data.email}
-              </span>
-            </Dropdown.Header>
-            <Dropdown.Item onClick={() => setActiveComponent("profile")}>Profile</Dropdown.Item>
-            <Dropdown.Item onClick={() => setActiveComponent("chat")}>Chat</Dropdown.Item>
-            <Dropdown.Divider />
-            <Dropdown.Item onClick={handleLogout}>Logout</Dropdown.Item>
-          </Dropdown>
-        </div>
-      </Navbar>
-    )}
-
-    {activeComponent === "dashboard" && (
-      <div>
-        <div>
-          <h2 className="text-2xl text-black font-bold mb-4">
-            Filters & Actions
-          </h2>
-          <input
-            type="text"
-            placeholder="Search service ..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full p-2 mb-4 bg-gray-700 border border-gray-600 rounded text-gray-100"
-          />
-
-          <select
-            value={selectedCounty}
-            onChange={(e) => setSelectedCounty(e.target.value)}
-            className="w-full p-2 mb-4 bg-gray-700 border border-gray-600 rounded text-gray-100"
-          >
-            <option value="">Select county...</option>
-            {counties.map((county) => (
-              <option key={county.id} value={county.name}>
-                {county.name}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6 p-6">
-          {filteredServices.map((service) => (
-            <div
-              key={service.id}
-              className="p-4 bg-white shadow-md rounded-lg hover:shadow-lg transform hover:scale-105 transition-all duration-300 ease-in-out"
-            >
-              <div className={isSidebarMinimized ? "mt-2" : ""}>
-                <h5 className="text-xl font-bold tracking-tight text-gray-900">
-                  {service.name}
-                </h5>
-                <button
-                  onClick={() => handleProviders(service)}
-                  className="mt-2 w-full bg-indigo-600 text-white p-2 rounded-md hover:bg-indigo-700"
-                >
-                  Providers
-                </button>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    )}
-    {activeComponent === "profile" && (
-      <Profile minimize={isSidebarMinimized} />
-    )}
-    {activeComponent === "chat" && (
-      <ServiceProviderChatBox
-        minimize={isSidebarMinimized}
-        providerId={currentUserId}
-      />
-    )}
-    {activeComponent === "providers" && (
-      <Providers provider_ids={provIds} />
-    )}
-    {activeComponent === "serviceProviders" && (
-      <ServiceProviders
-        minimized={isSidebarMinimized}
-        provider_ids={provIds}
-      />
-    )}
-  </div>
-</div> */
-}

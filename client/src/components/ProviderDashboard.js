@@ -12,8 +12,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrash, faSquarePlus } from "@fortawesome/free-solid-svg-icons";
-import ServiceDropdown from "./ServiceDropdown";
+import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import "./ProviderDashboard.css";
 import ServiceProviderChatBox from "../Pages/Chatbox/ServiceProviderChatbox";
 import ProviderUpdates from "./ProviderUpdates";
@@ -109,6 +108,7 @@ function ProviderDashboard() {
       setLoading(false);
     }
   };
+
 
   const handleLogout = async () => {
     const result = await Swal.fire({

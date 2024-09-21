@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useCallback } from "react";
 import {
-  Card,
   Avatar,
   Button,
   TextInput,
@@ -9,7 +8,7 @@ import {
   Modal,
   Select,
 } from "flowbite-react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import "./Components.css";
 
@@ -34,8 +33,6 @@ function Profile({ minimize }) {
   const [isModalOpen, setIsModalOpen] = useState(false); // For modal visibility
   const navigate = useNavigate();
   const backendUrl = process.env.REACT_APP_BACKEND_URL;
-  const location = useLocation();
-  const { isFull, isSidebarMinimized = false } = location.state || {};
 
   // Fetch user data
   useEffect(() => {
@@ -401,9 +398,9 @@ function Profile({ minimize }) {
                     Show Password
                   </Label>
                 </div>
+                {passwordError && <p>{passwordError}</p>}
               </div>
 
-              {/* File Upload Field */}
               <div>
                 {data.image ? (
                   <h2 className="text-lg font-medium text-gray-700 mt-5">

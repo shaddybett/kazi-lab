@@ -5,7 +5,6 @@ function Dashboard() {
   const [error,setError] = useState('')
   const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
-
   useEffect(()=>{
     const fetchData = async ()=>{
       try {
