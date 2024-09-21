@@ -91,6 +91,7 @@
 
 /* Common bubble styles */
 .bubble {
+  display: block;
   padding: 0.8rem 1.2rem;
   border-radius: 20px;
   max-width: 30%;
@@ -99,6 +100,7 @@
   margin-bottom: 0.6rem;
   position: relative;
   text-align: left;
+  
 }
 
 /* Sender (admin) bubble */
@@ -162,4 +164,3 @@
 .delete-btn:hover {
   background-color: darkred;
 }
-  

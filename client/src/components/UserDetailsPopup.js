@@ -96,7 +96,6 @@ function UserDetailsPopup({ user, onClose, minimized, details }) {
       setLoading(false);
     }
   };
-  
 
   const likeJob = async () => {
     if (loading) return;
@@ -279,7 +278,7 @@ function UserDetailsPopup({ user, onClose, minimized, details }) {
                         <img
                           src={photo}
                           alt={`User's uploads ${index + 1}`}
-                          className="admin-grid-item"
+                          className="admin-grid-it"
                         />
                       </div>
                     ))}
