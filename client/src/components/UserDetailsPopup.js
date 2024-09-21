@@ -267,7 +267,7 @@ function UserDetailsPopup({ user, onClose, minimized, details }) {
             {/* Image Grid */}
             <div className="image-grid">
               {user.photos.length > 0 && (
-                <>
+                <div>
                   <h4 className="image-heading">
                     <FontAwesomeIcon icon={faCamera} /> Uploaded Photos
                   </h4>
@@ -278,12 +278,12 @@ function UserDetailsPopup({ user, onClose, minimized, details }) {
                         <img
                           src={photo}
                           alt={`User's uploads ${index + 1}`}
-                          className="admin-grid-it"
+                          className="image-grid-item"
                         />
                       </div>
                     ))}
                   </div>
-                </>
+                </div>
               )}
 
               {/* Video Grid */}
