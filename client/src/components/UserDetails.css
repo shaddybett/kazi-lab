@@ -506,7 +506,7 @@
     margin-top: 10px;
   }
   
-  .admin-grid-item {
+  .admin-grid-it {
     width: 100%;
     height: 300px;
     cursor: pointer;
@@ -521,7 +521,7 @@
     transition: transform 0.3s ease-in-out;
   }
   
-  .admin-grid-item:hover, .admin-grid-items:hover {
+  .admin-grid-it:hover, .admin-grid-items:hover {
     transform: scale(1.05); /* Slight zoom on hover */
   }
   

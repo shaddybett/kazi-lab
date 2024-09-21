@@ -405,9 +405,16 @@ function Profile({ minimize }) {
 
               {/* File Upload Field */}
               <div>
-                <h2 className="text-lg font-medium text-gray-700 mt-5">
-                  Change Password
-                </h2>
+                {data.image ? (
+                  <h2 className="text-lg font-medium text-gray-700 mt-5">
+                    Change Profile image
+                  </h2>
+                ) : (
+                  <h2 className="text-lg font-medium text-gray-700 mt-5">
+                    Add profile image
+                  </h2>
+                )}
+
                 <input
                   id="file-upload"
                   type="file"
