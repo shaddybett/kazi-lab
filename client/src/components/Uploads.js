@@ -172,7 +172,7 @@ function Uploads({ minimized }) {
 
         {error && <p style={{ color: "red" }}>{error}</p>}
 
-        <div className="media-grid mt-6">
+        <div className="media-grid ">
           {photos.length > 0 && (
             <div>
               <h4 className={minimized ? "section-heading" : "section-heading" }>
@@ -191,7 +191,7 @@ function Uploads({ minimized }) {
                     <img
                       src={photo}
                       alt={`Uploaded ${index + 1}`}
-                      className="grid-item"
+                      className="grid-ite"
                     />
                     <button onClick={() => handlePhotoDelete(photo)}>
                       <FontAwesomeIcon icon={faTrash} />
