@@ -114,84 +114,84 @@ function ServiceProviders({ minimized }) {
   };
 
   return (
-      <div className="max-w-3xl mx-auto p-6 bg-white rounded-lg shadow-md dark:bg-gray-800">
-        <div className="mb-6 flex items-center justify-between">
-          <h5 className="text-2xl font-bold leading-none text-gray-900 dark:text-white">
-            Service Providers
-          </h5>
+    <div className="max-w-3xl mx-auto p-6 bg-white rounded-lg shadow-md dark:bg-gray-800">
+      <div className="mb-6 flex items-center justify-between">
+        <h5 className="text-2xl font-bold leading-none text-gray-900 dark:text-white">
+          Service Providers
+        </h5>
+      </div>
+
+      {!locationEnabled && (
+        <div
+          className="mb-4 p-4 text-sm text-yellow-700 bg-yellow-100 rounded-lg dark:bg-yellow-200 dark:text-yellow-800"
+          role="alert"
+        >
+          To see the closest service providers near you, please enable location
+          services and reload the page.
         </div>
+      )}
 
-        {!locationEnabled && (
-          <div
-            className="mb-4 p-4 text-sm text-yellow-700 bg-yellow-100 rounded-lg dark:bg-yellow-200 dark:text-yellow-800"
-            role="alert"
-          >
-            To see the closest service providers near you, please enable location
-            services and reload the page.
-          </div>
-        )}
+      <div className="flow-root">
+        {providers.length === 0 ? (
+          <p className="text-gray-500 text-center">No providers available</p>
+        ) : (
+          <ul className="divide-y divide-gray-200 dark:divide-gray-700">
+            {providers.map((provider, index) => (
+              <li
+                key={index}
+                className="py-4 hover:bg-gray-50 dark:hover:bg-gray-700 transition duration-200 rounded-lg cursor-pointer"
+                onClick={() => handleProviderClick(provider)}
+              >
+                <div className="flex items-start space-x-4">
+                  {/* The image stays here */}
+                  <div className="shrink-0">
+                    <img
+                      alt="Avatar"
+                      height="40"
+                      src={provider.image || "https://via.placeholder.com/40"}
+                      width="40"
+                      className="rounded-full shadow-sm border border-gray-300"
+                    />
+                  </div>
 
-        <div className="flow-root">
-          {providers.length === 0 ? (
-            <p className="text-gray-500 text-center">No providers available</p>
-          ) : (
-            <ul className="divide-y divide-gray-200 dark:divide-gray-700">
-              {providers.map((provider, index) => (
-                <li
-                  key={index}
-                  className="py-4 hover:bg-gray-50 dark:hover:bg-gray-700 transition duration-200 rounded-lg cursor-pointer"
-                  onClick={() => handleProviderClick(provider)}
-                >
-                  <div className="flex items-start space-x-4">
-                    {/* The image stays here */}
-                    <div className="shrink-0">
-                      <img
-                        alt="Avatar"
-                        height="40"
-                        src={provider.image || "https://via.placeholder.com/40"}
-                        width="40"
-                        className="rounded-full shadow-sm border border-gray-300"
-                      />
-                    </div>
-
-                    {/* Name and County in one flex container */}
-                    <div className="min-w-0 flex-1">
-                      <div className="flex flex-col">
-                        {/* Align the name and distance badge horizontally */}
-                        <p className="text-lg font-medium text-gray-900 dark:text-white flex items-center space-x-2">
-                          <span>
-                            {provider.first_name} {provider.last_name}
-                          </span>
-                          {locationEnabled && provider.distance != null && (
-                            <span className="bg-blue-100 text-blue-800 text-xs font-semibold ml-2 px-2.5 py-0.5 rounded dark:bg-blue-200 dark:text-blue-800">
-                              {provider.distance.toFixed(2)} km Away
-                            </span>
-                          )}
-                        </p>
-                        {/* County placed directly below the name and distance */}
-                        <span className="text-sm text-gray-500 dark:text-gray-400">
-                          {provider.county ? provider.county : "Unknown"} county
+                  {/* Name and County in one flex container */}
+                  <div className="min-w-0 flex-1">
+                    <div className="flex flex-col">
+                      {/* Align the name and distance badge horizontally */}
+                      <p className="text-lg font-medium text-gray-900 dark:text-white flex items-center space-x-2">
+                        <span>
+                          {provider.first_name} {provider.last_name}
                         </span>
-                      </div>
+                        {locationEnabled && provider.distance != null && (
+                          <span className="bg-blue-100 text-blue-800 text-xs font-semibold ml-2 px-2.5 py-0.5 rounded dark:bg-blue-200 dark:text-blue-800">
+                            {provider.distance.toFixed(2)} km Away
+                          </span>
+                        )}
+                      </p>
+                      {/* County placed directly below the name and distance */}
+                      <span className="text-sm text-gray-500 dark:text-gray-400">
+                        {provider.county ? provider.county : "Unknown"} county
+                      </span>
                     </div>
                   </div>
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
-
-        {selectedUser && (
-          <UserDetailsPopup
-            details={handleProviderClick}
-            minimized={minimized}
-            user={selectedUser}
-            onClose={closePopup}
-          />
+                </div>
+              </li>
+            ))}
+          </ul>
         )}
-
-        {error && <p className="text-red-500 mt-4 text-center">{error}</p>}
       </div>
+
+      {selectedUser && (
+        <UserDetailsPopup
+          details={handleProviderClick}
+          minimized={minimized}
+          user={selectedUser}
+          onClose={closePopup}
+        />
+      )}
+
+      {error && <p className="text-red-500 mt-4 text-center">{error}</p>}
+    </div>
   );
 }
 
