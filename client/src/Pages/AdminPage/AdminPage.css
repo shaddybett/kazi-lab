@@ -118,53 +118,7 @@ th:nth-child(3), td:nth-child(3) {
 /* Hover effect for table rows */
 /* General hover effect for unblocked rows */
 
-@media (max-width: 768px) {
-  table {
-    display: block; /* Make the table a block element for better stacking */
-  }
 
-  thead {
-    display: none; /* Hide table headers on small screens */
-  }
-
-  tr {
-    display: block; /* Stack rows as blocks */
-    margin-bottom: 20px; /* Add space between rows */
-    border-bottom: 2px solid #e2e8f0;
-  }
-
-  td {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 5px;
-    font-size: 0.9rem;
-    text-align: right;
-    border: none; /* Remove inner borders */
-  }
-
-  td::before {
-    content: attr(data-label); /* Use data-label attribute to simulate headers */
-    font-weight: bold;
-    text-transform: uppercase;
-    color: #333;
-    flex: 1;
-    text-align: left;
-  }
-
-  td:last-child {
-    text-align: right; /* Align the last column (actions) to the right */
-  }
-
-  /* Make buttons and dropdowns responsive */
-  .dropdown-item {
-    font-size: 0.85rem;
-  }
-
-  .text-green-500, .text-red-500 {
-    font-size: 0.9rem;
-  }
-}
 
 /* Hover Effects */
 .table-row:hover {
