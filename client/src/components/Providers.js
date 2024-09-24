@@ -160,7 +160,6 @@ function Providers() {
                           </span>
                         )}
                       </p>
-                      {/* County placed directly below the name and distance */}
                       <span className="text-sm text-gray-500 dark:text-gray-400">
                         {provider.county ? provider.county : "Unknown"} county
                       </span>
