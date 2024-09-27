@@ -214,8 +214,6 @@ function AdminMain({ blocked, onclose, click }) {
 
             {/* Display name when sidebar is not minimized */}
             {!isSidebarMinimized && <span>Inbox</span>}
-
-            {/* Tooltip when sidebar is minimized */}
             {isSidebarMinimized && (
               <span className="absolute left-full ml-4 px-2 py-1 rounded bg-gray-700 text-white text-sm tooltip group-hover:opacity-100">
                 Inbox
