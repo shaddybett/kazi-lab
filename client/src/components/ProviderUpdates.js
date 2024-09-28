@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useCallback, useRef } from "react";
-import { Card } from "flowbite-react";
 import NewChatBox from "../Pages/Chat/NewChatBox";
 import { FaCommentDots, FaHeart, FaBriefcase } from 'react-icons/fa'; // Import more icons for jobs and likes
 import './ProviderDashboard.css';
