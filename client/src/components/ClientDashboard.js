@@ -66,13 +66,10 @@ function ClientDashboard() {
       }
     };
 
-    // Check screen size on initial load
     handleResize();
 
-    // Add event listener for window resize
     window.addEventListener("resize", handleResize);
 
-    // Cleanup event listener on component unmount
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
