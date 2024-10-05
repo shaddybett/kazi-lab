@@ -66,10 +66,8 @@ function ClientDashboard() {
       }
     };
 
-    // Check screen size on initial load
     handleResize();
 
-    // Add event listener for window resize
     window.addEventListener("resize", handleResize);
 
     return () => window.removeEventListener("resize", handleResize);
