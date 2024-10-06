@@ -477,7 +477,6 @@ function ClientDashboard() {
                 </div>
               )}
 
-              {/* Flexbox for Search and Filter */}
               <div className="flex flex-col lg:flex-row gap-4 mb-14 items-center justify-center">
                 {/* Search Input */}
                 <input
