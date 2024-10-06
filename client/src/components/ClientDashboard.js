@@ -477,9 +477,7 @@ function ClientDashboard() {
                 </div>
               )}
 
-              {/* Flexbox for Search and Filter */}
               <div className="flex flex-col lg:flex-row gap-4 mb-14 items-center justify-center">
-                {/* Search Input */}
                 <input
                   type="text"
                   placeholder="Search for services..."
@@ -504,7 +502,6 @@ function ClientDashboard() {
               </div>
             </div>
 
-            {/* Services Display Section */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {filteredServices.map((service) => (
                 <div
