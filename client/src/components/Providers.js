@@ -73,7 +73,6 @@ function Providers() {
       }
     };
 
-
     fetchProviderDetails();
   }, [clientLocation, locationEnabled, backendUrl, countyIdd]);
 
