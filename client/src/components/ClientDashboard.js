@@ -470,7 +470,6 @@ function ClientDashboard() {
                 Filters & Actions
               </h2>
 
-              {/* Error Message */}
               {error && (
                 <div className="mb-4">
                   <p style={{ color: "red" }}>{error}</p>
