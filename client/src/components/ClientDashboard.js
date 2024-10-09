@@ -470,7 +470,6 @@ function ClientDashboard() {
                 Filters & Actions
               </h2>
 
-              {/* Error Message */}
               {error && (
                 <div className="mb-4">
                   <p style={{ color: "red" }}>{error}</p>
@@ -485,7 +484,6 @@ function ClientDashboard() {
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="w-full lg:w-1/2 p-3  rounded-lg border border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-200 transition-shadow duration-300 ease-in-out text-gray-700"
                 />
-
                 <select
                   value={selectedCounty}
                   onChange={(e) => setSelectedCounty(e.target.value)}
