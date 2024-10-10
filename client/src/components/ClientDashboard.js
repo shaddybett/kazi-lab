@@ -155,7 +155,6 @@ function ClientDashboard() {
       }
     };
 
-  
     fetchServicesByCounty();
   }, [selectedCounty, backendUrl]);
 
