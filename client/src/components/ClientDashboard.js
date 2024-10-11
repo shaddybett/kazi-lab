@@ -254,7 +254,6 @@ function ClientDashboard() {
           // navigate(`/primes?provider_ids=${providerIds}`);
         } else {
           setActiveComponent("serviceProviders");
-          // navigate(`/providers?provider_ids=${providerIds}`);
         }
       } else {
         const errorMessage = await response.json();
