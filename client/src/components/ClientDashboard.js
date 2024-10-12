@@ -251,7 +251,6 @@ function ClientDashboard() {
         const sorted = selectedCounty !== "";
         if (sorted) {
           setActiveComponent("providers");
-          // navigate(`/primes?provider_ids=${providerIds}`);
         } else {
           setActiveComponent("serviceProviders");
         }
