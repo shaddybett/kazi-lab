@@ -171,8 +171,6 @@ function Providers() {
           </ul>
         )}
       </div>
-      {/* </div> */}
-      {/* </Card> */}
       {selectedUser && (
         <UserDetailsPopup user={selectedUser} onClose={closePopup} />
       )}
