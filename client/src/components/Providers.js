@@ -113,7 +113,6 @@ function Providers() {
           Service Providers
         </h5>
       </div>
-      {/* <div className="flow-root"> */}
       {!locationEnabled && (
         <div
           className="mb-4 p-4 text-sm text-yellow-700 bg-yellow-100 rounded-lg dark:bg-yellow-200 dark:text-yellow-800"
