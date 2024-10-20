@@ -307,7 +307,6 @@ function ClientDashboard() {
             className={`text-xl cursor-pointer mb-2 ${
               isSidebarMinimized ? "text-white" : "text-gray-900"
             }`}
-            // className="text-gray-900 text-xl cursor-pointer mb-2"
             onClick={() => setIsSidebarMinimized(!isSidebarMinimized)} // Toggle sidebar state
           />
         </div>
