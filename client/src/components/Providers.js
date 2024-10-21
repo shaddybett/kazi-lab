@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { Card } from "flowbite-react";
 import UserDetailsPopup from "./UserDetailsPopup";
 
 function Providers() {
