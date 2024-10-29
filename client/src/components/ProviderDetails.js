@@ -76,7 +76,7 @@ function ProviderDetails() {
       if (!latitude || !longitude) {
         setError("To be easily located by clients, please enable location then refresh the page.");
         setLoading(false);  // Stop the loading spinner
-        return;  // Return early to stop execution
+        return;  
       }
 
       const formImage = new FormData();
