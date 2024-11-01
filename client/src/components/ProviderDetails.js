@@ -113,6 +113,7 @@ function ProviderDetails() {
         },
         body: formData,
       });
+      
       if (userDetailsResponse.ok) {
         const userDetailsData = await userDetailsResponse.json();
         localStorage.setItem("userDetailsData", JSON.stringify(userDetailsData));
