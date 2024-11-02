@@ -340,7 +340,6 @@ function ProviderDashboard() {
     }
   };
 
-  
   useEffect(() => {
     if (dropdownOpen) {
       document.addEventListener("mousedown", handleClickOutside);
