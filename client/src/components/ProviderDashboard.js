@@ -7,7 +7,7 @@ import {
   HiShoppingBag,
   HiUser,
   HiArrowSmLeft,
-  HiMenu,
+  HiMenu
 } from "react-icons/hi";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
