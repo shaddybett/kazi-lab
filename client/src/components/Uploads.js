@@ -141,6 +141,15 @@ function Uploads({ minimized }) {
 
   const handlePhotoDelete = (photoUrl) => handleDelete(photoUrl, "photo");
   const handleVideoDelete = (videoUrl) => handleDelete(videoUrl, "video");
+  
+  useEffect(() => {
+    if (error) {
+      const timer = setTimeout(() => {
+        setError("");
+      }, 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [error]);
   return (
     <div className="mt-6 w-full flex justify-center">
       <div className={ minimized ? "" : "uploads-card bg-gray-900 text-white shadow-lg rounded-lg p-8 w-full max-w-2xl"}>
