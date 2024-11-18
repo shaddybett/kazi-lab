@@ -248,4 +248,5 @@ function Uploads({ minimized }) {
     </div>
   );
 }
+
 export default Uploads;
