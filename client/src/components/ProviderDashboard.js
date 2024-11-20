@@ -91,6 +91,7 @@ function ProviderDashboard() {
           },
           body: formData,
         });
+        
         if (response.ok) {
           const responseData = await response.json();
           Swal.fire("Success", "Upload successful", "success");
