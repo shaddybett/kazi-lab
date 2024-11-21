@@ -113,7 +113,7 @@ function Uploads({ minimized }) {
     if (result.isConfirmed) {
       try {
         const token = localStorage.getItem("token");
-        const fileName = fileUrl
+        const fileName = fileUrl.split("/").pop();
         console.log('filefilefiletype',fileType)
         console.log('fileName',fileName)
         const deleteResponse = await fetch(
