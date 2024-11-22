@@ -101,6 +101,7 @@ function Uploads({ minimized }) {
       setLoading(false);
     }
   };
+  
   const handleDelete = async (fileUrl, fileType) => {
     const result = await Swal.fire({
       title: "Are you sure?",
