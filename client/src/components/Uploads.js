@@ -113,13 +113,14 @@ function Uploads({ minimized }) {
     });
     if (result.isConfirmed) {
       try {
+        const segments = fileUrl.split("/");
         const token = localStorage.getItem("token");
-        const fileName = fileUrl
-        const encodedFilename = encodeURIComponent(fileUrl);
-        console.log('filefilefiletype',fileType)
+        const fileName = segments.slice(-2).join("/");
+        console.log('fileType',fileType)
         console.log('fileName',fileName)
+        const encodedFileName = encodeURIComponent(fileName);
         const deleteResponse = await fetch(
-          `${backendUrl}/delete-upload/${fileType}/${encodedFilename}`,
+          `${backendUrl}/delete-upload/${fileType}/${encodedFileName}`,
           {
             method: "DELETE",
             headers: {
