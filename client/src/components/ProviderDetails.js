@@ -30,7 +30,6 @@ function ProviderDetails() {
       setUuid(storedUuid);
     }
 
-    // Fetch geolocation coordinates when the component mounts
     navigator.geolocation.getCurrentPosition(
       (position) => {
         setLatitude(position.coords.latitude);
