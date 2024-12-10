@@ -23,7 +23,6 @@ function ProviderDetails() {
     const storedToken = localStorage.getItem("token");
     const storedUuid = localStorage.getItem("signupUUID");
 
-    
     if (storedToken) {
       setToken(storedToken);
     }
