@@ -32,6 +32,7 @@ const MessageInput = ({ sendMessage }) => {
       setSelectedImage(null);
     }
   };
+
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     if (file && file.type.startsWith("image/")) {
