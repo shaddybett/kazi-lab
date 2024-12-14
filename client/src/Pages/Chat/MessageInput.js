@@ -163,7 +163,7 @@ const MessageInput = ({ sendMessage }) => {
         />
         <FaPaperclip
           className="text-white mx-4 cursor-pointer"
-          // onClick={() => fileInputRef.current.click()}
+          onClick={() => fileInputRef.current.click()}
         />
         <input
           type="file"
@@ -173,7 +173,7 @@ const MessageInput = ({ sendMessage }) => {
         />
         <FaMicrophone
           className="text-white cursor-pointer ml-auto"
-          // onClick={handleVoiceMessage}
+          onClick={handleVoiceMessage}
         />
         <button onClick={handleSendMessage} className="text-white ml-4">
           Send
