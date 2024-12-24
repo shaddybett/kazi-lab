@@ -9,7 +9,6 @@ const MessageInput = ({ sendMessage }) => {
   const mediaRecorderRef = useRef(null);
   const chunksRef = useRef([]);
 
-  
   useEffect(() => {
     function handleClickOutside(event) {
       if (showEmojiOptions && !event.target.closest(".emoji-picker")) {
