@@ -61,7 +61,6 @@ const MessageInput = ({ sendMessage }) => {
           chunksRef.current.push(event.data);
         };
 
-        
         mediaRecorderRef.current.onstop = () => {
           const audioBlob = new Blob(chunksRef.current, { type: "audio/webm" });
           const audioUrl = URL.createObjectURL(audioBlob);
