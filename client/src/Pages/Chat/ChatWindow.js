@@ -107,6 +107,7 @@ const ChatWindow = ({ activeUser, messages, sendMessage, receiver, setActiveUser
       </div>
     );
   }
+
   // If minimized is true, display the chat as a popup window (like NewChatWindow)
   if (minimize) {
     return (
