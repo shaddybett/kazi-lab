@@ -113,6 +113,7 @@ const ChatWindow = ({ activeUser, messages, sendMessage, receiver, setActiveUser
     return (
       <div className="chat-overlay flex items-center justify-center">
         <div
+        
           className="chat-window-container bg-gray-900 p-4 flex flex-col justify-between"
           ref={chatRef}
         >
