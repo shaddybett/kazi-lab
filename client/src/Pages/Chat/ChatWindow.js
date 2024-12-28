@@ -97,7 +97,7 @@ const ChatWindow = ({ activeUser, messages, sendMessage, receiver, setActiveUser
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [ minimize]);
+  }, [minimize]);
 
   if (!activeUser) {
     return (
@@ -144,6 +144,7 @@ const ChatWindow = ({ activeUser, messages, sendMessage, receiver, setActiveUser
                 <MessageBubble key={index} message={message} senderId={activeUser.id} />
               ))}
           </div>
+
 
           {/* Message Input */}
           <MessageInput sendMessage={sendMessage} />
