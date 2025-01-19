@@ -165,6 +165,7 @@ const ChatWindow = ({ activeUser, messages, sendMessage, receiver, setActiveUser
             className="text-white text-3xl cursor-pointer lg:hidden"
             onClick={() => setActiveUser(null)}
           />
+          
           <Avatar
             img={activeUser.image || ''}
             rounded
